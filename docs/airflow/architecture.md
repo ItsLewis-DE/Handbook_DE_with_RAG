@@ -5,7 +5,7 @@ hide:
 
 <header class="airflow-article-hero">
   <div class="airflow-article-hero__eyebrow">
-    <a href="../../">DATA ENGINEERING FIELD NOTES</a>
+    <a href="../../">BEHIND THE PIPELINE</a>
     <span>ARTICLE / 001</span>
   </div>
   <h1>Kiến trúc<br><em>Apache Airflow</em></h1>
@@ -115,13 +115,9 @@ flowchart LR
 
 ## Các component trong Airflow
 
-### Các component bắt buộc
+### Scheduler
 
-#### Scheduler
-
-Scheduler theo dõi các DAG và Dag Run, tạo Dag Run theo lịch, xác định những Task Instance đã thỏa mãn dependency và các giới hạn concurrency, sau đó gửi chúng tới Executor để thực thi.
-
-##### Quá trình phân tích DAG
+#### Quá trình phân tích DAG
 
 Trong Airflow 2.x, Scheduler có một tiến trình con nội bộ tên là `DagFileProcessorManager`, được dùng để phân tích cú pháp các file trong DAG folder. Những tiến trình này ghi nhận trạng thái của file DAG vào metadata database; nếu quá trình phân tích gặp lỗi, thông tin lỗi sẽ được hiển thị trên UI.
 
@@ -131,7 +127,7 @@ Từ phiên bản 2.3, `DagFileProcessorManager` đã có thể được cấu h
 >
 > Với lịch `@daily`, Dag Run xử lý data interval của ngày 1/1 thường được tạo sau khi khoảng dữ liệu đó kết thúc, tức là vào hoặc ngay sau 00:00 ngày 2/1 theo múi giờ của DAG. Cách vận hành này giúp khoảng dữ liệu cần xử lý được thu thập đầy đủ.
 
-##### HA Scheduler
+#### HA Scheduler
 
 Khi hệ thống có quá nhiều DAG, với số lượng lên đến hàng trăm hoặc hàng nghìn task, một Scheduler có thể mất nhiều thời gian để hoàn thành một scheduling loop. Đây là lúc **HA Scheduler** trở nên hữu ích.
 
@@ -154,7 +150,7 @@ flowchart TD
     E --> F[Đưa Task Instance vào hàng chờ]
 ```
 
-##### Critical Section
+#### Critical Section
 
 Trong scheduling loop có một bước được gọi là **Critical Section**. Tại một thời điểm, chỉ một Scheduler được phép đi vào khu vực này. Các Scheduler khác vẫn hoạt động và có thể tiếp tục thực hiện những phần khác của scheduling loop.
 
@@ -172,19 +168,19 @@ flowchart LR
     D --> E[Đưa task vào hàng chờ]
 ```
 
-##### Khả năng mở rộng và nút thắt
+#### Khả năng mở rộng và nút thắt
 
 Khi Scheduler bị giới hạn bởi CPU, việc thêm Scheduler thứ hai hoặc thứ ba thường giúp năng lực điều phối tăng gần tuyến tính. Tuy nhiên, mức tăng này không được bảo đảm nếu metadata database, mạng hoặc tài nguyên dùng chung đã trở thành nút thắt.
 
 Một bottleneck phổ biến của Scheduler xuất hiện khi hệ thống có quá nhiều DAG và task. Scheduler phải liên tục truy cập database để lấy thông tin; nếu database không đủ khả năng đáp ứng, hiệu suất điều phối sẽ bị ảnh hưởng đáng kể.
 
-#### Executor
+### Executor
 
 Executor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.
 
 Executor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor.
 
-##### LocalExecutor
+#### LocalExecutor
 
 LocalExecutor là cấu hình mặc định của Airflow. Khi Scheduler giao việc, LocalExecutor tạo các tiến trình con của tiến trình Scheduler để thực thi tác vụ.
 
@@ -192,7 +188,7 @@ Ví dụ, một task cần xử lý file 5 GB. Vì LocalExecutor nằm trong ti�
 
 Đổi lại, LocalExecutor có cấu hình tương đối đơn giản và độ trễ thấp vì task được chạy trên cùng node với Scheduler.
 
-##### Remote Executor
+#### Remote Executor
 
 Remote Executor có thể được chia thành hai loại:
 
@@ -211,7 +207,7 @@ Remote Executor có thể được chia thành hai loại:
 
 Kể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể.
 
-##### Cấu hình Executor
+#### Cấu hình Executor
 
 Để ghi đè Executor mặc định, cấu hình `airflow.cfg` như sau:
 
@@ -309,7 +305,7 @@ with DAG(
     )
 ```
 
-##### Câu hỏi liên quan
+#### Câu hỏi liên quan
 
 <div class="airflow-comic-gallery" aria-label="Hai hình minh họa về cách Scheduler theo dõi trạng thái task">
   <figure>
@@ -330,7 +326,7 @@ with DAG(
   </figure>
 </div>
 
-#### DAG Processor
+### DAG Processor
 
 Chúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?
 
@@ -338,11 +334,11 @@ Câu trả lời là **DAG Processor**. Trong Airflow 2.x, component này mặc 
 
 DAG Processor thường có hai tiến trình chính: `DagFileProcessorManager` và `DagFileProcessorProcess`.
 
-##### DagFileProcessorManager
+#### DagFileProcessorManager
 
 `DagFileProcessorManager` duy trì một vòng lặp vô hạn để kiểm tra những file mới hoặc đã được chỉnh sửa, đồng thời bỏ qua các file không thay đổi. Tiến trình này không trực tiếp phân tích từng file hay kiểm tra cú pháp. Thay vào đó, nó tạo ra các tiến trình con gọi là `DagFileProcessorProcess`.
 
-##### DagFileProcessorProcess
+#### DagFileProcessorProcess
 
 `DagFileProcessorProcess` tải trực tiếp file DAG dưới dạng module, tạo các đối tượng DAG rồi trả về cho `DagFileProcessorManager`.
 
@@ -350,7 +346,7 @@ Vì file DAG được nạp dưới dạng module và `DagFileProcessorManager` 
 
 Thay vào đó, các thao tác cần kết nối tới cơ sở dữ liệu hoặc API nên được đặt bên trong callable của task để chỉ chạy khi task được thực thi. Những thư viện có thời gian import lớn cũng nên được import cục bộ bên trong callable; các import nhẹ vẫn có thể đặt ở đầu file DAG.
 
-##### Luồng xử lý file DAG
+#### Luồng xử lý file DAG
 
 ```mermaid
 flowchart TD
@@ -371,7 +367,7 @@ flowchart TD
 
 *Nguồn: Airflow documentation.*
 
-##### Câu hỏi liên quan
+#### Câu hỏi liên quan
 
 <div class="airflow-comic-gallery" aria-label="Hình minh họa quá trình DAG Processor gửi đối tượng DAG để lưu vào Metadata Database">
   <figure>
@@ -384,7 +380,7 @@ flowchart TD
   </figure>
 </div>
 
-#### DAG Bundles
+### DAG Bundles
 
 Component tiếp theo là **DAG Bundles**.
 
@@ -396,7 +392,7 @@ Từ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhi�
 
 Bạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm.
 
-#### API Server
+### API Server
 
 Trước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.
 
@@ -404,13 +400,13 @@ Web UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà
 
 Scheduler đọc Metadata Database để tạo `DagRun`, kiểm tra điều kiện thực thi rồi chuyển các `TaskInstance` đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng.
 
-#### Metadata Database
+### Metadata Database
 
 Metadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của `TaskInstance`, `DagRun`, DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.
 
 Scheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này.
 
-##### Câu hỏi liên quan
+#### Câu hỏi liên quan
 
 <div class="airflow-comic-gallery" aria-label="Hình minh họa lý do Airflow thường sử dụng PostgreSQL hoặc MySQL làm Metadata Database">
   <figure>
@@ -423,7 +419,9 @@ Scheduler và các component khác dựa vào dữ liệu này để theo dõi v
   </figure>
 </div>
 
-#### Triển khai Airflow theo mô hình phân tán
+---
+
+## Triển khai Airflow theo mô hình phân tán
 
 Khi mới học Airflow, thông thường bạn chỉ sử dụng công cụ này trên máy tính cá nhân. Tuy nhiên, sức mạnh của Airflow còn nằm ở khả năng phân phối các component trên nhiều máy chủ. Chẳng hạn, với `CeleryExecutor` hoặc `KubernetesExecutor`, Scheduler có thể chạy trên một máy hoặc pod riêng, trong khi task được thực thi bởi các worker hoặc pod khác.
 
@@ -439,51 +437,7 @@ Mô hình phân tán mang lại những lợi ích sau:
     - **DAG Author:** viết và đưa file DAG vào DAG bundle.
     - **Operations User:** trigger, theo dõi và debug DAG hoặc task thông qua UI hay API.
 
-##### Biểu đồ Airflow chạy trên một máy
-
-Bạn có thể tham khảo biểu đồ sau:
-
-```mermaid
-flowchart LR
-    user["Airflow User"]
-    dags["DAG files"]
-    plugins["Plugin folder<br/> & installed packages"]
-    db[("Metadata DB")]
-
-    subgraph scheduler["Parsing, Scheduling & Executing"]
-        sch["Scheduler"]
-    end
-
-    subgraph ui["UI"]
-        api["API Server"]
-    end
-
-    user -->|author| dags
-    dags -->|read| sch
-
-    user -->|install| plugins
-    plugins -->|install| sch
-    plugins -->|install| api
-
-    user -->|operate| api
-
-    sch -.-> db
-    api -.-> db
-
-    classDef component fill:#dff1fb,stroke:#91b8cf,color:#1d2a36
-    class sch,api component
-
-    style scheduler fill:#eaf6fd,stroke:#a9c9db
-    style ui fill:#eaf6fd,stroke:#a9c9db
-
-    linkStyle 0 stroke:#d94841
-    linkStyle 1 stroke:#d94841
-    linkStyle 2,3,4 stroke:#2f42ff
-    linkStyle 5 stroke:#333333
-    linkStyle 6,7 stroke:#ff4d4d,stroke-dasharray:3 5
-```
-
-##### Tổng quan luồng xử lý
+### Tổng quan luồng xử lý
 
 1. **Người dùng đưa file DAG vào DAG bundle**
 
@@ -507,9 +461,124 @@ flowchart LR
 
     Khi worker hoàn tất, trạng thái được gửi về API Server. Sau đó, API Server cập nhật trạng thái vào Metadata Database.
 
+
+### Biểu đồ Airflow theo mô hình phân tán
+
+Bạn có thể tham khảo biểu đồ sau:
+
+
+```mermaid
+flowchart LR
+    Author["DAG Author"] -->|author| Dags
+    Deploy["Deployment Manager"] -->|install| Plugins
+    Ops["Operations User"] -->|operate| API
+
+    subgraph DagZone["Security perimeter with DAG code execution"]
+        direction TB
+        Dags["DAG files"]
+        subgraph Execution["Execution"]
+            direction LR
+            Workers["Workers"]
+            Triggerers["Triggerers"]
+            Processors["DAG Processors"]
+        end
+        Dags -->|sync| Workers
+        Dags -->|sync| Triggerers
+        Dags -->|sync| Processors
+    end
+
+    Plugins["Plugin folder and installed packages"]
+    DB[(Metadata DB)]
+
+    subgraph ControlZone["Security perimeter with no DAG code execution"]
+        direction TB
+        subgraph Scheduling["Scheduling"]
+            Scheduler["Schedulers"]
+        end
+        subgraph UI["UI"]
+            API["API Servers"]
+        end
+    end
+
+    Plugins -->|install| Workers
+    Plugins -->|install| Triggerers
+    Plugins -->|install| Processors
+    Plugins -->|install| Scheduler
+    Plugins -->|install| API
+
+    Processors -->|serialized DAG| DB
+    Workers -->|task state| DB
+    Triggerers -->|trigger state| DB
+    Scheduler -->|scheduling state| DB
+    API -->|metadata| DB
+    Scheduler -->|Executor| Workers
+```
+Quy trình cũng sẽ tương tự như khi chạy trên local, nhưng sẽ được chia thành các role tách biệt hơn, đồng thời thì worker cũng được tách ra khỏi scheduler.
+
+---
+
+## Cách một worker thực thi task
+
+Khi đã biết luồng tổng quát và flow của Airflow lúc thực sự chạy, ta cùng đi sâu vào cách một worker thực thi task.
+
+Trước đây, với Airflow 2, worker nắm giữ thông tin của database khi thực thi một task. Việc này tạo ra lỗ hổng, cho phép mã trong DAG (hoặc người viết DAG) truy cập, khai thác và làm lộ toàn bộ thông tin kết nối nhạy cảm lưu trong cơ sở dữ liệu.
+
+Kể từ Airflow 3, worker không còn nắm giữ thông tin của Metadata Database. Worker tạo ra hai tiến trình: Supervisor và tiến trình thực thi task (`task_runner`). `task_runner` không có JWT và không truy cập trực tiếp Metadata Database. Nếu cần Connection, Variable, XCom hoặc cập nhật trạng thái, tiến trình này gửi yêu cầu nội bộ đến Supervisor qua socket. Supervisor gọi API Server; API Server truy vấn Metadata Database rồi trả kết quả cho Supervisor; Supervisor chuyển kết quả về task qua socket.
+
+Cụ thể, luồng này gồm các bước sau:
+
+1. **Gửi yêu cầu qua socket nội bộ**
+
+    Tiến trình `task_runner` gửi request nội bộ qua socket tới Supervisor.
+
+2. **Supervisor kiểm tra tính hợp lệ (Validation)**
+
+    Supervisor nhận thông điệp và kiểm tra: Task này có đang trong trạng thái hợp lệ để yêu cầu Connection hay không? Định dạng yêu cầu có đúng chuẩn của Task SDK không?
+
+3. **Đính kèm Task JWT Token vào header**
+
+    Supervisor tạo một HTTP REST request, gắn JWT bảo mật vào header rồi gửi đến API Server.
+
+4. **API Server xác thực và trả kết quả**
+
+    API Server giải mã JWT token để xác nhận: Token này có hợp lệ không, có đúng là của task đang chạy không, yêu cầu của task có phù hợp với JWT token không? Nếu hợp lệ, API Server truy vấn Metadata Database, lấy thông tin kết nối và trả về cho Supervisor qua HTTPS. Supervisor chuyển dữ liệu lại cho `task_runner` qua socket.
+
+### Câu hỏi liên quan
+
+<div class="airflow-comic-gallery" aria-label="Hình minh họa cách worker và task runner xác thực với API Server qua JWT token">
+  <figure>
+    <img
+      src="../../assets/images/JWT.png"
+      alt="Truyện tranh minh họa luồng Supervisor gửi request đính kèm JWT token đến API Server để lấy thông tin kết nối an toàn"
+      loading="lazy"
+    >
+    <figcaption><span>MINH HỌA / 05</span><strong>Task Runner, Supervisor và JWT Token</strong></figcaption>
+  </figure>
+</div>
+
+---
+
+## Lời kết
+
+<figure class="airflow-closing-comic" id="loi-ket">
+  <img
+    src="../../assets/images/end.png"
+    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Airflow và cảm ơn người đọc"
+    loading="lazy"
+  >
+  <figcaption>
+    <span>LỜI KẾT / 06</span>
+    <div>
+      <strong>Cảm ơn bạn đã đọc đến cuối!</strong>
+      <p>Hy vọng bài viết giúp bạn hiểu Airflow rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
+    </div>
+  </figcaption>
+</figure>
+
+
 <footer class="airflow-article-end">
   <div>
-    <span>Cảm ơn bạn vì đã đọc / 001</span>
+    <span>BEHIND THE PIPELINE / 001</span>
     <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
   </div>
   <a href="../../">Trở về thư viện <span aria-hidden="true">→</span></a>

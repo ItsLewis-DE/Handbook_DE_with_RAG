@@ -13,7 +13,7 @@ hide:
     <div class="landing-hero__copy">
       <div class="landing-kicker">
         <span class="landing-kicker__mark" aria-hidden="true"></span>
-        <span>Data Engineering Field Notes</span>
+        <span class="landing-brand"><strong>Behind the</strong><b>Pipeline</b></span>
         <small>Est. 2026</small>
       </div>
 
@@ -35,7 +35,7 @@ hide:
       </p>
     </div>
 
-    <div class="landing-hero__visual" aria-label="Những bài viết nên đọc trong Data Engineering Field Notes">
+    <div class="landing-hero__visual" aria-label="Những bài viết nên đọc trong Behind the Pipeline">
       <div class="reading-callout" aria-hidden="true">
         <span>Những bài viết<br>nên đọc</span>
         <svg viewBox="0 0 180 220" role="presentation">
@@ -51,35 +51,48 @@ hide:
         </div>
 
         <div class="article-deck-shell">
-          <div class="article-deck" tabindex="0" aria-label="Chồng 6 bài viết. Kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
+          <div class="article-deck" tabindex="0" aria-label="Chồng 7 bài viết. Kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
             <article class="article-sheet article-sheet--airflow" data-article-title="Kiến trúc Apache Airflow" data-deck-position="current">
-              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>01 / 06</b></div>
+              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>01 / 07</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Hiểu kiến trúc<br>Apache Airflow</h2>
                 <p>Từ nhu cầu điều phối đến Scheduler, Executor và High Availability.</p>
               </div>
               <div class="article-sheet__foot">
-                <span>11 phút đọc</span>
+                <span>Tác giả · Phong Thanh</span>
                 <a href="airflow/architecture/">Mở bài viết <b aria-hidden="true">↗</b></a>
               </div>
             </article>
 
             <article class="article-sheet article-sheet--storage" data-article-title="Shared-disk vs shared-nothing" data-deck-position="next">
-              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>02 / 06</b></div>
+              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>02 / 07</b></div>
               <div class="article-sheet__body">
-                <span class="article-sheet__status article-sheet__status--published">Bài mới nhất</span>
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Shared-disk vs<br>shared-nothing</h2>
                 <p>Chọn topology dữ liệu từ góc nhìn Data Engineer: query, shuffle và failure.</p>
               </div>
               <div class="article-sheet__foot">
-                <span>Deep research</span>
+                <span>Tác giả · AI Research</span>
                 <a href="architecture/shared-disk-vs-shared-nothing/">Mở bài viết <b aria-hidden="true">↗</b></a>
               </div>
             </article>
 
-            <article class="article-sheet article-sheet--planned" data-article-title="Apache Spark internals" data-deck-position="back">
-              <div class="article-sheet__meta"><span>PROCESSING</span><b>03 / 06</b></div>
+            <article class="article-sheet article-sheet--index" data-article-title="Index trong cơ sở dữ liệu" data-deck-position="back">
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>03 / 07</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Bài mới nhất</span>
+                <h2>Index trong<br>cơ sở dữ liệu</h2>
+                <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>Tác giả · Phong Thanh</span>
+                <a href="index/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
+            <article class="article-sheet article-sheet--planned" data-article-title="Apache Spark internals" data-deck-position="hidden">
+              <div class="article-sheet__meta"><span>PROCESSING</span><b>04 / 07</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Apache Spark<br>internals</h2>
@@ -89,7 +102,7 @@ hide:
             </article>
 
             <article class="article-sheet article-sheet--planned article-sheet--clay" data-article-title="Apache Kafka internals" data-deck-position="hidden">
-              <div class="article-sheet__meta"><span>STREAMING</span><b>04 / 06</b></div>
+              <div class="article-sheet__meta"><span>STREAMING</span><b>05 / 07</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Apache Kafka<br>internals</h2>
@@ -99,7 +112,7 @@ hide:
             </article>
 
             <article class="article-sheet article-sheet--planned article-sheet--blue" data-article-title="dbt: từ SQL đến lineage" data-deck-position="hidden">
-              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>05 / 06</b></div>
+              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>06 / 07</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>dbt: từ SQL<br>đến lineage</h2>
@@ -109,7 +122,7 @@ hide:
             </article>
 
             <article class="article-sheet article-sheet--planned article-sheet--ink" data-article-title="Docker và Kubernetes cho Data Engineer" data-deck-position="hidden">
-              <div class="article-sheet__meta"><span>INFRASTRUCTURE</span><b>06 / 06</b></div>
+              <div class="article-sheet__meta"><span>INFRASTRUCTURE</span><b>07 / 07</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Docker &amp; Kubernetes<br>cho Data Engineer</h2>
@@ -127,9 +140,9 @@ hide:
         </div>
 
         <div class="stack-card__footer">
-          <span><b>02</b> bài đã mở</span>
+          <span><b>03</b> bài đã mở</span>
           <span><b>04</b> bài sắp tới</span>
-          <span class="article-deck__count"><b>01</b> / 06</span>
+          <span class="article-deck__count"><b>01</b> / 07</span>
         </div>
       </div>
 
@@ -172,26 +185,35 @@ hide:
           <span class="tool-choice__status">Đã mở</span>
         </button>
 
-        <button class="tool-choice tool-choice--soon" type="button" data-preview="spark">
+        <button class="tool-choice" type="button" data-preview="databaseIndex" data-inactive-status="Bài mới nhất" aria-pressed="false">
           <span class="tool-choice__number">03</span>
+          <span class="tool-choice__copy">
+            <small>DATABASE INTERNALS</small>
+            <strong>Index trong cơ sở dữ liệu</strong>
+          </span>
+          <span class="tool-choice__status">Bài mới nhất</span>
+        </button>
+
+        <button class="tool-choice tool-choice--soon" type="button" data-preview="spark">
+          <span class="tool-choice__number">04</span>
           <span class="tool-choice__copy"><small>PROCESSING</small><strong>Apache Spark</strong></span>
           <span class="tool-choice__status">Sắp tới</span>
         </button>
 
         <button class="tool-choice tool-choice--soon" type="button" data-preview="kafka">
-          <span class="tool-choice__number">04</span>
+          <span class="tool-choice__number">05</span>
           <span class="tool-choice__copy"><small>STREAMING</small><strong>Apache Kafka</strong></span>
           <span class="tool-choice__status">Sắp tới</span>
         </button>
 
         <button class="tool-choice tool-choice--soon" type="button" data-preview="dbt">
-          <span class="tool-choice__number">05</span>
+          <span class="tool-choice__number">06</span>
           <span class="tool-choice__copy"><small>TRANSFORMATION</small><strong>dbt</strong></span>
           <span class="tool-choice__status">Sắp tới</span>
         </button>
 
         <button class="tool-choice tool-choice--soon" type="button" data-preview="infrastructure">
-          <span class="tool-choice__number">06</span>
+          <span class="tool-choice__number">07</span>
           <span class="tool-choice__copy"><small>INFRASTRUCTURE</small><strong>Docker &amp; Kubernetes</strong></span>
           <span class="tool-choice__status">Sắp tới</span>
         </button>
@@ -422,7 +444,7 @@ hide:
           sẵn sàng hỏi lại những điều tưởng như đã hiển nhiên.</span>
         </p>
         <p class="coauthor-card__body">
-          Danh đồng hành cùng Field Notes trong vai trò đồng tác giả: trao đổi
+          Danh đồng hành cùng Behind the Pipeline trong vai trò đồng tác giả: trao đổi
           <strong class="author-keyword">hướng tiếp cận</strong>, rà lại mạch giải thích và giúp mỗi bài viết gần hơn
           với <strong class="author-keyword">trải nghiệm của người đọc</strong>.
         </p>
@@ -437,13 +459,13 @@ hide:
           <img src="assets/images/danh.png" alt="Đồng tác giả Danh đứng bên bờ biển" width="460" height="460" loading="lazy">
           <span class="coauthor-card__photo-number" aria-hidden="true">02</span>
         </div>
-        <figcaption><span>CO-AUTHOR PORTRAIT</span><span>FIELD NOTES / 2026</span></figcaption>
+        <figcaption><span>CO-AUTHOR PORTRAIT</span><span>BEHIND THE PIPELINE / 2026</span></figcaption>
       </figure>
     </article>
   </section>
 
   <footer class="landing-footer">
-    <p>DATA ENGINEERING FIELD NOTES</p>
+    <p class="landing-footer__brand"><strong>BEHIND THE</strong> <b>PIPELINE</b></p>
     <p>Built slowly. Understood deeply.</p>
     <a href="#landing-title">Lên đầu trang <span aria-hidden="true">↑</span></a>
   </footer>

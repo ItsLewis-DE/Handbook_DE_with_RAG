@@ -1,9 +1,14 @@
-site_name: Data Engineering Field Notes
-site_description: Ghi chú về kiến trúc và vận hành hệ thống dữ liệu
+site_name: Behind the Pipeline
+site_description: Đi vào phía sau những hệ thống và pipeline dữ liệu
 
 theme:
   name: material
   language: vi
+  logo: assets/images/behind-the-pipeline-logo.svg
+  favicon: assets/images/behind-the-pipeline-favicon.svg
+  font:
+    text: Manrope
+    code: IBM Plex Mono
   palette:
     primary: indigo
     accent: deep purple
@@ -17,6 +22,8 @@ nav:
   - Home: index.md
   - Data Architecture:
       - Shared-disk vs shared-nothing: architecture/shared-disk-vs-shared-nothing.md
+  - Database Internals:
+      - Index trong cơ sở dữ liệu: index/index.md
   - Apache Airflow:
       - Architecture: airflow/architecture.md
 
@@ -31,6 +38,7 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 extra_css:
+  - stylesheets/brand.css
   - stylesheets/landing.css
   - stylesheets/article.css
 

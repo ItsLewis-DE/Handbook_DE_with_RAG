@@ -38,45 +38,64 @@
         ["03", "Chọn kiến trúc", "architecture/shared-disk-vs-shared-nothing/#chon-kien-truc-nao-cho-data-platform"],
       ],
     },
-    spark: {
+    databaseIndex: {
       number: "03",
-      label: "PLANNED / 03",
+      label: "LATEST / 03",
+      meta: "DATABASE INTERNALS · DEEP DIVE",
+      publication: "Đã xuất bản · 03 bài",
+      edition: "ED. 03",
+      overline: "BÀI MỚI NHẤT",
+      title: "Index giúp database tìm dữ liệu nhanh hơn như thế nào?",
+      summary: "Bắt đầu từ full table scan, rồi tìm hiểu index là gì, database sử dụng index ra sao và vì sao tốc độ truy vấn luôn đi kèm chi phí lưu trữ và ghi dữ liệu.",
+      tags: ["Index", "Query optimizer", "Full table scan", "B-tree"],
+      href: "index/",
+      action: "Đọc bài viết",
+      chaptersLabel: "ĐỌC THEO LỘ TRÌNH",
+      chapters: [
+        ["01", "Index là gì?", "index/#index-la-gi"],
+        ["02", "Index lưu những gì?", "index/#index-khong-phai-ban-sao-ay-u-cua-bang"],
+        ["03", "Sự đánh đổi của index", "index/#su-anh-oi-cua-index"],
+      ],
+    },
+    spark: {
+      number: "04",
+      label: "PLANNED / 04",
       meta: "APACHE SPARK · INTERNALS",
       publication: "Trong lộ trình nghiên cứu",
-      edition: "PLAN. 03",
+      edition: "PLAN. 04",
       overline: "BÀI VIẾT DỰ KIẾN",
       title: "Apache Spark: một job thật sự chạy qua cluster thế nào?",
       summary: "Từ logical plan đến stage, task, partition và shuffle. Trọng tâm: đọc execution plan và tìm bottleneck thay vì chỉ chỉnh cấu hình.",
       tags: ["DAG", "Partition", "Shuffle", "Spark UI"],
     },
     kafka: {
-      number: "04",
-      label: "PLANNED / 04",
+      number: "05",
+      label: "PLANNED / 05",
       meta: "APACHE KAFKA · INTERNALS",
       publication: "Trong lộ trình nghiên cứu",
-      edition: "PLAN. 04",
+      edition: "PLAN. 05",
       overline: "BÀI VIẾT DỰ KIẾN",
       title: "Kafka: log phân tán, partition ownership và delivery semantics.",
       summary: "Theo đường đi của record qua producer, broker và consumer group; sau đó bóc tách replication, rebalance và các cam kết giao nhận.",
       tags: ["Log", "Partition", "Consumer group", "Replication"],
     },
     dbt: {
-      number: "05",
-      label: "PLANNED / 05",
+      number: "06",
+      label: "PLANNED / 06",
       meta: "DBT · TRANSFORMATION",
       publication: "Trong lộ trình nghiên cứu",
-      edition: "PLAN. 05",
+      edition: "PLAN. 06",
       overline: "BÀI VIẾT DỰ KIẾN",
       title: "dbt: từ câu SQL đến lineage và sản phẩm dữ liệu.",
       summary: "Compiler, dependency graph, materialization và cách tổ chức transformation để thay đổi an toàn trong một data warehouse đang lớn dần.",
       tags: ["Compiler", "Lineage", "Materialization", "Testing"],
     },
     infrastructure: {
-      number: "06",
-      label: "PLANNED / 06",
+      number: "07",
+      label: "PLANNED / 07",
       meta: "DATA INFRASTRUCTURE · FIELD GUIDE",
       publication: "Trong lộ trình nghiên cứu",
-      edition: "PLAN. 06",
+      edition: "PLAN. 07",
       overline: "BÀI VIẾT DỰ KIẾN",
       title: "Docker và Kubernetes cho workload dữ liệu.",
       summary: "Từ image và container đến scheduling, resource limits, observability và recovery cho pipeline chạy trong môi trường production.",
@@ -120,7 +139,11 @@
           choice.setAttribute("aria-pressed", active ? "true" : "false");
         }
 
-        if (status) status.textContent = active ? "Đang chọn" : choice.classList.contains("tool-choice--soon") ? "Sắp tới" : "Đã mở";
+        if (status) {
+          status.textContent = active
+            ? "Đang chọn"
+            : choice.dataset.inactiveStatus || (choice.classList.contains("tool-choice--soon") ? "Sắp tới" : "Đã mở");
+        }
       });
     }
 

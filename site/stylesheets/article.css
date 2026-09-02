@@ -1,11 +1,34 @@
-/* Airflow long-form article — its own four-color technical palette. */
+/* Airflow long-form article — the landing palette, tuned for long-form reading. */
 
 body:has(.airflow-article-hero) {
-  --airflow-canvas: #f6f7f9;
-  --airflow-ink: #17202a;
-  --airflow-muted: #596579;
-  --airflow-accent: #4c6fff;
-  --airflow-line: rgba(23, 32, 42, 0.14);
+  --airflow-canvas: #f3f0e8;
+  --airflow-ink: #17302d;
+  --airflow-muted: #3f625c;
+  --airflow-accent: #a63f23;
+  --airflow-accent-bright: #ed6840;
+  --airflow-diagram-bg: #ebe7dc;
+  --airflow-diagram-node: #fffaf0;
+  --airflow-line: rgba(23, 48, 45, 0.16);
+  --md-code-fg-color: #f3f0e8;
+  --md-code-bg-color: #17302d;
+  --md-code-hl-color: rgba(237, 104, 64, 0.18);
+  --md-code-hl-number-color: #f0c674;
+  --md-code-hl-special-color: #ff9a76;
+  --md-code-hl-function-color: #f0c674;
+  --md-code-hl-constant-color: #f0c674;
+  --md-code-hl-keyword-color: #ff9a76;
+  --md-code-hl-string-color: #a8c8c1;
+  --md-code-hl-name-color: #f3f0e8;
+  --md-code-hl-operator-color: #ff9a76;
+  --md-code-hl-punctuation-color: #f3f0e8;
+  --md-code-hl-comment-color: #a9bab6;
+  --md-code-hl-generic-color: #f3f0e8;
+  --md-code-hl-variable-color: #f3f0e8;
+  --md-mermaid-edge-color: var(--airflow-ink);
+  --md-mermaid-node-bg-color: var(--airflow-diagram-node);
+  --md-mermaid-node-fg-color: var(--airflow-accent);
+  --md-mermaid-label-bg-color: var(--airflow-diagram-node);
+  --md-mermaid-label-fg-color: var(--airflow-ink);
   --md-primary-fg-color: var(--airflow-ink);
   --md-primary-fg-color--light: var(--airflow-muted);
   --md-primary-fg-color--dark: var(--airflow-ink);
@@ -20,7 +43,7 @@ body:has(.airflow-article-hero) .md-header {
 }
 
 body:has(.airflow-article-hero) .md-search__form {
-  background: rgba(246, 247, 249, 0.08);
+  background: rgba(243, 240, 232, 0.08);
 }
 
 body:has(.airflow-article-hero) .md-main__inner {
@@ -142,13 +165,15 @@ body:has(.airflow-article-hero) .md-typeset {
 
 .airflow-opening-comic {
   border-top: 1px solid var(--airflow-line);
-  margin: 0 0 clamp(4rem, 8vw, 6.5rem);
+  margin: 0 auto clamp(3.5rem, 6vw, 5rem);
+  max-width: 28rem;
   padding-top: 0.65rem;
   position: relative;
+  width: 100%;
 }
 
 .airflow-opening-comic::before {
-  background: var(--airflow-accent);
+  background: var(--airflow-accent-bright);
   content: "";
   height: 0.15rem;
   left: 0;
@@ -158,9 +183,13 @@ body:has(.airflow-article-hero) .md-typeset {
 }
 
 .airflow-opening-comic img {
+  background: var(--airflow-diagram-bg, #ebe7dc);
   border: 1px solid var(--airflow-line);
   display: block;
   height: auto;
+  margin: 0 auto;
+  max-height: min(440px, 58vh);
+  object-fit: contain;
   width: 100%;
 }
 
@@ -189,7 +218,7 @@ body:has(.airflow-article-hero) .md-typeset {
 }
 
 .airflow-article-hero::before {
-  color: rgba(23, 32, 42, 0.035);
+  color: rgba(23, 48, 45, 0.04);
   content: "AIRFLOW";
   font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   font-size: clamp(7rem, 18vw, 13rem);
@@ -204,7 +233,7 @@ body:has(.airflow-article-hero) .md-typeset {
 }
 
 .airflow-article-hero::after {
-  background: var(--airflow-accent);
+  background: var(--airflow-accent-bright);
   content: "";
   height: 0.18rem;
   opacity: 1;
@@ -390,7 +419,7 @@ body:has(.airflow-article-hero) .md-typeset li strong {
 
 body:has(.airflow-article-hero) .md-typeset a:not(.airflow-article-hero a):not(.airflow-article-end a) {
   color: var(--airflow-accent);
-  text-decoration-color: rgba(76, 111, 255, 0.38);
+  text-decoration-color: rgba(166, 63, 35, 0.48);
   text-underline-offset: 0.15em;
 }
 
@@ -419,8 +448,8 @@ body:has(.airflow-article-hero) .md-typeset hr {
 }
 
 body:has(.airflow-article-hero) .md-typeset :not(pre)>code {
-  background: rgba(76, 111, 255, 0.1);
-  border: 1px solid rgba(76, 111, 255, 0.16);
+  background: rgba(166, 63, 35, 0.08);
+  border: 1px solid rgba(166, 63, 35, 0.2);
   border-radius: 0.15rem;
   color: var(--airflow-ink);
   font-size: 0.86em;
@@ -433,28 +462,24 @@ body:has(.airflow-article-hero) .md-typeset .highlight {
 
 body:has(.airflow-article-hero) .md-typeset .highlight pre,
 body:has(.airflow-article-hero) .md-typeset .highlight code {
-  background: var(--airflow-ink) !important;
-  color: rgba(246, 247, 249, 0.9) !important;
+  background: var(--md-code-bg-color) !important;
+  color: var(--md-code-fg-color) !important;
 }
 
 body:has(.airflow-article-hero) .md-typeset .highlight pre {
-  border-left: 0.18rem solid var(--airflow-accent);
+  border-left: 0.18rem solid var(--airflow-accent-bright);
   border-radius: 0;
-  box-shadow: 0 0.9rem 2.4rem rgba(23, 32, 42, 0.13);
+  box-shadow: 0 0.9rem 2.4rem rgba(23, 48, 45, 0.16);
   line-height: 1.65;
   padding: 1rem 1.1rem;
 }
 
-body:has(.airflow-article-hero) .md-typeset .highlight code span {
-  color: inherit !important;
-}
-
 body:has(.airflow-article-hero) .md-typeset .md-clipboard {
-  color: rgba(246, 247, 249, 0.62);
+  color: rgba(243, 240, 232, 0.72);
 }
 
 body:has(.airflow-article-hero) .md-typeset blockquote {
-  background: rgba(76, 111, 255, 0.08);
+  background: rgba(237, 104, 64, 0.09);
   border-left: 0.18rem solid var(--airflow-accent);
   color: var(--airflow-ink);
   margin: 2rem 0;
@@ -472,7 +497,7 @@ body:has(.airflow-article-hero) .md-typeset__scrollwrap {
 }
 
 body:has(.airflow-article-hero) .md-typeset table:not([class]) {
-  background: rgba(246, 247, 249, 0.72);
+  background: rgba(255, 255, 255, 0.3);
   border: 1px solid var(--airflow-line);
   border-collapse: collapse;
   border-radius: 0;
@@ -511,7 +536,7 @@ body:has(.airflow-article-hero) .md-typeset table:not([class]) td:first-child {
 }
 
 body:has(.airflow-article-hero) .md-typeset .mermaid {
-  background: rgba(102, 112, 133, 0.07);
+  background: var(--airflow-diagram-bg);
   border: 1px solid var(--airflow-line);
   color: var(--airflow-ink);
   margin: 1.7rem 0 2.4rem;
@@ -521,7 +546,7 @@ body:has(.airflow-article-hero) .md-typeset .mermaid {
 
 body:has(.airflow-article-hero) .md-typeset pre.mermaid,
 body:has(.airflow-article-hero) .md-typeset pre.mermaid code {
-  background: rgba(102, 112, 133, 0.07) !important;
+  background: var(--airflow-diagram-bg) !important;
   color: var(--airflow-ink) !important;
 }
 
@@ -537,24 +562,33 @@ body:has(.airflow-article-hero) .md-typeset .mermaid svg {
 
 body:has(.airflow-article-hero) .md-typeset .mermaid .node rect,
 body:has(.airflow-article-hero) .md-typeset .mermaid .node polygon,
-body:has(.airflow-article-hero) .md-typeset .mermaid .node circle {
-  fill: var(--airflow-canvas) !important;
-  stroke: var(--airflow-ink) !important;
+body:has(.airflow-article-hero) .md-typeset .mermaid .node circle,
+body:has(.airflow-article-hero) .md-typeset .mermaid .node .label-container {
+  fill: #fffaf0 !important;
+  stroke: var(--airflow-accent) !important;
+  stroke-width: 1.5px !important;
 }
 
 body:has(.airflow-article-hero) .md-typeset .mermaid .edgePath path,
 body:has(.airflow-article-hero) .md-typeset .mermaid .flowchart-link {
-  stroke: var(--airflow-muted) !important;
+  stroke: var(--airflow-ink) !important;
+  stroke-width: 1.5px !important;
 }
 
 body:has(.airflow-article-hero) .md-typeset .mermaid marker path {
-  fill: var(--airflow-muted) !important;
-  stroke: var(--airflow-muted) !important;
+  fill: var(--airflow-ink) !important;
+  stroke: var(--airflow-ink) !important;
 }
 
 body:has(.airflow-article-hero) .md-typeset .mermaid .label,
-body:has(.airflow-article-hero) .md-typeset .mermaid .nodeLabel {
+body:has(.airflow-article-hero) .md-typeset .mermaid .label text,
+body:has(.airflow-article-hero) .md-typeset .mermaid .node text,
+body:has(.airflow-article-hero) .md-typeset .mermaid .nodeLabel,
+body:has(.airflow-article-hero) .md-typeset .mermaid .nodeLabel p,
+body:has(.airflow-article-hero) .md-typeset .mermaid .nodeLabel span {
   color: var(--airflow-ink) !important;
+  fill: var(--airflow-ink) !important;
+  font-weight: 700 !important;
 }
 
 body:has(.airflow-article-hero) .md-footer,
@@ -573,19 +607,37 @@ body:has(.airflow-article-hero) .md-footer a {
 
 .airflow-comic-gallery {
   display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem);
-  margin: clamp(1.5rem, 4vw, 2.5rem) 0 clamp(5rem, 9vw, 7rem);
+  gap: clamp(1.25rem, 3vw, 1.85rem);
+  grid-template-columns: 1fr;
+  margin: clamp(1.5rem, 3vw, 2.2rem) 0 clamp(3.5rem, 6vw, 5rem);
+  width: 100%;
+}
+
+@media screen and (min-width: 38rem) {
+  .airflow-comic-gallery:has(> figure:nth-child(2)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .airflow-comic-gallery figure {
   border-top: 1px solid var(--airflow-line);
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 28rem;
   padding-top: 0.65rem;
   position: relative;
+  width: 100%;
+}
+
+.airflow-comic-gallery:has(> figure:nth-child(2)) figure {
+  max-width: 100%;
 }
 
 .airflow-comic-gallery figure::before {
-  background: var(--airflow-accent);
+  background: var(--airflow-accent-bright);
   content: "";
   height: 0.15rem;
   left: 0;
@@ -595,9 +647,13 @@ body:has(.airflow-article-hero) .md-footer a {
 }
 
 .airflow-comic-gallery img {
+  background: var(--airflow-diagram-bg, #ebe7dc);
   border: 1px solid var(--airflow-line);
   display: block;
   height: auto;
+  margin: 0 auto;
+  max-height: min(440px, 58vh);
+  object-fit: contain;
   width: 100%;
 }
 
@@ -607,6 +663,7 @@ body:has(.airflow-article-hero) .md-footer a {
   display: flex;
   justify-content: space-between;
   padding: 0.7rem 0;
+  width: 100%;
 }
 
 .airflow-comic-gallery figcaption span,
@@ -625,6 +682,79 @@ body:has(.airflow-article-hero) .md-footer a {
   font-weight: 500;
 }
 
+.airflow-closing-comic {
+  border-top: 1px solid var(--airflow-line);
+  margin: clamp(3rem, 6vw, 4.5rem) auto 0;
+  max-width: 28rem;
+  padding-top: 0.65rem;
+  position: relative;
+  width: 100%;
+}
+
+body:has(.airflow-article-hero) h2+.airflow-closing-comic {
+  margin-top: 1.5rem;
+}
+
+.airflow-closing-comic::before {
+  background: var(--airflow-accent-bright);
+  content: "";
+  height: 0.15rem;
+  left: 0;
+  position: absolute;
+  top: -1px;
+  width: clamp(3.5rem, 10vw, 6rem);
+}
+
+.airflow-closing-comic img {
+  background: var(--airflow-diagram-bg, #ebe7dc);
+  border: 1px solid var(--airflow-line);
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-height: min(600px, 75vh);
+  object-fit: contain;
+  width: 100%;
+}
+
+.airflow-closing-comic figcaption {
+  border-bottom: 1px solid var(--airflow-line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.85rem 0 1rem;
+}
+
+.airflow-closing-comic figcaption>span {
+  color: var(--airflow-accent);
+  font-family: var(--md-code-font-family);
+  font-size: 0.46rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.airflow-closing-comic figcaption div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.airflow-closing-comic figcaption strong {
+  color: var(--airflow-ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-size: clamp(1.2rem, 2.8vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+body:has(.airflow-article-hero) .md-typeset .airflow-closing-comic figcaption p {
+  color: var(--airflow-muted);
+  font-size: 0.76rem;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 100%;
+}
+
 .airflow-article-end {
   align-items: end;
   background: transparent;
@@ -633,14 +763,14 @@ body:has(.airflow-article-hero) .md-footer a {
   display: flex;
   gap: 2rem;
   justify-content: space-between;
-  margin-top: clamp(5rem, 10vw, 8rem);
+  margin-top: clamp(3rem, 6vw, 4.5rem);
   overflow: hidden;
   padding: clamp(1.5rem, 5vw, 3rem);
   position: relative;
 }
 
 .airflow-article-end::after {
-  color: rgba(23, 32, 42, 0.035);
+  color: rgba(23, 48, 45, 0.04);
   content: "01";
   font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   font-size: 10rem;
@@ -714,7 +844,8 @@ body:has(.airflow-article-hero) .md-footer a {
     display: none;
   }
 
-  .airflow-opening-comic figcaption {
+  .airflow-opening-comic figcaption,
+  .airflow-comic-gallery figcaption {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.25rem;
@@ -788,13 +919,13 @@ body:has(.airflow-article-hero) .md-footer a {
   }
 
   body:has(.airflow-article-hero) .md-typeset table:not([class]) td:first-child code {
-    background: rgba(246, 247, 249, 0.08);
-    border-color: rgba(246, 247, 249, 0.2);
+    background: rgba(243, 240, 232, 0.08);
+    border-color: rgba(243, 240, 232, 0.2);
     color: var(--airflow-canvas);
   }
 
   body:has(.airflow-article-hero) .md-typeset table:not([class]) td+td {
-    background: rgba(246, 247, 249, 0.72);
+    background: rgba(255, 255, 255, 0.3);
   }
 
   .airflow-article-end {
@@ -810,6 +941,9 @@ body:has(.storage-article-hero) {
   --airflow-ink: #142520;
   --airflow-muted: #536760;
   --airflow-accent: #0f8174;
+  --airflow-accent-bright: #0f8174;
+  --airflow-diagram-bg: #e7eeeb;
+  --airflow-diagram-node: #f9fcfa;
   --airflow-line: rgba(20, 37, 32, 0.14);
 }
 
@@ -838,6 +972,7 @@ body:has(.storage-article-hero) .md-typeset blockquote {
 
 /* Phone layout: comfortable reading, safe wrapping and intentional overflow. */
 @media screen and (max-width: 45rem) {
+
   body:has(.airflow-article-hero) .md-main__inner,
   body:has(.airflow-article-hero) .md-content,
   body:has(.airflow-article-hero) .md-content__inner,
@@ -900,18 +1035,18 @@ body:has(.storage-article-hero) .md-typeset blockquote {
     font-size: 0.52rem;
   }
 
-  body:has(.airflow-article-hero) .md-typeset > h2 {
+  body:has(.airflow-article-hero) .md-typeset>h2 {
     font-size: clamp(1.9rem, 9vw, 2.45rem);
     letter-spacing: -0.04em;
     margin-top: 4rem;
   }
 
-  body:has(.airflow-article-hero) .airflow-article-hero + h2,
-  body:has(.airflow-article-hero) .airflow-opening-comic + h2 {
+  body:has(.airflow-article-hero) .airflow-article-hero+h2,
+  body:has(.airflow-article-hero) .airflow-opening-comic+h2 {
     margin-top: 0;
   }
 
-  body:has(.airflow-article-hero) .md-typeset > h2::before {
+  body:has(.airflow-article-hero) .md-typeset>h2::before {
     font-size: 0.52rem;
   }
 
@@ -978,11 +1113,15 @@ body:has(.storage-article-hero) .md-typeset blockquote {
 
   .airflow-article-end {
     gap: 1.4rem;
-    margin-top: 4.5rem;
+    margin-top: 3rem;
     padding: 1.25rem 1rem;
   }
 
-  .md-typeset .airflow-article-end > a {
+  .airflow-closing-comic {
+    margin-top: 2.5rem;
+  }
+
+  .md-typeset .airflow-article-end>a {
     justify-content: space-between;
     min-height: 2.75rem;
     width: 100%;
@@ -1001,4 +1140,12 @@ body:has(.storage-article-hero) .md-typeset blockquote {
   .airflow-article-hero__meta span:last-child {
     display: none;
   }
+}
+
+font-size: 2.05rem;
+}
+
+.airflow-article-hero__meta span:last-child {
+  display: none;
+}
 }

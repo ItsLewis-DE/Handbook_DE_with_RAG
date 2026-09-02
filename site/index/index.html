@@ -1,0 +1,1119 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Đi vào phía sau những hệ thống và pipeline dữ liệu">
+      
+      
+      
+      
+        <link rel="prev" href="../architecture/shared-disk-vs-shared-nothing/">
+      
+      
+        <link rel="next" href="../airflow/architecture/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Index trong cơ sở dữ liệu - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Manrope:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Manrope";--md-code-font:"IBM Plex Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../stylesheets/article.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#page" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Đầu trang">
+    <a href=".." title="Behind the Pipeline" class="md-header__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../assets/images/behind-the-pipeline-logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Behind the Pipeline
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Index trong cơ sở dữ liệu
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Tìm kiếm">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../assets/images/behind-the-pipeline-logo.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/shared-disk-vs-shared-nothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared-disk vs shared-nothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Page
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index là gì?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cau-truc-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu trúc index
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cấu trúc index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minh-hoa-b-tree-can-bang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minh họa B-tree cân bằng
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B-tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B-tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#index-page-trong-b-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index page trong B-tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index page trong B-tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leaf-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Leaf page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#btree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B+tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B+tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#index-page-trong-btree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index page trong B+tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index page trong B+tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-page_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leaf-page_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Leaf page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#qua-trinh-tao-cay-b-tree-va-btree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quá trình tạo cây B-tree và B+tree
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Apache Airflow
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Page
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index là gì?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cau-truc-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu trúc index
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cấu trúc index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minh-hoa-b-tree-can-bang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minh họa B-tree cân bằng
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B-tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B-tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#index-page-trong-b-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index page trong B-tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index page trong B-tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leaf-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Leaf page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#btree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B+tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B+tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#index-page-trong-btree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index page trong B+tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index page trong B+tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-page_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leaf-page_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Leaf page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#qua-trinh-tao-cay-b-tree-va-btree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quá trình tạo cây B-tree và B+tree
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+
+<header class="airflow-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 003</span>
+  </div>
+  <h1>Index trong<br><em>cơ sở dữ liệu</em></h1>
+  <p class="airflow-article-hero__dek">
+    Vì sao cùng một câu truy vấn có thể phản hồi trong vài mili giây trên bảng nhỏ,
+    nhưng lại mất nhiều giây khi dữ liệu tăng lên hàng triệu bản ghi?
+  </p>
+  <div class="airflow-article-hero__meta" aria-label="Thông tin bài viết">
+    <span>DATABASE INTERNALS</span>
+    <span>DEEP DIVE</span>
+    <span>EDITION 03 · 2026</span>
+  </div>
+</header>
+
+<figure class="airflow-opening-comic">
+  <img
+    src="../assets/images/image4.png"
+    alt="Truyện tranh vui nhắc người đọc chuẩn bị cho một bài viết dài về index trong cơ sở dữ liệu"
+    loading="eager"
+  >
+  <figcaption>
+    <span>LƯU Ý TRƯỚC KHI ĐỌC</span>
+    <strong>Một bài viết khá dài</strong>
+  </figcaption>
+</figure>
+
+<h2 id="page">Page</h2>
+<p>Để hiểu khái niệm index dễ hơn, trước hết hãy xem database lưu trữ dữ liệu trên ổ đĩa như thế nào.</p>
+<p>Khi truy vấn database, chúng ta thường thấy dữ liệu ở dạng hàng và cột. Tuy nhiên, tại tầng lưu trữ, DBMS không truy cập riêng lẻ từng hàng mà thường đọc và ghi theo đơn vị gọi là page (hoặc block). Tùy hệ quản trị cơ sở dữ liệu, mỗi page có kích thước từ 4 KB đến 16 KB. Dữ liệu được đưa vào một page nhiều nhất có thể; khi page đã đầy, hệ thống tạo page mới để tiếp tục lưu trữ.</p>
+<p>Thông thường, một page gồm các phần sau:</p>
+<ul>
+<li><strong>Page Header:</strong> Chứa metadata của page như Page ID, dung lượng trống,...</li>
+<li><strong>Data Rows:</strong> Lưu dữ liệu thực tế dưới dạng byte.</li>
+<li><strong>Offset Array:</strong> Lưu địa chỉ byte bắt đầu của từng dòng dữ liệu. Nhờ đó, khi cần đọc một dòng trong page, hệ thống chỉ việc tra Offset Array để truy cập trực tiếp thay vì quét toàn bộ page.</li>
+</ul>
+<p>Minh họa cấu trúc page:</p>
+<pre class="mermaid"><code>flowchart TB
+    subgraph PAGE["DATA PAGE"]
+        direction TB
+        HEADER["PAGE HEADER&lt;br/&gt;File ID và Page ID&lt;br/&gt;Metadata + dung lượng trống"]
+        DATA["DATA ROWS&lt;br/&gt;Dữ liệu thực tế được lưu dưới dạng bytes"]
+        OFFSETS["OFFSET ARRAY&lt;br/&gt;Địa chỉ byte bắt đầu của từng dòng dữ liệu"]
+
+        HEADER --- DATA
+        DATA --- OFFSETS
+    end</code></pre>
+<p>Thông thường, dữ liệu được lưu trong page theo hai cách:</p>
+<ul>
+<li><strong>Heap:</strong> Dữ liệu trong page hoàn toàn không có thứ tự. Database ghi dữ liệu đến đâu thì đưa vào page đến đó, hoặc tìm page vẫn còn chỗ trống. Vì không phải quan tâm đến thứ tự nên tốc độ ghi rất nhanh. Đổi lại, để tìm một dòng dữ liệu, hệ thống phải lần lượt đưa các page vào RAM rồi quét từng dòng trong từng page (full table scan), gây ảnh hưởng lớn đến hiệu suất truy vấn.</li>
+<li><strong>Clustered:</strong> Khi bảng có clustered index (primary key), dữ liệu trong database được sắp xếp theo khóa này. Việc ghi mất nhiều thời gian hơn vì hệ thống phải duy trì thứ tự, nhưng truy vấn theo dòng hoặc theo khoảng sẽ nhanh hơn. Do dữ liệu đã được sắp xếp, hệ thống chỉ cần xác định page chứa dòng cần tìm thay vì đọc toàn bộ các page.</li>
+</ul>
+<h2 id="index-la-gi">Index là gì?</h2>
+<p>Hãy hình dung bạn cần tìm một tựa sách trong một cuốn sách rất dày. Nếu cuốn sách không có mục lục, bạn phải lật lần lượt từ trang đầu đến trang cuối cho đến khi thấy đúng tựa sách. Cách này rất tốn thời gian, nhất là khi cuốn sách dài hàng nghìn trang. Mục lục giải quyết vấn đề bằng cách sắp xếp các tựa sách theo một thứ tự, chẳng hạn thứ tự chữ cái, rồi ghi kèm số trang tương ứng. Muốn tìm một tựa đề, bạn chỉ cần tra mục lục và mở thẳng đến trang được chỉ dẫn.</p>
+<p>Index trong cơ sở dữ liệu vận hành theo ý tưởng tương tự. Thay vì duyệt từng dòng để tìm giá trị mong muốn, hệ thống tra index để nhanh chóng xác định bản ghi hoặc page chứa dữ liệu, sau đó chỉ đọc phần cần thiết.</p>
+<p>Index là một cấu trúc phụ giúp tăng tốc tìm kiếm. Ở node trung gian,index lưu key phân tách và con trỏ, trỏ đến index page con. Ở node lá, index lưu key cùng con trỏ hoặc dịnh danh đến bản ghi; tùy loại index thì node lá có thể chứa luôn giá trị. trường hợp nào dùng con trỏ và tại sao lại có node trung gian và nút lá, ta sẽ được tìm hiểu sau. Trên đĩa, index thường được tổ chức thành nhiều index page; mỗi index page gồm nhiều index entry.</p>
+<h2 id="cau-truc-index">Cấu trúc index</h2>
+<p>Các index page thường không được trải phẳng mà liên kết với nhau theo một cấu trúc index. Hai cấu trúc index phổ biến là B-tree và B+tree. Đây là những cây tìm kiếm đa nhánh cân bằng, gồm nút gốc, các nút trung gian và các nút lá. Nếu đã học cấu trúc dữ liệu và giải thuật, bạn có thể hình dung chúng tương tự các cây tìm kiếm cân bằng như AVL hoặc Red-Black tree. Điểm khác biệt là mỗi node của B-tree/B+tree có thể chứa nhiều key và nhiều nhánh con, thay vì chỉ có hai nhánh trái và phải.</p>
+<h3 id="minh-hoa-b-tree-can-bang">Minh họa B-tree cân bằng</h3>
+<pre class="mermaid"><code>flowchart TB
+    ROOT["NÚT GỐC&lt;br/&gt;30 | 60"]
+
+    LEFT["NÚT TRUNG GIAN&lt;br/&gt;10 | 20"]
+    CENTER["NÚT TRUNG GIAN&lt;br/&gt;40 | 50"]
+    RIGHT["NÚT TRUNG GIAN&lt;br/&gt;70 | 80"]
+
+    L1["NÚT LÁ&lt;br/&gt;5"]
+    L2["NÚT LÁ&lt;br/&gt;15"]
+    L3["NÚT LÁ&lt;br/&gt;25"]
+    L4["NÚT LÁ&lt;br/&gt;35"]
+    L5["NÚT LÁ&lt;br/&gt;45"]
+    L6["NÚT LÁ&lt;br/&gt;55"]
+    L7["NÚT LÁ&lt;br/&gt;65"]
+    L8["NÚT LÁ&lt;br/&gt;75"]
+    L9["NÚT LÁ&lt;br/&gt;85"]
+
+    ROOT --&gt; LEFT
+    ROOT --&gt; CENTER
+    ROOT --&gt; RIGHT
+    LEFT --&gt; L1
+    LEFT --&gt; L2
+    LEFT --&gt; L3
+    CENTER --&gt; L4
+    CENTER --&gt; L5
+    CENTER --&gt; L6
+    RIGHT --&gt; L7
+    RIGHT --&gt; L8
+    RIGHT --&gt; L9</code></pre>
+<blockquote>
+<p><strong>Lưu ý:</strong> Sơ đồ này chỉ minh họa cách các key phân chia khoảng tìm kiếm và cách các node liên kết với nhau. Để dễ quan sát, phần dữ liệu thực tế hoặc con trỏ đến dữ liệu đi kèm từng key không được hiển thị. Trong B-tree, mỗi key ở node trung gian và node lá đều có thể đi kèm dữ liệu hoặc con trỏ đến dữ liệu; các mũi tên trong sơ đồ biểu diễn con trỏ đến node con.</p>
+</blockquote>
+<h2 id="b-tree">B-tree</h2>
+<p>Trong B-tree, mỗi node lưu key tìm kiếm cùng dữ liệu thực tế hoặc con trỏ đến dữ liệu, tùy thuộc vào loại index.</p>
+<h3 id="index-page-trong-b-tree">Index page trong B-tree</h3>
+<h4 id="internal-page">Internal page</h4>
+<div class="highlight"><pre><span></span><code>[child ptr] [10 | row ptr] [child ptr] [20 | row ptr] [child ptr] [30 | row ptr] [child ptr]
+</code></pre></div>
+<h4 id="leaf-page">Leaf page</h4>
+<div class="highlight"><pre><span></span><code>[5 | row ptr] [10 | row ptr] [15 | row ptr]
+</code></pre></div>
+<p>Trong B-tree, mọi page, kể cả page trung gian, đều có thể chứa key cùng row pointer. Ví dụ, quá trình tìm key <code>20</code> có thể dừng ngay tại page trung gian.</p>
+<h2 id="btree">B+tree</h2>
+<h3 id="index-page-trong-btree">Index page trong B+tree</h3>
+<h4 id="internal-page_1">Internal page</h4>
+<div class="highlight"><pre><span></span><code>[child0] [10] [child1] [20] [child2] [30] [child3]
+</code></pre></div>
+<h4 id="leaf-page_1">Leaf page</h4>
+<div class="highlight"><pre><span></span><code>[5 | row ptr] [10 | row ptr] [15 | row ptr]
+</code></pre></div>
+<blockquote>
+<p><strong>Lưu ý:</strong> Với clustered index, row pointer trỏ đến vị trí data/data page. Với non-clustered index, row pointer là row locator; phần này sẽ được tìm hiểu sau. Để dễ hình dung, mỗi key ở đây là key nhỏ nhất của page bên phải.</p>
+</blockquote>
+<h2 id="qua-trinh-tao-cay-b-tree-va-btree">Quá trình tạo cây B-tree và B+tree</h2>
+<p>Khi tạo index, database quét bảng dữ liệu trên đĩa và lấy ra các cặp như key <code>10</code> cùng vị trí mà key này trỏ đến, rồi thực hiện tương tự với key <code>11</code> và các key còn lại. Sau đó, database sắp xếp các key và lần lượt đưa chúng vào các leaf index page cho đến khi đầy. Khi các leaf page đã được tạo, database dựa vào ranh giới của từng page để lấy separator key, thường là key nhỏ nhất của page bên phải, rồi xây dựng các internal index page và root index page phía trên.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/article-deck.js"></script>
+      
+        <script src="../javascripts/library-browser.js"></script>
+      
+    
+  </body>
+</html>

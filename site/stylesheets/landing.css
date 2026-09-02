@@ -125,6 +125,28 @@ body:has(.landing-page) .md-content__inner::before {
   width: 0.7rem;
 }
 
+.landing-brand {
+  align-items: baseline;
+  display: inline-flex;
+  gap: 0.38rem;
+}
+
+.landing-brand strong {
+  font-family: var(--md-text-font-family);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+
+.landing-brand b {
+  color: var(--landing-orange);
+  font-family: var(--md-code-font-family);
+  font-size: 0.57rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .landing-kicker small {
   border-left: 1px solid var(--landing-line);
   color: var(--landing-muted);
@@ -516,6 +538,7 @@ body:has(.landing-page) .md-content__inner::before {
 
 .article-sheet--airflow,
 .article-sheet--storage,
+.article-sheet--index,
 .article-sheet--planned,
 .article-sheet--clay,
 .article-sheet--blue,
@@ -2154,6 +2177,16 @@ body:has(.landing-page) .md-content__inner::before {
 
 .landing-footer p:nth-child(2) {
   text-align: center;
+}
+
+.landing-footer__brand strong,
+.landing-footer__brand b {
+  font: inherit;
+}
+
+.landing-footer__brand b {
+  color: var(--landing-orange);
+  letter-spacing: 0.12em;
 }
 
 .landing-footer a {

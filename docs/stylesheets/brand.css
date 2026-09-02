@@ -1,0 +1,65 @@
+:root {
+  --brand-ink: #17302d;
+  --brand-paper: #f3f0e8;
+  --brand-accent: #ed6840;
+}
+
+/* A compact wordmark in the global header: editorial name + technical label. */
+.md-header__topic:first-child > .md-ellipsis {
+  font-size: 0;
+  overflow: visible;
+}
+
+.md-header__topic:first-child > .md-ellipsis::before {
+  color: var(--brand-paper);
+  content: "Behind the";
+  font-family: var(--md-text-font-family);
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+.md-header__topic:first-child > .md-ellipsis::after {
+  color: var(--brand-accent);
+  content: "Pipeline";
+  font-family: var(--md-text-font-family);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  margin-left: 0.22rem;
+}
+
+.md-header__button.md-logo {
+  margin-right: 0.3rem;
+  padding-inline: 0.25rem;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 1.65rem;
+  width: 2.2rem;
+}
+
+/* Keep the same hierarchy in the mobile drawer. */
+.md-nav--primary > .md-nav__title {
+  font-family: var(--md-text-font-family);
+  font-weight: 750;
+}
+
+@media screen and (max-width: 30rem) {
+  .md-header__topic:first-child > .md-ellipsis::before {
+    font-size: 0.7rem;
+  }
+
+  .md-header__topic:first-child > .md-ellipsis::after {
+    font-size: 0.7rem;
+    letter-spacing: -0.03em;
+    margin-left: 0.18rem;
+  }
+
+  .md-header__button.md-logo img,
+  .md-header__button.md-logo svg {
+    height: 1.45rem;
+    width: 1.9rem;
+  }
+}

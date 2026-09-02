@@ -1,14 +1,14 @@
-# Data Engineer Handbook
+# Behind the Pipeline
 
 > Cẩm nang kiến thức cốt lõi về những công cụ Data Engineer sử dụng hằng ngày.
 
-Data Engineer Handbook là một dự án tài liệu mở, tập trung giải thích cách các công cụ trong hệ sinh thái Data Engineering hoạt động từ bên trong. Nội dung không chỉ hướng dẫn *cách sử dụng*, mà còn trả lời những câu hỏi quan trọng hơn: công cụ đó giải quyết vấn đề gì, vì sao nó tồn tại, kiến trúc của nó được thiết kế như thế nào và khi nào chúng ta nên sử dụng nó.
+Behind the Pipeline là một dự án tài liệu mở, tập trung giải thích cách các công cụ trong hệ sinh thái Data Engineering hoạt động từ bên trong. Nội dung không chỉ hướng dẫn *cách sử dụng*, mà còn trả lời những câu hỏi quan trọng hơn: công cụ đó giải quyết vấn đề gì, vì sao nó tồn tại, kiến trúc của nó được thiết kế như thế nào và khi nào chúng ta nên sử dụng nó.
 
 Tài liệu được viết bằng tiếng Việt và xuất bản dưới dạng website với MkDocs Material.
 
 ## Mục tiêu
 
-Handbook hướng đến việc giúp Data Engineer:
+Behind the Pipeline hướng đến việc giúp Data Engineer:
 
 - nắm vững các khái niệm nền tảng thay vì chỉ ghi nhớ câu lệnh;
 - hiểu kiến trúc và cơ chế vận hành bên trong mỗi công cụ;
@@ -96,4 +96,4 @@ Website sau khi build được tạo trong thư mục `site/`.
 ```
 ---
 
-Data Engineer Handbook được xây dựng với mục tiêu biến những kiến thức rời rạc trong công việc hằng ngày thành một hệ thống kiến thức rõ ràng, có thể tra cứu và tiếp tục mở rộng.
+Behind the Pipeline được xây dựng với mục tiêu biến những kiến thức rời rạc trong công việc hằng ngày thành một hệ thống kiến thức rõ ràng, có thể tra cứu và tiếp tục mở rộng.

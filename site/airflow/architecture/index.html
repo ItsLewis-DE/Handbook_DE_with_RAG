@@ -6,24 +6,24 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Ghi chú về kiến trúc và vận hành hệ thống dữ liệu">
+        <meta name="description" content="Đi vào phía sau những hệ thống và pipeline dữ liệu">
       
       
       
       
-        <link rel="prev" href="../../architecture/shared-disk-vs-shared-nothing/">
+        <link rel="prev" href="../../index/">
       
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/behind-the-pipeline-favicon.svg">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Architecture - Data Engineering Field Notes</title>
+        <title>Architecture - Behind the Pipeline</title>
       
     
     
@@ -44,10 +44,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Manrope:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Manrope";--md-code-font:"IBM Plex Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
     
       <link rel="stylesheet" href="../../stylesheets/landing.css">
     
@@ -92,10 +94,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Đầu trang">
-    <a href="../.." title="Data Engineering Field Notes" class="md-header__button md-logo" aria-label="Data Engineering Field Notes" data-md-component="logo">
+    <a href="../.." title="Behind the Pipeline" class="md-header__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../assets/images/behind-the-pipeline-logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -106,7 +107,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Data Engineering Field Notes
+            Behind the Pipeline
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -192,13 +193,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Data Engineering Field Notes" class="md-nav__button md-logo" aria-label="Data Engineering Field Notes" data-md-component="logo">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../assets/images/behind-the-pipeline-logo.svg" alt="logo">
 
     </a>
-    Data Engineering Field Notes
+    Behind the Pipeline
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -321,6 +321,93 @@
       
   
   
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -339,10 +426,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -360,8 +447,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -507,18 +594,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cac-component-bat-buoc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Các component bắt buộc
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Các component bắt buộc">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#scheduler" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -526,6 +601,56 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Scheduler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qua-trinh-phan-tich-dag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quá trình phân tích DAG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ha-scheduler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HA Scheduler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#critical-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critical Section
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kha-nang-mo-rong-va-nut-that" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khả năng mở rộng và nút thắt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -538,6 +663,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Executor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#localexecutor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalExecutor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remote Executor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hinh-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu hình Executor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -548,6 +723,56 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="DAG Processor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dagfileprocessormanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DagFileProcessorManager
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dagfileprocessorprocess" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DagFileProcessorProcess
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#luong-xu-ly-file-dag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Luồng xử lý file DAG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -582,6 +807,18 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Metadata Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
+      
+    </span>
+  </a>
+  
 </li>
         
       </ul>
@@ -591,6 +828,84 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trien-khai-airflow-theo-mo-hinh-phan-tan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triển khai Airflow theo mô hình phân tán
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Triển khai Airflow theo mô hình phân tán">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tong-quan-luong-xu-ly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tổng quan luồng xử lý
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bieu-o-airflow-theo-mo-hinh-phan-tan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Biểu đồ Airflow theo mô hình phân tán
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cach-mot-worker-thuc-thi-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cách một worker thực thi task
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cách một worker thực thi task">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lời kết
+      
+    </span>
+  </a>
   
 </li>
       
@@ -710,18 +1025,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cac-component-bat-buoc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Các component bắt buộc
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Các component bắt buộc">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#scheduler" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -729,6 +1032,56 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Scheduler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qua-trinh-phan-tich-dag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quá trình phân tích DAG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ha-scheduler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HA Scheduler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#critical-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critical Section
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kha-nang-mo-rong-va-nut-that" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khả năng mở rộng và nút thắt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -741,6 +1094,56 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Executor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#localexecutor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalExecutor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remote Executor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hinh-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu hình Executor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -751,6 +1154,56 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="DAG Processor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dagfileprocessormanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DagFileProcessorManager
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dagfileprocessorprocess" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DagFileProcessorProcess
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#luong-xu-ly-file-dag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Luồng xử lý file DAG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -785,6 +1238,18 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Metadata Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
+      
+    </span>
+  </a>
+  
 </li>
         
       </ul>
@@ -794,6 +1259,84 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trien-khai-airflow-theo-mo-hinh-phan-tan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triển khai Airflow theo mô hình phân tán
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Triển khai Airflow theo mô hình phân tán">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tong-quan-luong-xu-ly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tổng quan luồng xử lý
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bieu-o-airflow-theo-mo-hinh-phan-tan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Biểu đồ Airflow theo mô hình phân tán
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cach-mot-worker-thuc-thi-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cách một worker thực thi task
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cách một worker thực thi task">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lời kết
+      
+    </span>
+  </a>
   
 </li>
       
@@ -818,7 +1361,7 @@
 
 <header class="airflow-article-hero">
   <div class="airflow-article-hero__eyebrow">
-    <a href="../../">DATA ENGINEERING FIELD NOTES</a>
+    <a href="../../">BEHIND THE PIPELINE</a>
     <span>ARTICLE / 001</span>
   </div>
   <h1>Kiến trúc<br><em>Apache Airflow</em></h1>
@@ -920,17 +1463,15 @@ python3<span class="w"> </span>/path/to/task_2.py
     A[Task A] --&gt; B[Task B]</code></pre>
 <hr />
 <h2 id="cac-component-trong-airflow">Các component trong Airflow</h2>
-<h3 id="cac-component-bat-buoc">Các component bắt buộc</h3>
-<h4 id="scheduler">Scheduler</h4>
-<p>Scheduler theo dõi các DAG và Dag Run, tạo Dag Run theo lịch, xác định những Task Instance đã thỏa mãn dependency và các giới hạn concurrency, sau đó gửi chúng tới Executor để thực thi.</p>
-<h5 id="qua-trinh-phan-tich-dag">Quá trình phân tích DAG</h5>
+<h3 id="scheduler">Scheduler</h3>
+<h4 id="qua-trinh-phan-tich-dag">Quá trình phân tích DAG</h4>
 <p>Trong Airflow 2.x, Scheduler có một tiến trình con nội bộ tên là <code>DagFileProcessorManager</code>, được dùng để phân tích cú pháp các file trong DAG folder. Những tiến trình này ghi nhận trạng thái của file DAG vào metadata database; nếu quá trình phân tích gặp lỗi, thông tin lỗi sẽ được hiển thị trên UI.</p>
 <p>Từ phiên bản 2.3, <code>DagFileProcessorManager</code> đã có thể được cấu hình để chạy độc lập. Từ Airflow 3, tiến trình này trở thành một component bắt buộc và luôn chạy tách biệt với Scheduler. Việc phân tách giúp tăng cường bảo mật, đồng thời hạn chế tình trạng quá trình parse các file DAG nặng làm nghẽn Scheduler.</p>
 <blockquote>
 <p><strong>Lưu ý về lịch <code>@daily</code></strong></p>
 <p>Với lịch <code>@daily</code>, Dag Run xử lý data interval của ngày 1/1 thường được tạo sau khi khoảng dữ liệu đó kết thúc, tức là vào hoặc ngay sau 00:00 ngày 2/1 theo múi giờ của DAG. Cách vận hành này giúp khoảng dữ liệu cần xử lý được thu thập đầy đủ.</p>
 </blockquote>
-<h5 id="ha-scheduler">HA Scheduler</h5>
+<h4 id="ha-scheduler">HA Scheduler</h4>
 <p>Khi hệ thống có quá nhiều DAG, với số lượng lên đến hàng trăm hoặc hàng nghìn task, một Scheduler có thể mất nhiều thời gian để hoàn thành một scheduling loop. Đây là lúc <strong>HA Scheduler</strong> trở nên hữu ích.</p>
 <p>HA Scheduler cho phép chạy nhiều Scheduler cùng lúc. Tất cả Scheduler đều ở trạng thái active, thay vì một Scheduler active và một Scheduler pending. Mô hình này giúp chia tải điều phối; nếu một Scheduler gặp sự cố, những Scheduler còn lại có thể tiếp tục xử lý công việc.</p>
 <p>Tuy nhiên, việc nhiều Scheduler chạy song song có thể dẫn tới xử lý trùng lặp. Chẳng hạn, Scheduler 1 và Scheduler 2 có thể cùng chọn một Dag Run để xử lý. Vì vậy, Airflow cần sử dụng cơ chế row-level lock của database.</p>
@@ -946,7 +1487,7 @@ python3<span class="w"> </span>/path/to/task_2.py
     C --&gt; D[Chọn Task Instance đủ điều kiện]
     D --&gt; E[Kiểm tra Pool và concurrency]
     E --&gt; F[Đưa Task Instance vào hàng chờ]</code></pre>
-<h5 id="critical-section">Critical Section</h5>
+<h4 id="critical-section">Critical Section</h4>
 <p>Trong scheduling loop có một bước được gọi là <strong>Critical Section</strong>. Tại một thời điểm, chỉ một Scheduler được phép đi vào khu vực này. Các Scheduler khác vẫn hoạt động và có thể tiếp tục thực hiện những phần khác của scheduling loop.</p>
 <p>Critical Section kiểm tra Pool, xác định các task có thể thực thi và đưa chúng vào hàng chờ. Cơ chế này ngăn chặn tình huống:</p>
 <ol>
@@ -959,17 +1500,17 @@ python3<span class="w"> </span>/path/to/task_2.py
     B[Scheduler B] --&gt; C
     C --&gt; D[Kiểm tra Pool]
     D --&gt; E[Đưa task vào hàng chờ]</code></pre>
-<h5 id="kha-nang-mo-rong-va-nut-that">Khả năng mở rộng và nút thắt</h5>
+<h4 id="kha-nang-mo-rong-va-nut-that">Khả năng mở rộng và nút thắt</h4>
 <p>Khi Scheduler bị giới hạn bởi CPU, việc thêm Scheduler thứ hai hoặc thứ ba thường giúp năng lực điều phối tăng gần tuyến tính. Tuy nhiên, mức tăng này không được bảo đảm nếu metadata database, mạng hoặc tài nguyên dùng chung đã trở thành nút thắt.</p>
 <p>Một bottleneck phổ biến của Scheduler xuất hiện khi hệ thống có quá nhiều DAG và task. Scheduler phải liên tục truy cập database để lấy thông tin; nếu database không đủ khả năng đáp ứng, hiệu suất điều phối sẽ bị ảnh hưởng đáng kể.</p>
-<h4 id="executor">Executor</h4>
+<h3 id="executor">Executor</h3>
 <p>Executor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.</p>
 <p>Executor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor.</p>
-<h5 id="localexecutor">LocalExecutor</h5>
+<h4 id="localexecutor">LocalExecutor</h4>
 <p>LocalExecutor là cấu hình mặc định của Airflow. Khi Scheduler giao việc, LocalExecutor tạo các tiến trình con của tiến trình Scheduler để thực thi tác vụ.</p>
 <p>Ví dụ, một task cần xử lý file 5 GB. Vì LocalExecutor nằm trong tiến trình của Scheduler, task sẽ sử dụng tài nguyên tính toán của máy chủ chạy Scheduler. Điều này có thể khiến task chiếm CPU và RAM của máy, làm Scheduler thiếu tài nguyên để quét DAG hoặc lên lịch cho các task khác.</p>
 <p>Đổi lại, LocalExecutor có cấu hình tương đối đơn giản và độ trễ thấp vì task được chạy trên cùng node với Scheduler.</p>
-<h5 id="remote-executor">Remote Executor</h5>
+<h4 id="remote-executor">Remote Executor</h4>
 <p>Remote Executor có thể được chia thành hai loại:</p>
 <ol>
 <li>
@@ -987,7 +1528,7 @@ python3<span class="w"> </span>/path/to/task_2.py
 </li>
 </ol>
 <p>Kể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể.</p>
-<h5 id="cau-hinh-executor">Cấu hình Executor</h5>
+<h4 id="cau-hinh-executor">Cấu hình Executor</h4>
 <p>Để ghi đè Executor mặc định, cấu hình <code>airflow.cfg</code> như sau:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[core]</span>
 <span class="na">executor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">LocalExecutor</span>
@@ -1064,7 +1605,7 @@ python3<span class="w"> </span>/path/to/task_2.py
         <span class="n">executor</span><span class="o">=</span><span class="s2">"LocalExecutor"</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div>
-<h5 id="minh-hoa-scheduler-theo-doi-trang-thai-task">Minh họa: Scheduler theo dõi trạng thái task</h5>
+<h4 id="cau-hoi-lien-quan">Câu hỏi liên quan</h4>
 <div class="airflow-comic-gallery" aria-label="Hai hình minh họa về cách Scheduler theo dõi trạng thái task">
   <figure>
     <img
@@ -1072,7 +1613,7 @@ python3<span class="w"> </span>/path/to/task_2.py
       alt="Truyện tranh minh họa worker gửi trạng thái Task Instance qua API Server, lưu vào Metadata Database để Scheduler quyết định task tiếp theo"
       loading="lazy"
     >
-    <figcaption><span>MINH HỌA / 01</span><strong>Scheduler hỏi Doraemon</strong></figcaption>
+    <figcaption><span>MINH HỌA / 01</span><strong>Cách Scheduler theo dõi trạng thái task</strong></figcaption>
   </figure>
   <figure>
     <img
@@ -1080,21 +1621,21 @@ python3<span class="w"> </span>/path/to/task_2.py
       alt="Truyện tranh minh họa Airflow API Server và Metadata Database truyền trạng thái task cho Scheduler"
       loading="lazy"
     >
-    <figcaption><span>MINH HỌA / 02</span><strong>Scheduler hỏi Kakarot</strong></figcaption>
+    <figcaption><span>MINH HỌA / 02</span><strong>Scheduler và task status</strong></figcaption>
   </figure>
 </div>
 
-<h4 id="dag-processor">DAG Processor</h4>
+<h3 id="dag-processor">DAG Processor</h3>
 <p>Chúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?</p>
 <p>Câu trả lời là <strong>DAG Processor</strong>. Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.</p>
 <p>DAG Processor thường có hai tiến trình chính: <code>DagFileProcessorManager</code> và <code>DagFileProcessorProcess</code>.</p>
-<h5 id="dagfileprocessormanager">DagFileProcessorManager</h5>
+<h4 id="dagfileprocessormanager">DagFileProcessorManager</h4>
 <p><code>DagFileProcessorManager</code> duy trì một vòng lặp vô hạn để kiểm tra những file mới hoặc đã được chỉnh sửa, đồng thời bỏ qua các file không thay đổi. Tiến trình này không trực tiếp phân tích từng file hay kiểm tra cú pháp. Thay vào đó, nó tạo ra các tiến trình con gọi là <code>DagFileProcessorProcess</code>.</p>
-<h5 id="dagfileprocessorprocess">DagFileProcessorProcess</h5>
+<h4 id="dagfileprocessorprocess">DagFileProcessorProcess</h4>
 <p><code>DagFileProcessorProcess</code> tải trực tiếp file DAG dưới dạng module, tạo các đối tượng DAG rồi trả về cho <code>DagFileProcessorManager</code>.</p>
 <p>Vì file DAG được nạp dưới dạng module và <code>DagFileProcessorManager</code> định kỳ khởi tạo các tiến trình con để xử lý những file cần parse, tác giả DAG không nên đặt các connection tới database bên ngoài hàm. Tương tự, cần tránh truy cập cơ sở dữ liệu, gọi API bên ngoài hoặc thực hiện xử lý nặng tại vị trí này. Những thao tác đó có thể làm cạn kiệt CPU và RAM, làm chậm quá trình parse file hoặc gây cạn kiệt connection pool.</p>
 <p>Thay vào đó, các thao tác cần kết nối tới cơ sở dữ liệu hoặc API nên được đặt bên trong callable của task để chỉ chạy khi task được thực thi. Những thư viện có thời gian import lớn cũng nên được import cục bộ bên trong callable; các import nhẹ vẫn có thể đặt ở đầu file DAG.</p>
-<h5 id="luong-xu-ly-file-dag">Luồng xử lý file DAG</h5>
+<h4 id="luong-xu-ly-file-dag">Luồng xử lý file DAG</h4>
 <pre class="mermaid"><code>flowchart TD
     A["DagFileProcessorManager"] --&gt; B["Check for new files"]
     B --&gt; C["Exclude recently processed files"]
@@ -1110,7 +1651,7 @@ python3<span class="w"> </span>/path/to/task_2.py
     J --&gt; K["Process modules"]
     K --&gt; L["Return DagBag"]</code></pre>
 <p><em>Nguồn: Airflow documentation.</em></p>
-<h5 id="minh-hoa-dag-uoc-serialize-va-luu-vao-metadata-database">Minh họa: DAG được serialize và lưu vào metadata database</h5>
+<h4 id="cau-hoi-lien-quan_1">Câu hỏi liên quan</h4>
 <div class="airflow-comic-gallery" aria-label="Hình minh họa quá trình DAG Processor gửi đối tượng DAG để lưu vào Metadata Database">
   <figure>
     <img
@@ -1122,24 +1663,176 @@ python3<span class="w"> </span>/path/to/task_2.py
   </figure>
 </div>
 
-<h4 id="dag-bundles">DAG Bundles</h4>
+<h3 id="dag-bundles">DAG Bundles</h3>
 <p>Component tiếp theo là <strong>DAG Bundles</strong>.</p>
 <p>Trong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua <code>dags_folder</code>, mặc định thường là <code>$AIRFLOW_HOME/dags</code>. <code>DagFileProcessorManager</code> quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.</p>
 <p>Ở Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do <code>dags_folder</code> cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống <code>dags_folder</code>; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.</p>
 <p>Từ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn.</p>
 <p>Bạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm.</p>
-<h4 id="api-server">API Server</h4>
+<h3 id="api-server">API Server</h3>
 <p>Trước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.</p>
 <p>Web UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà không phải thực hiện phần lớn thao tác qua CLI. Khi task chạy, worker hoặc task gửi heartbeat, trạng thái thực thi, XCom và các tương tác runtime đến API Server. Sau đó, API Server cập nhật các thông tin này vào Metadata Database.</p>
 <p>Scheduler đọc Metadata Database để tạo <code>DagRun</code>, kiểm tra điều kiện thực thi rồi chuyển các <code>TaskInstance</code> đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng.</p>
-<h4 id="metadata-database">Metadata Database</h4>
+<h3 id="metadata-database">Metadata Database</h3>
 <p>Metadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của <code>TaskInstance</code>, <code>DagRun</code>, DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.</p>
 <p>Scheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này.</p>
-<h5 id="cau-hoi-minh-hoa">Câu hỏi minh họa</h5>
-<p>Đưa hình SQLAlchemy vào.</p>
+<h4 id="cau-hoi-lien-quan_2">Câu hỏi liên quan</h4>
+<div class="airflow-comic-gallery" aria-label="Hình minh họa lý do Airflow thường sử dụng PostgreSQL hoặc MySQL làm Metadata Database">
+  <figure>
+    <img
+      src="../../assets/images/SQL_alchemy.png"
+      alt="Truyện tranh minh họa PostgreSQL và MySQL hỗ trợ transaction, concurrent access, locking và tính nhất quán dữ liệu cho Metadata Database trong Airflow"
+      loading="lazy"
+    >
+    <figcaption><span>MINH HỌA / 04</span><strong>Metadata Database trong Airflow</strong></figcaption>
+  </figure>
+</div>
+
+<hr />
+<h2 id="trien-khai-airflow-theo-mo-hinh-phan-tan">Triển khai Airflow theo mô hình phân tán</h2>
+<p>Khi mới học Airflow, thông thường bạn chỉ sử dụng công cụ này trên máy tính cá nhân. Tuy nhiên, sức mạnh của Airflow còn nằm ở khả năng phân phối các component trên nhiều máy chủ. Chẳng hạn, với <code>CeleryExecutor</code> hoặc <code>KubernetesExecutor</code>, Scheduler có thể chạy trên một máy hoặc pod riêng, trong khi task được thực thi bởi các worker hoặc pod khác.</p>
+<p>Mô hình phân tán mang lại những lợi ích sau:</p>
+<ul>
+<li><strong>Mở rộng năng lực chạy task:</strong> Khi số lượng task tăng, có thể bổ sung worker hoặc pod thay vì để Scheduler dùng chung tài nguyên với task.</li>
+<li><strong>Cô lập tài nguyên và môi trường chạy:</strong> Các task nặng không cạnh tranh CPU hoặc RAM với Scheduler. Với <code>KubernetesExecutor</code>, mỗi task có thể chạy trong một pod có dependency và resource limit riêng.</li>
+<li><strong>Tạo security boundary rõ hơn:</strong> Mỗi component có thể sử dụng service account, secret và network policy riêng. Scheduler không cần quyền đọc DAG bundle, API Server không cần thực thi mã DAG, còn worker không nên truy cập trực tiếp Metadata Database.</li>
+<li><strong>Tăng khả năng chịu lỗi và mở rộng component:</strong> Có thể chạy nhiều Scheduler để nâng cao năng lực lập lịch và khả năng sẵn sàng, miễn là Metadata Database không trở thành bottleneck.</li>
+<li>
+<p><strong>Phân tách role và quyền hạn:</strong> Khi chạy Airflow trên máy local, bạn vẫn có thể tách role và phân quyền. Với mô hình phân tán, các role có thể được phân tách riêng biệt nhằm tăng tính bảo mật. Trong môi trường production, những role thường gặp gồm:</p>
+<ul>
+<li><strong>Deployment Manager:</strong> cài đặt, triển khai, cấu hình và quản lý bảo mật cho Airflow.</li>
+<li><strong>DAG Author:</strong> viết và đưa file DAG vào DAG bundle.</li>
+<li><strong>Operations User:</strong> trigger, theo dõi và debug DAG hoặc task thông qua UI hay API.</li>
+</ul>
+</li>
+</ul>
+<h3 id="tong-quan-luong-xu-ly">Tổng quan luồng xử lý</h3>
+<ol>
+<li>
+<p><strong>Người dùng đưa file DAG vào DAG bundle</strong></p>
+<p>Người dùng viết file DAG và đưa file này vào DAG bundle, mặc định là thư mục <code>dags</code> trên máy.</p>
+<p>DAG Processor định kỳ quét các file DAG, serialize cấu trúc DAG rồi lưu metadata vào Metadata Database. Scheduler sử dụng DAG đã được serialize để lập lịch mà không cần trực tiếp parse file DAG.</p>
+</li>
+<li>
+<p><strong>Tạo DAG Run và xác định task có thể chạy</strong></p>
+<p>Scheduler đọc Metadata Database và kiểm tra điều kiện để xác định những task đủ điều kiện chạy.</p>
+</li>
+<li>
+<p><strong>Executor đưa task đến môi trường thực thi</strong></p>
+<p>Scheduler gọi Executor; Executor sinh các tiến trình con, hay worker, để thực thi task.</p>
+</li>
+<li>
+<p><strong>Task thực thi và ghi log</strong></p>
+<p>Các task bắt đầu được thực thi, còn log được ghi vào thư mục <code>logs/</code>.</p>
+</li>
+<li>
+<p><strong>Cập nhật trạng thái và kết thúc</strong></p>
+<p>Khi worker hoàn tất, trạng thái được gửi về API Server. Sau đó, API Server cập nhật trạng thái vào Metadata Database.</p>
+</li>
+</ol>
+<h3 id="bieu-o-airflow-theo-mo-hinh-phan-tan">Biểu đồ Airflow theo mô hình phân tán</h3>
+<p>Bạn có thể tham khảo biểu đồ sau:</p>
+<p><pre class="mermaid"><code>flowchart LR
+    Author["DAG Author"] --&gt;|author| Dags
+    Deploy["Deployment Manager"] --&gt;|install| Plugins
+    Ops["Operations User"] --&gt;|operate| API
+
+    subgraph DagZone["Security perimeter with DAG code execution"]
+        direction TB
+        Dags["DAG files"]
+        subgraph Execution["Execution"]
+            direction LR
+            Workers["Workers"]
+            Triggerers["Triggerers"]
+            Processors["DAG Processors"]
+        end
+        Dags --&gt;|sync| Workers
+        Dags --&gt;|sync| Triggerers
+        Dags --&gt;|sync| Processors
+    end
+
+    Plugins["Plugin folder and installed packages"]
+    DB[(Metadata DB)]
+
+    subgraph ControlZone["Security perimeter with no DAG code execution"]
+        direction TB
+        subgraph Scheduling["Scheduling"]
+            Scheduler["Schedulers"]
+        end
+        subgraph UI["UI"]
+            API["API Servers"]
+        end
+    end
+
+    Plugins --&gt;|install| Workers
+    Plugins --&gt;|install| Triggerers
+    Plugins --&gt;|install| Processors
+    Plugins --&gt;|install| Scheduler
+    Plugins --&gt;|install| API
+
+    Processors --&gt;|serialized DAG| DB
+    Workers --&gt;|task state| DB
+    Triggerers --&gt;|trigger state| DB
+    Scheduler --&gt;|scheduling state| DB
+    API --&gt;|metadata| DB
+    Scheduler --&gt;|Executor| Workers</code></pre>
+Quy trình cũng sẽ tương tự như khi chạy trên local, nhưng sẽ được chia thành các role tách biệt hơn, đồng thời thì worker cũng được tách ra khỏi scheduler.</p>
+<hr />
+<h2 id="cach-mot-worker-thuc-thi-task">Cách một worker thực thi task</h2>
+<p>Khi đã biết luồng tổng quát và flow của Airflow lúc thực sự chạy, ta cùng đi sâu vào cách một worker thực thi task.</p>
+<p>Trước đây, với Airflow 2, worker nắm giữ thông tin của database khi thực thi một task. Việc này tạo ra lỗ hổng, cho phép mã trong DAG (hoặc người viết DAG) truy cập, khai thác và làm lộ toàn bộ thông tin kết nối nhạy cảm lưu trong cơ sở dữ liệu.</p>
+<p>Kể từ Airflow 3, worker không còn nắm giữ thông tin của Metadata Database. Worker tạo ra hai tiến trình: Supervisor và tiến trình thực thi task (<code>task_runner</code>). <code>task_runner</code> không có JWT và không truy cập trực tiếp Metadata Database. Nếu cần Connection, Variable, XCom hoặc cập nhật trạng thái, tiến trình này gửi yêu cầu nội bộ đến Supervisor qua socket. Supervisor gọi API Server; API Server truy vấn Metadata Database rồi trả kết quả cho Supervisor; Supervisor chuyển kết quả về task qua socket.</p>
+<p>Cụ thể, luồng này gồm các bước sau:</p>
+<ol>
+<li>
+<p><strong>Gửi yêu cầu qua socket nội bộ</strong></p>
+<p>Tiến trình <code>task_runner</code> gửi request nội bộ qua socket tới Supervisor.</p>
+</li>
+<li>
+<p><strong>Supervisor kiểm tra tính hợp lệ (Validation)</strong></p>
+<p>Supervisor nhận thông điệp và kiểm tra: Task này có đang trong trạng thái hợp lệ để yêu cầu Connection hay không? Định dạng yêu cầu có đúng chuẩn của Task SDK không?</p>
+</li>
+<li>
+<p><strong>Đính kèm Task JWT Token vào header</strong></p>
+<p>Supervisor tạo một HTTP REST request, gắn JWT bảo mật vào header rồi gửi đến API Server.</p>
+</li>
+<li>
+<p><strong>API Server xác thực và trả kết quả</strong></p>
+<p>API Server giải mã JWT token để xác nhận: Token này có hợp lệ không, có đúng là của task đang chạy không, yêu cầu của task có phù hợp với JWT token không? Nếu hợp lệ, API Server truy vấn Metadata Database, lấy thông tin kết nối và trả về cho Supervisor qua HTTPS. Supervisor chuyển dữ liệu lại cho <code>task_runner</code> qua socket.</p>
+</li>
+</ol>
+<h3 id="cau-hoi-lien-quan_3">Câu hỏi liên quan</h3>
+<div class="airflow-comic-gallery" aria-label="Hình minh họa cách worker và task runner xác thực với API Server qua JWT token">
+  <figure>
+    <img
+      src="../../assets/images/JWT.png"
+      alt="Truyện tranh minh họa luồng Supervisor gửi request đính kèm JWT token đến API Server để lấy thông tin kết nối an toàn"
+      loading="lazy"
+    >
+    <figcaption><span>MINH HỌA / 05</span><strong>Task Runner, Supervisor và JWT Token</strong></figcaption>
+  </figure>
+</div>
+
+<hr />
+<h2 id="loi-ket">Lời kết</h2>
+<figure class="airflow-closing-comic" id="loi-ket">
+  <img
+    src="../../assets/images/end.png"
+    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Airflow và cảm ơn người đọc"
+    loading="lazy"
+  >
+  <figcaption>
+    <span>LỜI KẾT / 06</span>
+    <div>
+      <strong>Cảm ơn bạn đã đọc đến cuối!</strong>
+      <p>Hy vọng bài viết giúp bạn hiểu Airflow rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
+    </div>
+  </figcaption>
+</figure>
+
 <footer class="airflow-article-end">
   <div>
-    <span>Cảm ơn bạn vì đã đọc / 001</span>
+    <span>BEHIND THE PIPELINE / 001</span>
     <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
   </div>
   <a href="../../">Trở về thư viện <span aria-hidden="true">→</span></a>
