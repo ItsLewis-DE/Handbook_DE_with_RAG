@@ -621,10 +621,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#truong-hop-2-chua-du-lieu-thuc-te" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trường hợp 2: chứa dữ liệu thực tế
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#truong-hop-3-khoa-logic-clustered-key-primary-key" class="md-nav__link">
     <span class="md-ellipsis">
       
         Trường hợp 3: Khóa logic (Clustered Key / Primary Key)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#truong-hop-3-chua-du-lieu-thuc-te" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trường hợp 3: chứa dữ liệu thực tế
       
     </span>
   </a>
@@ -804,13 +826,46 @@
   
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#oi-voi-btree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đối với B+tree:
+      
+    </span>
+  </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thao-tac-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thao tác update:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#luc-truoc-ta-a-tung-nhac-en-clustered-index-va-non-clustered-index-secondary-index-vay-thuc-ra-no-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lúc trước ta đã từng nhắc đến clustered index và non clustered index (secondary index), vậy thực ra nó là gì?
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1129,10 +1184,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#truong-hop-2-chua-du-lieu-thuc-te" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trường hợp 2: chứa dữ liệu thực tế
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#truong-hop-3-khoa-logic-clustered-key-primary-key" class="md-nav__link">
     <span class="md-ellipsis">
       
         Trường hợp 3: Khóa logic (Clustered Key / Primary Key)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#truong-hop-3-chua-du-lieu-thuc-te" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trường hợp 3: chứa dữ liệu thực tế
       
     </span>
   </a>
@@ -1312,13 +1389,46 @@
   
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#oi-voi-btree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đối với B+tree:
+      
+    </span>
+  </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thao-tac-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thao tác update:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#luc-truoc-ta-a-tung-nhac-en-clustered-index-va-non-clustered-index-secondary-index-vay-thuc-ra-no-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lúc trước ta đã từng nhắc đến clustered index và non clustered index (secondary index), vậy thực ra nó là gì?
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1476,18 +1586,20 @@
 <li><strong>Áp dụng:</strong> Khi bảng dữ liệu chính được lưu dưới dạng Heap Pages, không có Clustered Index, ví dụ PostgreSQL.</li>
 <li><strong>Nội dung:</strong> Lưu tọa độ đĩa tĩnh <code>FileID:PageID:SlotNumber</code>, trỏ thẳng đến dòng dữ liệu.</li>
 </ul>
-<p>Trường hợp 2: chứa dữ liệu thực tế
- Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.</p>
+<h4 id="truong-hop-2-chua-du-lieu-thuc-te">Trường hợp 2: chứa dữ liệu thực tế</h4>
+<p>Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.</p>
 <h4 id="truong-hop-3-khoa-logic-clustered-key-primary-key">Trường hợp 3: Khóa logic (Clustered Key / Primary Key)</h4>
 <ul>
 <li><strong>Áp dụng:</strong> Khi bảng chính được lưu theo Clustered Index và có thêm chỉ mục phụ (Secondary Index).</li>
-<li><strong>Nội dung:</strong> Không lưu địa chỉ đĩa tĩnh mà lưu giá trị của Primary Key (giá trị của các nút ở cây chính), ví dụ <code>ID = 3</code>, để sau đó duyệt cây Clustered Index và lấy dữ liệu dòng.
- Trường hợp 3: chứa dữ liệu thực tế
- Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.</li>
+<li><strong>Nội dung:</strong> Không lưu địa chỉ đĩa tĩnh mà lưu giá trị của Primary Key (giá trị của các nút ở cây chính), ví dụ <code>ID = 3</code>, để sau đó duyệt cây Clustered Index và lấy dữ liệu dòng.</li>
 </ul>
+<h4 id="truong-hop-3-chua-du-lieu-thuc-te">Trường hợp 3: chứa dữ liệu thực tế</h4>
+<p>Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.</p>
+<blockquote>
 <p>Lưu ý là trường hợp 2 và 3 dành cho B+tree</p>
-<p>Câu hỏi đặt ra: Tại sao ở Trường hợp 2 (Clustered Table), người ta không dùng con trỏ vật lý RID cho nhanh, mà lại dùng Khóa logic để rồi phải bị phạt duyệt cây 2 lần (Double Traversal).
- Đó là bởi vì nếu các cây chỉ mục phụ lưu cả RID thì khi người dùng thay đổi các dòng dữ liệu hoặc thêm dữ liệu vào dữ liệu có thể bị thay đổi vị trí. Dẫn đến phải cập nhật lại các RID của cây gây lãng phí I/O.</p>
+</blockquote>
+<p><strong>Câu hỏi đặt ra:</strong> Tại sao ở Trường hợp 2 (Clustered Table), người ta không dùng con trỏ vật lý RID cho nhanh, mà lại dùng Khóa logic để rồi phải bị phạt duyệt cây 2 lần (Double Traversal).</p>
+<p>Đó là bởi vì nếu các cây chỉ mục phụ lưu cả RID thì khi người dùng thay đổi các dòng dữ liệu hoặc thêm dữ liệu vào dữ liệu có thể bị thay đổi vị trí. Dẫn đến phải cập nhật lại các RID của cây gây lãng phí I/O.</p>
 <h4 id="hinh-anh-minh-hoa">Hình ảnh minh họa</h4>
 <p><img alt="Sự khác nhau giữa con trỏ dữ liệu trong B-tree và nút lá B+tree" src="../assets/images/index/difference.png" /></p>
 <h2 id="mot-so-cau-truc-index-chuyen-biet-khac">Một số cấu trúc index chuyên biệt khác</h2>
@@ -1546,9 +1658,9 @@
 <h3 id="khi-delete-du-lieu">Khi <code>DELETE</code> dữ liệu</h3>
 <p>Xóa dữ liệu là quá trình phức tạp và có thể khiến mật độ dữ liệu trong node giảm xuống dưới ngưỡng tối thiểu, gây ra <strong>underflow</strong>.</p>
 <h4 id="b-tree_1">B-tree</h4>
-<h5 id="truong-hop-1-key-can-xoa-nam-o-node-la">Trường hợp 1: Key cần xóa nằm ở node lá</h5>
+<p><strong>Trường hợp 1: Key cần xóa nằm ở node lá</strong></p>
 <p>Hệ thống xóa key khỏi node lá. Nếu node rơi vào trạng thái underflow, hệ thống sẽ mượn key hoặc gộp node với node anh em bên trái hoặc bên phải.</p>
-<h5 id="muon-key">Mượn key</h5>
+<p><strong>Mượn key</strong></p>
 <p>Hệ thống có thể mượn key từ node anh em bên trái hoặc bên phải. Key phân tách tại node cha được đưa xuống node đang thiếu. Nếu mượn từ bên trái, key lớn nhất của node trái được đưa lên thay key phân tách tại node cha; nếu mượn từ bên phải, key nhỏ nhất của node phải được đưa lên. Quy trình này duy trì thứ tự sắp xếp của các key trong cây.</p>
 <p>Ví dụ:</p>
 <ul>
@@ -1557,7 +1669,7 @@
 <li>Node con phải chỉ còn <code>[40]</code> sau khi xóa và bị underflow.</li>
 </ul>
 <p>Node phải mượn key từ node trái. Key <code>30</code> tại node cha được đưa xuống node phải, tạo thành <code>[30, 40]</code>; key <code>20</code> từ node trái được đưa lên thay vị trí của key <code>30</code> tại node cha. Cây trở lại trạng thái cân bằng.</p>
-<h5 id="gop-node">Gộp node</h5>
+<p><strong>Gộp node</strong></p>
 <p>Khi không thể mượn key vì các node anh em chỉ có số key tối thiểu, hệ thống buộc phải gộp hai node để xử lý underflow. Key phân tách tại node cha, nằm giữa hai node con, được đưa xuống và gộp cùng dữ liệu của node đang thiếu và node anh em. Node dư thừa sau đó được xóa. Nếu việc mất một key khiến node cha bị underflow, quy trình mượn hoặc gộp tiếp tục được áp dụng cho node cha.</p>
 <p>Ví dụ với cây B-tree bậc 5, trong đó mỗi node chứa tối thiểu 2 key và tối đa 4 key:</p>
 <ul>
@@ -1579,6 +1691,51 @@
 <p>Node giữa cũ được giải phóng. Node cha lúc này chỉ còn <code>[60]</code>. Nếu node cha bị thiếu key, quá trình mượn hoặc gộp tiếp tục lan lên tầng trên.</p>
 </li>
 </ol>
+<p><strong>Trường hợp 2: key cần xóa nằm ở nút trung gian,</strong> vì khóa này nắm vai trò để phân tách địch tuyến nên hệ thống không thể đơn giản xóa bỏ nó. Khi đó hệ thống tìm các khóa thế thân ở các nút lá, có thể là khóa liền trước hoặc khóa liền sau. Sau khi tìm được khóa thế thân, hệ thống copy khóa thế thân đó và thay thế với khóa ta cần xóa, sau đó xóa khóa thế thân ở nút lá đi. Ví dụ: Giả sử một phần của cây có cấu trúc:</p>
+<p><strong>Nút trung gian:</strong> [ 50 ] (có 2 con trỏ rẽ nhánh trái và phải)</p>
+<p><strong>Cây con bên trái trỏ xuống nút lá:</strong> [ 20 , 35 , 45 ]</p>
+<p><strong>Cây con bên phải trỏ xuống nút lá:</strong> [ 60 , 70 ]</p>
+<p><strong>Yêu cầu:</strong> Xóa khóa 50 ở nút trung gian.</p>
+<p><strong>Bước 1: Tìm khóa thế thân</strong></p>
+<p>Nhánh trái có khóa lớn nhất là 45 (In-order Predecessor ở nút lá bên trái).</p>
+<p><strong>Bước 2: Ghi đè khóa</strong></p>
+<p>Copy 45 lên thế chỗ của 50. Nút trung gian lúc này trở thành [ 45 ].</p>
+<p><strong>Bước 3: Xóa khóa thế thân ở nút lá</strong></p>
+<p>Xóa phần tử 45 ở nút lá bên trái.</p>
+<p>Nút lá bên trái còn lại: [ 20 , 35 ].</p>
+<p><strong>Bước 4: Kiểm tra Underflow</strong></p>
+<p>Nút lá bên trái còn 2 khóa, vẫn thỏa mãn số khóa tối thiểu là 2. Quá trình xóa kết thúc hoàn tất mà không cần gộp hay xoay cây.</p>
+<h4 id="oi-voi-btree">Đối với B+tree:</h4>
+<p>Vì mọi khóa đều nằm ở nút lá nên hệ thống chỉ đơn giản là xóa khóa ở nút lá đi thôi, nếu nút bị underflow sẽ thực thi quy trình gộp node hoặc mượn key.</p>
+<h3 id="thao-tac-update">Thao tác update:</h3>
+<p>Cách chỉ mục xử lý câu lệnh UPDATE phụ thuộc hoàn toàn vào việc cột dữ liệu bị thay đổi có nằm trong chỉ mục hay không:</p>
+<ul>
+<li><strong>Th1:</strong> nếu cột bị update không nằm trong khóa chỉ mục, lúc này cột đó update bình thường, không làm ảnh hưởng đến index</li>
+<li><strong>Th2:</strong> nếu cột bị update nằm trong khóa chỉ mục, để đảm bảo tính sắp xếp, hệ thống không bao giờ được sửa đổi trực tiếp khóa. Mà 2 hệ thống sẽ lần lượt làm 2 bước đó là DELETE và INSERT. Vì để update dữ liệu của khóa chỉ mục hệ thống phải làm cả 2 bước đó nên tiêu tốn I/O và tài nguyên rất nhiều. Nên thông thường ta nên hạn chế thay đổi các khóa chỉ mục.</li>
+</ul>
+<h2 id="luc-truoc-ta-a-tung-nhac-en-clustered-index-va-non-clustered-index-secondary-index-vay-thuc-ra-no-la-gi">Lúc trước ta đã từng nhắc đến clustered index và non clustered index (secondary index), vậy thực ra nó là gì?</h2>
+<p><strong>Clustered Index</strong> không đơn thuần là một công cụ tìm kiếm, mà nó chính là thiết kế định hình cấu trúc sắp xếp vật lý của toàn bộ bảng dữ liệu dưới ổ đĩa. Khi dùng Clustered Index, bảng dữ liệu được tổ chức trực tiếp dưới dạng một cây B+Tree, qua đó các dòng dữ liệu ở tầng nút lá bắt buộc phải được sắp xếp và lưu trữ theo thứ tự của Clustered Key. Đồng thười thì mức lá chứa chính các hàng dữ liệu của bảng; vì vậy clustered index, xét ở mức lá, chính là bảng dữ liệu.</p>
+<p><strong>Nói tóm lại B+Tree:</strong> Là bản thiết kế cấu trúc dữ liệu (Data Structure).</p>
+<p><strong>Clustered Index:</strong> Là ứng dụng thực tế của bản thiết kế đó để tổ chức và sắp xếp vật lý toàn bộ bảng dữ liệu dưới ổ đĩa.</p>
+<p>Lưu ý là khi bạn tạo clustered index thì bạn chỉ được tạo duy nhất 1 cái, vì dữ liệu dưới đĩa chỉ được sắp xếp theo 1 thứ tự duy nhất. Đồng thời bạn cũng không nên tạo clustered index ở các cột dễ biến động, các keys dễ bị update ví dụ như cột status. Như bạn đã biết thì việc update đối với cột dữ liệu được đánh index rất gây tốn I/O.</p>
+<p><strong>Bonus:</strong> các cột tự tăng là ứng viên hoàn hảo cho clustered index vì nó đảm bảo 3 thuộc tính: ổn định, duy nhất và tăng dần tuần tự.</p>
+<p><strong>Non clustered index:</strong> được thiết kế để tăng tốc độ truy xuất dữ liệu mà không làm thay đổi hay định đoạt thứ tự sắp xếp vật lý của bảng dữ liệu gốc dưới đĩa. Nếu như clustered index chính là bản thân bảng dữ liệu thì non clustered index là một cây B+tree hoàn toàn độc lập và nằm song song bên cạnh. khi bạn sử dụng non clustered index, Lúc này hệ thống sẽ tạo ra một cây B+tree độc lập. Qua đó hiệu suất truy vấn. Nút lá của nó không chứa toàn bộ hàng theo mặc định. Nó chứa:</p>
+<ul>
+<li>Khóa nonclustered index.</li>
+<li>Row locator để tìm hàng gốc.</li>
+<li>Cột INCLUDE, nếu có.</li>
+</ul>
+<p><strong>Row locator:</strong></p>
+<ul>
+<li>Bảng có clustered index: chứa clustered key.</li>
+<li>Bảng heap: chứa RID, tức vị trí hàng.</li>
+</ul>
+<p>Vì non clustered index không làm thay đổi cách hệ thống lưu dữ liệu bên dưới đĩa nên bạn có thể tạo nhiều non clustered index. Nhưng đổi lại khi bạn dùng các câu lệnh DML, điều này sẽ gây ra 4 vấn đề sau:</p>
+<ul>
+<li><strong>Nhân số lượt ghi:</strong> khi bạn có 5 non clustered index, khi bạn insert dữ liệu, hệ thống buộc phải thực hiện cả 5 thao tác chèn vào 5 câu B+tree này. Nhân 5 lần ghi ổ đĩa. Qua đó cũng gây gia tăng lượt ghi vào WAl.</li>
+<li><strong>Ghi ngẫu nhiên trên đĩa:</strong> Khi bạn cập nhật một dòng dữ liệu, vì các key trên các index sẽ khác nhau và không chung một thứ tự logic, nên khi bạn cập nhật các nút của các index sẽ khác nhau, lúc này hệ thống sẽ phải ghi ngẫu nhiên chứ không ghi tuần tự</li>
+<li><strong>Tình trạng data split:</strong> khi bạn thực hiện các lệnh DMl, có nguy cơ gây phân tách trang, điều này có thể dẫn đến một chuỗi phân tách trang trên toàn bộ cây,</li>
+</ul>
 
 
 

@@ -186,20 +186,24 @@ Con trỏ dữ liệu trong B-tree và nút lá của B+tree có thể thuộc h
 - **Áp dụng:** Khi bảng dữ liệu chính được lưu dưới dạng Heap Pages, không có Clustered Index, ví dụ PostgreSQL.
 - **Nội dung:** Lưu tọa độ đĩa tĩnh `FileID:PageID:SlotNumber`, trỏ thẳng đến dòng dữ liệu.
 
- Trường hợp 2: chứa dữ liệu thực tế
- Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.
+#### Trường hợp 2: chứa dữ liệu thực tế
+
+Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.
 
 #### Trường hợp 3: Khóa logic (Clustered Key / Primary Key)
 
 - **Áp dụng:** Khi bảng chính được lưu theo Clustered Index và có thêm chỉ mục phụ (Secondary Index).
 - **Nội dung:** Không lưu địa chỉ đĩa tĩnh mà lưu giá trị của Primary Key (giá trị của các nút ở cây chính), ví dụ `ID = 3`, để sau đó duyệt cây Clustered Index và lấy dữ liệu dòng.
- Trường hợp 3: chứa dữ liệu thực tế
- Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.
 
- Lưu ý là trường hợp 2 và 3 dành cho B+tree
+#### Trường hợp 3: chứa dữ liệu thực tế
 
- Câu hỏi đặt ra: Tại sao ở Trường hợp 2 (Clustered Table), người ta không dùng con trỏ vật lý RID cho nhanh, mà lại dùng Khóa logic để rồi phải bị phạt duyệt cây 2 lần (Double Traversal).
- Đó là bởi vì nếu các cây chỉ mục phụ lưu cả RID thì khi người dùng thay đổi các dòng dữ liệu hoặc thêm dữ liệu vào dữ liệu có thể bị thay đổi vị trí. Dẫn đến phải cập nhật lại các RID của cây gây lãng phí I/O.
+Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.
+
+> Lưu ý là trường hợp 2 và 3 dành cho B+tree
+
+**Câu hỏi đặt ra:** Tại sao ở Trường hợp 2 (Clustered Table), người ta không dùng con trỏ vật lý RID cho nhanh, mà lại dùng Khóa logic để rồi phải bị phạt duyệt cây 2 lần (Double Traversal).
+
+Đó là bởi vì nếu các cây chỉ mục phụ lưu cả RID thì khi người dùng thay đổi các dòng dữ liệu hoặc thêm dữ liệu vào dữ liệu có thể bị thay đổi vị trí. Dẫn đến phải cập nhật lại các RID của cây gây lãng phí I/O.
 
 #### Hình ảnh minh họa
 
@@ -283,11 +287,11 @@ Xóa dữ liệu là quá trình phức tạp và có thể khiến mật độ 
 
 #### B-tree
 
-##### Trường hợp 1: Key cần xóa nằm ở node lá
+**Trường hợp 1: Key cần xóa nằm ở node lá**
 
 Hệ thống xóa key khỏi node lá. Nếu node rơi vào trạng thái underflow, hệ thống sẽ mượn key hoặc gộp node với node anh em bên trái hoặc bên phải.
 
-##### Mượn key
+**Mượn key**
 
 Hệ thống có thể mượn key từ node anh em bên trái hoặc bên phải. Key phân tách tại node cha được đưa xuống node đang thiếu. Nếu mượn từ bên trái, key lớn nhất của node trái được đưa lên thay key phân tách tại node cha; nếu mượn từ bên phải, key nhỏ nhất của node phải được đưa lên. Quy trình này duy trì thứ tự sắp xếp của các key trong cây.
 
@@ -299,7 +303,7 @@ Ví dụ:
 
 Node phải mượn key từ node trái. Key `30` tại node cha được đưa xuống node phải, tạo thành `[30, 40]`; key `20` từ node trái được đưa lên thay vị trí của key `30` tại node cha. Cây trở lại trạng thái cân bằng.
 
-##### Gộp node
+**Gộp node**
 
 Khi không thể mượn key vì các node anh em chỉ có số key tối thiểu, hệ thống buộc phải gộp hai node để xử lý underflow. Key phân tách tại node cha, nằm giữa hai node con, được đưa xuống và gộp cùng dữ liệu của node đang thiếu và node anh em. Node dư thừa sau đó được xóa. Nếu việc mất một key khiến node cha bị underflow, quy trình mượn hoặc gộp tiếp tục được áp dụng cho node cha.
 
@@ -321,3 +325,71 @@ Khi xóa key `50` khỏi node con giữa:
     ```
 
 4. Node giữa cũ được giải phóng. Node cha lúc này chỉ còn `[60]`. Nếu node cha bị thiếu key, quá trình mượn hoặc gộp tiếp tục lan lên tầng trên.
+
+**Trường hợp 2: key cần xóa nằm ở nút trung gian,** vì khóa này nắm vai trò để phân tách địch tuyến nên hệ thống không thể đơn giản xóa bỏ nó. Khi đó hệ thống tìm các khóa thế thân ở các nút lá, có thể là khóa liền trước hoặc khóa liền sau. Sau khi tìm được khóa thế thân, hệ thống copy khóa thế thân đó và thay thế với khóa ta cần xóa, sau đó xóa khóa thế thân ở nút lá đi. Ví dụ: Giả sử một phần của cây có cấu trúc:
+
+**Nút trung gian:** [ 50 ] (có 2 con trỏ rẽ nhánh trái và phải)
+
+**Cây con bên trái trỏ xuống nút lá:** [ 20 , 35 , 45 ]
+
+**Cây con bên phải trỏ xuống nút lá:** [ 60 , 70 ]
+
+**Yêu cầu:** Xóa khóa 50 ở nút trung gian.
+
+**Bước 1: Tìm khóa thế thân**
+
+Nhánh trái có khóa lớn nhất là 45 (In-order Predecessor ở nút lá bên trái).
+
+**Bước 2: Ghi đè khóa**
+
+Copy 45 lên thế chỗ của 50. Nút trung gian lúc này trở thành [ 45 ].
+
+**Bước 3: Xóa khóa thế thân ở nút lá**
+
+Xóa phần tử 45 ở nút lá bên trái.
+
+Nút lá bên trái còn lại: [ 20 , 35 ].
+
+**Bước 4: Kiểm tra Underflow**
+
+Nút lá bên trái còn 2 khóa, vẫn thỏa mãn số khóa tối thiểu là 2. Quá trình xóa kết thúc hoàn tất mà không cần gộp hay xoay cây.
+
+#### Đối với B+tree:
+
+Vì mọi khóa đều nằm ở nút lá nên hệ thống chỉ đơn giản là xóa khóa ở nút lá đi thôi, nếu nút bị underflow sẽ thực thi quy trình gộp node hoặc mượn key.
+
+### Thao tác update:
+
+Cách chỉ mục xử lý câu lệnh UPDATE phụ thuộc hoàn toàn vào việc cột dữ liệu bị thay đổi có nằm trong chỉ mục hay không:
+
+- **Th1:** nếu cột bị update không nằm trong khóa chỉ mục, lúc này cột đó update bình thường, không làm ảnh hưởng đến index
+- **Th2:** nếu cột bị update nằm trong khóa chỉ mục, để đảm bảo tính sắp xếp, hệ thống không bao giờ được sửa đổi trực tiếp khóa. Mà 2 hệ thống sẽ lần lượt làm 2 bước đó là DELETE và INSERT. Vì để update dữ liệu của khóa chỉ mục hệ thống phải làm cả 2 bước đó nên tiêu tốn I/O và tài nguyên rất nhiều. Nên thông thường ta nên hạn chế thay đổi các khóa chỉ mục.
+
+## Lúc trước ta đã từng nhắc đến clustered index và non clustered index (secondary index), vậy thực ra nó là gì?
+
+**Clustered Index** không đơn thuần là một công cụ tìm kiếm, mà nó chính là thiết kế định hình cấu trúc sắp xếp vật lý của toàn bộ bảng dữ liệu dưới ổ đĩa. Khi dùng Clustered Index, bảng dữ liệu được tổ chức trực tiếp dưới dạng một cây B+Tree, qua đó các dòng dữ liệu ở tầng nút lá bắt buộc phải được sắp xếp và lưu trữ theo thứ tự của Clustered Key. Đồng thười thì mức lá chứa chính các hàng dữ liệu của bảng; vì vậy clustered index, xét ở mức lá, chính là bảng dữ liệu.
+
+**Nói tóm lại B+Tree:** Là bản thiết kế cấu trúc dữ liệu (Data Structure).
+
+**Clustered Index:** Là ứng dụng thực tế của bản thiết kế đó để tổ chức và sắp xếp vật lý toàn bộ bảng dữ liệu dưới ổ đĩa.
+
+Lưu ý là khi bạn tạo clustered index thì bạn chỉ được tạo duy nhất 1 cái, vì dữ liệu dưới đĩa chỉ được sắp xếp theo 1 thứ tự duy nhất. Đồng thời bạn cũng không nên tạo clustered index ở các cột dễ biến động, các keys dễ bị update ví dụ như cột status. Như bạn đã biết thì việc update đối với cột dữ liệu được đánh index rất gây tốn I/O.
+
+**Bonus:** các cột tự tăng là ứng viên hoàn hảo cho clustered index vì nó đảm bảo 3 thuộc tính: ổn định, duy nhất và tăng dần tuần tự.
+
+**Non clustered index:** được thiết kế để tăng tốc độ truy xuất dữ liệu mà không làm thay đổi hay định đoạt thứ tự sắp xếp vật lý của bảng dữ liệu gốc dưới đĩa. Nếu như clustered index chính là bản thân bảng dữ liệu thì non clustered index là một cây B+tree hoàn toàn độc lập và nằm song song bên cạnh. khi bạn sử dụng non clustered index, Lúc này hệ thống sẽ tạo ra một cây B+tree độc lập. Qua đó hiệu suất truy vấn. Nút lá của nó không chứa toàn bộ hàng theo mặc định. Nó chứa:
+
+- Khóa nonclustered index.
+- Row locator để tìm hàng gốc.
+- Cột INCLUDE, nếu có.
+
+**Row locator:**
+
+- Bảng có clustered index: chứa clustered key.
+- Bảng heap: chứa RID, tức vị trí hàng.
+
+Vì non clustered index không làm thay đổi cách hệ thống lưu dữ liệu bên dưới đĩa nên bạn có thể tạo nhiều non clustered index. Nhưng đổi lại khi bạn dùng các câu lệnh DML, điều này sẽ gây ra 4 vấn đề sau:
+
+- **Nhân số lượt ghi:** khi bạn có 5 non clustered index, khi bạn insert dữ liệu, hệ thống buộc phải thực hiện cả 5 thao tác chèn vào 5 câu B+tree này. Nhân 5 lần ghi ổ đĩa. Qua đó cũng gây gia tăng lượt ghi vào WAl.
+- **Ghi ngẫu nhiên trên đĩa:** Khi bạn cập nhật một dòng dữ liệu, vì các key trên các index sẽ khác nhau và không chung một thứ tự logic, nên khi bạn cập nhật các nút của các index sẽ khác nhau, lúc này hệ thống sẽ phải ghi ngẫu nhiên chứ không ghi tuần tự
+- **Tình trạng data split:** khi bạn thực hiện các lệnh DMl, có nguy cơ gây phân tách trang, điều này có thể dẫn đến một chuỗi phân tách trang trên toàn bộ cây,
