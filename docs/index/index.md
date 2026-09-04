@@ -247,142 +247,77 @@ Quy trình hình thành bảng băm (Hash Index/Hash Map) trên RAM trong hệ q
 
 > **Lưu ý:** Nếu RAM đã lưu vị trí của một dòng dữ liệu nhưng hệ thống quét được vị trí mới hơn, hệ thống sẽ cập nhật vị trí mới vào RAM. Nếu dòng dữ liệu được đánh dấu là đã xóa, hệ thống sẽ xóa dữ liệu đó khỏi bảng băm trên RAM.
 
-Index xử lí như thế nào khi ta sử dụng các câu lệnh DML (INSERT, UPDATE hay DELETE)?
+## Index xử lý các lệnh DML (`INSERT`, `UPDATE`, `DELETE`) như thế nào?
 
-Khi ta INSERT dữ liệu:
-  - B tree: hệ thống duyệt từ đầu đến cuối để tìm nút có thể chèn giá trị vào. Nếu như nút còn chỗ thì nó sẽ được chèn vào nút đó theo thứ tự sắp xếp. Nếu như nút hết chỗ, sẽ xẫy ra tình trạng page split. Lúc này hệ thống sẽ lấy middle key, rồi phân tách thành 2 nút riêng biệt, middle key sẽ được đưa lên nút cha để làm key dẫn đường. Nếu nút cha cũng bị đầy thì sẽ thực thi quá trình tương tự lên trên các nút cha khác. khóa mới bạn vừa chèn sẽ rơi vào 1 trong 3 trường hợp:
+### Khi `INSERT` dữ liệu
 
-Trường hợp 1 (Nhỏ hơn Middle Key): Khóa mới sẽ nằm ở nút con bên trái.
+#### B-tree
 
-Trường hợp 2 (Lớn hơn Middle Key): Khóa mới sẽ nằm ở nút con bên phải.
+Hệ thống duyệt cây để tìm node có thể chèn giá trị. Nếu node còn chỗ, key mới được chèn vào đúng vị trí theo thứ tự sắp xếp. Nếu node đã đầy, hệ thống thực hiện **page split**: chọn middle key, tách node thành hai node riêng và đưa middle key lên node cha để làm key dẫn đường. Nếu node cha cũng đầy, quá trình này tiếp tục lan lên các node cha phía trên.
 
-Trường hợp 3 (Khóa mới chính là Middle Key): Khóa mới sẽ không nằm ở cả hai nút con, mà chính nó sẽ là phần tử được bốc thẳng lên nút cha.
+Key mới được chèn sẽ thuộc một trong ba trường hợp:
 
-Ví dụ: Khi bạn muốn chèn khóa 40, hệ thống sẽ tạm thời đưa khóa 40 vào nút $K_1 = 10$$K_2 = 20$ (đây là khóa nằm ở vị trí chính giữa)$K_3 = 30$$K_4 = 40$Khi xảy ra cơ chế tách trang (Page Split):Hệ thống bốc đúng 1 giá trị duy nhất là $K_2$ (tức là con số 20 cùng con trỏ dữ liệu của số 20) đưa hẳn lên nút cha phía trên.Nút bị đầy ban đầu được chẻ đôi thành 2 nút con:Nút con bên trái: Chỉ giữ các giá trị đứng trước $K_2$, tức là [10] (chính là $K_1$).Nút con bên phải: Chỉ giữ các giá trị đứng sau $K_2$, tức là [30, 40] (chính là $K_3$ và $K_4$).
+1. **Nhỏ hơn middle key:** Key mới nằm trong node con bên trái.
+2. **Lớn hơn middle key:** Key mới nằm trong node con bên phải.
+3. **Chính là middle key:** Key mới không nằm trong hai node con mà được đưa lên node cha.
 
-  - B+tree: Tương tự với B tree, nhưng sẽ khác là hệ thống phải duyệt xuống tận nút lá, vì chỉ có nút là mới chứa con trỏ/dữ liệu và khi bắt đầu phân tách trang, nút ở giữa sẽ được sao chép lên nút cha, vì B+tree bắt buộc các key phải nằm ở nút lá đồng thời khi phân tách thành 2 nút khác, hệ thống cũng cần phải cập nhật lại con trỏ liên kết đôi cho cả 2 nút.
-
-Đối với thao tác delete:
-  Xóa dữ liệu là một quá trình rất phức tạp, có thể gây mật độ dữ liệu của các nút xuống dưới ngưỡng (Underflow) 
-
-  - B tree: 
-    -Th1: nếu key bị xóa nằm ở nút lá, hệ thống xóa khóa đó bình thường, nếu gặp tình trạng underflow, hệ thống sẽ mượn khóa hoặc gộp nút từ các nút anh em, nút bên phải hoặc nút bên trái của nút có khóa bị xóa.
-
-  Bonus:
-    Quá trình mượn khóa là: hệ thống có thể mượn khóa ở các nút bên trái hoặc bên phải. Quá trình mượn khóa như sau: 
-    Nếu mượn từ nút bên trái/phải:
-      Lấy khóa phân tách ở nút cha, đưa xuống làm khóa phân tách ở nút bị thiếu. Sau đó khóa lớn nhất ở nút bên trái/phải sẽ được đưa lên làm khóa phân tách ở nút cha. Nhờ vào quy trình như vậy ta có thể đảm bảo được thứ tự sắp xếp của các khóa trong cây.
-
-Ví dụ: Nút cha có khóa [30].
-
-Nút con trái có [10, 20], nút con phải vừa bị xóa chỉ còn [40] (bị underflow).
-
-Nút phải mượn từ nút trái: Khóa 30 ở cha hạ xuống nút phải thành [30, 40]; khóa 20 từ nút trái nhảy lên thế chỗ 30 ở nút cha. Cây trở lại trạng thái cân bằng.
-
-  Quá trình gộp nút là: khi ta không thể mượn nút từ các nút anh em bên cạnh, khi đó hệ thống buộc phải gộp cả 2 nút lại để tránh trạng thái underflow.
-    Cách thức thực hiện như sau: kéo khóa phân tách của nút cha nằm giữa 2 nút con xuống, sau đó gộp chung vào dữ liệu của nút bị thiếu và dữ liệu của nút anh em. Sau đó xóa bỏ đi nút dư thừa. Nếu khi ta lấy mất một khóa trên nút cha dẫn đến nút cha bị underflow, quy trình cũng sẽ được lặp lại đối với nút cha. Khi đó nút cha có thể mượn khóa hoặc gộp nút.
-    
-    Viewed index.md:240-286
-Searched web: "B tree delete node merge underflow example"
-
-Để giúp người đọc dễ hình dung nhất về **quá trình gộp nút (Merge / Coalesce)** khi xóa dữ liệu trong B-Tree, chúng ta có thể tiếp cận theo 3 phần: **Hình ảnh ẩn dụ đời thực**, **Ví dụ trực quan từng bước (kèm sơ đồ ASCII)** và **Hiệu ứng dây chuyền (Domino)**.
-
----
-
-### 1. Hình ảnh ẩn dụ đời thực (Rất dễ tưởng tượng)
-
-> Hãy tưởng tượng **nút cha** là **bức tường ngăn cách** giữa hai phòng trọ: **phòng anh em** và **phòng của bạn** (hai nút con). 
-> - Quy định của xóm trọ: *Mỗi phòng phải có ít nhất 2 người* (ngưỡng tối thiểu để không bị underflow).
-> - Một người ở phòng bạn chuyển đi, phòng bạn chỉ còn 1 người $\rightarrow$ **Bị thiếu người (Underflow)**.
-> - Bạn ngó sang phòng hàng xóm (nút anh em) định rủ 1 người qua ở cùng (mượn khóa). Nhưng ngặt nỗi phòng hàng xóm cũng **chỉ có đúng 2 người** (vừa đủ mức tối thiểu), nếu họ cho bạn mượn thì phòng họ lại bị vi phạm!
-> - **Giải pháp**: Chủ trọ quyết định **đập bỏ bức tường ngăn cách** (kéo khóa phân tách ở nút cha xuống), gom người của phòng bạn + gạch của bức tường + người của phòng hàng xóm lại thành **MỘT PHÒNG DUY NHẤT LỚN HƠN**. 
-> - Bức tường ở tầng trên biến mất, số phòng ở tầng trên bớt đi một.
-
----
-
-### 2. Ví dụ trực quan với các con số cụ thể
-
-Giả sử ta có một **B-Tree bậc 5 (Order 5)**:
-- **Tối đa**: Mỗi nút chứa tối đa $5 - 1 = 4$ khóa.
-- **Tối thiểu**: Mỗi nút (trừ nút gốc) phải chứa ít nhất $\lceil 5/2 \rceil - 1 = \mathbf{2\ \text{khóa}}$.
-- Nếu nút nào chỉ còn **1 khóa** $\rightarrow$ Rơi vào trạng thái **Underflow**.
-
----
-
-#### Bước 1: Trạng thái ban đầu của cây
-Nút cha có khóa `[30, 60]`. Nút con giữa có `[40, 50]` (vừa đủ 2 khóa).
+Ví dụ, khi chèn key `40`, hệ thống tạm thời đưa key này vào node theo thứ tự:
 
 ```text
-                  [ 30  |  60 ]            <-- Nút cha
-                 /      |      \
-        [ 10 | 20 ]  [ 40 | 50 ]  [ 70 | 80 ]  <-- Các nút con (đều có 2 khóa)
-        (Nút trái)   (Nút giữa)   (Nút phải)
+K₁ = 10 | K₂ = 20 | K₃ = 30 | K₄ = 40
 ```
 
----
+Trong ví dụ này, `K₂ = 20` là middle key. Khi page split xảy ra:
 
-#### Bước 2: Thao tác xóa gây Underflow và không thể mượn
-Ta thực hiện lệnh xóa khóa **`50`**:
-- Nút giữa chỉ còn lại duy nhất khóa **`[40]`** $\rightarrow$ **Bị Underflow** (vì quy định tối thiểu là 2 khóa).
-- **Kiểm tra mượn**:
-  - Nhìn sang nút trái `[10, 20]`: Chỉ có đúng 2 khóa (mức tối thiểu), không có khóa dư để cho mượn.
-  - Nhìn sang nút phải `[70, 80]`: Cũng chỉ có đúng 2 khóa, không thể cho mượn.
-- $\Rightarrow$ Cả 2 anh em đều "nghèo", **bắt buộc phải gộp nút**!
+1. Hệ thống đưa `K₂`, tức key `20` cùng con trỏ dữ liệu của nó, lên node cha.
+2. Node con bên trái chỉ giữ những giá trị đứng trước `K₂`, tức `[10]` (`K₁`).
+3. Node con bên phải giữ những giá trị đứng sau `K₂`, tức `[30, 40]` (`K₃` và `K₄`).
 
----
+#### B+tree
 
-#### Bước 3: Thực hiện gộp nút (Merge)
-Ta chọn gộp **Nút giữa** với **Nút trái** thông qua khóa phân tách ở giữa chúng trên nút cha là số **`30`**:
+Quá trình chèn trong B+tree tương tự B-tree, nhưng hệ thống phải duyệt đến node lá vì chỉ node lá mới chứa con trỏ hoặc dữ liệu. Khi page split bắt đầu, key ở giữa được sao chép lên node cha vì B+tree yêu cầu các key vẫn phải nằm tại node lá. Sau khi tách thành hai node, hệ thống cũng cập nhật lại các con trỏ liên kết đôi của cả hai node.
 
-1. **Hạ khóa `30` từ nút cha xuống**: Số 30 nằm kẹp giữa 20 và 40.
-2. **Hợp nhất dữ liệu**: 
-   $$\text{Nút mới} = [10, 20] \ (\text{nút trái}) + [30] \ (\text{từ cha}) + [40] \ (\text{nút giữa}) = \mathbf{[10, 20, 30, 40]}$$
-3. **Xóa nút dư thừa**: Nút giữa cũ bị giải phóng.
+### Khi `DELETE` dữ liệu
 
-```text
-               [ 60 ]                   <-- Nút cha (mất đi khóa 30)
-              /      \
-    [ 10 | 20 | 30 | 40 ]   [ 70 | 80 ] <-- Nút gộp mới (4 khóa <= tối đa 4)
-```
+Xóa dữ liệu là quá trình phức tạp và có thể khiến mật độ dữ liệu trong node giảm xuống dưới ngưỡng tối thiểu, gây ra **underflow**.
 
-> **Tại sao thứ tự vẫn bảo toàn?**
-> Vì trong B-Tree: `Nút trái < Khóa phân tách của cha < Nút phải`. 
-> Do đó khi kéo khóa cha xuống đặt vào giữa: `[10, 20] < 30 < [40]` $\rightarrow$ Dãy số `[10, 20, 30, 40]` luôn luôn được sắp xếp tăng dần hoàn hảo!
+#### B-tree
 
----
+##### Trường hợp 1: Key cần xóa nằm ở node lá
 
-### 3. Điều gì xảy ra tiếp theo với nút cha? (Underflow lan truyền)
+Hệ thống xóa key khỏi node lá. Nếu node rơi vào trạng thái underflow, hệ thống sẽ mượn key hoặc gộp node với node anh em bên trái hoặc bên phải.
 
-Sau khi khóa `30` bị kéo xuống, nút cha chỉ còn lại `[60]`. Lúc này xảy ra 2 trường hợp:
+##### Mượn key
 
-1. **Nếu nút cha là nút gốc (Root):**
-   - Nút gốc có đặc quyền: Chỉ cần có ít nhất 1 khóa là hợp lệ.
-   - Do đó nút cha `[60]` vẫn hợp lệ $\rightarrow$ Quá trình kết thúc.
-   - *(Trường hợp đặc biệt: Nếu nút gốc ban đầu chỉ có duy nhất 1 khóa là `[30]`, khi kéo `30` xuống thì nút gốc thành rỗng. Lúc này nút mới gộp `[10, 20, 30, 40]` sẽ nhảy lên làm **Nút gốc mới** $\rightarrow$ **Chiều cao của toàn bộ cây giảm đi 1 tầng**).*
+Hệ thống có thể mượn key từ node anh em bên trái hoặc bên phải. Key phân tách tại node cha được đưa xuống node đang thiếu. Nếu mượn từ bên trái, key lớn nhất của node trái được đưa lên thay key phân tách tại node cha; nếu mượn từ bên phải, key nhỏ nhất của node phải được đưa lên. Quy trình này duy trì thứ tự sắp xếp của các key trong cây.
 
-2. **Nếu nút cha là một nút trung gian:**
-   - Nút cha bây giờ chỉ có 1 khóa `[60]` $\rightarrow$ Nút cha lại bị **Underflow**!
-   - Nút cha lại tiếp tục quá trình: nhìn sang anh em của nó ở tầng trên để **mượn khóa**. Nếu không mượn được, nó lại **kéo khóa của ông nội xuống để gộp nút**. Quy trình cứ thế đệ quy dồn ngược lên trên (Cascading merge).
+Ví dụ:
 
----
+- Node cha chứa key `[30]`.
+- Node con trái chứa `[10, 20]`.
+- Node con phải chỉ còn `[40]` sau khi xóa và bị underflow.
 
-### 4. Đoạn nội dung đề xuất để bạn bổ sung trực tiếp vào `index.md`
+Node phải mượn key từ node trái. Key `30` tại node cha được đưa xuống node phải, tạo thành `[30, 40]`; key `20` từ node trái được đưa lên thay vị trí của key `30` tại node cha. Cây trở lại trạng thái cân bằng.
 
-Bạn có thể thay thế hoặc viết tiếp vào dưới dòng 284 trong file [index.md](file:///home/phongthanh/architecture-notes/docs/index/index.md#L282-L285) như sau:
+##### Gộp node
 
-```markdown
-  Quá trình gộp nút là: khi ta không thể mượn nút từ các nút anh em bên cạnh (do các nút anh em cũng chỉ có số khóa ở mức tối thiểu), hệ thống buộc phải gộp cả 2 nút lại để tránh trạng thái underflow.
-    Cách thức thực hiện như sau: kéo khóa phân tách của nút cha nằm giữa 2 nút con xuống, sau đó gộp chung vào dữ liệu của nút bị thiếu và dữ liệu của nút anh em. Sau đó xóa bỏ đi nút dư thừa. Nếu việc lấy mất một khóa trên nút cha dẫn đến nút cha bị underflow, quy trình cũng sẽ được lặp lại đối với nút cha.
+Khi không thể mượn key vì các node anh em chỉ có số key tối thiểu, hệ thống buộc phải gộp hai node để xử lý underflow. Key phân tách tại node cha, nằm giữa hai node con, được đưa xuống và gộp cùng dữ liệu của node đang thiếu và node anh em. Node dư thừa sau đó được xóa. Nếu việc mất một key khiến node cha bị underflow, quy trình mượn hoặc gộp tiếp tục được áp dụng cho node cha.
 
-Ví dụ: Cây B-Tree bậc 5 (mỗi nút có tối thiểu 2 khóa, tối đa 4 khóa).
-- Nút cha có khóa [30, 60].
-- Nút con trái có [10, 20], nút con giữa có [40, 50], nút con phải có [70, 80].
+Ví dụ với cây B-tree bậc 5, trong đó mỗi node chứa tối thiểu 2 key và tối đa 4 key:
 
-Khi ta xóa khóa 50 ở nút con giữa:
-1. Nút con giữa chỉ còn [40] (bị underflow vì < 2 khóa).
-2. Nút giữa kiểm tra hai nút anh em bên cạnh: cả [10, 20] và [70, 80] đều chỉ có đúng 2 khóa (đạt mức tối thiểu), không có khóa dôi dư để cho mượn.
-3. Bắt buộc gộp nút: Khóa phân tách 30 ở nút cha được kéo xuống kẹp vào giữa nút trái và nút giữa:
-   [10, 20] + [30] + [40] -> gộp thành nút mới [10, 20, 30, 40].
-4. Nút giữa cũ được giải phóng. Nút cha lúc này chỉ còn [60]. Nếu nút cha bị thiếu khóa, quy trình mượn hoặc gộp sẽ tiếp tục lan truyền lên tầng trên.
-``` 
-    -Th2: khóa cần xóa nằm ở nút trung gian: như bạn dã biết thì một khóa ở khóa ở nút trung gian vừa dùng để định hướng dữ liệu
+- Node cha chứa `[30, 60]`.
+- Node con trái chứa `[10, 20]`.
+- Node con giữa chứa `[40, 50]`.
+- Node con phải chứa `[70, 80]`.
+
+Khi xóa key `50` khỏi node con giữa:
+
+1. Node con giữa chỉ còn `[40]` và bị underflow vì có ít hơn 2 key.
+2. Hai node anh em `[10, 20]` và `[70, 80]` đều chỉ có đúng 2 key, đạt mức tối thiểu nên không có key dư để cho mượn.
+3. Hệ thống kéo key phân tách `30` từ node cha xuống giữa node trái và node giữa, rồi gộp thành node mới:
+
+    ```text
+    [10, 20] + [30] + [40] = [10, 20, 30, 40]
+    ```
+
+4. Node giữa cũ được giải phóng. Node cha lúc này chỉ còn `[60]`. Nếu node cha bị thiếu key, quá trình mượn hoặc gộp tiếp tục lan lên tầng trên.
