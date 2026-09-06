@@ -32,7 +32,7 @@ hide:
   </figcaption>
 </figure>
 
-## Page: đơn vị đọc và ghi dữ liệu của database
+## 1. Database lưu trữ dữ liệu như thế nào?
 
 Để hiểu khái niệm index dễ hơn, trước hết hãy xem **database lưu trữ dữ liệu trên ổ đĩa** như thế nào.
 
@@ -68,16 +68,16 @@ Thông thường, dữ liệu được lưu trong page theo hai cách:
 - **Heap:** Dữ liệu trong page hoàn toàn không có thứ tự. Database ghi dữ liệu đến đâu thì đưa vào page đến đó, hoặc tìm page vẫn còn chỗ trống. Vì không phải quan tâm đến thứ tự nên **tốc độ ghi rất nhanh**. Đổi lại, để tìm một dòng dữ liệu, hệ thống phải lần lượt đưa các page vào RAM rồi quét từng dòng trong từng page (**full table scan**), gây ảnh hưởng lớn đến hiệu suất truy vấn.
 - **Clustered:** Khi bảng có clustered index (primary key), dữ liệu trong database **được sắp xếp theo khóa này**. Việc ghi mất nhiều thời gian hơn vì hệ thống phải duy trì thứ tự, nhưng **truy vấn theo dòng hoặc theo khoảng sẽ nhanh hơn**. Do dữ liệu đã được sắp xếp, hệ thống chỉ cần xác định page chứa dòng cần tìm thay vì đọc toàn bộ các page.
 
-## Index là gì và nó lưu những gì?
+## 2. Index là gì?
 
 Hãy hình dung bạn cần tìm một tựa sách trong một cuốn sách rất dày. Nếu cuốn sách **không có mục lục**, bạn phải lật lần lượt từ trang đầu đến trang cuối cho đến khi thấy đúng tựa sách. Cách này rất tốn thời gian, nhất là khi cuốn sách dài hàng nghìn trang. Mục lục giải quyết vấn đề bằng cách sắp xếp các tựa sách theo một thứ tự, chẳng hạn thứ tự chữ cái, rồi ghi kèm số trang tương ứng. Muốn tìm một tựa đề, bạn chỉ cần **tra mục lục và mở thẳng đến trang được chỉ dẫn**.
 
 Index trong cơ sở dữ liệu vận hành theo ý tưởng tương tự. Thay vì duyệt từng dòng để tìm giá trị mong muốn, hệ thống **tra index** để nhanh chóng xác định bản ghi hoặc page chứa dữ liệu, sau đó **chỉ đọc phần cần thiết**.
 
-Index là một **cấu trúc phụ giúp tăng tốc tìm kiếm**. Ở node trung gian,index lưu **key phân tách và con trỏ**, trỏ đến index page con. Ở node lá, index lưu key cùng con trỏ hoặc dịnh danh đến bản ghi; tùy loại index thì node lá có thể chứa luôn giá trị. trường hợp nào dùng con trỏ và tại sao lại có node trung gian và nút lá, ta sẽ được tìm hiểu sau. Trên đĩa, index thường được tổ chức thành nhiều **index page**; mỗi index page gồm nhiều **index entry**.
+Index là một **cấu trúc phụ giúp tăng tốc tìm kiếm**. Ở nút trung gian, index lưu **key phân tách và con trỏ**, trỏ đến index page con. Ở nút lá, index lưu key cùng con trỏ hoặc định danh đến bản ghi; tùy loại index, nút lá có thể chứa luôn giá trị. Các phần tiếp theo sẽ giải thích khi nào index dùng con trỏ, cũng như vai trò của nút trung gian và nút lá. Trên đĩa, index thường được tổ chức thành nhiều **index page**; mỗi index page gồm nhiều **index entry**.
 
 
-## Cấu trúc index: B-tree và B+tree
+## 3. B-tree và B+tree hoạt động như thế nào?
 
 Các index page thường không được trải phẳng mà liên kết với nhau theo một cấu trúc index. Hai cấu trúc index phổ biến là **B-tree và B+tree**. Đây là những **cây tìm kiếm đa nhánh cân bằng**, gồm nút gốc, các nút trung gian và các nút lá. Nếu đã học cấu trúc dữ liệu và giải thuật, bạn có thể hình dung chúng tương tự các cây tìm kiếm cân bằng như AVL hoặc Red-Black tree. Điểm khác biệt là mỗi node của B-tree/B+tree có thể chứa **nhiều key và nhiều nhánh con**, thay vì chỉ có hai nhánh trái và phải.
 
@@ -123,11 +123,7 @@ Trong B-tree, dữ liệu thực tế hoặc con trỏ đến dữ liệu có th
 
 #### Nút trung gian
 
-Mỗi nút trung gian gồm các **key**, con trỏ đến dữ liệu thực tế (**Row Identifier — RID**) và con trỏ đến các node con. Một RID thường gồm các thành phần sau:
-
-- **File ID:** Mã định danh của file chứa dữ liệu trên ổ đĩa.
-- **Page Number:** Số thứ tự của page trong file.
-- **Slot Number:** Vị trí của dữ liệu trong Offset Array.
+Mỗi nút trung gian gồm các **key**, con trỏ đến dữ liệu thực tế (**Row Identifier — RID**) và con trỏ đến các node con.
 
 #### Nút lá
 
@@ -177,81 +173,58 @@ Tất cả key được đánh index đều xuất hiện tại nút lá. Mỗi 
 [5 | row ptr] [10 | row ptr] [15 | row ptr]
 ```
 
-### Các mô hình lưu trữ tại nút lá của Index
+## 4. Index liên kết với dữ liệu trong bảng như thế nào?
 
-Con trỏ dữ liệu trong B-tree và nút lá của B+tree có thể thuộc hai trường hợp.
+### Con trỏ vật lý (RID — Row Identifier)
 
-#### Trường hợp 1: Con trỏ vật lý (RID — Row Identifier)
+Khi bảng dữ liệu chính được lưu dưới dạng Heap Pages, không có clustered index, ví dụ PostgreSQL, index lưu tọa độ đĩa tĩnh `FileID:PageID:SlotNumber` để trỏ thẳng đến dòng dữ liệu.
 
-- **Áp dụng:** Khi bảng dữ liệu chính được lưu dưới dạng Heap Pages, không có Clustered Index, ví dụ PostgreSQL.
-- **Nội dung:** Lưu tọa độ đĩa tĩnh `FileID:PageID:SlotNumber`, trỏ thẳng đến dòng dữ liệu.
+Một RID thường gồm các thành phần sau:
 
-#### Trường hợp 2: chứa dữ liệu thực tế
+- **File ID:** Mã định danh của file chứa dữ liệu trên ổ đĩa.
+- **Page Number:** Số thứ tự của page trong file.
+- **Slot Number:** Vị trí của dữ liệu trong Offset Array.
 
-Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.
+### Dữ liệu thực tế tại nút lá và clustered index
 
-#### Trường hợp 3: Khóa logic (Clustered Key / Primary Key)
+**Clustered index** định hình cấu trúc sắp xếp vật lý của toàn bộ bảng dữ liệu trên ổ đĩa. Khi dùng clustered index với B+tree, bảng dữ liệu được tổ chức trực tiếp thành cây này. Các nút lá chứa chính các hàng dữ liệu của bảng, được sắp xếp và lưu trữ theo thứ tự của clustered key. Vì vậy, xét ở mức lá, clustered index chính là bảng dữ liệu.
 
-- **Áp dụng:** Khi bảng chính được lưu theo Clustered Index và có thêm chỉ mục phụ (Secondary Index).
-- **Nội dung:** Không lưu địa chỉ đĩa tĩnh mà lưu giá trị của Primary Key (giá trị của các nút ở cây chính), ví dụ `ID = 3`, để sau đó duyệt cây Clustered Index và lấy dữ liệu dòng.
+B+tree là cấu trúc dữ liệu; clustered index là ứng dụng của cấu trúc đó để tổ chức và sắp xếp vật lý toàn bộ bảng trên ổ đĩa.
 
-#### Trường hợp 3: chứa dữ liệu thực tế
+Mỗi bảng chỉ có thể có một clustered index vì dữ liệu trên đĩa chỉ được sắp xếp theo một thứ tự duy nhất. Không nên chọn các cột dễ biến động, thường xuyên được cập nhật, chẳng hạn cột `status`, vì cập nhật khóa chỉ mục gây tốn I/O.
 
-Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.
+Các cột tự tăng là ứng viên hoàn hảo cho clustered index vì đảm bảo ba thuộc tính: ổn định, duy nhất và tăng dần tuần tự.
 
-> Lưu ý là trường hợp 2 và 3 dành cho B+tree
+### Khóa logic và quá trình tra cứu
 
-**Câu hỏi đặt ra:** Tại sao ở Trường hợp 2 (Clustered Table), người ta không dùng con trỏ vật lý RID cho nhanh, mà lại dùng Khóa logic để rồi phải bị phạt duyệt cây 2 lần (Double Traversal).
+Khi bảng chính được lưu theo clustered index và có thêm chỉ mục phụ (secondary index), chỉ mục phụ lưu giá trị của primary key thay cho địa chỉ đĩa tĩnh. Ví dụ, với `ID = 3`, hệ thống dùng giá trị này để duyệt cây clustered index và lấy dữ liệu dòng.
 
-Đó là bởi vì nếu các cây chỉ mục phụ lưu cả RID thì khi người dùng thay đổi các dòng dữ liệu hoặc thêm dữ liệu vào dữ liệu có thể bị thay đổi vị trí. Dẫn đến phải cập nhật lại các RID của cây gây lãng phí I/O.
+> **Lưu ý:** Hai mô hình chứa dữ liệu thực tế tại nút lá và lưu khóa logic ở trên dành cho B+tree.
 
-#### Hình ảnh minh họa
+Vì sao chỉ mục phụ dùng khóa logic, dù phải duyệt cây hai lần (**Double Traversal**), thay vì dùng con trỏ vật lý RID?
+
+Khi thêm hoặc thay đổi dữ liệu, vị trí của các dòng có thể thay đổi. Nếu các chỉ mục phụ lưu RID, hệ thống phải cập nhật lại những RID này, gây tốn I/O.
 
 ![Sự khác nhau giữa con trỏ dữ liệu trong B-tree và nút lá B+tree](../assets/images/index/difference.png)
 
-## Một số cấu trúc index chuyên biệt khác
+### Non-clustered index
 
-Ngoài họ cấu trúc B-tree/B+tree giữ vai trò chủ đạo trong RDBMS, thế giới lưu trữ còn có các cấu trúc chuyên biệt khác như Hash Index, GIN,... Nhưng trong khuôn khổ bài viết này ta sẽ chỉ tìm hiểu sơ lược thêm về Hash Index.
+**Non-clustered index** tăng tốc độ truy xuất mà không thay đổi thứ tự sắp xếp vật lý của bảng dữ liệu gốc. Đây là một cây B+tree độc lập, tồn tại bên cạnh bảng dữ liệu.
 
-### Hash Index
+Theo mặc định, nút lá không chứa toàn bộ hàng mà chứa:
 
-Nếu nghiệp vụ không yêu cầu truy vấn khoảng mà ưu tiên tối đa tốc độ tra cứu điểm (**point lookup**), Hash Index là một lựa chọn có thể cân nhắc.
+- Khóa non-clustered index.
+- Row locator để tìm hàng gốc.
+- Cột `INCLUDE`, nếu có.
 
-Đúng như tên gọi, cấu trúc này sử dụng một bảng băm, thường được duy trì thường trực trên RAM để tối ưu hiệu năng. Nhờ cơ chế băm trực tiếp key tìm kiếm, độ phức tạp trung bình khi truy xuất một giá trị đạt mức lý tưởng là `O(1)`.
+Row locator phụ thuộc vào cách tổ chức bảng:
 
-#### Hạn chế của Hash Index
+- **Bảng có clustered index:** Chứa clustered key.
+- **Bảng heap:** Chứa RID, tức vị trí hàng.
 
-Mặc dù có tốc độ đọc tốt, Hash Index vẫn tồn tại một số nhược điểm đáng kể:
+Vì non-clustered index không thay đổi cách lưu dữ liệu trên đĩa, một bảng có thể có nhiều non-clustered index.
 
-- **Không hỗ trợ truy vấn khoảng:** Mục tiêu của hàm băm là phân tán dữ liệu ngẫu nhiên và đồng đều để tránh xung đột, tức các key khác nhau nhưng nằm trong cùng một bucket. Do đó, hai mã băm có giá trị liền kề có thể nằm trên hai data page cách xa nhau.
-- **Không phù hợp với bảng quá nhỏ:** Sử dụng bảng băm có thể chậm hơn cả việc quét toàn bộ bảng.
-- **Phụ thuộc vào dung lượng RAM:** Để đạt hiệu năng tối đa, bảng băm được lưu trên RAM. Nếu kích thước bảng băm vượt quá dung lượng RAM hiện có, hiệu năng hệ thống sẽ giảm mạnh. Khi hệ thống mất điện hoặc gặp sự cố, bảng băm này cũng bị mất và phải được khôi phục khi hệ thống hoạt động trở lại.
-
-#### Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?
-
-Khi bảng băm vượt quá dung lượng RAM, một phần dữ liệu buộc phải được đẩy xuống ổ đĩa. Do tính chất phân tán ngẫu nhiên của hàm băm, mỗi lượt truy vấn rất dễ rơi vào phần nằm trên đĩa (**cache miss**), biến thao tác tra cứu trên RAM thành thao tác đọc đĩa ngẫu nhiên (**Random I/O**) rất chậm.
-
-![Ảnh hưởng đến hiệu năng khi bảng băm lớn hơn RAM](../assets/images/index/RAM.png)
-
-#### Vì sao hàm băm cần hạn chế xung đột?
-
-Hàm băm cần hạn chế tối đa tình trạng xung đột vì các nguyên nhân sau:
-
-- Tránh tình trạng **data skew**, trong đó một bucket chứa quá nhiều key còn bucket khác không chứa key nào.
-- Khi quá nhiều key nằm trong cùng một bucket, hệ thống phải truy cập bucket rồi tiếp tục tìm key cần thiết, làm mất lợi thế tốc độ `O(1)` của Hash Index.
-- Khi quá nhiều key nằm trong cùng một bucket khiến bucket hết dung lượng, hệ thống phải tạo thêm **overflow page** và dùng con trỏ của danh sách liên kết để nối page này vào cuối bucket hiện có. Mỗi lần đọc overflow page cần thêm một lần I/O; quá nhiều I/O sẽ làm chậm hệ thống.
-
-#### Quy trình hình thành bảng băm trên RAM
-
-Quy trình hình thành bảng băm (Hash Index/Hash Map) trên RAM trong hệ quản trị cơ sở dữ liệu gồm các bước sau:
-
-1. Hệ thống quét tuần tự toàn bộ file log trên ổ đĩa.
-2. Xác định vị trí của từng dòng dữ liệu trên ổ đĩa.
-3. Tính mã băm của key và nạp vào RAM.
-
-> **Lưu ý:** Nếu RAM đã lưu vị trí của một dòng dữ liệu nhưng hệ thống quét được vị trí mới hơn, hệ thống sẽ cập nhật vị trí mới vào RAM. Nếu dòng dữ liệu được đánh dấu là đã xóa, hệ thống sẽ xóa dữ liệu đó khỏi bảng băm trên RAM.
-
-## Index xử lý các lệnh DML (`INSERT`, `UPDATE`, `DELETE`) như thế nào?
+## 5. Index thay đổi như thế nào khi ghi dữ liệu?
 
 ### Khi `INSERT` dữ liệu
 
@@ -295,26 +268,33 @@ Hệ thống xóa key khỏi node lá. Nếu node rơi vào trạng thái underf
 
 Hệ thống có thể mượn key từ node anh em bên trái hoặc bên phải. Key phân tách tại node cha được đưa xuống node đang thiếu. Nếu mượn từ bên trái, key lớn nhất của node trái được đưa lên thay key phân tách tại node cha; nếu mượn từ bên phải, key nhỏ nhất của node phải được đưa lên. Quy trình này duy trì thứ tự sắp xếp của các key trong cây.
 
-Ví dụ:
+**Trạng thái trước khi mượn key:**
 
 - Node cha chứa key `[30]`.
 - Node con trái chứa `[10, 20]`.
 - Node con phải chỉ còn `[40]` sau khi xóa và bị underflow.
 
-Node phải mượn key từ node trái. Key `30` tại node cha được đưa xuống node phải, tạo thành `[30, 40]`; key `20` từ node trái được đưa lên thay vị trí của key `30` tại node cha. Cây trở lại trạng thái cân bằng.
+**Thao tác:**
+
+1. Đưa key `30` tại node cha xuống node phải, tạo thành `[30, 40]`.
+2. Đưa key `20` từ node trái lên thay key `30` tại node cha.
+
+**Trạng thái sau cùng:** Node cha chứa `[20]`, node trái chứa `[10]`, node phải chứa `[30, 40]`. Cây trở lại trạng thái cân bằng.
 
 **Gộp node**
 
 Khi không thể mượn key vì các node anh em chỉ có số key tối thiểu, hệ thống buộc phải gộp hai node để xử lý underflow. Key phân tách tại node cha, nằm giữa hai node con, được đưa xuống và gộp cùng dữ liệu của node đang thiếu và node anh em. Node dư thừa sau đó được xóa. Nếu việc mất một key khiến node cha bị underflow, quy trình mượn hoặc gộp tiếp tục được áp dụng cho node cha.
 
-Ví dụ với cây B-tree bậc 5, trong đó mỗi node chứa tối thiểu 2 key và tối đa 4 key:
+Ví dụ với cây B-tree bậc 5, mỗi node chứa tối thiểu 2 key và tối đa 4 key.
+
+**Trạng thái ban đầu:**
 
 - Node cha chứa `[30, 60]`.
 - Node con trái chứa `[10, 20]`.
 - Node con giữa chứa `[40, 50]`.
 - Node con phải chứa `[70, 80]`.
 
-Khi xóa key `50` khỏi node con giữa:
+**Thao tác: Xóa key `50` khỏi node con giữa.**
 
 1. Node con giữa chỉ còn `[40]` và bị underflow vì có ít hơn 2 key.
 2. Hai node anh em `[10, 20]` và `[70, 80]` đều chỉ có đúng 2 key, đạt mức tối thiểu nên không có key dư để cho mượn.
@@ -324,72 +304,251 @@ Khi xóa key `50` khỏi node con giữa:
     [10, 20] + [30] + [40] = [10, 20, 30, 40]
     ```
 
-4. Node giữa cũ được giải phóng. Node cha lúc này chỉ còn `[60]`. Nếu node cha bị thiếu key, quá trình mượn hoặc gộp tiếp tục lan lên tầng trên.
+4. Giải phóng node giữa cũ.
 
-**Trường hợp 2: key cần xóa nằm ở nút trung gian,** vì khóa này nắm vai trò để phân tách địch tuyến nên hệ thống không thể đơn giản xóa bỏ nó. Khi đó hệ thống tìm các khóa thế thân ở các nút lá, có thể là khóa liền trước hoặc khóa liền sau. Sau khi tìm được khóa thế thân, hệ thống copy khóa thế thân đó và thay thế với khóa ta cần xóa, sau đó xóa khóa thế thân ở nút lá đi. Ví dụ: Giả sử một phần của cây có cấu trúc:
+**Trạng thái sau cùng:** Node đã gộp chứa `[10, 20, 30, 40]`, node cha còn `[60]`. Nếu node cha bị thiếu key, quá trình mượn hoặc gộp tiếp tục lan lên tầng trên.
 
-**Nút trung gian:** [ 50 ] (có 2 con trỏ rẽ nhánh trái và phải)
+**Trường hợp 2: Key cần xóa nằm ở nút trung gian**
 
-**Cây con bên trái trỏ xuống nút lá:** [ 20 , 35 , 45 ]
+Khóa ở nút trung gian có vai trò phân tách và định tuyến nên hệ thống không thể xóa trực tiếp. Hệ thống tìm khóa liền trước hoặc liền sau ở nút lá, sao chép khóa đó để thay thế khóa cần xóa, rồi xóa khóa thế thân ở nút lá.
 
-**Cây con bên phải trỏ xuống nút lá:** [ 60 , 70 ]
+**Trạng thái ban đầu:**
 
-**Yêu cầu:** Xóa khóa 50 ở nút trung gian.
+- Nút trung gian chứa `[50]`, có hai con trỏ rẽ nhánh trái và phải.
+- Cây con bên trái trỏ xuống nút lá `[20, 35, 45]`.
+- Cây con bên phải trỏ xuống nút lá `[60, 70]`.
 
-**Bước 1: Tìm khóa thế thân**
+**Thao tác: Xóa khóa `50` ở nút trung gian.**
 
-Nhánh trái có khóa lớn nhất là 45 (In-order Predecessor ở nút lá bên trái).
+1. Tìm khóa thế thân: Khóa lớn nhất ở nhánh trái là `45` (In-order Predecessor ở nút lá bên trái).
+2. Sao chép `45` lên thay `50`. Nút trung gian trở thành `[45]`.
+3. Xóa `45` ở nút lá bên trái. Nút này còn `[20, 35]`.
+4. Kiểm tra underflow: Nút lá bên trái còn hai khóa, vẫn thỏa mãn số khóa tối thiểu là hai.
 
-**Bước 2: Ghi đè khóa**
+**Trạng thái sau cùng:** Nút trung gian chứa `[45]`, nút lá bên trái chứa `[20, 35]`. Quá trình xóa kết thúc mà không cần gộp hay xoay cây.
 
-Copy 45 lên thế chỗ của 50. Nút trung gian lúc này trở thành [ 45 ].
+#### B+tree
 
-**Bước 3: Xóa khóa thế thân ở nút lá**
+Vì mọi khóa đều nằm ở nút lá, hệ thống xóa khóa tại nút lá. Nếu nút bị underflow, hệ thống thực hiện quy trình gộp nút hoặc mượn khóa.
 
-Xóa phần tử 45 ở nút lá bên trái.
+### Khi `UPDATE` dữ liệu
 
-Nút lá bên trái còn lại: [ 20 , 35 ].
+Cách chỉ mục xử lý câu lệnh `UPDATE` phụ thuộc vào việc cột được cập nhật có nằm trong khóa chỉ mục hay không:
 
-**Bước 4: Kiểm tra Underflow**
+- **Cột không nằm trong khóa chỉ mục:** Cột được cập nhật bình thường, không ảnh hưởng đến index.
+- **Cột nằm trong khóa chỉ mục:** Để duy trì thứ tự sắp xếp, hệ thống không sửa trực tiếp khóa mà lần lượt thực hiện `DELETE` rồi `INSERT`. Việc thực hiện cả hai thao tác tiêu tốn nhiều I/O và tài nguyên, vì vậy nên hạn chế thay đổi khóa chỉ mục.
 
-Nút lá bên trái còn 2 khóa, vẫn thỏa mãn số khóa tối thiểu là 2. Quá trình xóa kết thúc hoàn tất mà không cần gộp hay xoay cây.
+### Chi phí duy trì nhiều index
 
-#### Đối với B+tree:
+Khi bảng có nhiều non-clustered index, các câu lệnh DML kéo theo các chi phí sau:
 
-Vì mọi khóa đều nằm ở nút lá nên hệ thống chỉ đơn giản là xóa khóa ở nút lá đi thôi, nếu nút bị underflow sẽ thực thi quy trình gộp node hoặc mượn key.
+- **Nhân số lượt ghi:** Với 5 non-clustered index, một lần `INSERT` buộc hệ thống thực hiện 5 thao tác chèn vào 5 cây B+tree, nhân 5 lần ghi ổ đĩa và tăng số lượt ghi vào WAL.
+- **Ghi ngẫu nhiên trên đĩa:** Các index có key khác nhau và không cùng thứ tự logic. Khi cập nhật một dòng dữ liệu, các nút cần cập nhật nằm ở những vị trí khác nhau, khiến hệ thống phải ghi ngẫu nhiên thay vì ghi tuần tự.
+- **Phân tách page:** Các lệnh DML có thể gây phân tách page, kéo theo một chuỗi phân tách trên toàn bộ cây.
 
-### Thao tác update:
+## 6. Hash Index
 
-Cách chỉ mục xử lý câu lệnh UPDATE phụ thuộc hoàn toàn vào việc cột dữ liệu bị thay đổi có nằm trong chỉ mục hay không:
+Ngoài họ cấu trúc B-tree/B+tree giữ vai trò chủ đạo trong RDBMS, thế giới lưu trữ còn có các cấu trúc chuyên biệt khác như Hash Index, GIN,... Nhưng trong khuôn khổ bài viết này ta sẽ chỉ tìm hiểu sơ lược thêm về Hash Index.
 
-- **Th1:** nếu cột bị update không nằm trong khóa chỉ mục, lúc này cột đó update bình thường, không làm ảnh hưởng đến index
-- **Th2:** nếu cột bị update nằm trong khóa chỉ mục, để đảm bảo tính sắp xếp, hệ thống không bao giờ được sửa đổi trực tiếp khóa. Mà 2 hệ thống sẽ lần lượt làm 2 bước đó là DELETE và INSERT. Vì để update dữ liệu của khóa chỉ mục hệ thống phải làm cả 2 bước đó nên tiêu tốn I/O và tài nguyên rất nhiều. Nên thông thường ta nên hạn chế thay đổi các khóa chỉ mục.
+### Cơ chế tra cứu
 
-## Lúc trước ta đã từng nhắc đến clustered index và non clustered index (secondary index), vậy thực ra nó là gì?
+Nếu nghiệp vụ không yêu cầu truy vấn khoảng mà ưu tiên tối đa tốc độ tra cứu điểm (**point lookup**), Hash Index là một lựa chọn có thể cân nhắc.
 
-**Clustered Index** không đơn thuần là một công cụ tìm kiếm, mà nó chính là thiết kế định hình cấu trúc sắp xếp vật lý của toàn bộ bảng dữ liệu dưới ổ đĩa. Khi dùng Clustered Index, bảng dữ liệu được tổ chức trực tiếp dưới dạng một cây B+Tree, qua đó các dòng dữ liệu ở tầng nút lá bắt buộc phải được sắp xếp và lưu trữ theo thứ tự của Clustered Key. Đồng thười thì mức lá chứa chính các hàng dữ liệu của bảng; vì vậy clustered index, xét ở mức lá, chính là bảng dữ liệu.
+Đúng như tên gọi, cấu trúc này sử dụng một bảng băm, thường được duy trì thường trực trên RAM để tối ưu hiệu năng. Nhờ cơ chế băm trực tiếp key tìm kiếm, độ phức tạp trung bình khi truy xuất một giá trị đạt mức lý tưởng là `O(1)`.
 
-**Nói tóm lại B+Tree:** Là bản thiết kế cấu trúc dữ liệu (Data Structure).
+### Hạn chế của Hash Index
 
-**Clustered Index:** Là ứng dụng thực tế của bản thiết kế đó để tổ chức và sắp xếp vật lý toàn bộ bảng dữ liệu dưới ổ đĩa.
+Mặc dù có tốc độ đọc tốt, Hash Index vẫn tồn tại một số nhược điểm đáng kể:
 
-Lưu ý là khi bạn tạo clustered index thì bạn chỉ được tạo duy nhất 1 cái, vì dữ liệu dưới đĩa chỉ được sắp xếp theo 1 thứ tự duy nhất. Đồng thời bạn cũng không nên tạo clustered index ở các cột dễ biến động, các keys dễ bị update ví dụ như cột status. Như bạn đã biết thì việc update đối với cột dữ liệu được đánh index rất gây tốn I/O.
+- **Không hỗ trợ truy vấn khoảng:** Mục tiêu của hàm băm là phân tán dữ liệu ngẫu nhiên và đồng đều để tránh xung đột, tức các key khác nhau nhưng nằm trong cùng một bucket. Do đó, hai mã băm có giá trị liền kề có thể nằm trên hai data page cách xa nhau.
+- **Không phù hợp với bảng quá nhỏ:** Sử dụng bảng băm có thể chậm hơn cả việc quét toàn bộ bảng.
+- **Phụ thuộc vào dung lượng RAM:** Để đạt hiệu năng tối đa, bảng băm được lưu trên RAM. Nếu kích thước bảng băm vượt quá dung lượng RAM hiện có, hiệu năng hệ thống sẽ giảm mạnh. Khi hệ thống mất điện hoặc gặp sự cố, bảng băm này cũng bị mất và phải được khôi phục khi hệ thống hoạt động trở lại.
 
-**Bonus:** các cột tự tăng là ứng viên hoàn hảo cho clustered index vì nó đảm bảo 3 thuộc tính: ổn định, duy nhất và tăng dần tuần tự.
+### Vì sao hàm băm cần hạn chế xung đột?
 
-**Non clustered index:** được thiết kế để tăng tốc độ truy xuất dữ liệu mà không làm thay đổi hay định đoạt thứ tự sắp xếp vật lý của bảng dữ liệu gốc dưới đĩa. Nếu như clustered index chính là bản thân bảng dữ liệu thì non clustered index là một cây B+tree hoàn toàn độc lập và nằm song song bên cạnh. khi bạn sử dụng non clustered index, Lúc này hệ thống sẽ tạo ra một cây B+tree độc lập. Qua đó hiệu suất truy vấn. Nút lá của nó không chứa toàn bộ hàng theo mặc định. Nó chứa:
+Hàm băm cần hạn chế tối đa tình trạng xung đột vì các nguyên nhân sau:
 
-- Khóa nonclustered index.
-- Row locator để tìm hàng gốc.
-- Cột INCLUDE, nếu có.
+- Tránh tình trạng **data skew**, trong đó một bucket chứa quá nhiều key còn bucket khác không chứa key nào.
+- Khi quá nhiều key nằm trong cùng một bucket, hệ thống phải truy cập bucket rồi tiếp tục tìm key cần thiết, làm mất lợi thế tốc độ `O(1)` của Hash Index.
+- Khi quá nhiều key nằm trong cùng một bucket khiến bucket hết dung lượng, hệ thống phải tạo thêm **overflow page** và dùng con trỏ của danh sách liên kết để nối page này vào cuối bucket hiện có. Mỗi lần đọc overflow page cần thêm một lần I/O; quá nhiều I/O sẽ làm chậm hệ thống.
 
-**Row locator:**
+### Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?
 
-- Bảng có clustered index: chứa clustered key.
-- Bảng heap: chứa RID, tức vị trí hàng.
+Khi bảng băm vượt quá dung lượng RAM, một phần dữ liệu buộc phải được đẩy xuống ổ đĩa. Do tính chất phân tán ngẫu nhiên của hàm băm, mỗi lượt truy vấn rất dễ rơi vào phần nằm trên đĩa (**cache miss**), biến thao tác tra cứu trên RAM thành thao tác đọc đĩa ngẫu nhiên (**Random I/O**) rất chậm.
 
-Vì non clustered index không làm thay đổi cách hệ thống lưu dữ liệu bên dưới đĩa nên bạn có thể tạo nhiều non clustered index. Nhưng đổi lại khi bạn dùng các câu lệnh DML, điều này sẽ gây ra 4 vấn đề sau:
+![Ảnh hưởng đến hiệu năng khi bảng băm lớn hơn RAM](../assets/images/index/RAM.png)
 
-- **Nhân số lượt ghi:** khi bạn có 5 non clustered index, khi bạn insert dữ liệu, hệ thống buộc phải thực hiện cả 5 thao tác chèn vào 5 câu B+tree này. Nhân 5 lần ghi ổ đĩa. Qua đó cũng gây gia tăng lượt ghi vào WAl.
-- **Ghi ngẫu nhiên trên đĩa:** Khi bạn cập nhật một dòng dữ liệu, vì các key trên các index sẽ khác nhau và không chung một thứ tự logic, nên khi bạn cập nhật các nút của các index sẽ khác nhau, lúc này hệ thống sẽ phải ghi ngẫu nhiên chứ không ghi tuần tự
-- **Tình trạng data split:** khi bạn thực hiện các lệnh DMl, có nguy cơ gây phân tách trang, điều này có thể dẫn đến một chuỗi phân tách trang trên toàn bộ cây,
+### Quy trình hình thành bảng băm trên RAM
+
+Quy trình hình thành bảng băm (Hash Index/Hash Map) trên RAM trong hệ quản trị cơ sở dữ liệu gồm các bước sau:
+
+1. Hệ thống quét tuần tự toàn bộ file log trên ổ đĩa.
+2. Xác định vị trí của từng dòng dữ liệu trên ổ đĩa.
+3. Tính mã băm của key và nạp vào RAM.
+
+> **Lưu ý:** Nếu RAM đã lưu vị trí của một dòng dữ liệu nhưng hệ thống quét được vị trí mới hơn, hệ thống sẽ cập nhật vị trí mới vào RAM. Nếu dòng dữ liệu được đánh dấu là đã xóa, hệ thống sẽ xóa dữ liệu đó khỏi bảng băm trên RAM.
+
+## 7. Composite Index
+
+### Lọc theo nhiều cột và phép giao chỉ mục
+
+Với truy vấn có nhiều điều kiện `AND` và mỗi cột đều có chỉ mục phụ, hệ thống phải thực hiện phép giao chỉ mục — một quá trình tốn kém.
+
+**Phép giao chỉ mục** là kỹ thuật kết hợp nhiều chỉ mục riêng biệt để lọc dữ liệu. Ví dụ, với `idx_customer(customer_id)` và `idx_status(status)`:
+
+```sql
+SELECT * FROM Orders
+WHERE customer_id = 1205 AND status = 'COMPLETED';
+```
+
+Nếu chọn phép giao chỉ mục, hệ thống sẽ:
+
+1. Quét `idx_customer`: Lấy tập con trỏ dòng A có `customer_id = 1205`.
+2. Quét `idx_status`: Lấy tập con trỏ dòng B có `status = 'COMPLETED'`.
+3. Lấy giao A ∩ B: Giữ các con trỏ xuất hiện trong cả hai tập, bằng phép giao danh sách hoặc `AND` bitmap.
+4. Truy cập bảng: Dùng các con trỏ còn lại để lấy đầy đủ dữ liệu dòng.
+
+> **Lưu ý:** Không có chỉ mục hỗn hợp không đồng nghĩa với việc luôn dùng phép giao chỉ mục. Bộ tối ưu chọn phương án dựa trên chi phí ước tính và khả năng của hệ quản trị.
+
+Phép giao chỉ mục có các chi phí sau:
+
+- **I/O:** Duyệt nhiều cây B+tree làm tăng số lần đọc đĩa.
+- **RAM và CPU:** Hệ thống phải cấp phát bộ nhớ đệm để giữ hai danh sách con trỏ, rồi dùng CPU để sắp xếp và thực hiện phép giao tập hợp.
+- **Dữ liệu dư thừa:** Cả hai chỉ mục đều phải nạp những con trỏ có thể bị loại bỏ.
+
+### Cấu trúc khóa ghép
+
+Để giảm chi phí khi truy vấn thường lọc đồng thời theo nhiều cột, có thể tạo **composite index (chỉ mục hỗn hợp)**. Chỉ mục này gộp nhiều cột vào một cây B+tree duy nhất.
+
+Cây B+tree của composite index có cấu trúc tương tự cây B+tree thông thường, nhưng mỗi khóa là một khóa ghép thay vì một giá trị đơn lẻ. Ví dụ, với index `(age, sex)`, một khóa có thể mang giá trị `(21,male)`.
+
+Hệ thống sắp xếp khóa theo thứ tự phân cấp: trước hết theo cột ngoài cùng bên trái, sau đó theo cột thứ hai trong từng nhóm có cùng giá trị cột thứ nhất, rồi đến cột thứ ba trong từng nhóm của cột thứ hai, và tiếp tục như vậy.
+
+```text
+                     [ ('Dev', 28)  |  ('HR', 30) ]
+                    /               |              \
+                   ▼                ▼               ▼
+         [ ('Dev', 20) ]     [ ('Dev', 28) ]     [ ('HR', 30) ]
+         [ ('Dev', 22) ] <-> [ ('HR', 25)  ] <-> [ ('HR', 32) ]
+```
+
+Với sơ đồ trên:
+
+- Khi tìm nhân viên `('HR', 25)`, hệ thống xác định khóa này lớn hơn `('Dev', 28)` nhưng nhỏ hơn `('HR', 30)` vì cùng phòng HR và `25 < 30`. Hệ thống đi vào nhánh giữa.
+- Khi tìm nhân viên `('HR', 35)`, khóa này lớn hơn `('HR', 30)`, nên hệ thống đi vào nhánh ngoài cùng bên phải.
+
+### Quy tắc tiền tố trái
+
+Chỉ mục hỗn hợp tuân theo **quy tắc tiền tố trái**: chỉ hỗ trợ truy vấn lọc theo một chuỗi cột liên tục bắt đầu từ cột đầu tiên bên trái.
+
+Với chỉ mục trên ba cột `(A,B,C)`, truy vấn chỉ sử dụng chỉ mục hiệu quả khi bắt đầu từ cột `A`. Ví dụ: `where a and b`, `a and c`, `a and b and c`.
+
+Vì sao cần bắt đầu từ cột ngoài cùng bên trái? Với composite index `(a, b)`, các bản ghi được sắp xếp theo `a` trước. Trong mỗi nhóm có cùng giá trị `a`, các bản ghi mới tiếp tục được sắp xếp theo `b`.
+
+Khi truy vấn có điều kiện trên `a`, hệ thống có thể nhanh chóng xác định vùng dữ liệu cần tìm. Trong vùng đó, `b` đã được sắp xếp nên hệ thống có thể tiếp tục tìm kiếm hiệu quả:
+
+```sql
+WHERE a = 10 AND b = 20
+```
+
+Nếu bỏ qua `a` và chỉ tìm theo `b`:
+
+```sql
+WHERE b = 20
+```
+
+Các giá trị `b` nằm rải rác trong nhiều nhóm `a`, không được sắp xếp liên tục trên toàn bộ index. Hệ thống thường phải quét nhiều phần, thậm chí toàn bộ index, nên không tận dụng tốt khả năng tìm kiếm của B+tree.
+
+### Lưu ý khi chọn thứ tự cột
+
+- **Có cả điều kiện bằng và điều kiện phạm vi:** Thường đặt cột dùng `=` trước, cột dùng phạm vi sau. Điều kiện bằng giúp DBMS thu hẹp đến một vùng dữ liệu xác định; trong vùng đó, các cột kế tiếp vẫn được sắp xếp nên điều kiện phạm vi được xử lý hiệu quả.
+- **Nhiều cột cùng dùng phép so sánh bằng trong `WHERE`:** Ưu tiên cột có độ chọn lọc cao nhất (selectivity). Cột có độ chọn lọc cao có tỉ lệ giá trị trùng lặp thấp, chẳng hạn `userid`, giúp loại bỏ tối đa các điều kiện không thỏa mãn ngay từ những bước đầu.
+- **Có mệnh đề `ORDER BY`:** Đặt cột cần sắp xếp ở vị trí cuối cùng của chỉ mục hỗn hợp.
+
+## 8. Covering Index
+
+### Chi phí truy cập lại bảng
+
+Khi tạo non-clustered index, nút lá của B+Tree thường lưu giá trị của index key và con trỏ hoặc khóa chính dùng để xác định dòng dữ liệu trong bảng chính.
+
+Nếu truy vấn cần lấy thêm các cột không có trong index, DBMS phải dùng con trỏ hoặc khóa chính này để truy cập lại bảng chính.
+
+#### Khi index chứa con trỏ đến bảng chính
+
+Dữ liệu trong bảng chính không được sắp xếp theo non-clustered index key. Vì vậy, khi một giá trị key khớp với nhiều dòng và truy vấn cần lấy các cột khác, DBMS phải thực hiện nhiều lần truy cập ngẫu nhiên để lấy dữ liệu từ bảng chính.
+
+Ví dụ minh họa:
+
+```text
+    Trang đĩa của INDEX                      Các trang đĩa của BẢNG CHÍNH
+┌─────────────────────────┐               ┌────────────────────────────────┐
+│ ('IT', Con trỏ #10)  ───┼──────────────>│ Trang đĩa 2:  Dòng #10 ('IT')   │
+│ ('IT', Con trỏ #500) ───┼──┐            └────────────────────────────────┘
+│ ('IT', Con trỏ #80)  ───┼──┼──┐         ┌────────────────────────────────┐
+└─────────────────────────┘  │  └────────>│ Trang đĩa 15: Dòng #80 ('IT')  │
+     (Đọc tuần tự)           │            └────────────────────────────────┘
+                             │            ┌────────────────────────────────┐
+                             └───────────>│ Trang đĩa 89: Dòng #500 ('IT') │
+                                          └────────────────────────────────┘
+                                                (Nhảy đĩa ngẫu nhiên)
+```
+
+#### Khi index chứa clustered key
+
+Clustered key đóng vai trò row locator. Nếu truy vấn cần cột không có trong non-clustered index, DBMS dùng clustered key tìm được để tra cứu lại clustered index.
+
+Với mỗi dòng khớp điều kiện, DBMS thường phải duyệt một đường đi trong Clustered B+Tree từ nút gốc đến nút lá để lấy dữ liệu. Đây là **Key Lookup**.
+
+Mỗi lần lookup có chi phí xấp xỉ `O(log N)`. Nếu truy vấn trả về nhiều dòng, số lần lookup lớn và có thể gây nhiều truy cập ngẫu nhiên.
+
+Ví dụ:
+
+```text
+[BƯỚC 1: Quét Secondary Index]
+Duyệt cây B+Tree phụ (idx_dept)
+Tìm thấy các dòng 'IT':
+ ├── ('IT', PK = 10)
+ ├── ('IT', PK = 500)
+ └── ('IT', PK = 80)
+
+[BƯỚC 2: Key Lookup vào Clustered Index]
+Với MỖI giá trị PK tìm được, hệ thống phải duyệt lại cây B+Tree chính:
+ • Cầm PK = 10  ──> Duyệt cây Clustered B+Tree từ Gốc -> Nhánh -> Lá ──> Lấy name, salary (#10)
+ • Cầm PK = 500 ──> Duyệt cây Clustered B+Tree từ Gốc -> Nhánh -> Lá ──> Lấy name, salary (#500)
+ • Cầm PK = 80  ──> Duyệt cây Clustered B+Tree từ Gốc -> Nhánh -> Lá ──> Lấy name, salary (#80)
+```
+
+### Khi nào index bao phủ một truy vấn?
+
+Covering index giúp khắc phục các chi phí truy cập lại bảng ở trên. Đây không phải một kiểu index cố định khi tạo bảng; một index có bao phủ hay không phụ thuộc vào truy vấn cụ thể.
+
+Giả sử có index `idx_emp (dept_id, salary)`.
+
+#### Ví dụ 1: Index chứa đủ các cột truy vấn cần
+
+```sql
+SELECT salary FROM Employees WHERE dept_id = 10;
+```
+
+Với truy vấn này, `idx_emp` là covering index vì chứa đủ cả `dept_id` và `salary`. Hệ thống thực hiện index-only scan.
+
+#### Ví dụ 2: Truy vấn cần thêm cột ngoài index
+
+```sql
+SELECT salary, full_name FROM Employees WHERE dept_id = 10;
+```
+
+Vẫn là index đó, nhưng với truy vấn này, `idx_emp` không còn là covering index vì thiếu cột `full_name`. Hệ thống phải thực hiện lookup vào bảng chính.
+
+### Index-only scan
+
+Khi nhận diện được covering index phù hợp, hệ thống thực hiện **index-only scan**. Đây là kế hoạch thực thi truy vấn do Query Optimizer lựa chọn: database chỉ cần duyệt đến nút lá của cây chỉ mục để lấy đầy đủ dữ liệu cần thiết, không cần truy cập bảng dữ liệu chính (Data Pages/Heap/Clustered Index).
+
+### Chi phí mở rộng khóa và vai trò của INCLUDE
+
+Một cách thiết kế covering index là đưa tất cả các cột cần truy vấn vào composite index. Tuy nhiên, cách này có những đánh đổi về lưu trữ:
+
+- **Giảm hệ số rẽ nhánh:** Khóa lớn hơn khiến mỗi nút chứa được ít khóa phân tách hơn. Hệ số rẽ nhánh giảm, cây sâu hơn và số page cần đọc tăng lên.
+- **Tăng tần suất page split:** Khóa có dung lượng lớn khiến page nhanh đầy hơn.
+
+Để giải quyết những hạn chế này, các hệ quản trị cơ sở dữ liệu hỗ trợ mệnh đề `INCLUDE`. Mệnh đề này cho phép đính kèm các cột dữ liệu lấy thêm (payload columns) chỉ ở tầng nút lá của cây B+tree. Nhờ đó, các nút trung gian vẫn nhẹ, duy trì hệ số rẽ nhánh phù hợp, đồng thời vẫn đáp ứng index-only scan vì dữ liệu cần truy vấn đã có đầy đủ tại nút lá.
