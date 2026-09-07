@@ -1032,6 +1032,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#9-partial-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Partial Index
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Partial Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chi-muc-tren-mot-tap-con-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chỉ mục trên một tập con dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#khi-nao-nen-dung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khi nào nên dùng?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anh-oi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đánh đổi
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lời kết
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1756,6 +1817,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#9-partial-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Partial Index
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Partial Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chi-muc-tren-mot-tap-con-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chỉ mục trên một tập con dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#khi-nao-nen-dung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khi nào nên dùng?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anh-oi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đánh đổi
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lời kết
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2173,9 +2295,53 @@ Với MỖI giá trị PK tìm được, hệ thống phải duyệt lại cây 
 <li><strong>Tăng tần suất page split:</strong> Khóa có dung lượng lớn khiến page nhanh đầy hơn.</li>
 </ul>
 <p>Để giải quyết những hạn chế này, các hệ quản trị cơ sở dữ liệu hỗ trợ mệnh đề <code>INCLUDE</code>. Mệnh đề này cho phép đính kèm các cột dữ liệu lấy thêm (payload columns) chỉ ở tầng nút lá của cây B+tree. Nhờ đó, các nút trung gian vẫn nhẹ, duy trì hệ số rẽ nhánh phù hợp, đồng thời vẫn đáp ứng index-only scan vì dữ liệu cần truy vấn đã có đầy đủ tại nút lá.</p>
+<h2 id="9-partial-index">9. Partial Index</h2>
+<h3 id="chi-muc-tren-mot-tap-con-du-lieu">Chỉ mục trên một tập con dữ liệu</h3>
+<p>Thay vì xây dựng một B+Tree chứa toàn bộ dòng trong bảng, <strong>Partial Index</strong> (hay conditional index) dùng một điều kiện logic để chỉ đưa những dòng cần thiết vào chỉ mục.</p>
+<p>Giả sử bảng <code>orders</code> có 99% đơn hàng đã hoàn thành và chỉ 1% còn ở trạng thái <code>active</code>. Nếu workload thường xuyên tìm các đơn hàng đang hoạt động, một index đầy đủ sẽ phải lưu cả 99% dòng không được truy vấn. Partial Index cho phép thu hẹp cấu trúc này xuống đúng tập dữ liệu cần dùng:</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_active_orders</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="p">(</span><span class="n">customer_id</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'active'</span><span class="p">;</span>
+</code></pre></div>
+<p>Khi truy vấn có điều kiện phù hợp, database chỉ duyệt những entry của đơn hàng đang hoạt động. Nhờ index nhỏ hơn, chi phí lưu trữ, đọc page và duy trì index cũng giảm theo.</p>
+<h3 id="khi-nao-nen-dung">Khi nào nên dùng?</h3>
 <ul>
-<li>Partial/conditional index: Thay vì xây dựng một cấu trúc cây B+Tree đồ sộ ôm trọn toàn bộ các dòng của bảng, Partial Index sử dụng một mệnh đề điều kiện logic (boolean predicate) để chọn lọc và chỉ đưa một tập con dữ liệu thỏa mãn điều kiện đó vào chỉ mục. Tại sao phải làm như vậy? Bởi vì trong thực tế dữ liệu không phân phối đều nhau mà có thể rất lệch. Ví dụ 99% đơn hàng đã hoàn thành nhưng chỉ 1% đơn hàng đang vận chuyển. Bạn lập chỉ mục để truy vấn 1% đơn hàng với trạng thái đó, lúc này chỉ mục sẽ bị phình to do phải chứa 99% lượng dữ liệu không cần thiết. Bạn chỉ muốn lập chỉ mục với 1% dữ liệu để tiết kiệm tài nguyên. Khi đó partial/conditional index phát huy tác dụng. Nó cho phép bạn lập chỉ mục kết hợp với điều kiện. Ví dụ: CREATE INDEX idx_active_orders ON orders(customer_id) WHERE status = 'active';</li>
+<li>Bảng có một tập con nhỏ nhưng được truy vấn thường xuyên, chẳng hạn bản ghi <code>active</code>, <code>pending</code> hoặc chưa bị xóa.</li>
+<li>Điều kiện lọc ổn định và xuất hiện rõ trong các truy vấn chính.</li>
+<li>Chi phí của index đầy đủ lớn hơn lợi ích mà nó mang lại cho các dòng ít khi được đọc.</li>
 </ul>
+<p>Optimizer chỉ dùng Partial Index khi có thể chứng minh điều kiện của truy vấn bao hàm predicate của index. Vì vậy, <code>WHERE status = 'active'</code> có thể dùng index ở trên, còn một điều kiện không liên quan đến <code>status</code> thì không.</p>
+<h3 id="anh-oi">Đánh đổi</h3>
+<p>Partial Index không phải lúc nào cũng tốt hơn index đầy đủ:</p>
+<ul>
+<li>Predicate thay đổi thường xuyên có thể làm index mất lợi thế hoặc khiến việc bảo trì phức tạp hơn.</li>
+<li>Mỗi lần <code>INSERT</code> hoặc <code>UPDATE</code> làm dòng dữ liệu đi vào hoặc ra khỏi tập con, database vẫn phải cập nhật index.</li>
+<li>Cú pháp và mức hỗ trợ khác nhau giữa các hệ quản trị cơ sở dữ liệu; cần kiểm tra tài liệu của DBMS đang dùng.</li>
+</ul>
+<hr />
+<h2 id="loi-ket">Lời kết</h2>
+<figure class="airflow-closing-comic" id="loi-ket">
+  <img
+    src="../../assets/images/end.png"
+    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Index và cảm ơn người đọc"
+    loading="lazy"
+  >
+  <figcaption>
+    <span>LỜI KẾT</span>
+    <div>
+      <strong>Cảm ơn bạn đã đọc đến cuối!</strong>
+      <p>Hy vọng bài viết giúp bạn hiểu Index rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
+    </div>
+  </figcaption>
+</figure>
+
+<footer class="airflow-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 003</span>
+    <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
+  </div>
+  <a href="../../">Trở về thư viện <span aria-hidden="true">→</span></a>
+</footer>
 
 
 

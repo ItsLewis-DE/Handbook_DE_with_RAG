@@ -592,8 +592,8 @@ Partial Index không phải lúc nào cũng tốt hơn index đầy đủ:
 
 <figure class="airflow-closing-comic" id="loi-ket">
   <img
-    src="../../assets/images/end.png"
-    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Airflow và cảm ơn người đọc"
+    src="../../assets/images/index/end_index.png"
+    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Index và cảm ơn người đọc"
     loading="lazy"
   >
   <figcaption>
