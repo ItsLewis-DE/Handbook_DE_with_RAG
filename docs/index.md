@@ -7,7 +7,8 @@ hide:
 <div class="landing-page">
   <section class="landing-hero" aria-labelledby="landing-title">
     <div class="blueprint-watermark blueprint-watermark--hero" aria-hidden="true">
-      <img src="assets/images/blueprint-hero.svg" alt="" loading="lazy">
+      <img src="assets/images/blueprint-hero.svg" alt="" width="1440" height="900">
+      <span class="blueprint-signal blueprint-signal--hero"></span>
     </div>
 
     <div class="landing-hero__copy">
@@ -51,7 +52,7 @@ hide:
         </div>
 
         <div class="article-deck-shell">
-          <div class="article-deck" tabindex="0" aria-label="Chồng 7 bài viết. Kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
+          <div class="article-deck" tabindex="0" aria-label="Chồng 7 bài viết. Dùng nút điều hướng, phím mũi tên hoặc kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
             <article class="article-sheet article-sheet--airflow" data-article-title="Kiến trúc Apache Airflow" data-deck-position="current">
               <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>01 / 07</b></div>
               <div class="article-sheet__body">
@@ -133,8 +134,9 @@ hide:
           </div>
 
           <div class="article-deck__controls">
-            <span class="article-deck__swipe-icon" aria-hidden="true"><i></i></span>
-            <p id="article-deck-help"><b>Kéo sang trái</b> để lật bài</p>
+            <button class="article-deck__control" type="button" data-deck-action="previous" aria-label="Xem bài trước">←</button>
+            <p id="article-deck-help"><b>Lật bài</b> bằng nút, phím mũi tên hoặc kéo sang trái</p>
+            <button class="article-deck__control" type="button" data-deck-action="next" aria-label="Xem bài tiếp theo">→</button>
           </div>
           <p class="article-deck__announcement" aria-live="polite" aria-atomic="true"></p>
         </div>
@@ -142,7 +144,7 @@ hide:
         <div class="stack-card__footer">
           <span><b>03</b> bài đã mở</span>
           <span><b>04</b> bài sắp tới</span>
-          <span class="article-deck__count"><b>01</b> / 07</span>
+          <span class="article-deck__count"><b>03</b> / 07</span>
         </div>
       </div>
 
@@ -152,6 +154,9 @@ hide:
   </section>
 
   <section class="library-section" id="thu-vien" aria-labelledby="library-title">
+    <div class="blueprint-watermark blueprint-watermark--shelf" aria-hidden="true">
+      <img src="assets/images/blueprint-shelf.svg" alt="" width="1200" height="700" loading="lazy">
+    </div>
     <div class="section-heading section-heading--split">
       <div>
         <p class="section-eyebrow">THE KNOWLEDGE SHELF / 01</p>
@@ -159,108 +164,35 @@ hide:
       </div>
     </div>
 
-    <div class="library-browser">
-      <div class="blueprint-watermark blueprint-watermark--shelf" aria-hidden="true">
-        <img src="assets/images/blueprint-shelf.svg" alt="" loading="lazy">
-      </div>
+    <div class="published-articles" aria-label="Ba bài viết đã xuất bản">
+      <article class="published-article published-article--latest">
+        <p class="published-article__meta">DATABASE INTERNALS · ED. 03</p>
+        <span class="published-article__status">Bài mới nhất</span>
+        <h3>Index trong<br>cơ sở dữ liệu</h3>
+        <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
+        <a href="index/">Đọc bài viết <b aria-hidden="true">↗</b></a>
+      </article>
 
-      <div class="tool-shelf" aria-label="Các nhóm công cụ">
-        <p class="tool-shelf__label">DANH MỤC BÀI VIẾT</p>
+      <article class="published-article">
+        <p class="published-article__meta">ORCHESTRATION · ED. 01</p>
+        <h3>Hiểu kiến trúc<br>Apache Airflow</h3>
+        <p>Từ nhu cầu điều phối đến Scheduler, Executor và High Availability.</p>
+        <a href="airflow/architecture/">Đọc bài viết <b aria-hidden="true">↗</b></a>
+      </article>
 
-        <button class="tool-choice tool-choice--active" type="button" data-preview="airflow" aria-pressed="true">
-          <span class="tool-choice__number">01</span>
-          <span class="tool-choice__copy">
-            <small>ORCHESTRATION</small>
-            <strong>Apache Airflow</strong>
-          </span>
-          <span class="tool-choice__status">Đang chọn</span>
-        </button>
-
-        <button class="tool-choice" type="button" data-preview="storage" aria-pressed="false">
-          <span class="tool-choice__number">02</span>
-          <span class="tool-choice__copy">
-            <small>DATA ARCHITECTURE</small>
-            <strong>Shared-disk vs shared-nothing</strong>
-          </span>
-          <span class="tool-choice__status">Đã mở</span>
-        </button>
-
-        <button class="tool-choice" type="button" data-preview="databaseIndex" data-inactive-status="Bài mới nhất" aria-pressed="false">
-          <span class="tool-choice__number">03</span>
-          <span class="tool-choice__copy">
-            <small>DATABASE INTERNALS</small>
-            <strong>Index trong cơ sở dữ liệu</strong>
-          </span>
-          <span class="tool-choice__status">Bài mới nhất</span>
-        </button>
-
-        <button class="tool-choice tool-choice--soon" type="button" data-preview="spark">
-          <span class="tool-choice__number">04</span>
-          <span class="tool-choice__copy"><small>PROCESSING</small><strong>Apache Spark</strong></span>
-          <span class="tool-choice__status">Sắp tới</span>
-        </button>
-
-        <button class="tool-choice tool-choice--soon" type="button" data-preview="kafka">
-          <span class="tool-choice__number">05</span>
-          <span class="tool-choice__copy"><small>STREAMING</small><strong>Apache Kafka</strong></span>
-          <span class="tool-choice__status">Sắp tới</span>
-        </button>
-
-        <button class="tool-choice tool-choice--soon" type="button" data-preview="dbt">
-          <span class="tool-choice__number">06</span>
-          <span class="tool-choice__copy"><small>TRANSFORMATION</small><strong>dbt</strong></span>
-          <span class="tool-choice__status">Sắp tới</span>
-        </button>
-
-        <button class="tool-choice tool-choice--soon" type="button" data-preview="infrastructure">
-          <span class="tool-choice__number">07</span>
-          <span class="tool-choice__copy"><small>INFRASTRUCTURE</small><strong>Docker &amp; Kubernetes</strong></span>
-          <span class="tool-choice__status">Sắp tới</span>
-        </button>
-      </div>
-
-      <article class="featured-article" id="featured-article" data-preview-number="01" data-preview-label="FEATURED / 01">
-        <header class="featured-article__header">
-          <div class="featured-article__stamp" aria-hidden="true">
-            <small>FIELD NOTE</small><b id="featured-stamp-number">01</b>
-          </div>
-          <div>
-            <p id="featured-meta">APACHE AIRFLOW · LONG READ</p>
-            <span id="featured-publication">Đã xuất bản · 01 bài</span>
-          </div>
-          <span class="featured-article__edition" id="featured-edition">ED. 01</span>
-        </header>
-
-        <div class="featured-article__body">
-          <p class="featured-article__overline" id="featured-overline">BÀI VIẾT NỔI BẬT</p>
-          <h3 id="featured-title">Hiểu kiến trúc Airflow từ nhu cầu điều phối.</h3>
-          <p id="featured-summary">
-            Bắt đầu với một pipeline Bash và Cron, rồi lần lượt mở từng lớp của
-            Airflow: DAG, Task, Scheduler, Executor, HA và Critical Section.
-          </p>
-          <div class="article-tags" id="featured-tags" aria-label="Chủ đề trong bài viết">
-            <span>Architecture</span><span>Scheduler</span><span>Executor</span><span>High Availability</span>
-          </div>
-          <a class="article-read-button" id="featured-read-button" href="airflow/architecture/">
-            <span id="featured-action">Đọc toàn bộ bài viết</span><b aria-hidden="true">↗</b>
-          </a>
-        </div>
-
-        <div class="article-chapters">
-          <p id="featured-chapters-label">ĐỌC THEO LỘ TRÌNH</p>
-          <div id="featured-chapters">
-            <a href="airflow/architecture/#tai-sao-can-airflow"><span>CHƯƠNG 01</span><strong>Tại sao cần Airflow?</strong><b aria-hidden="true">↗</b></a>
-            <a href="airflow/architecture/#nhung-khai-niem-nen-tang"><span>CHƯƠNG 02</span><strong>Khái niệm nền tảng</strong><b aria-hidden="true">↗</b></a>
-            <a href="airflow/architecture/#cac-component-trong-airflow"><span>CHƯƠNG 03</span><strong>Kiến trúc bên trong</strong><b aria-hidden="true">↗</b></a>
-          </div>
-        </div>
+      <article class="published-article">
+        <p class="published-article__meta">DATA ARCHITECTURE · ED. 02</p>
+        <h3>Shared-disk vs<br>shared-nothing</h3>
+        <p>Chọn topology dữ liệu từ góc nhìn Data Engineer: query, shuffle và failure.</p>
+        <a href="architecture/shared-disk-vs-shared-nothing/">Đọc bài viết <b aria-hidden="true">↗</b></a>
       </article>
     </div>
+
   </section>
 
   <section class="writing-section" id="cach-viet" aria-labelledby="writing-title">
     <div class="blueprint-watermark blueprint-watermark--writing" aria-hidden="true">
-      <img src="assets/images/blueprint-writing.svg" alt="" loading="lazy">
+      <img src="assets/images/blueprint-writing.svg" alt="" width="1440" height="600" loading="lazy">
     </div>
 
     <div class="writing-section__intro">
@@ -383,7 +315,7 @@ hide:
 
   <section class="author-section" id="nguoi-viet" aria-labelledby="author-title">
     <div class="blueprint-watermark blueprint-watermark--author" aria-hidden="true">
-      <img src="assets/images/blueprint-author.svg" alt="" loading="lazy">
+      <img src="assets/images/blueprint-author.svg" alt="" width="1440" height="600" loading="lazy">
     </div>
 
     <div class="author-section__masthead">

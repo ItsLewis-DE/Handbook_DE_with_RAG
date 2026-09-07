@@ -552,3 +552,64 @@ Một cách thiết kế covering index là đưa tất cả các cột cần tr
 - **Tăng tần suất page split:** Khóa có dung lượng lớn khiến page nhanh đầy hơn.
 
 Để giải quyết những hạn chế này, các hệ quản trị cơ sở dữ liệu hỗ trợ mệnh đề `INCLUDE`. Mệnh đề này cho phép đính kèm các cột dữ liệu lấy thêm (payload columns) chỉ ở tầng nút lá của cây B+tree. Nhờ đó, các nút trung gian vẫn nhẹ, duy trì hệ số rẽ nhánh phù hợp, đồng thời vẫn đáp ứng index-only scan vì dữ liệu cần truy vấn đã có đầy đủ tại nút lá.
+
+## 9. Partial Index
+
+### Chỉ mục trên một tập con dữ liệu
+
+Thay vì xây dựng một B+Tree chứa toàn bộ dòng trong bảng, **Partial Index** (hay conditional index) dùng một điều kiện logic để chỉ đưa những dòng cần thiết vào chỉ mục.
+
+Giả sử bảng `orders` có 99% đơn hàng đã hoàn thành và chỉ 1% còn ở trạng thái `active`. Nếu workload thường xuyên tìm các đơn hàng đang hoạt động, một index đầy đủ sẽ phải lưu cả 99% dòng không được truy vấn. Partial Index cho phép thu hẹp cấu trúc này xuống đúng tập dữ liệu cần dùng:
+
+```sql
+CREATE INDEX idx_active_orders
+ON orders (customer_id)
+WHERE status = 'active';
+```
+
+Khi truy vấn có điều kiện phù hợp, database chỉ duyệt những entry của đơn hàng đang hoạt động. Nhờ index nhỏ hơn, chi phí lưu trữ, đọc page và duy trì index cũng giảm theo.
+
+### Khi nào nên dùng?
+
+- Bảng có một tập con nhỏ nhưng được truy vấn thường xuyên, chẳng hạn bản ghi `active`, `pending` hoặc chưa bị xóa.
+- Điều kiện lọc ổn định và xuất hiện rõ trong các truy vấn chính.
+- Chi phí của index đầy đủ lớn hơn lợi ích mà nó mang lại cho các dòng ít khi được đọc.
+
+Optimizer chỉ dùng Partial Index khi có thể chứng minh điều kiện của truy vấn bao hàm predicate của index. Vì vậy, `WHERE status = 'active'` có thể dùng index ở trên, còn một điều kiện không liên quan đến `status` thì không.
+
+### Đánh đổi
+
+Partial Index không phải lúc nào cũng tốt hơn index đầy đủ:
+
+- Predicate thay đổi thường xuyên có thể làm index mất lợi thế hoặc khiến việc bảo trì phức tạp hơn.
+- Mỗi lần `INSERT` hoặc `UPDATE` làm dòng dữ liệu đi vào hoặc ra khỏi tập con, database vẫn phải cập nhật index.
+- Cú pháp và mức hỗ trợ khác nhau giữa các hệ quản trị cơ sở dữ liệu; cần kiểm tra tài liệu của DBMS đang dùng.
+
+
+---
+
+## Lời kết
+
+<figure class="airflow-closing-comic" id="loi-ket">
+  <img
+    src="../../assets/images/end.png"
+    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Airflow và cảm ơn người đọc"
+    loading="lazy"
+  >
+  <figcaption>
+    <span>LỜI KẾT</span>
+    <div>
+      <strong>Cảm ơn bạn đã đọc đến cuối!</strong>
+      <p>Hy vọng bài viết giúp bạn hiểu Index rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
+    </div>
+  </figcaption>
+</figure>
+
+
+<footer class="airflow-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 003</span>
+    <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
+  </div>
+  <a href="../../">Trở về thư viện <span aria-hidden="true">→</span></a>
+</footer>

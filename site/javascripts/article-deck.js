@@ -12,7 +12,13 @@
 
     if (!shell || cards.length < 2) return;
 
-    let order = cards.slice();
+    const readingOrder = ["article-sheet--index", "article-sheet--storage", "article-sheet--airflow"];
+    let order = cards.slice().sort((left, right) => {
+      const leftPriority = readingOrder.findIndex((name) => left.classList.contains(name));
+      const rightPriority = readingOrder.findIndex((name) => right.classList.contains(name));
+      return (leftPriority === -1 ? readingOrder.length : leftPriority)
+        - (rightPriority === -1 ? readingOrder.length : rightPriority);
+    });
     let flipping = false;
     let pointerId = null;
     let startX = 0;
@@ -51,17 +57,19 @@
       pointerId = null;
     }
 
-    function flip() {
+    function flip(direction = "next") {
       if (flipping) return;
 
       flipping = true;
-      const outgoing = order[0];
+      const outgoing = direction === "next" ? order[0] : order.at(-1);
       deck.classList.remove("is-dragging");
-      outgoing.classList.add("is-flipping");
+      if (direction === "next") outgoing.classList.add("is-flipping");
 
       window.setTimeout(() => {
         outgoing.classList.remove("is-flipping");
-        order = [...order.slice(1), outgoing];
+        order = direction === "next"
+          ? [...order.slice(1), outgoing]
+          : [outgoing, ...order.slice(0, -1)];
         clearDragStyles();
         render({ announce: true });
         flipping = false;
@@ -141,9 +149,13 @@
     }, true);
 
     deck.addEventListener("keydown", (event) => {
-      if (event.key !== "ArrowLeft" && event.key !== "Enter") return;
+      if (!["ArrowLeft", "ArrowRight", "Enter"].includes(event.key)) return;
       event.preventDefault();
-      flip();
+      flip(event.key === "ArrowLeft" ? "previous" : "next");
+    });
+
+    shell.querySelectorAll("[data-deck-action]").forEach((control) => {
+      control.addEventListener("click", () => flip(control.dataset.deckAction));
     });
 
     render();

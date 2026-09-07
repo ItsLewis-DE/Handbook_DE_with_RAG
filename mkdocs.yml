@@ -41,7 +41,7 @@ extra_css:
   - stylesheets/brand.css
   - stylesheets/landing.css
   - stylesheets/article.css
+  - stylesheets/technology-background.css
 
 extra_javascript:
   - javascripts/article-deck.js
-  - javascripts/library-browser.js

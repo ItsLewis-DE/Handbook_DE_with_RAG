@@ -1,0 +1,195 @@
+/* Technical circle system shared by homepage sections. */
+.landing-page {
+  background-image: none;
+  isolation: isolate;
+  position: relative;
+}
+
+.landing-page .landing-hero,
+.landing-page .library-section,
+.landing-page .writing-section,
+.landing-page .author-section {
+  isolation: isolate;
+  position: relative;
+}
+
+.landing-page .blueprint-watermark {
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  user-select: none;
+  z-index: 0;
+}
+
+.landing-page .blueprint-watermark img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* One strong radial object frames the article deck in the hero. */
+.landing-page .blueprint-watermark--hero {
+  -webkit-mask-image: linear-gradient(90deg, transparent 8%, rgba(0, 0, 0, 0.1) 38%, #000 66%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent 8%, rgba(0, 0, 0, 0.1) 38%, #000 66%, #000 92%, transparent);
+  opacity: 0.2;
+}
+
+.landing-page .blueprint-watermark--hero img {
+  min-width: 68rem;
+  object-position: 74% center;
+  transform: scale(1.08);
+}
+
+.blueprint-signal {
+  animation: blueprint-orbit 18s linear infinite;
+  border: 1px solid rgba(23, 48, 45, 0.16);
+  border-radius: 50%;
+  height: min(44vw, 34rem);
+  position: absolute;
+  right: clamp(-7rem, -4vw, -2rem);
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(44vw, 34rem);
+}
+
+.blueprint-signal::after {
+  background: var(--landing-accent);
+  border: 3px solid var(--landing-paper);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(237, 104, 64, 0.35), 0 0 1.2rem rgba(237, 104, 64, 0.35);
+  content: "";
+  height: 0.65rem;
+  left: 50%;
+  position: absolute;
+  top: -0.32rem;
+  width: 0.65rem;
+}
+
+@keyframes blueprint-orbit {
+  from { transform: translateY(-50%) rotate(0); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Secondary circles appear as cropped fragments, leaving cards readable. */
+.landing-page .blueprint-watermark--shelf {
+  -webkit-mask-image: radial-gradient(circle at 86% 46%, #000 8%, rgba(0, 0, 0, 0.72) 38%, transparent 74%);
+  filter: brightness(0) saturate(100%);
+  mask-image: radial-gradient(circle at 86% 46%, #000 8%, rgba(0, 0, 0, 0.72) 38%, transparent 74%);
+  opacity: 0.11;
+}
+
+.landing-page .blueprint-watermark--shelf img {
+  min-width: 62rem;
+  object-position: right center;
+  transform: translateX(10%) scale(1.08);
+}
+
+.landing-page .blueprint-watermark--writing {
+  -webkit-mask-image: linear-gradient(90deg, #000, rgba(0, 0, 0, 0.36) 42%, transparent 72%);
+  mask-image: linear-gradient(90deg, #000, rgba(0, 0, 0, 0.36) 42%, transparent 72%);
+  opacity: 0.14;
+}
+
+.landing-page .blueprint-watermark--writing img {
+  min-width: 66rem;
+  object-position: left center;
+  transform: translateX(-13%) scale(1.12);
+}
+
+.landing-page .blueprint-watermark--author {
+  -webkit-mask-image: radial-gradient(circle at 14% 52%, #000 12%, rgba(0, 0, 0, 0.7) 35%, transparent 68%);
+  mask-image: radial-gradient(circle at 14% 52%, #000 12%, rgba(0, 0, 0, 0.7) 35%, transparent 68%);
+  opacity: 0.17;
+}
+
+.landing-page .blueprint-watermark--author img {
+  min-width: 68rem;
+  object-position: left center;
+  transform: translateX(-8%) scale(1.1);
+}
+
+.landing-page .library-section > :not(.blueprint-watermark),
+.landing-page .writing-section > :not(.blueprint-watermark),
+.landing-page .author-section > :not(.blueprint-watermark) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Remove older dots, edge rails and duplicate CSS orbits. */
+.landing-page .landing-hero::before,
+.landing-page .writing-section::before,
+.landing-page .writing-section::after,
+.landing-page .author-section::before,
+.landing-page .author-section::after,
+.landing-page .hero-orbit,
+.landing-page .writing-orbit,
+.landing-page .technology-backbone,
+.landing-page .technology-art {
+  display: none;
+}
+
+.landing-page .author-section,
+.landing-page .landing-footer {
+  background-image: none;
+}
+
+@media screen and (max-width: 67rem) {
+  .landing-page .blueprint-watermark--hero {
+    opacity: 0.14;
+  }
+
+  .landing-page .blueprint-watermark--hero img {
+    min-width: 58rem;
+    object-position: 76% center;
+  }
+
+  .blueprint-signal {
+    height: 30rem;
+    right: -10rem;
+    width: 30rem;
+  }
+}
+
+@media screen and (max-width: 45rem) {
+  .landing-page .blueprint-watermark--hero {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 12%, #000 56%, transparent 96%);
+    mask-image: linear-gradient(to bottom, transparent 12%, #000 56%, transparent 96%);
+    opacity: 0.1;
+  }
+
+  .landing-page .blueprint-watermark--hero img {
+    min-width: 48rem;
+    object-position: 76% bottom;
+  }
+
+  .blueprint-signal {
+    animation: none;
+    bottom: 2rem;
+    height: 21rem;
+    right: -10rem;
+    top: auto;
+    transform: none;
+    width: 21rem;
+  }
+
+  .blueprint-signal::after {
+    display: none;
+  }
+
+  .landing-page .blueprint-watermark--shelf,
+  .landing-page .blueprint-watermark--writing {
+    opacity: 0.07;
+  }
+
+  .landing-page .blueprint-watermark--author {
+    opacity: 0.1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blueprint-signal {
+    animation: none;
+  }
+}

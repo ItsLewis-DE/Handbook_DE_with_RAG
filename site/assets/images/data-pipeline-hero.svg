@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" fill="none">
+  <title>Data pipeline architecture blueprint</title>
+  <desc>Decorative technical diagram showing data sources flowing through ingestion, storage, transformation and serving layers.</desc>
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" stroke="#2563EB" stroke-opacity=".16" stroke-width="1"/>
+      <circle cx="24" cy="24" r="1.5" fill="#2563EB" fill-opacity=".22"/>
+    </pattern>
+    <linearGradient id="wash" x1="720" y1="80" x2="1370" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB" stop-opacity=".08"/>
+      <stop offset=".48" stop-color="#14B8A6" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#F97316" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="route" x1="635" y1="0" x2="1290" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB" stop-opacity=".18"/>
+      <stop offset=".5" stop-color="#14B8A6" stop-opacity=".8"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity=".3"/>
+    </linearGradient>
+    <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1440" height="900" fill="url(#grid)"/>
+  <rect x="600" y="64" width="760" height="770" rx="32" fill="url(#wash)"/>
+
+  <!-- datum lines -->
+  <g stroke="#0F172A" stroke-opacity=".18" stroke-width="1" stroke-dasharray="8 8">
+    <path d="M684 64V836M948 64V836M1212 64V836"/>
+    <path d="M600 212H1360M600 450H1360M600 688H1360"/>
+  </g>
+  <g stroke="#2563EB" stroke-opacity=".55" stroke-width="1">
+    <path d="M684 200h20M694 190v20M948 438h20M958 428v20M1212 676h20M1222 666v20"/>
+  </g>
+
+  <!-- source layer -->
+  <g stroke="#0F766E" stroke-width="1.5">
+    <rect x="646" y="148" width="142" height="82" rx="12" fill="#F8FAFC" fill-opacity=".72"/>
+    <rect x="646" y="278" width="142" height="82" rx="12" fill="#F8FAFC" fill-opacity=".72"/>
+    <rect x="646" y="408" width="142" height="82" rx="12" fill="#F8FAFC" fill-opacity=".72"/>
+  </g>
+  <g fill="#0F172A" font-family="monospace" font-size="13" letter-spacing="1.4">
+    <text x="670" y="182">EVENTS</text><text x="670" y="207" fill="#64748B" font-size="10">clickstream</text>
+    <text x="670" y="312">DATABASE</text><text x="670" y="337" fill="#64748B" font-size="10">CDC / WAL</text>
+    <text x="670" y="442">FILES</text><text x="670" y="467" fill="#64748B" font-size="10">batch source</text>
+  </g>
+  <g fill="#14B8A6" filter="url(#soft-glow)"><circle cx="788" cy="190" r="4"/><circle cx="788" cy="320" r="4"/><circle cx="788" cy="450" r="4"/></g>
+
+  <!-- ingestion and processing spine -->
+  <g stroke="url(#route)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M792 190H842Q858 190 858 206V380H908"/>
+    <path d="M792 320H908"/>
+    <path d="M792 450H842Q858 450 858 434V380H908"/>
+    <path d="M1030 380H1086Q1102 380 1102 364V280H1150"/>
+    <path d="M1030 380H1150"/>
+    <path d="M1030 380H1086Q1102 380 1102 396V480H1150"/>
+  </g>
+  <g fill="#2563EB"><circle cx="858" cy="380" r="5"/><circle cx="1102" cy="380" r="5"/></g>
+
+  <g stroke="#2563EB" stroke-width="1.5">
+    <rect x="908" y="326" width="122" height="108" rx="16" fill="#EFF6FF" fill-opacity=".92"/>
+    <path d="M930 356h78M930 380h52M930 404h64" stroke="#14B8A6"/>
+    <circle cx="1005" cy="380" r="10" fill="#F8FAFC"/>
+  </g>
+  <g fill="#0F172A" font-family="monospace" font-size="11" letter-spacing="1.2">
+    <text x="924" y="318">INGEST</text>
+    <text x="1160" y="218">STORAGE</text>
+    <text x="1160" y="418">TRANSFORM</text>
+    <text x="1160" y="618">SERVING</text>
+  </g>
+
+  <!-- three data layers -->
+  <g stroke="#2563EB" stroke-width="1.5" fill="#F8FAFC" fill-opacity=".82">
+    <path d="M1150 238h154l36 22v52h-154l-36-22z"/>
+    <path d="M1150 438h154l36 22v52h-154l-36-22z"/>
+    <path d="M1150 638h154l36 22v52h-154l-36-22z"/>
+  </g>
+  <g stroke="#14B8A6" stroke-width="1.2" opacity=".75">
+    <path d="M1174 264h112M1174 284h76M1174 464h128M1174 484h92M1174 664h112M1174 684h78"/>
+  </g>
+  <g fill="#64748B" font-family="monospace" font-size="10" letter-spacing=".8">
+    <text x="1174" y="311">lake / warehouse</text>
+    <text x="1174" y="511">models / lineage</text>
+    <text x="1174" y="711">api / metrics</text>
+  </g>
+
+  <!-- observability ring and annotation -->
+  <g stroke="#F97316" stroke-width="1.5" stroke-dasharray="5 7" opacity=".88">
+    <circle cx="1000" cy="580" r="76"/>
+    <circle cx="1000" cy="580" r="56"/>
+    <path d="M1000 504v-20M1000 656v20M924 580h-20M1076 580h20"/>
+  </g>
+  <circle cx="1000" cy="580" r="7" fill="#F97316" filter="url(#soft-glow)"/>
+  <g fill="#F97316" font-family="monospace" font-size="10" letter-spacing="1.2">
+    <text x="926" y="694">OBSERVE / RECOVER</text>
+  </g>
+
+  <!-- tiny coordinate labels -->
+  <g fill="#2563EB" font-family="monospace" font-size="9" letter-spacing="1" opacity=".8">
+    <text x="614" y="102">PIPELINE / 001</text>
+    <text x="1272" y="102">LIVE MAP</text>
+    <text x="614" y="824">INGEST</text>
+    <text x="1266" y="824">SERVE</text>
+  </g>
+</svg>

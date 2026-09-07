@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../stylesheets/article.css">
     
+      <link rel="stylesheet" href="../stylesheets/technology-background.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -80,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#page-on-vi-oc-va-ghi-du-lieu-cua-database" class="md-skip">
+        <a href="#1-database-luu-tru-du-lieu-nhu-the-nao" class="md-skip">
           Bỏ qua
         </a>
       
@@ -436,15 +438,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#page-on-vi-oc-va-ghi-du-lieu-cua-database" class="md-nav__link">
+  <a href="#1-database-luu-tru-du-lieu-nhu-the-nao" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Page: đơn vị đọc và ghi dữ liệu của database
+        1. Database lưu trữ dữ liệu như thế nào?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Page: đơn vị đọc và ghi dữ liệu của database">
+    <nav class="md-nav" aria-label="1. Database lưu trữ dữ liệu như thế nào?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -475,10 +477,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#index-la-gi-va-no-luu-nhung-gi" class="md-nav__link">
+  <a href="#2-index-la-gi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Index là gì và nó lưu những gì?
+        2. Index là gì?
       
     </span>
   </a>
@@ -486,15 +488,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cau-truc-index-b-tree-va-btree" class="md-nav__link">
+  <a href="#3-b-tree-va-btree-hoat-ong-nhu-the-nao" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cấu trúc index: B-tree và B+tree
+        3. B-tree và B+tree hoạt động như thế nào?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Cấu trúc index: B-tree và B+tree">
+    <nav class="md-nav" aria-label="3. B-tree và B+tree hoạt động như thế nào?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -597,23 +599,28 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#cac-mo-hinh-luu-tru-tai-nut-la-cua-index" class="md-nav__link">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-index-lien-ket-voi-du-lieu-trong-bang-nhu-the-nao" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Các mô hình lưu trữ tại nút lá của Index
+        4. Index liên kết với dữ liệu trong bảng như thế nào?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Các mô hình lưu trữ tại nút lá của Index">
+    <nav class="md-nav" aria-label="4. Index liên kết với dữ liệu trong bảng như thế nào?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#truong-hop-1-con-tro-vat-ly-rid-row-identifier" class="md-nav__link">
+  <a href="#con-tro-vat-ly-rid-row-identifier" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trường hợp 1: Con trỏ vật lý (RID — Row Identifier)
+        Con trỏ vật lý (RID — Row Identifier)
       
     </span>
   </a>
@@ -621,10 +628,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#truong-hop-2-chua-du-lieu-thuc-te" class="md-nav__link">
+  <a href="#du-lieu-thuc-te-tai-nut-la-va-clustered-index" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trường hợp 2: chứa dữ liệu thực tế
+        Dữ liệu thực tế tại nút lá và clustered index
       
     </span>
   </a>
@@ -632,10 +639,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#truong-hop-3-khoa-logic-clustered-key-primary-key" class="md-nav__link">
+  <a href="#khoa-logic-va-qua-trinh-tra-cuu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trường hợp 3: Khóa logic (Clustered Key / Primary Key)
+        Khóa logic và quá trình tra cứu
       
     </span>
   </a>
@@ -643,29 +650,13 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#truong-hop-3-chua-du-lieu-thuc-te" class="md-nav__link">
+  <a href="#non-clustered-index" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trường hợp 3: chứa dữ liệu thực tế
+        Non-clustered index
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hinh-anh-minh-hoa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hình ảnh minh họa
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -675,93 +666,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mot-so-cau-truc-index-chuyen-biet-khac" class="md-nav__link">
+  <a href="#5-index-thay-oi-nhu-the-nao-khi-ghi-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Một số cấu trúc index chuyên biệt khác
+        5. Index thay đổi như thế nào khi ghi dữ liệu?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Một số cấu trúc index chuyên biệt khác">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#hash-index" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hash Index
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Hash Index">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#han-che-cua-hash-index" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hạn chế của Hash Index
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vi-sao-bang-bam-lon-hon-ram-lam-giam-hieu-nang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vi-sao-ham-bam-can-han-che-xung-ot" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vì sao hàm băm cần hạn chế xung đột?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#quy-trinh-hinh-thanh-bang-bam-tren-ram" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quy trình hình thành bảng băm trên RAM
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#index-xu-ly-cac-lenh-dml-insert-update-delete-nhu-the-nao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Index xử lý các lệnh DML (INSERT, UPDATE, DELETE) như thế nào?
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Index xử lý các lệnh DML (INSERT, UPDATE, DELETE) như thế nào?">
+    <nav class="md-nav" aria-label="5. Index thay đổi như thế nào khi ghi dữ liệu?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -827,10 +740,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#oi-voi-btree" class="md-nav__link">
+  <a href="#btree_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đối với B+tree:
+        B+tree
       
     </span>
   </a>
@@ -843,10 +756,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#thao-tac-update" class="md-nav__link">
+  <a href="#khi-update-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Thao tác update:
+        Khi UPDATE dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chi-phi-duy-tri-nhieu-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chi phí duy trì nhiều index
       
     </span>
   </a>
@@ -859,13 +783,252 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#luc-truoc-ta-a-tung-nhac-en-clustered-index-va-non-clustered-index-secondary-index-vay-thuc-ra-no-la-gi" class="md-nav__link">
+  <a href="#6-hash-index" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lúc trước ta đã từng nhắc đến clustered index và non clustered index (secondary index), vậy thực ra nó là gì?
+        6. Hash Index
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="6. Hash Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#co-che-tra-cuu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cơ chế tra cứu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che-cua-hash-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hạn chế của Hash Index
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-ham-bam-can-han-che-xung-ot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao hàm băm cần hạn chế xung đột?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-bang-bam-lon-hon-ram-lam-giam-hieu-nang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quy-trinh-hinh-thanh-bang-bam-tren-ram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quy trình hình thành bảng băm trên RAM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-composite-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Composite Index
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Composite Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loc-theo-nhieu-cot-va-phep-giao-chi-muc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lọc theo nhiều cột và phép giao chỉ mục
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-truc-khoa-ghep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu trúc khóa ghép
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quy-tac-tien-to-trai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quy tắc tiền tố trái
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#luu-y-khi-chon-thu-tu-cot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lưu ý khi chọn thứ tự cột
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-covering-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Covering Index
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Covering Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chi-phi-truy-cap-lai-bang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chi phí truy cập lại bảng
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chi phí truy cập lại bảng">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#khi-index-chua-con-tro-en-bang-chinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khi index chứa con trỏ đến bảng chính
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#khi-index-chua-clustered-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khi index chứa clustered key
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#khi-nao-index-bao-phu-mot-truy-van" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khi nào index bao phủ một truy vấn?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Khi nào index bao phủ một truy vấn?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-1-index-chua-u-cac-cot-truy-van-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ 1: Index chứa đủ các cột truy vấn cần
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-2-truy-van-can-them-cot-ngoai-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ 2: Truy vấn cần thêm cột ngoài index
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-only-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index-only scan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chi-phi-mo-rong-khoa-va-vai-tro-cua-include" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chi phí mở rộng khóa và vai trò của INCLUDE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -999,15 +1162,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#page-on-vi-oc-va-ghi-du-lieu-cua-database" class="md-nav__link">
+  <a href="#1-database-luu-tru-du-lieu-nhu-the-nao" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Page: đơn vị đọc và ghi dữ liệu của database
+        1. Database lưu trữ dữ liệu như thế nào?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Page: đơn vị đọc và ghi dữ liệu của database">
+    <nav class="md-nav" aria-label="1. Database lưu trữ dữ liệu như thế nào?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1038,10 +1201,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#index-la-gi-va-no-luu-nhung-gi" class="md-nav__link">
+  <a href="#2-index-la-gi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Index là gì và nó lưu những gì?
+        2. Index là gì?
       
     </span>
   </a>
@@ -1049,15 +1212,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cau-truc-index-b-tree-va-btree" class="md-nav__link">
+  <a href="#3-b-tree-va-btree-hoat-ong-nhu-the-nao" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cấu trúc index: B-tree và B+tree
+        3. B-tree và B+tree hoạt động như thế nào?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Cấu trúc index: B-tree và B+tree">
+    <nav class="md-nav" aria-label="3. B-tree và B+tree hoạt động như thế nào?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1160,23 +1323,28 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#cac-mo-hinh-luu-tru-tai-nut-la-cua-index" class="md-nav__link">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-index-lien-ket-voi-du-lieu-trong-bang-nhu-the-nao" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Các mô hình lưu trữ tại nút lá của Index
+        4. Index liên kết với dữ liệu trong bảng như thế nào?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Các mô hình lưu trữ tại nút lá của Index">
+    <nav class="md-nav" aria-label="4. Index liên kết với dữ liệu trong bảng như thế nào?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#truong-hop-1-con-tro-vat-ly-rid-row-identifier" class="md-nav__link">
+  <a href="#con-tro-vat-ly-rid-row-identifier" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trường hợp 1: Con trỏ vật lý (RID — Row Identifier)
+        Con trỏ vật lý (RID — Row Identifier)
       
     </span>
   </a>
@@ -1184,10 +1352,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#truong-hop-2-chua-du-lieu-thuc-te" class="md-nav__link">
+  <a href="#du-lieu-thuc-te-tai-nut-la-va-clustered-index" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trường hợp 2: chứa dữ liệu thực tế
+        Dữ liệu thực tế tại nút lá và clustered index
       
     </span>
   </a>
@@ -1195,10 +1363,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#truong-hop-3-khoa-logic-clustered-key-primary-key" class="md-nav__link">
+  <a href="#khoa-logic-va-qua-trinh-tra-cuu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trường hợp 3: Khóa logic (Clustered Key / Primary Key)
+        Khóa logic và quá trình tra cứu
       
     </span>
   </a>
@@ -1206,29 +1374,13 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#truong-hop-3-chua-du-lieu-thuc-te" class="md-nav__link">
+  <a href="#non-clustered-index" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trường hợp 3: chứa dữ liệu thực tế
+        Non-clustered index
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hinh-anh-minh-hoa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hình ảnh minh họa
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -1238,93 +1390,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mot-so-cau-truc-index-chuyen-biet-khac" class="md-nav__link">
+  <a href="#5-index-thay-oi-nhu-the-nao-khi-ghi-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Một số cấu trúc index chuyên biệt khác
+        5. Index thay đổi như thế nào khi ghi dữ liệu?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Một số cấu trúc index chuyên biệt khác">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#hash-index" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hash Index
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Hash Index">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#han-che-cua-hash-index" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Hạn chế của Hash Index
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vi-sao-bang-bam-lon-hon-ram-lam-giam-hieu-nang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vi-sao-ham-bam-can-han-che-xung-ot" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vì sao hàm băm cần hạn chế xung đột?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#quy-trinh-hinh-thanh-bang-bam-tren-ram" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quy trình hình thành bảng băm trên RAM
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#index-xu-ly-cac-lenh-dml-insert-update-delete-nhu-the-nao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Index xử lý các lệnh DML (INSERT, UPDATE, DELETE) như thế nào?
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Index xử lý các lệnh DML (INSERT, UPDATE, DELETE) như thế nào?">
+    <nav class="md-nav" aria-label="5. Index thay đổi như thế nào khi ghi dữ liệu?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1390,10 +1464,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#oi-voi-btree" class="md-nav__link">
+  <a href="#btree_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đối với B+tree:
+        B+tree
       
     </span>
   </a>
@@ -1406,10 +1480,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#thao-tac-update" class="md-nav__link">
+  <a href="#khi-update-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Thao tác update:
+        Khi UPDATE dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chi-phi-duy-tri-nhieu-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chi phí duy trì nhiều index
       
     </span>
   </a>
@@ -1422,13 +1507,252 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#luc-truoc-ta-a-tung-nhac-en-clustered-index-va-non-clustered-index-secondary-index-vay-thuc-ra-no-la-gi" class="md-nav__link">
+  <a href="#6-hash-index" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lúc trước ta đã từng nhắc đến clustered index và non clustered index (secondary index), vậy thực ra nó là gì?
+        6. Hash Index
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="6. Hash Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#co-che-tra-cuu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cơ chế tra cứu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che-cua-hash-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hạn chế của Hash Index
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-ham-bam-can-han-che-xung-ot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao hàm băm cần hạn chế xung đột?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-bang-bam-lon-hon-ram-lam-giam-hieu-nang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quy-trinh-hinh-thanh-bang-bam-tren-ram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quy trình hình thành bảng băm trên RAM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-composite-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Composite Index
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Composite Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loc-theo-nhieu-cot-va-phep-giao-chi-muc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lọc theo nhiều cột và phép giao chỉ mục
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-truc-khoa-ghep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu trúc khóa ghép
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quy-tac-tien-to-trai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quy tắc tiền tố trái
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#luu-y-khi-chon-thu-tu-cot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lưu ý khi chọn thứ tự cột
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-covering-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Covering Index
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Covering Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chi-phi-truy-cap-lai-bang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chi phí truy cập lại bảng
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chi phí truy cập lại bảng">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#khi-index-chua-con-tro-en-bang-chinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khi index chứa con trỏ đến bảng chính
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#khi-index-chua-clustered-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khi index chứa clustered key
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#khi-nao-index-bao-phu-mot-truy-van" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khi nào index bao phủ một truy vấn?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Khi nào index bao phủ một truy vấn?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-1-index-chua-u-cac-cot-truy-van-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ 1: Index chứa đủ các cột truy vấn cần
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-2-truy-van-can-them-cot-ngoai-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ 2: Truy vấn cần thêm cột ngoài index
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-only-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index-only scan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chi-phi-mo-rong-khoa-va-vai-tro-cua-include" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chi phí mở rộng khóa và vai trò của INCLUDE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1480,7 +1804,7 @@
   </figcaption>
 </figure>
 
-<h2 id="page-on-vi-oc-va-ghi-du-lieu-cua-database">Page: đơn vị đọc và ghi dữ liệu của database</h2>
+<h2 id="1-database-luu-tru-du-lieu-nhu-the-nao">1. Database lưu trữ dữ liệu như thế nào?</h2>
 <p>Để hiểu khái niệm index dễ hơn, trước hết hãy xem <strong>database lưu trữ dữ liệu trên ổ đĩa</strong> như thế nào.</p>
 <p>Khi truy vấn database, chúng ta thường thấy dữ liệu ở dạng hàng và cột. Tuy nhiên, tại tầng lưu trữ, DBMS không truy cập riêng lẻ từng hàng mà thường <strong>đọc và ghi theo đơn vị gọi là page (hoặc block)</strong>. Tùy hệ quản trị cơ sở dữ liệu, mỗi page có kích thước từ 4 KB đến 16 KB. Dữ liệu được đưa vào một page nhiều nhất có thể; khi page đã đầy, hệ thống tạo page mới để tiếp tục lưu trữ.</p>
 <h3 id="mot-page-gom-nhung-gi">Một page gồm những gì?</h3>
@@ -1507,11 +1831,11 @@
 <li><strong>Heap:</strong> Dữ liệu trong page hoàn toàn không có thứ tự. Database ghi dữ liệu đến đâu thì đưa vào page đến đó, hoặc tìm page vẫn còn chỗ trống. Vì không phải quan tâm đến thứ tự nên <strong>tốc độ ghi rất nhanh</strong>. Đổi lại, để tìm một dòng dữ liệu, hệ thống phải lần lượt đưa các page vào RAM rồi quét từng dòng trong từng page (<strong>full table scan</strong>), gây ảnh hưởng lớn đến hiệu suất truy vấn.</li>
 <li><strong>Clustered:</strong> Khi bảng có clustered index (primary key), dữ liệu trong database <strong>được sắp xếp theo khóa này</strong>. Việc ghi mất nhiều thời gian hơn vì hệ thống phải duy trì thứ tự, nhưng <strong>truy vấn theo dòng hoặc theo khoảng sẽ nhanh hơn</strong>. Do dữ liệu đã được sắp xếp, hệ thống chỉ cần xác định page chứa dòng cần tìm thay vì đọc toàn bộ các page.</li>
 </ul>
-<h2 id="index-la-gi-va-no-luu-nhung-gi">Index là gì và nó lưu những gì?</h2>
+<h2 id="2-index-la-gi">2. Index là gì?</h2>
 <p>Hãy hình dung bạn cần tìm một tựa sách trong một cuốn sách rất dày. Nếu cuốn sách <strong>không có mục lục</strong>, bạn phải lật lần lượt từ trang đầu đến trang cuối cho đến khi thấy đúng tựa sách. Cách này rất tốn thời gian, nhất là khi cuốn sách dài hàng nghìn trang. Mục lục giải quyết vấn đề bằng cách sắp xếp các tựa sách theo một thứ tự, chẳng hạn thứ tự chữ cái, rồi ghi kèm số trang tương ứng. Muốn tìm một tựa đề, bạn chỉ cần <strong>tra mục lục và mở thẳng đến trang được chỉ dẫn</strong>.</p>
 <p>Index trong cơ sở dữ liệu vận hành theo ý tưởng tương tự. Thay vì duyệt từng dòng để tìm giá trị mong muốn, hệ thống <strong>tra index</strong> để nhanh chóng xác định bản ghi hoặc page chứa dữ liệu, sau đó <strong>chỉ đọc phần cần thiết</strong>.</p>
-<p>Index là một <strong>cấu trúc phụ giúp tăng tốc tìm kiếm</strong>. Ở node trung gian,index lưu <strong>key phân tách và con trỏ</strong>, trỏ đến index page con. Ở node lá, index lưu key cùng con trỏ hoặc dịnh danh đến bản ghi; tùy loại index thì node lá có thể chứa luôn giá trị. trường hợp nào dùng con trỏ và tại sao lại có node trung gian và nút lá, ta sẽ được tìm hiểu sau. Trên đĩa, index thường được tổ chức thành nhiều <strong>index page</strong>; mỗi index page gồm nhiều <strong>index entry</strong>.</p>
-<h2 id="cau-truc-index-b-tree-va-btree">Cấu trúc index: B-tree và B+tree</h2>
+<p>Index là một <strong>cấu trúc phụ giúp tăng tốc tìm kiếm</strong>. Ở nút trung gian, index lưu <strong>key phân tách và con trỏ</strong>, trỏ đến index page con. Ở nút lá, index lưu key cùng con trỏ hoặc định danh đến bản ghi; tùy loại index, nút lá có thể chứa luôn giá trị. Các phần tiếp theo sẽ giải thích khi nào index dùng con trỏ, cũng như vai trò của nút trung gian và nút lá. Trên đĩa, index thường được tổ chức thành nhiều <strong>index page</strong>; mỗi index page gồm nhiều <strong>index entry</strong>.</p>
+<h2 id="3-b-tree-va-btree-hoat-ong-nhu-the-nao">3. B-tree và B+tree hoạt động như thế nào?</h2>
 <p>Các index page thường không được trải phẳng mà liên kết với nhau theo một cấu trúc index. Hai cấu trúc index phổ biến là <strong>B-tree và B+tree</strong>. Đây là những <strong>cây tìm kiếm đa nhánh cân bằng</strong>, gồm nút gốc, các nút trung gian và các nút lá. Nếu đã học cấu trúc dữ liệu và giải thuật, bạn có thể hình dung chúng tương tự các cây tìm kiếm cân bằng như AVL hoặc Red-Black tree. Điểm khác biệt là mỗi node của B-tree/B+tree có thể chứa <strong>nhiều key và nhiều nhánh con</strong>, thay vì chỉ có hai nhánh trái và phải.</p>
 <h3 id="mo-hinh-tong-quan-mot-b-tree-can-bang">Mô hình tổng quan: một B-tree cân bằng</h3>
 <pre class="mermaid"><code>flowchart TB
@@ -1549,12 +1873,7 @@
 <h3 id="b-tree-cau-truc-page-va-vi-tri-du-lieu">B-tree: cấu trúc page và vị trí dữ liệu</h3>
 <p>Trong B-tree, dữ liệu thực tế hoặc con trỏ đến dữ liệu có thể xuất hiện ở cả nút trung gian và nút lá.</p>
 <h4 id="nut-trung-gian">Nút trung gian</h4>
-<p>Mỗi nút trung gian gồm các <strong>key</strong>, con trỏ đến dữ liệu thực tế (<strong>Row Identifier — RID</strong>) và con trỏ đến các node con. Một RID thường gồm các thành phần sau:</p>
-<ul>
-<li><strong>File ID:</strong> Mã định danh của file chứa dữ liệu trên ổ đĩa.</li>
-<li><strong>Page Number:</strong> Số thứ tự của page trong file.</li>
-<li><strong>Slot Number:</strong> Vị trí của dữ liệu trong Offset Array.</li>
-</ul>
+<p>Mỗi nút trung gian gồm các <strong>key</strong>, con trỏ đến dữ liệu thực tế (<strong>Row Identifier — RID</strong>) và con trỏ đến các node con.</p>
 <h4 id="nut-la">Nút lá</h4>
 <p>Nút lá chứa các thành phần tương tự nút trung gian, nhưng không có con trỏ đến node con. Các node lá độc lập với nhau và không có con trỏ nối sang node lá bên cạnh; trong khi đó, B+tree sử dụng danh sách liên kết đôi. Vì key tại nút trung gian đã gắn với dữ liệu thực tế nên các key này không xuất hiện lại tại nút lá.</p>
 <h4 id="truy-van-khoang-va-ac-iem-cua-b-tree">Truy vấn khoảng và đặc điểm của B-tree</h4>
@@ -1579,62 +1898,43 @@
 <p><strong>Leaf page</strong></p>
 <div class="highlight"><pre><span></span><code>[5 | row ptr] [10 | row ptr] [15 | row ptr]
 </code></pre></div>
-<h3 id="cac-mo-hinh-luu-tru-tai-nut-la-cua-index">Các mô hình lưu trữ tại nút lá của Index</h3>
-<p>Con trỏ dữ liệu trong B-tree và nút lá của B+tree có thể thuộc hai trường hợp.</p>
-<h4 id="truong-hop-1-con-tro-vat-ly-rid-row-identifier">Trường hợp 1: Con trỏ vật lý (RID — Row Identifier)</h4>
+<h2 id="4-index-lien-ket-voi-du-lieu-trong-bang-nhu-the-nao">4. Index liên kết với dữ liệu trong bảng như thế nào?</h2>
+<h3 id="con-tro-vat-ly-rid-row-identifier">Con trỏ vật lý (RID — Row Identifier)</h3>
+<p>Khi bảng dữ liệu chính được lưu dưới dạng Heap Pages, không có clustered index, ví dụ PostgreSQL, index lưu tọa độ đĩa tĩnh <code>FileID:PageID:SlotNumber</code> để trỏ thẳng đến dòng dữ liệu.</p>
+<p>Một RID thường gồm các thành phần sau:</p>
 <ul>
-<li><strong>Áp dụng:</strong> Khi bảng dữ liệu chính được lưu dưới dạng Heap Pages, không có Clustered Index, ví dụ PostgreSQL.</li>
-<li><strong>Nội dung:</strong> Lưu tọa độ đĩa tĩnh <code>FileID:PageID:SlotNumber</code>, trỏ thẳng đến dòng dữ liệu.</li>
+<li><strong>File ID:</strong> Mã định danh của file chứa dữ liệu trên ổ đĩa.</li>
+<li><strong>Page Number:</strong> Số thứ tự của page trong file.</li>
+<li><strong>Slot Number:</strong> Vị trí của dữ liệu trong Offset Array.</li>
 </ul>
-<h4 id="truong-hop-2-chua-du-lieu-thuc-te">Trường hợp 2: chứa dữ liệu thực tế</h4>
-<p>Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.</p>
-<h4 id="truong-hop-3-khoa-logic-clustered-key-primary-key">Trường hợp 3: Khóa logic (Clustered Key / Primary Key)</h4>
-<ul>
-<li><strong>Áp dụng:</strong> Khi bảng chính được lưu theo Clustered Index và có thêm chỉ mục phụ (Secondary Index).</li>
-<li><strong>Nội dung:</strong> Không lưu địa chỉ đĩa tĩnh mà lưu giá trị của Primary Key (giá trị của các nút ở cây chính), ví dụ <code>ID = 3</code>, để sau đó duyệt cây Clustered Index và lấy dữ liệu dòng.</li>
-</ul>
-<h4 id="truong-hop-3-chua-du-lieu-thuc-te">Trường hợp 3: chứa dữ liệu thực tế</h4>
-<p>Khi dùng clustered index đối với cây B+ tree thì lúc này dữ liệu của các nút lá của nó chính là các dòng dữ liệu thực tế. Toàn bộ bản dữ liệu thực tế chính là cây B+tree.</p>
+<h3 id="du-lieu-thuc-te-tai-nut-la-va-clustered-index">Dữ liệu thực tế tại nút lá và clustered index</h3>
+<p><strong>Clustered index</strong> định hình cấu trúc sắp xếp vật lý của toàn bộ bảng dữ liệu trên ổ đĩa. Khi dùng clustered index với B+tree, bảng dữ liệu được tổ chức trực tiếp thành cây này. Các nút lá chứa chính các hàng dữ liệu của bảng, được sắp xếp và lưu trữ theo thứ tự của clustered key. Vì vậy, xét ở mức lá, clustered index chính là bảng dữ liệu.</p>
+<p>B+tree là cấu trúc dữ liệu; clustered index là ứng dụng của cấu trúc đó để tổ chức và sắp xếp vật lý toàn bộ bảng trên ổ đĩa.</p>
+<p>Mỗi bảng chỉ có thể có một clustered index vì dữ liệu trên đĩa chỉ được sắp xếp theo một thứ tự duy nhất. Không nên chọn các cột dễ biến động, thường xuyên được cập nhật, chẳng hạn cột <code>status</code>, vì cập nhật khóa chỉ mục gây tốn I/O.</p>
+<p>Các cột tự tăng là ứng viên hoàn hảo cho clustered index vì đảm bảo ba thuộc tính: ổn định, duy nhất và tăng dần tuần tự.</p>
+<h3 id="khoa-logic-va-qua-trinh-tra-cuu">Khóa logic và quá trình tra cứu</h3>
+<p>Khi bảng chính được lưu theo clustered index và có thêm chỉ mục phụ (secondary index), chỉ mục phụ lưu giá trị của primary key thay cho địa chỉ đĩa tĩnh. Ví dụ, với <code>ID = 3</code>, hệ thống dùng giá trị này để duyệt cây clustered index và lấy dữ liệu dòng.</p>
 <blockquote>
-<p>Lưu ý là trường hợp 2 và 3 dành cho B+tree</p>
+<p><strong>Lưu ý:</strong> Hai mô hình chứa dữ liệu thực tế tại nút lá và lưu khóa logic ở trên dành cho B+tree.</p>
 </blockquote>
-<p><strong>Câu hỏi đặt ra:</strong> Tại sao ở Trường hợp 2 (Clustered Table), người ta không dùng con trỏ vật lý RID cho nhanh, mà lại dùng Khóa logic để rồi phải bị phạt duyệt cây 2 lần (Double Traversal).</p>
-<p>Đó là bởi vì nếu các cây chỉ mục phụ lưu cả RID thì khi người dùng thay đổi các dòng dữ liệu hoặc thêm dữ liệu vào dữ liệu có thể bị thay đổi vị trí. Dẫn đến phải cập nhật lại các RID của cây gây lãng phí I/O.</p>
-<h4 id="hinh-anh-minh-hoa">Hình ảnh minh họa</h4>
+<p>Vì sao chỉ mục phụ dùng khóa logic, dù phải duyệt cây hai lần (<strong>Double Traversal</strong>), thay vì dùng con trỏ vật lý RID?</p>
+<p>Khi thêm hoặc thay đổi dữ liệu, vị trí của các dòng có thể thay đổi. Nếu các chỉ mục phụ lưu RID, hệ thống phải cập nhật lại những RID này, gây tốn I/O.</p>
 <p><img alt="Sự khác nhau giữa con trỏ dữ liệu trong B-tree và nút lá B+tree" src="../assets/images/index/difference.png" /></p>
-<h2 id="mot-so-cau-truc-index-chuyen-biet-khac">Một số cấu trúc index chuyên biệt khác</h2>
-<p>Ngoài họ cấu trúc B-tree/B+tree giữ vai trò chủ đạo trong RDBMS, thế giới lưu trữ còn có các cấu trúc chuyên biệt khác như Hash Index, GIN,... Nhưng trong khuôn khổ bài viết này ta sẽ chỉ tìm hiểu sơ lược thêm về Hash Index.</p>
-<h3 id="hash-index">Hash Index</h3>
-<p>Nếu nghiệp vụ không yêu cầu truy vấn khoảng mà ưu tiên tối đa tốc độ tra cứu điểm (<strong>point lookup</strong>), Hash Index là một lựa chọn có thể cân nhắc.</p>
-<p>Đúng như tên gọi, cấu trúc này sử dụng một bảng băm, thường được duy trì thường trực trên RAM để tối ưu hiệu năng. Nhờ cơ chế băm trực tiếp key tìm kiếm, độ phức tạp trung bình khi truy xuất một giá trị đạt mức lý tưởng là <code>O(1)</code>.</p>
-<h4 id="han-che-cua-hash-index">Hạn chế của Hash Index</h4>
-<p>Mặc dù có tốc độ đọc tốt, Hash Index vẫn tồn tại một số nhược điểm đáng kể:</p>
+<h3 id="non-clustered-index">Non-clustered index</h3>
+<p><strong>Non-clustered index</strong> tăng tốc độ truy xuất mà không thay đổi thứ tự sắp xếp vật lý của bảng dữ liệu gốc. Đây là một cây B+tree độc lập, tồn tại bên cạnh bảng dữ liệu.</p>
+<p>Theo mặc định, nút lá không chứa toàn bộ hàng mà chứa:</p>
 <ul>
-<li><strong>Không hỗ trợ truy vấn khoảng:</strong> Mục tiêu của hàm băm là phân tán dữ liệu ngẫu nhiên và đồng đều để tránh xung đột, tức các key khác nhau nhưng nằm trong cùng một bucket. Do đó, hai mã băm có giá trị liền kề có thể nằm trên hai data page cách xa nhau.</li>
-<li><strong>Không phù hợp với bảng quá nhỏ:</strong> Sử dụng bảng băm có thể chậm hơn cả việc quét toàn bộ bảng.</li>
-<li><strong>Phụ thuộc vào dung lượng RAM:</strong> Để đạt hiệu năng tối đa, bảng băm được lưu trên RAM. Nếu kích thước bảng băm vượt quá dung lượng RAM hiện có, hiệu năng hệ thống sẽ giảm mạnh. Khi hệ thống mất điện hoặc gặp sự cố, bảng băm này cũng bị mất và phải được khôi phục khi hệ thống hoạt động trở lại.</li>
+<li>Khóa non-clustered index.</li>
+<li>Row locator để tìm hàng gốc.</li>
+<li>Cột <code>INCLUDE</code>, nếu có.</li>
 </ul>
-<h4 id="vi-sao-bang-bam-lon-hon-ram-lam-giam-hieu-nang">Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?</h4>
-<p>Khi bảng băm vượt quá dung lượng RAM, một phần dữ liệu buộc phải được đẩy xuống ổ đĩa. Do tính chất phân tán ngẫu nhiên của hàm băm, mỗi lượt truy vấn rất dễ rơi vào phần nằm trên đĩa (<strong>cache miss</strong>), biến thao tác tra cứu trên RAM thành thao tác đọc đĩa ngẫu nhiên (<strong>Random I/O</strong>) rất chậm.</p>
-<p><img alt="Ảnh hưởng đến hiệu năng khi bảng băm lớn hơn RAM" src="../assets/images/index/RAM.png" /></p>
-<h4 id="vi-sao-ham-bam-can-han-che-xung-ot">Vì sao hàm băm cần hạn chế xung đột?</h4>
-<p>Hàm băm cần hạn chế tối đa tình trạng xung đột vì các nguyên nhân sau:</p>
+<p>Row locator phụ thuộc vào cách tổ chức bảng:</p>
 <ul>
-<li>Tránh tình trạng <strong>data skew</strong>, trong đó một bucket chứa quá nhiều key còn bucket khác không chứa key nào.</li>
-<li>Khi quá nhiều key nằm trong cùng một bucket, hệ thống phải truy cập bucket rồi tiếp tục tìm key cần thiết, làm mất lợi thế tốc độ <code>O(1)</code> của Hash Index.</li>
-<li>Khi quá nhiều key nằm trong cùng một bucket khiến bucket hết dung lượng, hệ thống phải tạo thêm <strong>overflow page</strong> và dùng con trỏ của danh sách liên kết để nối page này vào cuối bucket hiện có. Mỗi lần đọc overflow page cần thêm một lần I/O; quá nhiều I/O sẽ làm chậm hệ thống.</li>
+<li><strong>Bảng có clustered index:</strong> Chứa clustered key.</li>
+<li><strong>Bảng heap:</strong> Chứa RID, tức vị trí hàng.</li>
 </ul>
-<h4 id="quy-trinh-hinh-thanh-bang-bam-tren-ram">Quy trình hình thành bảng băm trên RAM</h4>
-<p>Quy trình hình thành bảng băm (Hash Index/Hash Map) trên RAM trong hệ quản trị cơ sở dữ liệu gồm các bước sau:</p>
-<ol>
-<li>Hệ thống quét tuần tự toàn bộ file log trên ổ đĩa.</li>
-<li>Xác định vị trí của từng dòng dữ liệu trên ổ đĩa.</li>
-<li>Tính mã băm của key và nạp vào RAM.</li>
-</ol>
-<blockquote>
-<p><strong>Lưu ý:</strong> Nếu RAM đã lưu vị trí của một dòng dữ liệu nhưng hệ thống quét được vị trí mới hơn, hệ thống sẽ cập nhật vị trí mới vào RAM. Nếu dòng dữ liệu được đánh dấu là đã xóa, hệ thống sẽ xóa dữ liệu đó khỏi bảng băm trên RAM.</p>
-</blockquote>
-<h2 id="index-xu-ly-cac-lenh-dml-insert-update-delete-nhu-the-nao">Index xử lý các lệnh DML (<code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>) như thế nào?</h2>
+<p>Vì non-clustered index không thay đổi cách lưu dữ liệu trên đĩa, một bảng có thể có nhiều non-clustered index.</p>
+<h2 id="5-index-thay-oi-nhu-the-nao-khi-ghi-du-lieu">5. Index thay đổi như thế nào khi ghi dữ liệu?</h2>
 <h3 id="khi-insert-du-lieu">Khi <code>INSERT</code> dữ liệu</h3>
 <h4 id="b-tree">B-tree</h4>
 <p>Hệ thống duyệt cây để tìm node có thể chèn giá trị. Nếu node còn chỗ, key mới được chèn vào đúng vị trí theo thứ tự sắp xếp. Nếu node đã đầy, hệ thống thực hiện <strong>page split</strong>: chọn middle key, tách node thành hai node riêng và đưa middle key lên node cha để làm key dẫn đường. Nếu node cha cũng đầy, quá trình này tiếp tục lan lên các node cha phía trên.</p>
@@ -1662,23 +1962,29 @@
 <p>Hệ thống xóa key khỏi node lá. Nếu node rơi vào trạng thái underflow, hệ thống sẽ mượn key hoặc gộp node với node anh em bên trái hoặc bên phải.</p>
 <p><strong>Mượn key</strong></p>
 <p>Hệ thống có thể mượn key từ node anh em bên trái hoặc bên phải. Key phân tách tại node cha được đưa xuống node đang thiếu. Nếu mượn từ bên trái, key lớn nhất của node trái được đưa lên thay key phân tách tại node cha; nếu mượn từ bên phải, key nhỏ nhất của node phải được đưa lên. Quy trình này duy trì thứ tự sắp xếp của các key trong cây.</p>
-<p>Ví dụ:</p>
+<p><strong>Trạng thái trước khi mượn key:</strong></p>
 <ul>
 <li>Node cha chứa key <code>[30]</code>.</li>
 <li>Node con trái chứa <code>[10, 20]</code>.</li>
 <li>Node con phải chỉ còn <code>[40]</code> sau khi xóa và bị underflow.</li>
 </ul>
-<p>Node phải mượn key từ node trái. Key <code>30</code> tại node cha được đưa xuống node phải, tạo thành <code>[30, 40]</code>; key <code>20</code> từ node trái được đưa lên thay vị trí của key <code>30</code> tại node cha. Cây trở lại trạng thái cân bằng.</p>
+<p><strong>Thao tác:</strong></p>
+<ol>
+<li>Đưa key <code>30</code> tại node cha xuống node phải, tạo thành <code>[30, 40]</code>.</li>
+<li>Đưa key <code>20</code> từ node trái lên thay key <code>30</code> tại node cha.</li>
+</ol>
+<p><strong>Trạng thái sau cùng:</strong> Node cha chứa <code>[20]</code>, node trái chứa <code>[10]</code>, node phải chứa <code>[30, 40]</code>. Cây trở lại trạng thái cân bằng.</p>
 <p><strong>Gộp node</strong></p>
 <p>Khi không thể mượn key vì các node anh em chỉ có số key tối thiểu, hệ thống buộc phải gộp hai node để xử lý underflow. Key phân tách tại node cha, nằm giữa hai node con, được đưa xuống và gộp cùng dữ liệu của node đang thiếu và node anh em. Node dư thừa sau đó được xóa. Nếu việc mất một key khiến node cha bị underflow, quy trình mượn hoặc gộp tiếp tục được áp dụng cho node cha.</p>
-<p>Ví dụ với cây B-tree bậc 5, trong đó mỗi node chứa tối thiểu 2 key và tối đa 4 key:</p>
+<p>Ví dụ với cây B-tree bậc 5, mỗi node chứa tối thiểu 2 key và tối đa 4 key.</p>
+<p><strong>Trạng thái ban đầu:</strong></p>
 <ul>
 <li>Node cha chứa <code>[30, 60]</code>.</li>
 <li>Node con trái chứa <code>[10, 20]</code>.</li>
 <li>Node con giữa chứa <code>[40, 50]</code>.</li>
 <li>Node con phải chứa <code>[70, 80]</code>.</li>
 </ul>
-<p>Khi xóa key <code>50</code> khỏi node con giữa:</p>
+<p><strong>Thao tác: Xóa key <code>50</code> khỏi node con giữa.</strong></p>
 <ol>
 <li>Node con giữa chỉ còn <code>[40]</code> và bị underflow vì có ít hơn 2 key.</li>
 <li>Hai node anh em <code>[10, 20]</code> và <code>[70, 80]</code> đều chỉ có đúng 2 key, đạt mức tối thiểu nên không có key dư để cho mượn.</li>
@@ -1688,53 +1994,187 @@
 </code></pre></div>
 </li>
 <li>
-<p>Node giữa cũ được giải phóng. Node cha lúc này chỉ còn <code>[60]</code>. Nếu node cha bị thiếu key, quá trình mượn hoặc gộp tiếp tục lan lên tầng trên.</p>
+<p>Giải phóng node giữa cũ.</p>
 </li>
 </ol>
-<p><strong>Trường hợp 2: key cần xóa nằm ở nút trung gian,</strong> vì khóa này nắm vai trò để phân tách địch tuyến nên hệ thống không thể đơn giản xóa bỏ nó. Khi đó hệ thống tìm các khóa thế thân ở các nút lá, có thể là khóa liền trước hoặc khóa liền sau. Sau khi tìm được khóa thế thân, hệ thống copy khóa thế thân đó và thay thế với khóa ta cần xóa, sau đó xóa khóa thế thân ở nút lá đi. Ví dụ: Giả sử một phần của cây có cấu trúc:</p>
-<p><strong>Nút trung gian:</strong> [ 50 ] (có 2 con trỏ rẽ nhánh trái và phải)</p>
-<p><strong>Cây con bên trái trỏ xuống nút lá:</strong> [ 20 , 35 , 45 ]</p>
-<p><strong>Cây con bên phải trỏ xuống nút lá:</strong> [ 60 , 70 ]</p>
-<p><strong>Yêu cầu:</strong> Xóa khóa 50 ở nút trung gian.</p>
-<p><strong>Bước 1: Tìm khóa thế thân</strong></p>
-<p>Nhánh trái có khóa lớn nhất là 45 (In-order Predecessor ở nút lá bên trái).</p>
-<p><strong>Bước 2: Ghi đè khóa</strong></p>
-<p>Copy 45 lên thế chỗ của 50. Nút trung gian lúc này trở thành [ 45 ].</p>
-<p><strong>Bước 3: Xóa khóa thế thân ở nút lá</strong></p>
-<p>Xóa phần tử 45 ở nút lá bên trái.</p>
-<p>Nút lá bên trái còn lại: [ 20 , 35 ].</p>
-<p><strong>Bước 4: Kiểm tra Underflow</strong></p>
-<p>Nút lá bên trái còn 2 khóa, vẫn thỏa mãn số khóa tối thiểu là 2. Quá trình xóa kết thúc hoàn tất mà không cần gộp hay xoay cây.</p>
-<h4 id="oi-voi-btree">Đối với B+tree:</h4>
-<p>Vì mọi khóa đều nằm ở nút lá nên hệ thống chỉ đơn giản là xóa khóa ở nút lá đi thôi, nếu nút bị underflow sẽ thực thi quy trình gộp node hoặc mượn key.</p>
-<h3 id="thao-tac-update">Thao tác update:</h3>
-<p>Cách chỉ mục xử lý câu lệnh UPDATE phụ thuộc hoàn toàn vào việc cột dữ liệu bị thay đổi có nằm trong chỉ mục hay không:</p>
+<p><strong>Trạng thái sau cùng:</strong> Node đã gộp chứa <code>[10, 20, 30, 40]</code>, node cha còn <code>[60]</code>. Nếu node cha bị thiếu key, quá trình mượn hoặc gộp tiếp tục lan lên tầng trên.</p>
+<p><strong>Trường hợp 2: Key cần xóa nằm ở nút trung gian</strong></p>
+<p>Khóa ở nút trung gian có vai trò phân tách và định tuyến nên hệ thống không thể xóa trực tiếp. Hệ thống tìm khóa liền trước hoặc liền sau ở nút lá, sao chép khóa đó để thay thế khóa cần xóa, rồi xóa khóa thế thân ở nút lá.</p>
+<p><strong>Trạng thái ban đầu:</strong></p>
 <ul>
-<li><strong>Th1:</strong> nếu cột bị update không nằm trong khóa chỉ mục, lúc này cột đó update bình thường, không làm ảnh hưởng đến index</li>
-<li><strong>Th2:</strong> nếu cột bị update nằm trong khóa chỉ mục, để đảm bảo tính sắp xếp, hệ thống không bao giờ được sửa đổi trực tiếp khóa. Mà 2 hệ thống sẽ lần lượt làm 2 bước đó là DELETE và INSERT. Vì để update dữ liệu của khóa chỉ mục hệ thống phải làm cả 2 bước đó nên tiêu tốn I/O và tài nguyên rất nhiều. Nên thông thường ta nên hạn chế thay đổi các khóa chỉ mục.</li>
+<li>Nút trung gian chứa <code>[50]</code>, có hai con trỏ rẽ nhánh trái và phải.</li>
+<li>Cây con bên trái trỏ xuống nút lá <code>[20, 35, 45]</code>.</li>
+<li>Cây con bên phải trỏ xuống nút lá <code>[60, 70]</code>.</li>
 </ul>
-<h2 id="luc-truoc-ta-a-tung-nhac-en-clustered-index-va-non-clustered-index-secondary-index-vay-thuc-ra-no-la-gi">Lúc trước ta đã từng nhắc đến clustered index và non clustered index (secondary index), vậy thực ra nó là gì?</h2>
-<p><strong>Clustered Index</strong> không đơn thuần là một công cụ tìm kiếm, mà nó chính là thiết kế định hình cấu trúc sắp xếp vật lý của toàn bộ bảng dữ liệu dưới ổ đĩa. Khi dùng Clustered Index, bảng dữ liệu được tổ chức trực tiếp dưới dạng một cây B+Tree, qua đó các dòng dữ liệu ở tầng nút lá bắt buộc phải được sắp xếp và lưu trữ theo thứ tự của Clustered Key. Đồng thười thì mức lá chứa chính các hàng dữ liệu của bảng; vì vậy clustered index, xét ở mức lá, chính là bảng dữ liệu.</p>
-<p><strong>Nói tóm lại B+Tree:</strong> Là bản thiết kế cấu trúc dữ liệu (Data Structure).</p>
-<p><strong>Clustered Index:</strong> Là ứng dụng thực tế của bản thiết kế đó để tổ chức và sắp xếp vật lý toàn bộ bảng dữ liệu dưới ổ đĩa.</p>
-<p>Lưu ý là khi bạn tạo clustered index thì bạn chỉ được tạo duy nhất 1 cái, vì dữ liệu dưới đĩa chỉ được sắp xếp theo 1 thứ tự duy nhất. Đồng thời bạn cũng không nên tạo clustered index ở các cột dễ biến động, các keys dễ bị update ví dụ như cột status. Như bạn đã biết thì việc update đối với cột dữ liệu được đánh index rất gây tốn I/O.</p>
-<p><strong>Bonus:</strong> các cột tự tăng là ứng viên hoàn hảo cho clustered index vì nó đảm bảo 3 thuộc tính: ổn định, duy nhất và tăng dần tuần tự.</p>
-<p><strong>Non clustered index:</strong> được thiết kế để tăng tốc độ truy xuất dữ liệu mà không làm thay đổi hay định đoạt thứ tự sắp xếp vật lý của bảng dữ liệu gốc dưới đĩa. Nếu như clustered index chính là bản thân bảng dữ liệu thì non clustered index là một cây B+tree hoàn toàn độc lập và nằm song song bên cạnh. khi bạn sử dụng non clustered index, Lúc này hệ thống sẽ tạo ra một cây B+tree độc lập. Qua đó hiệu suất truy vấn. Nút lá của nó không chứa toàn bộ hàng theo mặc định. Nó chứa:</p>
+<p><strong>Thao tác: Xóa khóa <code>50</code> ở nút trung gian.</strong></p>
+<ol>
+<li>Tìm khóa thế thân: Khóa lớn nhất ở nhánh trái là <code>45</code> (In-order Predecessor ở nút lá bên trái).</li>
+<li>Sao chép <code>45</code> lên thay <code>50</code>. Nút trung gian trở thành <code>[45]</code>.</li>
+<li>Xóa <code>45</code> ở nút lá bên trái. Nút này còn <code>[20, 35]</code>.</li>
+<li>Kiểm tra underflow: Nút lá bên trái còn hai khóa, vẫn thỏa mãn số khóa tối thiểu là hai.</li>
+</ol>
+<p><strong>Trạng thái sau cùng:</strong> Nút trung gian chứa <code>[45]</code>, nút lá bên trái chứa <code>[20, 35]</code>. Quá trình xóa kết thúc mà không cần gộp hay xoay cây.</p>
+<h4 id="btree_1">B+tree</h4>
+<p>Vì mọi khóa đều nằm ở nút lá, hệ thống xóa khóa tại nút lá. Nếu nút bị underflow, hệ thống thực hiện quy trình gộp nút hoặc mượn khóa.</p>
+<h3 id="khi-update-du-lieu">Khi <code>UPDATE</code> dữ liệu</h3>
+<p>Cách chỉ mục xử lý câu lệnh <code>UPDATE</code> phụ thuộc vào việc cột được cập nhật có nằm trong khóa chỉ mục hay không:</p>
 <ul>
-<li>Khóa nonclustered index.</li>
-<li>Row locator để tìm hàng gốc.</li>
-<li>Cột INCLUDE, nếu có.</li>
+<li><strong>Cột không nằm trong khóa chỉ mục:</strong> Cột được cập nhật bình thường, không ảnh hưởng đến index.</li>
+<li><strong>Cột nằm trong khóa chỉ mục:</strong> Để duy trì thứ tự sắp xếp, hệ thống không sửa trực tiếp khóa mà lần lượt thực hiện <code>DELETE</code> rồi <code>INSERT</code>. Việc thực hiện cả hai thao tác tiêu tốn nhiều I/O và tài nguyên, vì vậy nên hạn chế thay đổi khóa chỉ mục.</li>
 </ul>
-<p><strong>Row locator:</strong></p>
+<h3 id="chi-phi-duy-tri-nhieu-index">Chi phí duy trì nhiều index</h3>
+<p>Khi bảng có nhiều non-clustered index, các câu lệnh DML kéo theo các chi phí sau:</p>
 <ul>
-<li>Bảng có clustered index: chứa clustered key.</li>
-<li>Bảng heap: chứa RID, tức vị trí hàng.</li>
+<li><strong>Nhân số lượt ghi:</strong> Với 5 non-clustered index, một lần <code>INSERT</code> buộc hệ thống thực hiện 5 thao tác chèn vào 5 cây B+tree, nhân 5 lần ghi ổ đĩa và tăng số lượt ghi vào WAL.</li>
+<li><strong>Ghi ngẫu nhiên trên đĩa:</strong> Các index có key khác nhau và không cùng thứ tự logic. Khi cập nhật một dòng dữ liệu, các nút cần cập nhật nằm ở những vị trí khác nhau, khiến hệ thống phải ghi ngẫu nhiên thay vì ghi tuần tự.</li>
+<li><strong>Phân tách page:</strong> Các lệnh DML có thể gây phân tách page, kéo theo một chuỗi phân tách trên toàn bộ cây.</li>
 </ul>
-<p>Vì non clustered index không làm thay đổi cách hệ thống lưu dữ liệu bên dưới đĩa nên bạn có thể tạo nhiều non clustered index. Nhưng đổi lại khi bạn dùng các câu lệnh DML, điều này sẽ gây ra 4 vấn đề sau:</p>
+<h2 id="6-hash-index">6. Hash Index</h2>
+<p>Ngoài họ cấu trúc B-tree/B+tree giữ vai trò chủ đạo trong RDBMS, thế giới lưu trữ còn có các cấu trúc chuyên biệt khác như Hash Index, GIN,... Nhưng trong khuôn khổ bài viết này ta sẽ chỉ tìm hiểu sơ lược thêm về Hash Index.</p>
+<h3 id="co-che-tra-cuu">Cơ chế tra cứu</h3>
+<p>Nếu nghiệp vụ không yêu cầu truy vấn khoảng mà ưu tiên tối đa tốc độ tra cứu điểm (<strong>point lookup</strong>), Hash Index là một lựa chọn có thể cân nhắc.</p>
+<p>Đúng như tên gọi, cấu trúc này sử dụng một bảng băm, thường được duy trì thường trực trên RAM để tối ưu hiệu năng. Nhờ cơ chế băm trực tiếp key tìm kiếm, độ phức tạp trung bình khi truy xuất một giá trị đạt mức lý tưởng là <code>O(1)</code>.</p>
+<h3 id="han-che-cua-hash-index">Hạn chế của Hash Index</h3>
+<p>Mặc dù có tốc độ đọc tốt, Hash Index vẫn tồn tại một số nhược điểm đáng kể:</p>
 <ul>
-<li><strong>Nhân số lượt ghi:</strong> khi bạn có 5 non clustered index, khi bạn insert dữ liệu, hệ thống buộc phải thực hiện cả 5 thao tác chèn vào 5 câu B+tree này. Nhân 5 lần ghi ổ đĩa. Qua đó cũng gây gia tăng lượt ghi vào WAl.</li>
-<li><strong>Ghi ngẫu nhiên trên đĩa:</strong> Khi bạn cập nhật một dòng dữ liệu, vì các key trên các index sẽ khác nhau và không chung một thứ tự logic, nên khi bạn cập nhật các nút của các index sẽ khác nhau, lúc này hệ thống sẽ phải ghi ngẫu nhiên chứ không ghi tuần tự</li>
-<li><strong>Tình trạng data split:</strong> khi bạn thực hiện các lệnh DMl, có nguy cơ gây phân tách trang, điều này có thể dẫn đến một chuỗi phân tách trang trên toàn bộ cây,</li>
+<li><strong>Không hỗ trợ truy vấn khoảng:</strong> Mục tiêu của hàm băm là phân tán dữ liệu ngẫu nhiên và đồng đều để tránh xung đột, tức các key khác nhau nhưng nằm trong cùng một bucket. Do đó, hai mã băm có giá trị liền kề có thể nằm trên hai data page cách xa nhau.</li>
+<li><strong>Không phù hợp với bảng quá nhỏ:</strong> Sử dụng bảng băm có thể chậm hơn cả việc quét toàn bộ bảng.</li>
+<li><strong>Phụ thuộc vào dung lượng RAM:</strong> Để đạt hiệu năng tối đa, bảng băm được lưu trên RAM. Nếu kích thước bảng băm vượt quá dung lượng RAM hiện có, hiệu năng hệ thống sẽ giảm mạnh. Khi hệ thống mất điện hoặc gặp sự cố, bảng băm này cũng bị mất và phải được khôi phục khi hệ thống hoạt động trở lại.</li>
+</ul>
+<h3 id="vi-sao-ham-bam-can-han-che-xung-ot">Vì sao hàm băm cần hạn chế xung đột?</h3>
+<p>Hàm băm cần hạn chế tối đa tình trạng xung đột vì các nguyên nhân sau:</p>
+<ul>
+<li>Tránh tình trạng <strong>data skew</strong>, trong đó một bucket chứa quá nhiều key còn bucket khác không chứa key nào.</li>
+<li>Khi quá nhiều key nằm trong cùng một bucket, hệ thống phải truy cập bucket rồi tiếp tục tìm key cần thiết, làm mất lợi thế tốc độ <code>O(1)</code> của Hash Index.</li>
+<li>Khi quá nhiều key nằm trong cùng một bucket khiến bucket hết dung lượng, hệ thống phải tạo thêm <strong>overflow page</strong> và dùng con trỏ của danh sách liên kết để nối page này vào cuối bucket hiện có. Mỗi lần đọc overflow page cần thêm một lần I/O; quá nhiều I/O sẽ làm chậm hệ thống.</li>
+</ul>
+<h3 id="vi-sao-bang-bam-lon-hon-ram-lam-giam-hieu-nang">Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?</h3>
+<p>Khi bảng băm vượt quá dung lượng RAM, một phần dữ liệu buộc phải được đẩy xuống ổ đĩa. Do tính chất phân tán ngẫu nhiên của hàm băm, mỗi lượt truy vấn rất dễ rơi vào phần nằm trên đĩa (<strong>cache miss</strong>), biến thao tác tra cứu trên RAM thành thao tác đọc đĩa ngẫu nhiên (<strong>Random I/O</strong>) rất chậm.</p>
+<p><img alt="Ảnh hưởng đến hiệu năng khi bảng băm lớn hơn RAM" src="../assets/images/index/RAM.png" /></p>
+<h3 id="quy-trinh-hinh-thanh-bang-bam-tren-ram">Quy trình hình thành bảng băm trên RAM</h3>
+<p>Quy trình hình thành bảng băm (Hash Index/Hash Map) trên RAM trong hệ quản trị cơ sở dữ liệu gồm các bước sau:</p>
+<ol>
+<li>Hệ thống quét tuần tự toàn bộ file log trên ổ đĩa.</li>
+<li>Xác định vị trí của từng dòng dữ liệu trên ổ đĩa.</li>
+<li>Tính mã băm của key và nạp vào RAM.</li>
+</ol>
+<blockquote>
+<p><strong>Lưu ý:</strong> Nếu RAM đã lưu vị trí của một dòng dữ liệu nhưng hệ thống quét được vị trí mới hơn, hệ thống sẽ cập nhật vị trí mới vào RAM. Nếu dòng dữ liệu được đánh dấu là đã xóa, hệ thống sẽ xóa dữ liệu đó khỏi bảng băm trên RAM.</p>
+</blockquote>
+<h2 id="7-composite-index">7. Composite Index</h2>
+<h3 id="loc-theo-nhieu-cot-va-phep-giao-chi-muc">Lọc theo nhiều cột và phép giao chỉ mục</h3>
+<p>Với truy vấn có nhiều điều kiện <code>AND</code> và mỗi cột đều có chỉ mục phụ, hệ thống phải thực hiện phép giao chỉ mục — một quá trình tốn kém.</p>
+<p><strong>Phép giao chỉ mục</strong> là kỹ thuật kết hợp nhiều chỉ mục riêng biệt để lọc dữ liệu. Ví dụ, với <code>idx_customer(customer_id)</code> và <code>idx_status(status)</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Orders</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1205</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'COMPLETED'</span><span class="p">;</span>
+</code></pre></div>
+<p>Nếu chọn phép giao chỉ mục, hệ thống sẽ:</p>
+<ol>
+<li>Quét <code>idx_customer</code>: Lấy tập con trỏ dòng A có <code>customer_id = 1205</code>.</li>
+<li>Quét <code>idx_status</code>: Lấy tập con trỏ dòng B có <code>status = 'COMPLETED'</code>.</li>
+<li>Lấy giao A ∩ B: Giữ các con trỏ xuất hiện trong cả hai tập, bằng phép giao danh sách hoặc <code>AND</code> bitmap.</li>
+<li>Truy cập bảng: Dùng các con trỏ còn lại để lấy đầy đủ dữ liệu dòng.</li>
+</ol>
+<blockquote>
+<p><strong>Lưu ý:</strong> Không có chỉ mục hỗn hợp không đồng nghĩa với việc luôn dùng phép giao chỉ mục. Bộ tối ưu chọn phương án dựa trên chi phí ước tính và khả năng của hệ quản trị.</p>
+</blockquote>
+<p>Phép giao chỉ mục có các chi phí sau:</p>
+<ul>
+<li><strong>I/O:</strong> Duyệt nhiều cây B+tree làm tăng số lần đọc đĩa.</li>
+<li><strong>RAM và CPU:</strong> Hệ thống phải cấp phát bộ nhớ đệm để giữ hai danh sách con trỏ, rồi dùng CPU để sắp xếp và thực hiện phép giao tập hợp.</li>
+<li><strong>Dữ liệu dư thừa:</strong> Cả hai chỉ mục đều phải nạp những con trỏ có thể bị loại bỏ.</li>
+</ul>
+<h3 id="cau-truc-khoa-ghep">Cấu trúc khóa ghép</h3>
+<p>Để giảm chi phí khi truy vấn thường lọc đồng thời theo nhiều cột, có thể tạo <strong>composite index (chỉ mục hỗn hợp)</strong>. Chỉ mục này gộp nhiều cột vào một cây B+tree duy nhất.</p>
+<p>Cây B+tree của composite index có cấu trúc tương tự cây B+tree thông thường, nhưng mỗi khóa là một khóa ghép thay vì một giá trị đơn lẻ. Ví dụ, với index <code>(age, sex)</code>, một khóa có thể mang giá trị <code>(21,male)</code>.</p>
+<p>Hệ thống sắp xếp khóa theo thứ tự phân cấp: trước hết theo cột ngoài cùng bên trái, sau đó theo cột thứ hai trong từng nhóm có cùng giá trị cột thứ nhất, rồi đến cột thứ ba trong từng nhóm của cột thứ hai, và tiếp tục như vậy.</p>
+<div class="highlight"><pre><span></span><code>                     [ ('Dev', 28)  |  ('HR', 30) ]
+                    /               |              \
+                   ▼                ▼               ▼
+         [ ('Dev', 20) ]     [ ('Dev', 28) ]     [ ('HR', 30) ]
+         [ ('Dev', 22) ] &lt;-&gt; [ ('HR', 25)  ] &lt;-&gt; [ ('HR', 32) ]
+</code></pre></div>
+<p>Với sơ đồ trên:</p>
+<ul>
+<li>Khi tìm nhân viên <code>('HR', 25)</code>, hệ thống xác định khóa này lớn hơn <code>('Dev', 28)</code> nhưng nhỏ hơn <code>('HR', 30)</code> vì cùng phòng HR và <code>25 &lt; 30</code>. Hệ thống đi vào nhánh giữa.</li>
+<li>Khi tìm nhân viên <code>('HR', 35)</code>, khóa này lớn hơn <code>('HR', 30)</code>, nên hệ thống đi vào nhánh ngoài cùng bên phải.</li>
+</ul>
+<h3 id="quy-tac-tien-to-trai">Quy tắc tiền tố trái</h3>
+<p>Chỉ mục hỗn hợp tuân theo <strong>quy tắc tiền tố trái</strong>: chỉ hỗ trợ truy vấn lọc theo một chuỗi cột liên tục bắt đầu từ cột đầu tiên bên trái.</p>
+<p>Với chỉ mục trên ba cột <code>(A,B,C)</code>, truy vấn chỉ sử dụng chỉ mục hiệu quả khi bắt đầu từ cột <code>A</code>. Ví dụ: <code>where a and b</code>, <code>a and c</code>, <code>a and b and c</code>.</p>
+<p>Vì sao cần bắt đầu từ cột ngoài cùng bên trái? Với composite index <code>(a, b)</code>, các bản ghi được sắp xếp theo <code>a</code> trước. Trong mỗi nhóm có cùng giá trị <code>a</code>, các bản ghi mới tiếp tục được sắp xếp theo <code>b</code>.</p>
+<p>Khi truy vấn có điều kiện trên <code>a</code>, hệ thống có thể nhanh chóng xác định vùng dữ liệu cần tìm. Trong vùng đó, <code>b</code> đã được sắp xếp nên hệ thống có thể tiếp tục tìm kiếm hiệu quả:</p>
+<div class="highlight"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span>
+</code></pre></div>
+<p>Nếu bỏ qua <code>a</code> và chỉ tìm theo <code>b</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span>
+</code></pre></div>
+<p>Các giá trị <code>b</code> nằm rải rác trong nhiều nhóm <code>a</code>, không được sắp xếp liên tục trên toàn bộ index. Hệ thống thường phải quét nhiều phần, thậm chí toàn bộ index, nên không tận dụng tốt khả năng tìm kiếm của B+tree.</p>
+<h3 id="luu-y-khi-chon-thu-tu-cot">Lưu ý khi chọn thứ tự cột</h3>
+<ul>
+<li><strong>Có cả điều kiện bằng và điều kiện phạm vi:</strong> Thường đặt cột dùng <code>=</code> trước, cột dùng phạm vi sau. Điều kiện bằng giúp DBMS thu hẹp đến một vùng dữ liệu xác định; trong vùng đó, các cột kế tiếp vẫn được sắp xếp nên điều kiện phạm vi được xử lý hiệu quả.</li>
+<li><strong>Nhiều cột cùng dùng phép so sánh bằng trong <code>WHERE</code>:</strong> Ưu tiên cột có độ chọn lọc cao nhất (selectivity). Cột có độ chọn lọc cao có tỉ lệ giá trị trùng lặp thấp, chẳng hạn <code>userid</code>, giúp loại bỏ tối đa các điều kiện không thỏa mãn ngay từ những bước đầu.</li>
+<li><strong>Có mệnh đề <code>ORDER BY</code>:</strong> Đặt cột cần sắp xếp ở vị trí cuối cùng của chỉ mục hỗn hợp.</li>
+</ul>
+<h2 id="8-covering-index">8. Covering Index</h2>
+<h3 id="chi-phi-truy-cap-lai-bang">Chi phí truy cập lại bảng</h3>
+<p>Khi tạo non-clustered index, nút lá của B+Tree thường lưu giá trị của index key và con trỏ hoặc khóa chính dùng để xác định dòng dữ liệu trong bảng chính.</p>
+<p>Nếu truy vấn cần lấy thêm các cột không có trong index, DBMS phải dùng con trỏ hoặc khóa chính này để truy cập lại bảng chính.</p>
+<h4 id="khi-index-chua-con-tro-en-bang-chinh">Khi index chứa con trỏ đến bảng chính</h4>
+<p>Dữ liệu trong bảng chính không được sắp xếp theo non-clustered index key. Vì vậy, khi một giá trị key khớp với nhiều dòng và truy vấn cần lấy các cột khác, DBMS phải thực hiện nhiều lần truy cập ngẫu nhiên để lấy dữ liệu từ bảng chính.</p>
+<p>Ví dụ minh họa:</p>
+<div class="highlight"><pre><span></span><code>    Trang đĩa của INDEX                      Các trang đĩa của BẢNG CHÍNH
+┌─────────────────────────┐               ┌────────────────────────────────┐
+│ ('IT', Con trỏ #10)  ───┼──────────────&gt;│ Trang đĩa 2:  Dòng #10 ('IT')   │
+│ ('IT', Con trỏ #500) ───┼──┐            └────────────────────────────────┘
+│ ('IT', Con trỏ #80)  ───┼──┼──┐         ┌────────────────────────────────┐
+└─────────────────────────┘  │  └────────&gt;│ Trang đĩa 15: Dòng #80 ('IT')  │
+     (Đọc tuần tự)           │            └────────────────────────────────┘
+                             │            ┌────────────────────────────────┐
+                             └───────────&gt;│ Trang đĩa 89: Dòng #500 ('IT') │
+                                          └────────────────────────────────┘
+                                                (Nhảy đĩa ngẫu nhiên)
+</code></pre></div>
+<h4 id="khi-index-chua-clustered-key">Khi index chứa clustered key</h4>
+<p>Clustered key đóng vai trò row locator. Nếu truy vấn cần cột không có trong non-clustered index, DBMS dùng clustered key tìm được để tra cứu lại clustered index.</p>
+<p>Với mỗi dòng khớp điều kiện, DBMS thường phải duyệt một đường đi trong Clustered B+Tree từ nút gốc đến nút lá để lấy dữ liệu. Đây là <strong>Key Lookup</strong>.</p>
+<p>Mỗi lần lookup có chi phí xấp xỉ <code>O(log N)</code>. Nếu truy vấn trả về nhiều dòng, số lần lookup lớn và có thể gây nhiều truy cập ngẫu nhiên.</p>
+<p>Ví dụ:</p>
+<div class="highlight"><pre><span></span><code>[BƯỚC 1: Quét Secondary Index]
+Duyệt cây B+Tree phụ (idx_dept)
+Tìm thấy các dòng 'IT':
+ ├── ('IT', PK = 10)
+ ├── ('IT', PK = 500)
+ └── ('IT', PK = 80)
+
+[BƯỚC 2: Key Lookup vào Clustered Index]
+Với MỖI giá trị PK tìm được, hệ thống phải duyệt lại cây B+Tree chính:
+ • Cầm PK = 10  ──&gt; Duyệt cây Clustered B+Tree từ Gốc -&gt; Nhánh -&gt; Lá ──&gt; Lấy name, salary (#10)
+ • Cầm PK = 500 ──&gt; Duyệt cây Clustered B+Tree từ Gốc -&gt; Nhánh -&gt; Lá ──&gt; Lấy name, salary (#500)
+ • Cầm PK = 80  ──&gt; Duyệt cây Clustered B+Tree từ Gốc -&gt; Nhánh -&gt; Lá ──&gt; Lấy name, salary (#80)
+</code></pre></div>
+<h3 id="khi-nao-index-bao-phu-mot-truy-van">Khi nào index bao phủ một truy vấn?</h3>
+<p>Covering index giúp khắc phục các chi phí truy cập lại bảng ở trên. Đây không phải một kiểu index cố định khi tạo bảng; một index có bao phủ hay không phụ thuộc vào truy vấn cụ thể.</p>
+<p>Giả sử có index <code>idx_emp (dept_id, salary)</code>.</p>
+<h4 id="vi-du-1-index-chua-u-cac-cot-truy-van-can">Ví dụ 1: Index chứa đủ các cột truy vấn cần</h4>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Employees</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">dept_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</code></pre></div>
+<p>Với truy vấn này, <code>idx_emp</code> là covering index vì chứa đủ cả <code>dept_id</code> và <code>salary</code>. Hệ thống thực hiện index-only scan.</p>
+<h4 id="vi-du-2-truy-van-can-them-cot-ngoai-index">Ví dụ 2: Truy vấn cần thêm cột ngoài index</h4>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">salary</span><span class="p">,</span><span class="w"> </span><span class="n">full_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Employees</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">dept_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</code></pre></div>
+<p>Vẫn là index đó, nhưng với truy vấn này, <code>idx_emp</code> không còn là covering index vì thiếu cột <code>full_name</code>. Hệ thống phải thực hiện lookup vào bảng chính.</p>
+<h3 id="index-only-scan">Index-only scan</h3>
+<p>Khi nhận diện được covering index phù hợp, hệ thống thực hiện <strong>index-only scan</strong>. Đây là kế hoạch thực thi truy vấn do Query Optimizer lựa chọn: database chỉ cần duyệt đến nút lá của cây chỉ mục để lấy đầy đủ dữ liệu cần thiết, không cần truy cập bảng dữ liệu chính (Data Pages/Heap/Clustered Index).</p>
+<h3 id="chi-phi-mo-rong-khoa-va-vai-tro-cua-include">Chi phí mở rộng khóa và vai trò của INCLUDE</h3>
+<p>Một cách thiết kế covering index là đưa tất cả các cột cần truy vấn vào composite index. Tuy nhiên, cách này có những đánh đổi về lưu trữ:</p>
+<ul>
+<li><strong>Giảm hệ số rẽ nhánh:</strong> Khóa lớn hơn khiến mỗi nút chứa được ít khóa phân tách hơn. Hệ số rẽ nhánh giảm, cây sâu hơn và số page cần đọc tăng lên.</li>
+<li><strong>Tăng tần suất page split:</strong> Khóa có dung lượng lớn khiến page nhanh đầy hơn.</li>
+</ul>
+<p>Để giải quyết những hạn chế này, các hệ quản trị cơ sở dữ liệu hỗ trợ mệnh đề <code>INCLUDE</code>. Mệnh đề này cho phép đính kèm các cột dữ liệu lấy thêm (payload columns) chỉ ở tầng nút lá của cây B+tree. Nhờ đó, các nút trung gian vẫn nhẹ, duy trì hệ số rẽ nhánh phù hợp, đồng thời vẫn đáp ứng index-only scan vì dữ liệu cần truy vấn đã có đầy đủ tại nút lá.</p>
+<ul>
+<li>Partial/conditional index: Thay vì xây dựng một cấu trúc cây B+Tree đồ sộ ôm trọn toàn bộ các dòng của bảng, Partial Index sử dụng một mệnh đề điều kiện logic (boolean predicate) để chọn lọc và chỉ đưa một tập con dữ liệu thỏa mãn điều kiện đó vào chỉ mục. Tại sao phải làm như vậy? Bởi vì trong thực tế dữ liệu không phân phối đều nhau mà có thể rất lệch. Ví dụ 99% đơn hàng đã hoàn thành nhưng chỉ 1% đơn hàng đang vận chuyển. Bạn lập chỉ mục để truy vấn 1% đơn hàng với trạng thái đó, lúc này chỉ mục sẽ bị phình to do phải chứa 99% lượng dữ liệu không cần thiết. Bạn chỉ muốn lập chỉ mục với 1% dữ liệu để tiết kiệm tài nguyên. Khi đó partial/conditional index phát huy tác dụng. Nó cho phép bạn lập chỉ mục kết hợp với điều kiện. Ví dụ: CREATE INDEX idx_active_orders ON orders(customer_id) WHERE status = 'active';</li>
 </ul>
 
 
@@ -1802,8 +2242,6 @@
       <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="../javascripts/article-deck.js"></script>
-      
-        <script src="../javascripts/library-browser.js"></script>
       
     
   </body>

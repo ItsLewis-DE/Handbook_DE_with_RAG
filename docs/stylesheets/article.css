@@ -755,6 +755,110 @@ body:has(.airflow-article-hero) .md-typeset .airflow-closing-comic figcaption p 
   max-width: 100%;
 }
 
+/* Database index article closing card. */
+.index-closing-summary {
+  background: var(--airflow-ink);
+  border-top: 1px solid rgba(243, 240, 232, 0.22);
+  color: var(--airflow-canvas);
+  max-width: 46rem;
+  overflow: hidden;
+  padding: 0.65rem 0 0;
+  position: relative;
+}
+
+.index-closing-summary::before {
+  background: var(--airflow-accent-bright);
+  content: "";
+  height: 0.15rem;
+  left: 0;
+  position: absolute;
+  top: -1px;
+  width: clamp(3.5rem, 10vw, 6rem);
+}
+
+.index-closing-summary__signal {
+  border-bottom: 1px solid rgba(243, 240, 232, 0.16);
+  height: clamp(10rem, 22vw, 14rem);
+  overflow: hidden;
+  position: relative;
+}
+
+.index-closing-summary__signal::before,
+.index-closing-summary__signal::after,
+.index-closing-summary__signal i {
+  border: 1px solid rgba(243, 240, 232, 0.2);
+  border-radius: 50%;
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: 58%;
+  transform: translate(-50%, -50%);
+}
+
+.index-closing-summary__signal::before {
+  height: 7rem;
+  width: 7rem;
+}
+
+.index-closing-summary__signal::after {
+  border-color: rgba(237, 104, 64, 0.56);
+  height: 15rem;
+  width: 15rem;
+}
+
+.index-closing-summary__signal i:nth-of-type(1) {
+  height: 24rem;
+  width: 24rem;
+}
+
+.index-closing-summary__signal i:nth-of-type(2) {
+  border-style: dashed;
+  height: 33rem;
+  width: 33rem;
+}
+
+.index-closing-summary__signal i:nth-of-type(3) {
+  background: var(--airflow-accent-bright);
+  border: 0;
+  box-shadow: 0 0 0 0.3rem rgba(237, 104, 64, 0.18);
+  height: 0.7rem;
+  width: 0.7rem;
+}
+
+.index-closing-summary__signal span {
+  color: rgba(243, 240, 232, 0.72);
+  font-family: var(--md-code-font-family);
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-weight: 700;
+  left: 50%;
+  letter-spacing: 0.18em;
+  position: absolute;
+  top: 58%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.index-closing-summary figcaption {
+  border-bottom: 1px solid rgba(243, 240, 232, 0.16);
+  padding: 0.85rem clamp(1rem, 4vw, 1.8rem) 1.1rem;
+}
+
+.index-closing-summary figcaption > span {
+  color: var(--airflow-accent-bright);
+}
+
+.index-closing-summary figcaption strong {
+  color: var(--airflow-canvas);
+}
+
+.index-closing-summary figcaption p {
+  color: rgba(243, 240, 232, 0.7) !important;
+}
+
+body:has(.airflow-article-hero) .index-article-end::after {
+  content: "03";
+}
+
 .airflow-article-end {
   align-items: end;
   background: transparent;
