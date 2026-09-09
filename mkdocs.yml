@@ -23,6 +23,7 @@ nav:
   - Data Architecture:
       - Shared-disk vs shared-nothing: architecture/shared-disk-vs-shared-nothing.md
   - Database Internals:
+      - Phân cấp & Lưu trữ PostgreSQL: postgres/postgres.md
       - Index trong cơ sở dữ liệu: index/index.md
   - Apache Airflow:
       - Architecture: airflow/architecture.md

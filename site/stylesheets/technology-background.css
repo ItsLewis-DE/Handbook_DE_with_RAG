@@ -1,10 +1,6 @@
-/* Technical circle and blueprint grid system shared by homepage sections. */
+/* Technical circle system shared by homepage sections. */
 .landing-page {
-  background-color: var(--landing-paper);
-  background-image: url("../assets/images/technology-grid.svg");
-  background-repeat: repeat;
-  background-position: center top;
-  background-size: 300px 300px;
+  background-image: none;
   isolation: isolate;
   position: relative;
 }
@@ -72,8 +68,13 @@
 }
 
 @keyframes blueprint-orbit {
-  from { transform: translateY(-50%) rotate(0); }
-  to { transform: translateY(-50%) rotate(360deg); }
+  from {
+    transform: translateY(-50%) rotate(0);
+  }
+
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
 }
 
 /* Secondary circles appear as cropped fragments, leaving cards readable. */
@@ -114,9 +115,9 @@
   transform: translateX(-8%) scale(1.1);
 }
 
-.landing-page .library-section > :not(.blueprint-watermark),
-.landing-page .writing-section > :not(.blueprint-watermark),
-.landing-page .author-section > :not(.blueprint-watermark) {
+.landing-page .library-section> :not(.blueprint-watermark),
+.landing-page .writing-section> :not(.blueprint-watermark),
+.landing-page .author-section> :not(.blueprint-watermark) {
   position: relative;
   z-index: 1;
 }

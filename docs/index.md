@@ -52,9 +52,9 @@ hide:
         </div>
 
         <div class="article-deck-shell">
-          <div class="article-deck" tabindex="0" aria-label="Chồng 7 bài viết. Dùng nút điều hướng, phím mũi tên hoặc kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
+          <div class="article-deck" tabindex="0" aria-label="Chồng 8 bài viết. Dùng nút điều hướng, phím mũi tên hoặc kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
             <article class="article-sheet article-sheet--airflow" data-article-title="Kiến trúc Apache Airflow" data-deck-position="current">
-              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>01 / 07</b></div>
+              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>01 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Hiểu kiến trúc<br>Apache Airflow</h2>
@@ -67,7 +67,7 @@ hide:
             </article>
 
             <article class="article-sheet article-sheet--storage" data-article-title="Shared-disk vs shared-nothing" data-deck-position="next">
-              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>02 / 07</b></div>
+              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>02 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Shared-disk vs<br>shared-nothing</h2>
@@ -80,9 +80,9 @@ hide:
             </article>
 
             <article class="article-sheet article-sheet--index" data-article-title="Index trong cơ sở dữ liệu" data-deck-position="back">
-              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>03 / 07</b></div>
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>03 / 08</b></div>
               <div class="article-sheet__body">
-                <span class="article-sheet__status article-sheet__status--published">Bài mới nhất</span>
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Index trong<br>cơ sở dữ liệu</h2>
                 <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
               </div>
@@ -92,8 +92,21 @@ hide:
               </div>
             </article>
 
+            <article class="article-sheet article-sheet--postgres" data-article-title="Phân cấp &amp; Lưu trữ PostgreSQL" data-deck-position="hidden">
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>04 / 08</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Bài mới nhất</span>
+                <h2>PostgreSQL<br>Phân cấp &amp; lưu trữ</h2>
+                <p>Database cluster, bộ đệm shared_buffers, database, schema và cấu trúc thư mục PGDATA.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>DATABASE INTERNALS</span>
+                <a href="postgres/postgres/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
             <article class="article-sheet article-sheet--planned" data-article-title="Apache Spark internals" data-deck-position="hidden">
-              <div class="article-sheet__meta"><span>PROCESSING</span><b>04 / 07</b></div>
+              <div class="article-sheet__meta"><span>PROCESSING</span><b>05 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Apache Spark<br>internals</h2>
@@ -103,7 +116,7 @@ hide:
             </article>
 
             <article class="article-sheet article-sheet--planned article-sheet--clay" data-article-title="Apache Kafka internals" data-deck-position="hidden">
-              <div class="article-sheet__meta"><span>STREAMING</span><b>05 / 07</b></div>
+              <div class="article-sheet__meta"><span>STREAMING</span><b>06 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Apache Kafka<br>internals</h2>
@@ -113,7 +126,7 @@ hide:
             </article>
 
             <article class="article-sheet article-sheet--planned article-sheet--blue" data-article-title="dbt: từ SQL đến lineage" data-deck-position="hidden">
-              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>06 / 07</b></div>
+              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>07 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>dbt: từ SQL<br>đến lineage</h2>
@@ -123,7 +136,7 @@ hide:
             </article>
 
             <article class="article-sheet article-sheet--planned article-sheet--ink" data-article-title="Docker và Kubernetes cho Data Engineer" data-deck-position="hidden">
-              <div class="article-sheet__meta"><span>INFRASTRUCTURE</span><b>07 / 07</b></div>
+              <div class="article-sheet__meta"><span>INFRASTRUCTURE</span><b>08 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Docker &amp; Kubernetes<br>cho Data Engineer</h2>
@@ -142,9 +155,9 @@ hide:
         </div>
 
         <div class="stack-card__footer">
-          <span><b>03</b> bài đã mở</span>
+          <span><b>04</b> bài đã mở</span>
           <span><b>04</b> bài sắp tới</span>
-          <span class="article-deck__count"><b>03</b> / 07</span>
+          <span class="article-deck__count"><b>04</b> / 08</span>
         </div>
       </div>
 
@@ -164,10 +177,17 @@ hide:
       </div>
     </div>
 
-    <div class="published-articles" aria-label="Ba bài viết đã xuất bản">
+    <div class="published-articles" aria-label="Bốn bài viết đã xuất bản">
       <article class="published-article published-article--latest">
-        <p class="published-article__meta">DATABASE INTERNALS · ED. 03</p>
+        <p class="published-article__meta">DATABASE INTERNALS · ED. 04</p>
         <span class="published-article__status">Bài mới nhất</span>
+        <h3>PostgreSQL<br>Phân cấp &amp; lưu trữ</h3>
+        <p>Database cluster, bộ đệm shared_buffers, database, schema và cấu trúc thư mục PGDATA.</p>
+        <a href="postgres/postgres/">Đọc bài viết <b aria-hidden="true">↗</b></a>
+      </article>
+
+      <article class="published-article">
+        <p class="published-article__meta">DATABASE INTERNALS · ED. 03</p>
         <h3>Index trong<br>cơ sở dữ liệu</h3>
         <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
         <a href="index/">Đọc bài viết <b aria-hidden="true">↗</b></a>

@@ -539,6 +539,7 @@ body:has(.landing-page) .md-content__inner::before {
 .article-sheet--airflow,
 .article-sheet--storage,
 .article-sheet--index,
+.article-sheet--postgres,
 .article-sheet--planned,
 .article-sheet--clay,
 .article-sheet--blue,
@@ -2994,7 +2995,7 @@ body:has(.landing-page) .md-content__inner::before {
 .published-articles {
   display: grid;
   gap: 1rem;
-  grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 0.85fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 2.4rem;
 }
 
@@ -3114,7 +3115,6 @@ body:has(.landing-page) .md-content__inner::before {
   }
 
   .published-article--latest {
-    grid-column: 1 / -1;
     min-height: 18rem;
   }
 }
