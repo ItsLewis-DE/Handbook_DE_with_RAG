@@ -112,7 +112,7 @@ Mỗi luồng chỉ sở hữu một phân vùng **Stack riêng biệt** (thư�
 
 Bộ đệm này được chia thành hàng nghìn khối nhỏ bằng nhau. Mỗi khối có kích thước **8 KB**, bằng kích thước của một Data Page trên đĩa.
 
-##### Latch,Lock và Lock Accumulation
+##### Latch, Lock và Lock Accumulation
 
 **Latch:** Là khóa ở cấp độ vật lý, giúp ngăn hai luồng ghi đè vào cùng một page. Ví dụ, một luồng ghi và một luồng đọc trên cùng một trang 8 KB.
 
@@ -187,12 +187,12 @@ Lúc này, giao dịch kia đã sử dụng dữ liệu chưa hoàn tất để 
 
 Vị trí lưu trạng thái khóa của PostgreSQL khác với các hệ quản trị cơ sở dữ liệu khác:
 
-Trong PostgreSQL, mỗi bản ghi (Tuple) trong bảng Heap luôn đi kèm một phần đầu cố định 23 byte gọi là `HeapTupleHeaderData`. Trong đó có hai trường đóng vai trò kiểm soát khóa dòng:
+Trong PostgreSQL, mỗi bản ghi (Tuple) trong bảng Heap luôn đi kèm một phần đầu cố định 23 byte gọi là `HeapTupleHeaderData`. Trong đó có các trường đóng vai trò kiểm soát khóa dòng:
 
-- **`t_x    min`:** Lưu Transaction ID 
+- **`t_xmin`:** Lưu Transaction ID.
 - **`t_xmax`:** Lưu Transaction ID (XID) của giao dịch đang sửa đổi hoặc đang giữ khóa dòng này.
 - **`t_infomask`:** Tập hợp các cờ nhị phân báo hiệu mục đích khóa, ví dụ: `HEAP_XMAX_LOCK_ONLY`, `HEAP_XMAX_EXCL`, `HEAP_XMAX_KEYSHR`.
-cuar
+
 Ví dụ, một trang 8 KB (Page) trên Buffer Pool:
 
 ```text
@@ -228,7 +228,19 @@ Lock Manager Hash Table nằm trên RAM, trong Shared Memory:
                  └── Waiters: (None)
 ```
 
-Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa, ta sẽ cùng tìm hiểu khái niệm **Lock Escalation**.
+Tiếp nối phần lưu trữ trạng thái khóa, ta sẽ cùng tìm hiểu các loại khóa bảng trong PostgreSQL.
+
+Khi một câu lệnh SQL được thực thi, PostgreSQL tự động cấp phát một trong **8 chế độ khóa cấp bảng** tương ứng để bảo vệ cấu trúc hoặc dữ liệu bảng. Các khóa này được lưu trên RAM trong Shared Memory.
+
+- Khi sử dụng câu lệnh `SELECT`, hệ thống cấp phát một khóa `AccessShareLock`. Đây là loại khóa nhẹ nhất. Các khóa này có thể tồn tại đồng thời nên nhiều câu lệnh `SELECT` có thể cùng thực thi. Khóa này chỉ xung đột với `AccessExclusiveLock`, được dùng khi chạy các câu lệnh thay đổi cấu trúc bảng như `ALTER TABLE`.
+- Khi sử dụng `SELECT ... FOR UPDATE`, hệ thống cấp khóa bảng `RowShareLock` để bảo vệ cấu trúc bảng và ngăn các lệnh DDL. Đồng thời, hệ thống quét và khóa trực tiếp các dòng thỏa mãn điều kiện ở tầng bản ghi (Tuple Header). Khóa này chỉ xung đột với `ExclusiveLock` và `AccessExclusiveLock`.
+- Khi chạy các câu lệnh DML sửa đổi dữ liệu dòng như `INSERT`, `UPDATE`, `DELETE` và `MERGE`, hệ thống cấp khóa `RowExclusiveLock`. Khóa này xung đột với `ShareLock`, `ShareRowExclusiveLock`, `ExclusiveLock` và `AccessExclusiveLock`.
+- Khi các tiến trình nền thực thi, khóa này không chặn luồng đọc và ghi nên các tiến trình nền có thể chạy song song mà không gây downtime cho ứng dụng. Khóa xung đột với chính nó để đảm bảo chỉ có một tiến trình chạy tại một thời điểm.
+- Khi chạy các câu lệnh như thêm Foreign Key hoặc tạo index, dữ liệu cần giữ nguyên trong quá trình thực thi. Hệ thống cấp khóa `ShareRowExclusiveLock`. Khóa này cho phép người dùng đọc nhưng không cho phép ghi hoặc thay đổi dữ liệu.
+- **`ExclusiveLock`:** Chỉ cho phép các tiến trình đọc (`AccessShareLock`) chạy song song [cite: 154]. Khóa này được kích hoạt bởi `REFRESH MATERIALIZED VIEW CONCURRENTLY`.
+- Khi chạy các lệnh DDL nặng như `ALTER TABLE`, `DROP TABLE`, `TRUNCATE`, `VACUUM FULL` và `REINDEX`, hệ thống dùng khóa độc quyền tuyệt đối, chặn **toàn bộ** luồng đọc và ghi (`SELECT`, `INSERT`, `UPDATE`, `DELETE`).
+
+Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa và các loại khóa của PostgreSQL, ta sẽ cùng tìm hiểu khái niệm **Lock Escalation**.
 
 **Lock Escalation (leo thang khóa)** là cơ chế tự động của hệ quản trị cơ sở dữ liệu nhằm chuyển đổi nhiều khóa ở cấp độ chi tiết, như khóa dòng (Row Lock) hoặc khóa trang (Page Lock), thành một khóa duy nhất ở cấp độ bao quát hơn, thường là khóa toàn bảng (Table Lock), trong cùng một giao dịch.
 
@@ -326,7 +338,7 @@ ORDER BY o.total DESC;                     -- Phép toán 3: Sort
      [Scan orders]    [Scan customers]
 ```
 
-Bên cạnh mô hình đa tiến trình của PostgreSQL, các cơ sở dữ liệu khác như MySQL và SQL Server lại sử dụng mô hình đa luồng
+Bên cạnh mô hình đa tiến trình của PostgreSQL, các cơ sở dữ liệu khác như MySQL và SQL Server sử dụng mô hình đa luồng.
 
 #### Mô hình đa luồng
 
@@ -344,7 +356,7 @@ Luồng hoạt động như sau:
 
 **Trả luồng về pool:** Khi client ngắt kết nối, luồng này không bị hủy hoàn toàn. Luồng dọn dẹp các biến trạng thái phiên làm việc (Session State) và trở về trạng thái nhàn rỗi trong Thread Pool để chờ kết nối tiếp theo [cite: 281].
 
-#### Câu hỏi liên quan:
+#### Câu hỏi liên quan
 
 ![Minh họa ưu điểm và nhược điểm của kiến trúc đa tiến trình và đa luồng](../assets/images/postgres/architec.png)
 
@@ -589,20 +601,20 @@ Clock Sweep kiểm tra các ô đệm theo vòng tròn để tìm ô đủ đi�
 
 Bạn đã biết `shared_buffers` giống như một chiếc tủ chứa các trang dữ liệu 8 KB trên RAM để có thể sử dụng ngay khi cần, không phải đọc lại từ ổ đĩa. Vậy hệ thống xử lý thế nào khi gặp một câu lệnh quét bảng quá lớn?
 
-Khi phát hiện câu lệnh đang quét một bảng quá lớn, PostgreSQL không cho phép câu lệnh sử dụng toàn bộ `shared_buffers` một cách không giới hạn. Hệ thống chỉ cấp riêng một số ô đệm, tùy vào tính chất thao tác, tạo thành **Buffer Ring** ngay trong `shared_buffers`.
+Khi phát hiện một câu lệnh đang quét bảng quá lớn, PostgreSQL giới hạn phạm vi sử dụng `shared_buffers` của câu lệnh đó. Hệ thống chỉ cấp một số ô đệm, tùy vào tính chất thao tác, để tạo thành **Buffer Ring** ngay trong `shared_buffers`.
 
-Khi câu lệnh bắt đầu, nó mượn 32 ô đệm từ `shared_buffers`. Khi quét đến trang thứ 33, thay vì dùng Clock Sweep để tìm thêm ô mới trên toàn bộ RAM, hệ thống quay lại ô đệm số 1 trong vòng 32 ô đó, loại dữ liệu cũ và nạp trang thứ 33 vào.
+Khi câu lệnh bắt đầu, nó sử dụng 32 ô đệm từ `shared_buffers`. Khi quét đến trang thứ 33, thay vì dùng Clock Sweep để tìm thêm ô mới trên toàn bộ RAM, hệ thống quay lại ô đệm số 1 trong vòng 32 ô đó, loại dữ liệu cũ và nạp trang thứ 33 vào.
 
 - **Khi bảng nhỏ:** PostgreSQL vẫn nạp trực tiếp vào cache chung.
 - **`BAS_BULKREAD`:** Khi quét bảng lớn, tức dung lượng bảng ước tính lớn hơn 25% tổng dung lượng `shared_buffers`, Buffer Ring gồm 32 trang 8 KB.
 - **`BAS_VACUUM`:** Giúp Autovacuum quét các bảng lớn để dọn Dead Tuple; Buffer Ring gồm 32 trang 8 KB.
 - **`BAS_BULKWRITE`:** Khi nạp một lượng lớn dữ liệu, Buffer Ring gồm 32 trang 8 KB.
 
-Vấn đề nảy sinh khi vùng RAM này phải phục vụ một câu lệnh quét bảng quá lớn.
+Vấn đề phát sinh khi vùng RAM này phải phục vụ một câu lệnh quét bảng quá lớn.
 
 #### Bộ đệm `wal_buffers`
 
-`wal_buffers` chứa các bản ghi WAL được tạo ra khi một thao tác sửa đổi trang diễn ra trên RAM. Dữ liệu trong vùng đệm này được ghi xuống tệp tin vật lý (`pg_wal`) khi hệ thống phát hiện lệnh `COMMIT`.
+`wal_buffers` chứa các bản ghi WAL được tạo ra khi một thao tác sửa đổi trang diễn ra trên RAM. Dữ liệu trong vùng đệm này được ghi xuống tệp tin vật lý (`pg_wal`) khi hệ thống nhận lệnh `COMMIT`.
 
 #### Commit Log (CLOG / `pg_xact`)
 
@@ -610,15 +622,27 @@ Commit Log là cấu trúc mảng bit nhỏ gọn, lưu trạng thái của từ
 
 Commit Log ghi nhận giao dịch đã `COMMIT` hay đang thực hiện (in-progress). Các trạng thái được biểu diễn bằng 2 bit nhị phân để tối ưu bộ nhớ. Khi SLRU Buffer trên RAM đầy, hệ thống đẩy các Transaction ID lâu không sử dụng xuống ổ đĩa theo cơ chế **LRU**.
 
-    Câu hỏi liên quan đến kiến trúc tầng này: nếu bạn chạy một truy vấn 10 kéo dài 10 phút, trong khoảng thời gian 10 phút này có hàng ngàn câu lệnh UPDATE hay Delete khác đang diễn ra liên tục. Vậy liệu câu truy vấn này hệ thống sẽ xử lí như thế nào?
-        Trước tiên ta cùng tìm hiểu về khái niệm MVCC: MVCC (Multi-Version Concurrency Control - Kiểm soát đồng thời đa phiên bản) là cơ chế cho phép nhiều người đọc và ghi dữ liệu cùng một lúc mà không bao giờ chặn nhau. Quy tắc vàng của MVCC là: "Luồng đọc không bao giờ chặn luồng ghi, và luồng ghi không bao giờ chặn luồng đọc." Khi thực hiện các thao tác DDL, bên dưới hệ thống sẽ thực thi các bước saU:
-            - INSERT: t_xmin = XID hiện tại, t_xmax =0
-            - DELETE: t_xmax = XID hiện tại,
-            - UPDATE: tạo ra một dòng mới được dòng cũ trỏ tới, dòng cũ: t_xmax = XID hiện tại, dòng mới: t_xmin = XID hiện tại, t_xmax =0 
-        Khi thực thi câu lệnh truy vấn, hệ thống sẽ chụp lại một bức ảnh trạng thái gọi là Transaction Snapshot. Khi executor đọc qua một dòng, nó đối chiếu t_xmax và t_xmin của dòng đó với snapshot:
-            Được phép nhìn thấy dòng: Nếu xmin thuộc về một giao dịch đã commit trước khi snapshot được tạo, VÀ xmax chưa được đặt (hoặc thuộc về một giao dịch được thực hiện sau snapshot).
+#### Câu hỏi liên quan đến kiến trúc tầng này
 
-Bị ẩn đi: Nếu dòng đó được tạo bởi một giao dịch đang chạy dở dang, hoặc một giao dịch sinh ra sau snapshot.
-Nhờ Snapshot, nếu bạn chạy một truy vấn báo cáo kéo dài 10 phút, kết quả dữ liệu trả về sẽ luôn nhất quán đúng tại thời điểm 10 phút trước, bất chấp việc trong 10 phút đó có hàng ngàn câu lệnh UPDATE hay DELETE khác đang diễn ra liên tục.
-    Một Transaction Snapshot chứa 3 thông số:
-    xmin: XID của giao dịch cũ nhất vẫn còn đang chạy.xmax: XID đầu tiên chưa được cấp phát (mọi XID $\ge$ xmax đều không hiển thị).xip_list: Mảng danh sách các XIDs đang hoạt động tại thời điểm chụp snapshot.
+Nếu bạn chạy một truy vấn kéo dài 10 phút, trong khoảng thời gian đó có hàng nghìn câu lệnh `UPDATE` hoặc `DELETE` khác diễn ra liên tục. Hệ thống sẽ xử lý truy vấn này như thế nào?
+
+Trước tiên, ta cùng tìm hiểu khái niệm **MVCC**. MVCC (Multi-Version Concurrency Control — kiểm soát đồng thời đa phiên bản) là cơ chế cho phép nhiều người đọc và ghi dữ liệu cùng lúc mà không chặn nhau. Quy tắc của MVCC là: “Luồng đọc không chặn luồng ghi, và luồng ghi không chặn luồng đọc.”
+
+Khi thực hiện các thao tác DDL, hệ thống thực thi các bước sau:
+
+- **`INSERT`:** `t_xmin = XID` hiện tại, `t_xmax = 0`.
+- **`DELETE`:** `t_xmax = XID` hiện tại.
+- **`UPDATE`:** Tạo một dòng mới được dòng cũ trỏ tới. Dòng cũ có `t_xmax = XID` hiện tại; dòng mới có `t_xmin = XID` hiện tại và `t_xmax = 0`.
+
+Khi thực thi câu lệnh truy vấn, hệ thống chụp lại một ảnh trạng thái gọi là **Transaction Snapshot**. Khi Executor đọc một dòng, nó đối chiếu `t_xmax` và `t_xmin` của dòng đó với snapshot:
+
+- **Được phép nhìn thấy:** `xmin` thuộc về một giao dịch đã `COMMIT` trước khi snapshot được tạo, và `xmax` chưa được đặt hoặc thuộc về một giao dịch được thực hiện sau snapshot.
+- **Bị ẩn:** Dòng được tạo bởi một giao dịch đang thực hiện dở dang hoặc một giao dịch sinh ra sau snapshot.
+
+Nhờ snapshot, nếu bạn chạy một truy vấn báo cáo kéo dài 10 phút, dữ liệu trả về luôn nhất quán với thời điểm 10 phút trước, bất chấp việc trong khoảng thời gian đó có hàng nghìn câu lệnh `UPDATE` hoặc `DELETE` khác diễn ra liên tục.
+
+Một Transaction Snapshot chứa 3 thông số:
+
+- **`xmin`:** XID của giao dịch cũ nhất vẫn đang chạy.
+- **`xmax`:** XID đầu tiên chưa được cấp phát; mọi XID $\ge$ `xmax` đều không hiển thị.
+- **`xip_list`:** Mảng chứa danh sách các XID đang hoạt động tại thời điểm chụp snapshot.
