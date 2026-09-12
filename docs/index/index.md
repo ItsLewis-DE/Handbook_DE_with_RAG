@@ -3,7 +3,7 @@ hide:
   - navigation
 ---
 
-<header class="airflow-article-hero">
+<header class="airflow-article-hero index-article-hero">
   <div class="airflow-article-hero__eyebrow">
     <a href="../">BEHIND THE PIPELINE</a>
     <span>ARTICLE / 003</span>
@@ -606,7 +606,7 @@ Partial Index không phải lúc nào cũng tốt hơn index đầy đủ:
 </figure>
 
 
-<footer class="airflow-article-end">
+<footer class="airflow-article-end index-article-end">
   <div>
     <span>BEHIND THE PIPELINE / 003</span>
     <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>

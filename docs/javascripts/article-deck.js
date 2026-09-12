@@ -57,6 +57,13 @@
       pointerId = null;
     }
 
+    function suppressDragClick() {
+      suppressNextClick = true;
+      window.setTimeout(() => {
+        suppressNextClick = false;
+      }, 0);
+    }
+
     function flip(direction = "next") {
       if (flipping) return;
 
@@ -82,12 +89,14 @@
         return;
       }
 
-      suppressNextClick = true;
+      suppressDragClick();
       clearDragStyles();
     }
 
     deck.addEventListener("pointerdown", (event) => {
-      if (event.button !== 0 || flipping) return;
+      const interactiveTarget = event.target instanceof Element
+        && event.target.closest("a, button");
+      if (event.button !== 0 || flipping || interactiveTarget) return;
 
       pointerId = event.pointerId;
       startX = event.clientX;
@@ -132,8 +141,8 @@
       const threshold = deck.getBoundingClientRect().width * 0.22;
       const shouldFlip = dragging && (deltaX < -threshold || velocity < -0.5);
 
-      suppressNextClick = dragging;
-      shouldFlip ? flip() : cancelDrag();
+      if (dragging) suppressDragClick();
+      shouldFlip ? flip() : clearDragStyles();
     });
 
     deck.addEventListener("pointercancel", cancelDrag);
@@ -149,6 +158,7 @@
     }, true);
 
     deck.addEventListener("keydown", (event) => {
+      if (event.target instanceof Element && event.target.closest("a, button")) return;
       if (!["ArrowLeft", "ArrowRight", "Enter"].includes(event.key)) return;
       event.preventDefault();
       flip(event.key === "ArrowLeft" ? "previous" : "next");

@@ -59,6 +59,8 @@
     
       <link rel="stylesheet" href="../../stylesheets/technology-background.css">
     
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -93,85 +95,78 @@
     
     
       
-
-  
-
-<header class="md-header md-header--shadow" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Đầu trang">
-    <a href="../.." title="Behind the Pipeline" class="md-header__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
-      
-  <img src="../../assets/images/behind-the-pipeline-logo.svg" alt="logo">
-
-    </a>
-    <label class="md-header__button md-icon" for="__drawer">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
-    </label>
-    <div class="md-header__title" data-md-component="header-title">
-      <div class="md-header__ellipsis">
-        <div class="md-header__topic">
-          <span class="md-ellipsis">
-            Behind the Pipeline
-          </span>
-        </div>
-        <div class="md-header__topic" data-md-component="header-topic">
-          <span class="md-ellipsis">
-            
-              Phân cấp & Lưu trữ PostgreSQL
-            
-          </span>
-        </div>
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
       </div>
-    </div>
-    
-      
-    
-    
-    
-    
-      
-      
-        <label class="md-header__button md-icon" for="__search">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        </label>
-        <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Tìm kiếm">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </nav>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
       </div>
     </div>
   </div>
-</div>
-      
-    
-    
-  </nav>
-  
+
+  <!-- 2. Custom Brand & Retro Navigation Bar -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <!-- Brand & Logo -->
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline">
+        <span class="custom-header__logo-wrap">
+          
+  <img src="../../assets/images/behind-the-pipeline-logo.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__wordmark">
+          BEHIND THE <em>PIPELINE</em>
+        </span>
+        <span class="custom-header__badge">ARCH.DOCS</span>
+      </a>
+
+      <!-- Retro Nav Pills -->
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-nav-pill ">
+          <span>HOME</span>
+        </a>
+        <a href="./" class="custom-nav-pill is-active">
+          <span>POSTGRESQL</span>
+        </a>
+        <a href="../../airflow/architecture/" class="custom-nav-pill ">
+          <span>AIRFLOW</span>
+        </a>
+        <a href="../../architecture/shared-disk-vs-shared-nothing/" class="custom-nav-pill ">
+          <span>SHARED-DISK</span>
+        </a>
+        <a href="../../index/index/" class="custom-nav-pill ">
+          <span>INDEXING</span>
+        </a>
+      </nav>
+
+      <!-- System Status / Meta Indicator -->
+      <div class="custom-header__status" aria-label="Trạng thái hệ thống">
+        <span class="custom-header__status-dot" aria-hidden="true"></span>
+        <span class="custom-header__status-text">EDITION 2026</span>
+        <span class="custom-header__status-tag">SYS.ONLINE</span>
+      </div>
+    </div>
+  </div>
 </header>
     
     <div class="md-container" data-md-component="container">
@@ -508,12 +503,12 @@
   <a href="#2-luu-tru-vat-ly-cau-truc-thu-muc-pgdata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Lưu trữ vật lý: Cấu trúc thư mục PGDATA
+        2. Lưu trữ vật lý: cấu trúc thư mục PGDATA
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Lưu trữ vật lý: Cấu trúc thư mục PGDATA">
+    <nav class="md-nav" aria-label="2. Lưu trữ vật lý: cấu trúc thư mục PGDATA">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -556,21 +551,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tien-trinh-va-luong" class="md-nav__link">
+  <a href="#tang-1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tiến trình và luồng
+        Tầng 1
       
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Tầng 1">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#bo-em-shared_buffers" class="md-nav__link">
+  <a href="#cac-khai-niem-can-nam-o-tang-1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Bộ đệm shared_buffers
+        Các khái niệm cần nắm ở tầng 1
       
     </span>
   </a>
@@ -586,14 +582,24 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Mô hình đa tiến trình của PostgreSQL">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#luong-hoat-ong-cua-ket-noi" class="md-nav__link">
+  <a href="#mo-hinh-a-luong" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Luồng hoạt động của kết nối
+        Mô hình đa luồng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
       
     </span>
   </a>
@@ -606,22 +612,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bo-nho-phuc-vu-truy-van-work_mem" class="md-nav__link">
+  <a href="#tang-2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Bộ nhớ phục vụ truy vấn: work_mem
+        Tầng 2
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Bộ nhớ phục vụ truy vấn: work_mem">
+    <nav class="md-nav" aria-label="Tầng 2">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pipeline-va-cac-phep-toan-chan" class="md-nav__link">
+  <a href="#giai-oan-1-parser-phan-tich-cu-phap-tho" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pipeline và các phép toán chặn
+        Giai đoạn 1: Parser (phân tích cú pháp thô)
       
     </span>
   </a>
@@ -629,10 +635,104 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#vi-du-nhieu-phep-toan-cung-su-dung-bo-nho" class="md-nav__link">
+  <a href="#giai-oan-2-rewriter-analyzer-phan-tich-ngu-nghia-va-bien-oi-quy-tac" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ví dụ nhiều phép toán cùng sử dụng bộ nhớ
+        Giai đoạn 2: Rewriter / Analyzer (phân tích ngữ nghĩa và biến đổi quy tắc)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-3-planner-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 3: Planner / Optimizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-4-executor-thuc-thi-ke-hoach-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 4: Executor (thực thi kế hoạch — Execution)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-5-tang-bo-nho-em-va-luu-tru-vat-ly-storage-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 5: Tầng bộ nhớ đệm và lưu trữ vật lý (Storage Engine)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tang-3-bo-nho-em-va-giao-dich" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tầng 3: Bộ nhớ đệm và giao dịch
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tầng 3: Bộ nhớ đệm và giao dịch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bo-em-shared_buffers_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bộ đệm shared_buffers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bo-em-wal_buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bộ đệm wal_buffers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commit-log-clog-pg_xact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commit Log (CLOG / pg_xact)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan-en-kien-truc-tang-nay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan đến kiến trúc tầng này
       
     </span>
   </a>
@@ -650,10 +750,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-rang-buoc-toan-ven-integrity-constraints" class="md-nav__link">
+  <a href="#loi-ket" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Ràng buộc toàn vẹn (Integrity Constraints)
+        Lời kết
       
     </span>
   </a>
@@ -888,12 +988,12 @@
   <a href="#2-luu-tru-vat-ly-cau-truc-thu-muc-pgdata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Lưu trữ vật lý: Cấu trúc thư mục PGDATA
+        2. Lưu trữ vật lý: cấu trúc thư mục PGDATA
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Lưu trữ vật lý: Cấu trúc thư mục PGDATA">
+    <nav class="md-nav" aria-label="2. Lưu trữ vật lý: cấu trúc thư mục PGDATA">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -936,21 +1036,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tien-trinh-va-luong" class="md-nav__link">
+  <a href="#tang-1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tiến trình và luồng
+        Tầng 1
       
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Tầng 1">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#bo-em-shared_buffers" class="md-nav__link">
+  <a href="#cac-khai-niem-can-nam-o-tang-1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Bộ đệm shared_buffers
+        Các khái niệm cần nắm ở tầng 1
       
     </span>
   </a>
@@ -966,14 +1067,24 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Mô hình đa tiến trình của PostgreSQL">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#luong-hoat-ong-cua-ket-noi" class="md-nav__link">
+  <a href="#mo-hinh-a-luong" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Luồng hoạt động của kết nối
+        Mô hình đa luồng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan
       
     </span>
   </a>
@@ -986,22 +1097,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#bo-nho-phuc-vu-truy-van-work_mem" class="md-nav__link">
+  <a href="#tang-2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Bộ nhớ phục vụ truy vấn: work_mem
+        Tầng 2
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Bộ nhớ phục vụ truy vấn: work_mem">
+    <nav class="md-nav" aria-label="Tầng 2">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pipeline-va-cac-phep-toan-chan" class="md-nav__link">
+  <a href="#giai-oan-1-parser-phan-tich-cu-phap-tho" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pipeline và các phép toán chặn
+        Giai đoạn 1: Parser (phân tích cú pháp thô)
       
     </span>
   </a>
@@ -1009,10 +1120,104 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#vi-du-nhieu-phep-toan-cung-su-dung-bo-nho" class="md-nav__link">
+  <a href="#giai-oan-2-rewriter-analyzer-phan-tich-ngu-nghia-va-bien-oi-quy-tac" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ví dụ nhiều phép toán cùng sử dụng bộ nhớ
+        Giai đoạn 2: Rewriter / Analyzer (phân tích ngữ nghĩa và biến đổi quy tắc)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-3-planner-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 3: Planner / Optimizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-4-executor-thuc-thi-ke-hoach-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 4: Executor (thực thi kế hoạch — Execution)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-5-tang-bo-nho-em-va-luu-tru-vat-ly-storage-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 5: Tầng bộ nhớ đệm và lưu trữ vật lý (Storage Engine)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tang-3-bo-nho-em-va-giao-dich" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tầng 3: Bộ nhớ đệm và giao dịch
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tầng 3: Bộ nhớ đệm và giao dịch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bo-em-shared_buffers_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bộ đệm shared_buffers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bo-em-wal_buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bộ đệm wal_buffers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commit-log-clog-pg_xact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commit Log (CLOG / pg_xact)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan-en-kien-truc-tang-nay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Câu hỏi liên quan đến kiến trúc tầng này
       
     </span>
   </a>
@@ -1030,10 +1235,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-rang-buoc-toan-ven-integrity-constraints" class="md-nav__link">
+  <a href="#loi-ket" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Ràng buộc toàn vẹn (Integrity Constraints)
+        Lời kết
       
     </span>
   </a>
@@ -1059,7 +1264,7 @@
 
 
 
-<header class="airflow-article-hero">
+<header class="airflow-article-hero postgres-article-hero">
   <div class="airflow-article-hero__eyebrow">
     <a href="../../">BEHIND THE PIPELINE</a>
     <span>ARTICLE / 004</span>
@@ -1070,6 +1275,18 @@
     <span>EDITION 04 · 2026</span>
   </div>
 </header>
+
+<figure class="airflow-opening-comic">
+  <img
+    src="../../assets/images/image4.png"
+    alt="Truyện tranh vui nhắc người đọc chuẩn bị cho một bài viết dài về kiến trúc PostgreSQL"
+    loading="eager"
+  >
+  <figcaption>
+    <span>LƯU Ý TRƯỚC KHI ĐỌC</span>
+    <strong>Một bài viết khá dài</strong>
+  </figcaption>
+</figure>
 
 <h2 id="1-phan-cap-logic-trong-postgresql">1. Phân cấp logic trong PostgreSQL</h2>
 <p>Sơ đồ phân cấp từ cao đến thấp của PostgreSQL:</p>
@@ -1090,11 +1307,11 @@
 <p>Schema nằm trong database, và một database có thể có nhiều schema. Các bảng thuộc những schema khác nhau trong cùng database <strong>có thể truy vấn lẫn nhau</strong>.</p>
 <h4 id="vi-sao-mot-database-can-nhieu-schema">Vì sao một database cần nhiều schema?</h4>
 <ul>
-<li><strong>Tránh trùng tên bảng:</strong> Khi nhiều người cùng sử dụng một database, việc chia thành các schema riêng biệt giúp tránh xung đột tên bảng. Ví dụ, schema A và schema B đều có thể chứa bảng <code>order</code>. Hệ thống vẫn chấp nhận vì hai bảng cùng tên nằm trong các schema khác nhau.</li>
+<li><strong>Tránh trùng tên bảng:</strong> Khi nhiều người cùng sử dụng một database, việc chia thành các schema riêng biệt giúp tránh <strong>xung đột tên bảng</strong>. Ví dụ, schema A và schema B đều có thể chứa bảng <code>order</code>. Hệ thống vẫn chấp nhận vì hai bảng cùng tên nằm trong các schema khác nhau.</li>
 <li><strong>Tiết kiệm tài nguyên:</strong> Nhiều người cùng sử dụng một database giúp tiết kiệm tài nguyên hơn so với việc mỗi người sử dụng một database riêng.</li>
-<li><strong>Đơn giản hóa việc cấp quyền:</strong> Cấp quyền cho từng bảng trở nên khó khăn khi hệ thống mở rộng. Khi sử dụng schema, chỉ cần gắn quyền của một role cho schema đó.</li>
+<li><strong>Đơn giản hóa việc cấp quyền:</strong> Cấp quyền cho từng bảng trở nên khó khăn khi hệ thống mở rộng. Khi sử dụng schema, chỉ cần cấp quyền cho role trên schema đó.</li>
 </ul>
-<h2 id="2-luu-tru-vat-ly-cau-truc-thu-muc-pgdata">2. Lưu trữ vật lý: Cấu trúc thư mục PGDATA</h2>
+<h2 id="2-luu-tru-vat-ly-cau-truc-thu-muc-pgdata">2. Lưu trữ vật lý: cấu trúc thư mục PGDATA</h2>
 <h3 id="vi-tri-luu-tru-cua-schema">Vị trí lưu trữ của schema</h3>
 <p>Về mặt vật lý, schema không có nơi lưu trữ riêng biệt. Mọi schema trong cùng một database đều nằm chung tại thư mục:</p>
 <div class="highlight"><pre><span></span><code>PGDATA/base/&lt;db_oid&gt;/
@@ -1105,7 +1322,7 @@
 <div class="highlight"><pre><span></span><code>PGDATA/                          &lt;-- Thư mục gốc của toàn bộ Cluster (Instance)
 ├── pg_wal/                      &lt;-- Chứa các file Write-Ahead Log (WAL)
 ├── pg_xact/                     &lt;-- Chứa trạng thái commit giao dịch (CLOG)
-├── global/                      &lt;-- Chứa bảng hệ thống chung toàn cluster (pg_database, pg_authid,...)
+├── global/                      &lt;-- Chứa bảng hệ thống chung toàn cluster (pg_database, pg_authid, ...)
 └── base/                        &lt;-- Thư mục chứa dữ liệu của tất cả các database
     ├── 1/                       &lt;-- Thư mục của database 'template1' (OID = 1)
     ├── 13745/                   &lt;-- Thư mục của database 'postgres' (OID = 13745)
@@ -1115,36 +1332,141 @@
         └── 16390                &lt;-- Tệp chứa chỉ mục B-Tree (Index) của Table A
 </code></pre></div>
 <h2 id="3-cac-tang-kien-truc-cua-postgresql">3. Các tầng kiến trúc của PostgreSQL</h2>
-<h3 id="tien-trinh-va-luong">Tiến trình và luồng</h3>
-<p><strong>Các khái niệm cơ bản cần nắm</strong></p>
-<p><strong>Tiến trình:</strong> Là một thực thể chạy độc lập, sở hữu một không gian địa chỉ ảo riêng biệt. Không gian này là một cơ chế giúp trừu tượng hóa bộ nhớ của hệ điều hành (cụ thể là RAM). Các địa chỉ trong không gian này được đánh số liên tục từ <code>0</code> cho tới địa chỉ cao nhất.</p>
-<p>Sau đó, tiến trình chỉ cần sử dụng không gian địa chỉ ảo này. <strong>MMU</strong> (phần cứng tích hợp trong CPU) sẽ ánh xạ địa chỉ ảo tới địa chỉ thật trên máy thông qua <strong>Page Table</strong> (bảng trang dùng để ánh xạ địa chỉ ảo tới địa chỉ thật).</p>
-<div class="highlight"><pre><span></span><code>[ Tiến trình A ]               [ Phần cứng: MMU ]            [ RAM Vật Lý ]
-Trang ảo: 0x1000  --------&gt;  (Tra Bảng trang A)  --------&gt;  Khung trang: 0x88000
+<h3 id="tang-1">Tầng 1</h3>
+<h4 id="cac-khai-niem-can-nam-o-tang-1">Các khái niệm cần nắm ở tầng 1</h4>
+<h5 id="tien-trinh-va-luong">Tiến trình và luồng</h5>
+<p><strong>Tiến trình:</strong> Là một thực thể chạy độc lập, sở hữu một không gian địa chỉ ảo riêng biệt. Không gian này là cơ chế trừu tượng hóa bộ nhớ của hệ điều hành, cụ thể là RAM. Các địa chỉ trong không gian này được đánh số liên tục từ <code>0</code> đến địa chỉ cao nhất.</p>
+<p>Sau đó, tiến trình chỉ cần sử dụng không gian địa chỉ ảo này. <strong>MMU</strong> (phần cứng tích hợp trong CPU) ánh xạ địa chỉ ảo đến địa chỉ vật lý thông qua <strong>Page Table</strong> (bảng trang dùng để ánh xạ địa chỉ ảo đến địa chỉ vật lý).</p>
+<div class="highlight"><pre><span></span><code>[ Tiến trình A ]               [ Phần cứng: MMU ]            [ RAM vật lý ]
+Trang ảo: 0x1000  --------&gt;  (Tra bảng trang A)  --------&gt;  Khung trang: 0x88000
 
 [ Tiến trình B ]
-Trang ảo: 0x1000  --------&gt;  (Tra Bảng trang B)  --------&gt;  Khung trang: 0x42000
+Trang ảo: 0x1000  --------&gt;  (Tra bảng trang B)  --------&gt;  Khung trang: 0x42000
 </code></pre></div>
-<p>Nhờ vào việc bảng trang A không chứa ánh xạ tới các ô nhớ được ánh xạ bởi bảng trang B, tiến trình A không thể đọc hoặc sử dụng dữ liệu của tiến trình B.</p>
+<p>Do bảng trang A không chứa ánh xạ đến các ô nhớ được ánh xạ bởi bảng trang B, tiến trình A không thể đọc hoặc sử dụng dữ liệu của tiến trình B.</p>
 <p><strong>Luồng:</strong> Là một nhánh thực thi nằm bên trong một tiến trình duy nhất. Tất cả các luồng chạy song song đều chia sẻ chung không gian địa chỉ ảo, phân vùng Heap, mã máy thực thi (Code Segment) và các kết nối mạng của tiến trình cha.</p>
-<p>Mỗi luồng chỉ sở hữu một phân vùng <strong>Stack riêng biệt</strong> (thường chỉ vài MB hoặc vài trăm KB) và <strong>con trỏ lệnh (Instruction Pointer)</strong> giúp CPU biết thread này đã thực thi mã đến đâu. Mỗi core trong CPU chỉ xử lý mã của một thread duy nhất. Bộ điều phối của hệ điều hành (OS Scheduler) có thể luân chuyển một thread từ core này sang core khác giữa các chu kỳ chạy, chứ core không phụ trách cố định một thread nào.</p>
-<h3 id="bo-em-shared_buffers">Bộ đệm <code>shared_buffers</code></h3>
+<p>Mỗi luồng chỉ sở hữu một phân vùng <strong>Stack riêng biệt</strong> (thường có kích thước vài MB hoặc vài trăm KB, dùng để lưu các biến cục bộ, …) và <strong>con trỏ lệnh (Instruction Pointer)</strong> giúp CPU xác định vị trí mã mà luồng đã thực thi đến. Mỗi core trong CPU chỉ xử lý mã của một luồng duy nhất. Bộ điều phối của hệ điều hành (OS Scheduler) có thể luân chuyển một luồng từ core này sang core khác giữa các chu kỳ chạy. Vì vậy, core không được dành cố định cho một luồng nào.</p>
+<h5 id="bo-em-shared_buffers">Bộ đệm <code>shared_buffers</code></h5>
 <p><code>shared_buffers</code> là dung lượng RAM mà một instance sử dụng làm <strong>bộ nhớ đệm</strong>, với mục đích chính là giảm thiểu việc đọc và ghi xuống ổ đĩa.</p>
 <p>Bộ đệm này được chia thành hàng nghìn khối nhỏ bằng nhau. Mỗi khối có kích thước <strong>8 KB</strong>, bằng kích thước của một Data Page trên đĩa.</p>
-<h3 id="mo-hinh-a-tien-trinh-cua-postgresql">Mô hình đa tiến trình của PostgreSQL</h3>
-<p>Mô hình mà PostgreSQL sử dụng là <strong>mô hình đa tiến trình</strong>: Mỗi client kết nối vào cơ sở dữ liệu sẽ có một tiến trình riêng biệt. Các tiến trình này trao đổi dữ liệu và đồng bộ thông qua <strong>Shared Memory</strong>, chủ yếu là <code>shared_buffers</code>.</p>
-<p>Nếu Backend A vừa đọc một trang bảng từ đĩa vào <code>shared_buffers</code> (thành phần con lớn nhất trong Shared Memory), Backend B khi cần trang đó chỉ việc đọc trực tiếp từ <code>shared_buffers</code> mà không cần truy cập ổ đĩa lần nữa.</p>
-<h4 id="luong-hoat-ong-cua-ket-noi">Luồng hoạt động của kết nối</h4>
+<h5 id="latch-lock-va-lock-accumulation">Latch, Lock và Lock Accumulation</h5>
+<p><strong>Latch:</strong> Là khóa ở cấp độ vật lý, giúp ngăn hai luồng ghi đè vào cùng một trang. Ví dụ, một luồng ghi và một luồng đọc trên cùng một trang 8 KB.</p>
+<p>Giả sử bảng <code>users</code> có một trang dữ liệu 8 KB (Page 42) đang nằm sẵn trên RAM trong Buffer Pool. Trang này chứa 5 bản ghi, từ dòng 1 đến dòng 5.</p>
+<p>Luồng A thực thi câu lệnh sửa dòng 1:</p>
+<div class="highlight"><pre><span></span><code><span class="k">UPDATE</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'ACTIVE'</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+<p>Luồng B thực thi câu lệnh đọc dòng 5:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+<p>Về mặt logic (Lock), luồng A chỉ khóa nghiệp vụ dòng 1, luồng B đọc dòng 5 nên không xung đột Lock với nhau. Tuy nhiên, cả hai dòng lại nằm chung trên một mảng byte vật lý 8 KB của Page 42:</p>
+<p><strong>Luồng A xin Exclusive Latch (khóa ghi vật lý):</strong> Luồng A lấy Exclusive Latch trên khung đệm chứa Page 42 để chuẩn bị ghi đè byte trạng thái của dòng 1.</p>
+<p><strong>Luồng B xin Shared Latch (khóa đọc vật lý):</strong> Cùng lúc đó, luồng B muốn đọc Page 42 để lấy dòng 5. Do luồng A đang giữ Exclusive Latch trên Page 42, luồng B bị chặn ngay lập tức, với thời gian chờ ở mức nanosecond hoặc microsecond.</p>
+<p><strong>Luồng A hoàn tất thao tác:</strong> Luồng A cập nhật vài byte trên RAM trong khoảng 1–2 microsecond, sau đó nhả Exclusive Latch.</p>
+<p><strong>Luồng B tiếp tục:</strong> Luồng B ngay lập tức nhận được Shared Latch, đọc an toàn dữ liệu của dòng 5 và nhả Shared Latch.</p>
+<p>Nếu không có Latch, luồng B có thể đọc Page 42 đúng thời điểm CPU của luồng A đang ghi dở một phần số byte của tiêu đề trang (Page Header). Kết quả là luồng B đọc phải con trỏ hỏng.</p>
+<p><strong>Lock:</strong> Là khóa bảo vệ dữ liệu nghiệp vụ logic (dòng, bảng, view), đảm bảo tính cô lập (Isolation) của các giao dịch theo chuẩn ACID. Ví dụ, khi giao dịch 1 đang <code>UPDATE</code> số dư tài khoản của khách hàng A, Lock sẽ ngăn giao dịch 2 sửa đổi hoặc đọc số dư đó cho đến khi giao dịch 1 hoàn tất.</p>
+<p>Khi ta thay đổi một dòng, database sẽ sử dụng đồng thời cả hai khóa:</p>
+<div class="highlight"><pre><span></span><code>[Bắt đầu Transaction]
+        │
+        ▼
+1. Xin cấp LOCK (Row Lock) ──────────┐
+        │                            │
+        ▼                            │
+2. Nạp trang 8 KB vào Buffer Pool    │
+        │                            │
+        ▼                            │ ───► LOCK duy trì liên tục
+3. Lấy LATCH (Exclusive) ────┐       │
+        │                    │(Vài µs│
+        ▼                    │CẢ HAI │
+   Ghi byte dữ liệu vào RAM  │ CÙNG  │
+        ▼                    │ KHÓA) │
+4. Nhả LATCH ────────────────┘       │
+        │                            │
+        ▼                            │
+5. Thực hiện tiếp các tác vụ khác... │
+        │                            │
+        ▼                            │
+[Transaction COMMIT / ROLLBACK]      │
+6. Chính thức nhả LOCK ──────────────┘
+</code></pre></div>
+<p>Khi nhìn vào sơ đồ trên, bạn có tự hỏi: Tại sao hệ thống vẫn giữ khóa cũ khi đã chuyển sang thực hiện các tác vụ không còn liên quan đến dòng đó?</p>
+<p>Trong suốt thời gian một giao dịch diễn ra, các khóa hoạt động theo <strong>nguyên lý tích lũy (Lock Accumulation)</strong>. Khi bạn xử lý một dòng, hệ thống giữ khóa của dòng đó. Khi xử lý các dòng khác, hệ thống tiếp tục giữ khóa của các dòng mới đồng thời giữ cả khóa của dòng cũ. Chỉ khi gặp lệnh <code>COMMIT</code> hoặc <code>ROLLBACK</code>, hệ thống mới nhả khóa.</p>
+<p>Vậy tại sao khi xử lý các dòng khác lại không nhả khóa của dòng cũ? Nếu hệ thống vừa sửa xong <code>id = 1</code> đã vội nhả khóa:</p>
+<p>Giao dịch của bạn đã trừ 100 đồng ở <code>id = 1</code>, nhưng chưa kịp cộng tiền cho <code>id = 2</code>.</p>
+<p>Một giao dịch khác đọc hoặc sửa đổi số dư của <code>id = 1</code>.</p>
+<p>Đột nhiên, câu lệnh ở <code>id = 2</code> bị lỗi, chẳng hạn tài khoản bị khóa hoặc mất kết nối mạng, buộc toàn bộ giao dịch phải <code>ROLLBACK</code> để hoàn tiền lại cho <code>id = 1</code>.</p>
+<p>Lúc này, giao dịch kia đã sử dụng dữ liệu chưa hoàn tất để tính toán, gây ra lỗi <strong>Dirty Read</strong> hoặc <strong>Lost Update</strong>, phá vỡ tính nguyên tử (Atomicity) và tính cô lập (Isolation) của ACID.</p>
+<p>Vị trí lưu trạng thái khóa của PostgreSQL khác với các hệ quản trị cơ sở dữ liệu khác:</p>
+<p>Trong PostgreSQL, mỗi bản ghi (Tuple) trong bảng Heap luôn đi kèm một phần đầu cố định 23 byte gọi là <code>HeapTupleHeaderData</code>. Trong đó có các trường đóng vai trò kiểm soát khóa dòng:</p>
+<ul>
+<li><strong><code>t_xmin</code>:</strong> Lưu Transaction ID.</li>
+<li><strong><code>t_xmax</code>:</strong> Lưu Transaction ID (XID) của giao dịch đang sửa đổi hoặc đang giữ khóa dòng này.</li>
+<li><strong><code>t_infomask</code>:</strong> Tập hợp các cờ nhị phân báo hiệu mục đích khóa, ví dụ: <code>HEAP_XMAX_LOCK_ONLY</code>, <code>HEAP_XMAX_EXCL</code>, <code>HEAP_XMAX_KEYSHR</code>.</li>
+</ul>
+<p>Ví dụ, một trang 8 KB (Page) trên Buffer Pool:</p>
+<div class="highlight"><pre><span></span><code>+-------------------------------------------------------------------------+
+| ItemId (Pointer 1) | ItemId (Pointer 2) | ... Vùng trống ...             |
+|-------------------------------------------------------------------------|
+| Bản ghi id = 1:                                                         |
+| [Tuple Header: t_xmin=100, t_xmax=501 (Tx giữ khóa), t_infomask=LOCK_EXCL] |
+| [Dữ liệu: name = 'Alice', balance = 1000]                               |
+|-------------------------------------------------------------------------|
+| Bản ghi id = 2:                                                         |
+| [Tuple Header: t_xmin=102, t_xmax=501 (Tx giữ khóa), t_infomask=LOCK_EXCL] |
+| [Dữ liệu: name = 'Bob', balance = 2000]                                 |
++-------------------------------------------------------------------------+
+</code></pre></div>
+<p>Trong SQL Server và MySQL, trạng thái khóa được quản lý bởi <strong>Lock Manager</strong> và lưu trữ hoàn toàn trên RAM. Với mỗi dòng bị khóa, Lock Manager tạo một đối tượng khóa (Lock Resource / Lock Head) trong RAM, chứa:</p>
+<ul>
+<li><strong>Resource ID:</strong> Mã băm định danh đối tượng bị khóa: <code>DatabaseID + TableID + PageID + RowID/Hash(PrimaryKey)</code>.</li>
+<li><strong>Lock Mode:</strong> Chế độ khóa: Exclusive (X), Shared (S), Update (U).</li>
+<li><strong>Owner:</strong> ID của giao dịch đang giữ khóa.</li>
+<li><strong>Wait List:</strong> Danh sách các giao dịch khác đang xếp hàng chờ xin khóa dòng này.</li>
+</ul>
+<p>Lock Manager Hash Table nằm trên RAM, trong Shared Memory:</p>
+<div class="highlight"><pre><span></span><code>[Bucket 12] ──► [Lock Node: Hash(Row_1)]
+                 ├── Owner: Tx_501 (Mode: Exclusive)
+                 └── Waiters: [Tx_502]
+
+[Bucket 45] ──► [Lock Node: Hash(Row_2)]
+                 ├── Owner: Tx_501 (Mode: Exclusive)
+                 └── Waiters: (None)
+</code></pre></div>
+<p>Tiếp nối phần lưu trữ trạng thái khóa, ta sẽ cùng tìm hiểu các loại khóa bảng trong PostgreSQL.</p>
+<p>Khi một câu lệnh SQL được thực thi, PostgreSQL tự động cấp phát một trong <strong>8 chế độ khóa cấp bảng</strong> tương ứng để bảo vệ cấu trúc hoặc dữ liệu bảng. Các khóa này được lưu trên RAM trong Shared Memory.</p>
+<ul>
+<li>Khi sử dụng câu lệnh <code>SELECT</code>, hệ thống cấp phát một khóa <code>AccessShareLock</code>. Đây là loại khóa nhẹ nhất. Các khóa này có thể tồn tại đồng thời nên nhiều câu lệnh <code>SELECT</code> có thể cùng thực thi. Khóa này chỉ xung đột với <code>AccessExclusiveLock</code>, được dùng khi chạy các câu lệnh thay đổi cấu trúc bảng như <code>ALTER TABLE</code>.</li>
+<li>Khi sử dụng <code>SELECT ... FOR UPDATE</code>, hệ thống cấp khóa bảng <code>RowShareLock</code> để bảo vệ cấu trúc bảng và ngăn các lệnh DDL. Đồng thời, hệ thống quét và khóa trực tiếp các dòng thỏa mãn điều kiện ở tầng bản ghi (Tuple Header). Khóa này chỉ xung đột với <code>ExclusiveLock</code> và <code>AccessExclusiveLock</code>.</li>
+<li>Khi chạy các câu lệnh DML sửa đổi dữ liệu dòng như <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> và <code>MERGE</code>, hệ thống cấp khóa <code>RowExclusiveLock</code>. Khóa này xung đột với <code>ShareLock</code>, <code>ShareRowExclusiveLock</code>, <code>ExclusiveLock</code> và <code>AccessExclusiveLock</code>.</li>
+<li>Khi các tiến trình nền thực thi, khóa này không chặn luồng đọc và ghi nên các tiến trình nền có thể chạy song song mà không gây downtime cho ứng dụng. Khóa xung đột với chính nó để đảm bảo chỉ có một tiến trình chạy tại một thời điểm.</li>
+<li>Khi chạy các câu lệnh như thêm Foreign Key hoặc tạo index, dữ liệu cần được giữ nguyên trong quá trình thực thi. Hệ thống cấp khóa <code>ShareRowExclusiveLock</code>. Khóa này cho phép người dùng đọc nhưng không cho phép ghi hoặc thay đổi dữ liệu.</li>
+<li><strong><code>ExclusiveLock</code>:</strong> Chỉ cho phép các tiến trình đọc (<code>AccessShareLock</code>) chạy song song [cite: 154]. Khóa này được kích hoạt bởi <code>REFRESH MATERIALIZED VIEW CONCURRENTLY</code>.</li>
+<li>Khi chạy các lệnh DDL nặng như <code>ALTER TABLE</code>, <code>DROP TABLE</code>, <code>TRUNCATE</code>, <code>VACUUM FULL</code> và <code>REINDEX</code>, hệ thống dùng khóa độc quyền tuyệt đối, chặn <strong>toàn bộ</strong> luồng đọc và ghi (<code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>).</li>
+</ul>
+<p>Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa và các loại khóa của PostgreSQL, ta sẽ cùng tìm hiểu khái niệm <strong>Lock Escalation</strong>.</p>
+<p><strong>Lock Escalation (leo thang khóa)</strong> là cơ chế tự động của hệ quản trị cơ sở dữ liệu nhằm chuyển đổi nhiều khóa ở cấp độ chi tiết, như khóa dòng (Row Lock) hoặc khóa trang (Page Lock), thành một khóa duy nhất ở cấp độ bao quát hơn, thường là khóa toàn bảng (Table Lock), trong cùng một giao dịch.</p>
+<p>Các hệ quản trị cơ sở dữ liệu như SQL Server lưu trữ khóa trên RAM. Một khóa thường tiêu tốn khoảng 64 đến 128 byte:</p>
+<ul>
+<li>Khóa 10 dòng: tốn khoảng 1 KB RAM.</li>
+<li>Khóa 100.000 dòng: tốn khoảng 10 MB RAM.</li>
+<li>Khóa 10.000.000 dòng: tốn khoảng 1 GB RAM chỉ để ghi nhớ danh sách các dòng đang bị khóa.</li>
+</ul>
+<p>Để tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.</p>
+<p>Đối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation.</p>
+<h4 id="mo-hinh-a-tien-trinh-cua-postgresql">Mô hình đa tiến trình của PostgreSQL</h4>
+<p>PostgreSQL sử dụng <strong>mô hình đa tiến trình</strong>: mỗi client kết nối vào cơ sở dữ liệu có một tiến trình riêng biệt. Các tiến trình này trao đổi dữ liệu và đồng bộ thông qua <strong>Shared Memory</strong>, chủ yếu là <code>shared_buffers</code>.</p>
+<p>Nếu Backend A vừa đọc một trang bảng từ đĩa vào <code>shared_buffers</code> (thành phần con lớn nhất trong Shared Memory), Backend B khi cần trang đó có thể đọc trực tiếp từ <code>shared_buffers</code> mà không cần truy cập ổ đĩa lần nữa.</p>
+<h5 id="luong-hoat-ong-cua-ket-noi">Luồng hoạt động của kết nối</h5>
 <p>Luồng hoạt động như sau:</p>
 <p>Tiến trình mẹ <strong>Postmaster</strong> chạy ngầm, khởi tạo Shared Memory và mở cổng mạng. Khi client gửi yêu cầu kết nối, Postmaster sẽ fork tiến trình hiện tại thành một tiến trình mới gọi là <strong>Backend Dedicated Process</strong>. Do cơ chế của <code>fork()</code>, các backend process con này tự động kế thừa và ánh xạ dải địa chỉ ảo của mình vào cùng khối Shared Memory đó.</p>
-<p>Postmaster bàn giao socket kết nối mạng của client cho backend process mới, rồi lập tức đóng socket đó ở phía mình để quay lại tiếp tục lắng nghe các kết nối khác. Sau đó, backend process này tự khởi tạo tài nguyên bộ nhớ cho chính nó và gắn kết vào <code>shared_buffers</code> để phục vụ truy vấn. Mỗi tiến trình con sử dụng khoảng <strong>5 MB đến 10 MB RAM</strong>, ngay cả khi không làm gì (Idle).</p>
+<p>Postmaster bàn giao socket kết nối mạng của client cho backend process mới, rồi lập tức đóng socket đó ở phía mình để tiếp tục lắng nghe các kết nối khác. Sau đó, backend process tự khởi tạo tài nguyên bộ nhớ và gắn kết vào <code>shared_buffers</code> để phục vụ truy vấn. Mỗi tiến trình con sử dụng khoảng <strong>5 MB đến 10 MB RAM</strong>, ngay cả khi ở trạng thái nhàn rỗi (Idle).</p>
 <pre class="mermaid"><code>graph TD
-    subgraph OS_RAM [Hệ Điều Hành &amp; RAM Vật Lý]
+    subgraph OS_RAM [Hệ điều hành &amp; RAM vật lý]
         SharedMem[Shared Memory: shared_buffers, wal_buffers, CLOG]
     end
 
     subgraph PG_Instance [User Space: PostgreSQL Instance]
-        Postmaster[Postmaster Process : postgres gốc]
+        Postmaster[Postmaster Process: postgres gốc]
 
         subgraph Backend_Process_1 [Backend Process 1]
             LocalMem1[Local Memory: work_mem, temp_buffers]
@@ -1165,16 +1487,16 @@ Trang ảo: 0x1000  --------&gt;  (Tra Bảng trang B)  --------&gt;  Khung tran
 
     Backend_Process_1 &lt;--&gt;|Đồng bộ qua IPC| SharedMem
     Backend_Process_2 &lt;--&gt;|Đồng bộ qua IPC| SharedMem</code></pre>
-<h3 id="bo-nho-phuc-vu-truy-van-work_mem">Bộ nhớ phục vụ truy vấn: <code>work_mem</code></h3>
-<p>Trong mỗi backend process sẽ có <code>work_mem</code>. Đây là cấu hình dùng để giới hạn lượng RAM mà process xin thêm để xử lý các tác vụ, được dùng cho các phép tính nặng như <code>ORDER BY</code>, <code>DISTINCT</code>, Hash Join, Merge Join và các hàm Window Function. <strong><code>work_mem</code> không phải giới hạn trên mỗi truy vấn, mà là trên mỗi phép toán (node) trong cây thực thi (Execution Plan).</strong></p>
-<h4 id="pipeline-va-cac-phep-toan-chan">Pipeline và các phép toán chặn</h4>
+<h5 id="bo-nho-phuc-vu-truy-van-work_mem">Bộ nhớ phục vụ truy vấn: <code>work_mem</code></h5>
+<p>Trong mỗi backend process có <code>work_mem</code>. Đây là cấu hình giới hạn lượng RAM mà tiến trình yêu cầu cấp thêm để xử lý các tác vụ, được dùng cho các phép tính tốn tài nguyên như <code>ORDER BY</code>, <code>DISTINCT</code>, Hash Join, Merge Join và các hàm Window Function. <strong><code>work_mem</code> không phải giới hạn trên mỗi truy vấn, mà là trên mỗi phép toán (node) trong cây thực thi (Execution Plan).</strong></p>
+<h6 id="pipeline-va-cac-phep-toan-chan">Pipeline và các phép toán chặn</h6>
 <p>Để dễ hiểu hơn, hãy xem cách PostgreSQL xử lý dữ liệu:</p>
 <p>PostgreSQL xử lý dữ liệu theo mô hình đường ống (pipeline): kết quả của node cấp dưới được truyền dần lên node cấp trên.</p>
-<p>Tuy nhiên, có những phép toán được gọi là <strong>Blocking Operator (phép toán chặn)</strong>. Chúng bắt buộc phải gom đủ toàn bộ hoặc phần lớn dữ liệu vào RAM thì mới tính toán tiếp được.</p>
-<p>Ví dụ, đối với node Hash Join 1, PostgreSQL xin cấp RAM tới mức trần <code>work_mem</code>. Cùng lúc đó, node Hash Join 2 và node Sort bên trên cũng cần được cấp RAM. Vì các node Hash bên dưới cần duy trì liên tục để thu thập đủ dữ liệu, xử lý và đẩy dữ liệu lên node trên, sẽ có một khoảng thời gian cả ba node đều phải duy trì và có thể chiếm tới <strong>3 × <code>work_mem</code></strong>.</p>
+<p>Tuy nhiên, có những phép toán được gọi là <strong>Blocking Operator (phép toán chặn)</strong>. Chúng phải tập hợp toàn bộ hoặc phần lớn dữ liệu vào RAM trước khi tiếp tục tính toán.</p>
+<p>Ví dụ, đối với node Hash Join 1, PostgreSQL yêu cầu cấp RAM tới mức trần <code>work_mem</code>. Cùng lúc đó, node Hash Join 2 và node Sort phía trên cũng cần được cấp RAM. Vì các node Hash phía dưới phải duy trì liên tục để thu thập đủ dữ liệu, xử lý và chuyển dữ liệu lên node phía trên, sẽ có một khoảng thời gian cả ba node cùng được duy trì và có thể chiếm tới <strong>3 × <code>work_mem</code></strong>.</p>
 <div class="highlight"><pre><span></span><code>RAM tối đa của 1 truy vấn ≈ ∑ (work_mem của các node cần gom dữ liệu đồng thời)
 </code></pre></div>
-<h4 id="vi-du-nhieu-phep-toan-cung-su-dung-bo-nho">Ví dụ nhiều phép toán cùng sử dụng bộ nhớ</h4>
+<p><strong>Ví dụ nhiều phép toán cùng sử dụng bộ nhớ</strong></p>
 <p>Minh họa bằng một câu truy vấn:</p>
 <div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">total</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">title</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="n">o</span>
@@ -1182,16 +1504,284 @@ Trang ảo: 0x1000  --------&gt;  (Tra Bảng trang B)  --------&gt;  Khung tran
 <span class="k">JOIN</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">product_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">id</span><span class="w">     </span><span class="c1">-- Phép toán 2: Hash Join</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">total</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w">                     </span><span class="c1">-- Phép toán 3: Sort</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>[Sort Node]             --&gt; Cần 1 slot RAM (tối đa 1x work_mem để xếp thứ tự)
+<div class="highlight"><pre><span></span><code>[Sort Node]             --&gt; Cần 1 slot RAM (tối đa 1 × work_mem để xếp thứ tự)
                     |
-           [Hash Join 2: products]     --&gt; Cần 1 slot RAM (tối đa 1x work_mem dựng bảng băm cho products)
+           [Hash Join 2: products]     --&gt; Cần 1 slot RAM (tối đa 1 × work_mem dựng bảng băm cho products)
                     |
-           [Hash Join 1: customers]    --&gt; Cần 1 slot RAM (tối đa 1x work_mem dựng bảng băm cho customers)
+           [Hash Join 1: customers]    --&gt; Cần 1 slot RAM (tối đa 1 × work_mem dựng bảng băm cho customers)
               /           \
      [Scan orders]    [Scan customers]
 </code></pre></div>
-<h2 id="4-rang-buoc-toan-ven-integrity-constraints">4. Ràng buộc toàn vẹn (Integrity Constraints)</h2>
-<p><strong>Ràng buộc toàn vẹn (Integrity Constraints)</strong> là tập hợp các quy tắc logic nhằm đảm bảo dữ liệu luôn chính xác, hợp lệ và nhất quán. Ngoài vai trò thể hiện quy tắc nghiệp vụ, ràng buộc còn là công cụ giúp <strong>Query Optimizer</strong> hiểu rõ phân phối dữ liệu.</p>
+<p>Khác với mô hình đa tiến trình của PostgreSQL, các cơ sở dữ liệu như MySQL và SQL Server sử dụng mô hình đa luồng.</p>
+<h4 id="mo-hinh-a-luong">Mô hình đa luồng</h4>
+<p>Mỗi client kết nối tới database được gán cho một luồng với dung lượng Stack nhỏ (256 KB đến 1 MB). Vì các luồng đều truy cập vào cùng một không gian bộ nhớ ảo nên hệ thống phải dùng các khóa như Latch hoặc Lock. Tuy nhiên, khi một luồng gặp lỗi nghiêm trọng, toàn bộ database instance có nguy cơ ngừng hoạt động.</p>
+<p>Luồng hoạt động như sau:</p>
+<p><strong>Thiết lập kết nối:</strong> Client kết nối tới cổng của cơ sở dữ liệu.</p>
+<p><strong>Dispatcher tiếp nhận:</strong> Một luồng đặc biệt đóng vai trò lắng nghe kết nối (Listener Thread) đón nhận yêu cầu kết nối.</p>
+<p><strong>Cấp phát luồng:</strong> Thay vì gọi hệ điều hành tạo tiến trình mới, Listener kiểm tra Thread Pool của hệ thống và gán một luồng trống (Worker Thread) sẵn có cho client này.</p>
+<p><strong>Thực thi trực tiếp:</strong> Worker Thread xử lý câu lệnh SQL trực tiếp bên trong không gian bộ nhớ chung, đọc và ghi vào vùng bộ nhớ đệm Buffer Pool.</p>
+<p><strong>Trả luồng về Thread Pool:</strong> Khi client ngắt kết nối, luồng này không bị hủy hoàn toàn. Luồng dọn dẹp các biến trạng thái phiên làm việc (Session State) và trở về trạng thái nhàn rỗi trong Thread Pool để chờ kết nối tiếp theo [cite: 281].</p>
+<h4 id="cau-hoi-lien-quan">Câu hỏi liên quan</h4>
+<p><img alt="Minh họa ưu điểm và nhược điểm của kiến trúc đa tiến trình và đa luồng" src="../../assets/images/postgres/architec.png" /></p>
+<pre class="mermaid"><code>graph TD
+    subgraph User_Space [User Space: SQL Server / MySQL Instance]
+        subgraph Main_Process [Single OS Process]
+            Listener[Listener Thread / Dispatcher]
+
+            subgraph CommonMemory [Không gian bộ nhớ chung]
+                SharedBuffer[Shared Buffers / Buffer Pool]
+                EngineCode[Engine Code &amp; Cached Plans]
+            end
+
+            subgraph ThreadPool [Thread Pool / Worker Threads]
+                subgraph Thread1 [Worker Thread 1]
+                    Stack1[Private Stack]
+                    Exec1[Query Executor]
+                end
+                subgraph Thread2 [Worker Thread 2]
+                    Stack2[Private Stack]
+                    Exec2[Query Executor]
+                end
+            end
+        end
+    end</code></pre>
+<p>Chúng ta đã cùng tìm hiểu về kiến trúc tầng 1 của PostgreSQL. Tiếp theo, ta cùng tìm hiểu về kiến trúc tầng 2.</p>
+<h3 id="tang-2">Tầng 2</h3>
+<p><strong>Tầng 2 (SQL Engine / Query Processing Layer)</strong> là bộ phận điều hành logic của PostgreSQL, chịu trách nhiệm chuyển câu lệnh SQL dạng văn bản khai báo (Declarative Text), ví dụ <code>SELECT * FROM table</code>, thành kế hoạch thực thi vật lý tối ưu nhất dựa trên chi phí tính toán. Tầng này vận hành hoàn toàn bên trong bộ nhớ ảo cục bộ của backend process.</p>
+<p>Tại sao lại nói tầng 2 vận hành hoàn toàn bên trong bộ nhớ ảo cục bộ?</p>
+<p>Tầng 2 nằm bên trong không gian bộ nhớ ảo cục bộ vì toàn bộ các bước phân tích, lập kế hoạch và tính toán dữ liệu, như Sort hay Hash Join, đều phục vụ riêng cho một truy vấn của tiến trình đó, thay vì xử lý dữ liệu dùng chung của toàn hệ thống.</p>
+<p>Chuỗi biên dịch và thực thi của tầng 2 gồm các giai đoạn sau:</p>
+<pre class="mermaid"><code>flowchart TB
+    QUERY["Query Text"] --&gt; PARSER["1. Parser"]
+    PARSER --&gt;|Parse Tree| REWRITER["2. Rewriter"]
+    REWRITER --&gt;|Query Tree| PLANNER["3. Planner (CBO)"]
+    PLANNER --&gt;|Plan Tree| EXECUTOR["4. Executor"]
+    EXECUTOR --&gt; BUFFERS["Tầng 3 (Shared Buffers)"]</code></pre>
+<h4 id="giai-oan-1-parser-phan-tich-cu-phap-tho">Giai đoạn 1: Parser (phân tích cú pháp thô)</h4>
+<p>Nhiệm vụ duy nhất của giai đoạn này là chuyển đổi một chuỗi ký tự văn bản thô (String) thành một cấu trúc dữ liệu dạng cây trong bộ nhớ RAM mà máy tính có thể xử lý, gọi là <strong>Parse Tree</strong>.</p>
+<p>Lưu ý, ở giai đoạn này, Parser chỉ kiểm tra cú pháp và thứ tự câu lệnh, không kiểm tra xem bảng được truy vấn có hợp lệ hay không. Lấy ví dụ khi phân tích câu “The green dragon is flying over the moon”, Parser chỉ biết câu này đúng ngữ pháp, không biết “green dragon” có tồn tại hay không.</p>
+<p>Lý do PostgreSQL thiết kế Parser độc lập hoàn toàn với dữ liệu thực tế là để tối ưu tốc độ và <strong>tách biệt trách nhiệm (Separation of Concerns)</strong>. Nhiệm vụ xác thực sự tồn tại của bảng, kiểu dữ liệu cột và quyền truy cập của người dùng được giao toàn bộ cho giai đoạn thứ hai: Rewriter / Analyzer.</p>
+<p>Đây là minh họa cho một Parse Tree:</p>
+<div class="highlight"><pre><span></span><code>SelectStmt
+├── targetList (Danh sách cột muốn lấy)
+│   ├── ResTarget -&gt; ColumnRef ("name")
+│   └── ResTarget -&gt; ColumnRef ("age")
+├── fromClause (Nguồn dữ liệu)
+│   └── RangeVar (relname = "users")
+└── whereClause (Điều kiện lọc)
+    └── A_Expr (toán tử "&gt;")
+        ├── lexpr -&gt; ColumnRef ("age")
+        └── rexpr -&gt; A_Const (giá trị nguyên = 18)
+</code></pre></div>
+<h4 id="giai-oan-2-rewriter-analyzer-phan-tich-ngu-nghia-va-bien-oi-quy-tac">Giai đoạn 2: Rewriter / Analyzer (phân tích ngữ nghĩa và biến đổi quy tắc)</h4>
+<p>Ở giai đoạn này, hệ thống kiểm tra sự tồn tại của bảng, cột, kiểu dữ liệu và quyền truy cập của người dùng bằng cách đối chiếu Parse Tree với các bảng metadata của hệ thống: <code>pg_class</code>, <code>pg_attribute</code>, <code>pg_constraint</code>. Sau đó, Parse Tree được chuyển thành <strong>Query Tree</strong>.</p>
+<p>Tiếp theo, hệ thống áp dụng các quy tắc biến đổi để điều chỉnh cấu trúc Query Tree nếu câu truy vấn truy cập vào view. RLS và các quy tắc biến đổi lệnh DML cũng được xử lý trực tiếp trong giai đoạn này.</p>
+<h4 id="giai-oan-3-planner-optimizer">Giai đoạn 3: Planner / Optimizer</h4>
+<p>Ở giai đoạn này, Query Tree được chuyển thành một kế hoạch thực thi vật lý (<strong>Plan Tree</strong>) có chi phí tính toán thấp nhất. PostgreSQL vận hành theo mô hình <strong>tối ưu hóa dựa trên chi phí (Cost-Based Optimizer — CBO)</strong>, thay vì áp dụng các quy tắc cứng nhắc như luôn sử dụng index khi có index.</p>
+<p>Vậy Cost ở đây là gì? Cost phản ánh lượng tài nguyên mà câu truy vấn tiêu tốn, gồm I/O đọc đĩa và CPU xử lý, chứ không phải thời gian. Với một câu truy vấn, Planner tạo ra nhiều phương án thực thi và ước lượng mức tiêu thụ tài nguyên của từng phương án. Phương án tiêu tốn ít tài nguyên nhất được chọn làm Plan Tree.</p>
+<p>Dựa trên dữ liệu thống kê từ Analyzer, Planner trước hết ước lượng số dòng trả về của từng biểu thức. Sau đó, Planner dùng thuật toán quy hoạch động để vừa sinh các phương án, vừa tính toán chi phí và loại bỏ ngay các nhánh kém tối ưu. Cuối cùng, Planner chọn phương án có Total Cost hoặc Startup Cost phù hợp nhất, tùy vào việc có <code>LIMIT</code> hoặc <code>CURSOR</code> hay không, để đóng gói thành Plan Tree và chuyển cho Executor.</p>
+<ul>
+<li><strong>Total Cost:</strong> Chi phí để trả về toàn bộ bảng dữ liệu.</li>
+<li><strong>Startup Cost:</strong> Chi phí để bắt đầu trả về dòng dữ liệu đầu tiên.</li>
+</ul>
+<p>Một Plan Tree có hình dạng như thế nào? Giả sử bạn chạy một câu lệnh đơn giản:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
+<p>PostgreSQL biến câu lệnh này thành một dây chuyền gồm 3 nút xếp chồng lên nhau:</p>
+<div class="highlight"><pre><span></span><code>[Nút 3: LIMIT (Lấy đúng 2 người)]        &lt;-- Nút trên cùng (Nút cha)
+                       ↑
+       [Nút 2: FILTER (Kiểm tra age &gt; 18)]      &lt;-- Nút ở giữa
+                       ↑
+       [Nút 1: SEQ SCAN (Đọc từng dòng bảng users)] &lt;-- Nút dưới cùng (Nút con)
+</code></pre></div>
+<h4 id="giai-oan-4-executor-thuc-thi-ke-hoach-execution">Giai đoạn 4: Executor (thực thi kế hoạch — Execution)</h4>
+<p>Một hiểu nhầm thường gặp ở người mới học là: Nếu nút 1 đọc được 1 triệu dòng dữ liệu, nó sẽ chuyển toàn bộ lên nút 2; nút 2 lọc rồi chuyển toàn bộ kết quả cho nút 3 để chỉ lấy 2 người.</p>
+<p>Tuy nhiên, như đã đề cập ở trên, PostgreSQL truyền dữ liệu theo từng dòng và vận hành theo <strong>cơ chế pull</strong>: nút phía trên gửi yêu cầu xuống nút phía dưới để lấy từng dòng dữ liệu. Ví dụ dễ hiểu:</p>
+<p>Client yêu cầu nút LIMIT: “Hãy trả về kết quả.” Nút LIMIT yêu cầu nút FILTER: “Tôi cần 2 người, hãy trả về người đầu tiên trước.”</p>
+<p>Nút FILTER chưa có dữ liệu nên yêu cầu nút SEQ SCAN: “Hãy đọc đúng 1 dòng từ ổ đĩa.” Nút SEQ SCAN đọc dòng đầu tiên từ ổ đĩa — Nam, <code>age = 15</code> — rồi chuyển lên nút FILTER.</p>
+<p>Nút FILTER kiểm tra <code>15 &lt; 18</code>, loại dòng này và tiếp tục yêu cầu nút SEQ SCAN: “Dòng này không đáp ứng điều kiện, hãy đọc dòng tiếp theo.”</p>
+<p>Nút SEQ SCAN đọc dòng thứ hai — Lan, <code>age = 20</code> — rồi chuyển cho nút FILTER. Nút FILTER kiểm tra <code>20 &gt; 18</code>, xác định dữ liệu hợp lệ và chuyển dòng của Lan lên nút LIMIT.</p>
+<p>Nút LIMIT nhận được 1 người, còn thiếu 1 người để đủ 2, nên tiếp tục yêu cầu nút FILTER: “Hãy trả về người thứ hai.” Quá trình lặp lại cho đến khi nút LIMIT nhận đủ người thứ hai, ví dụ Hùng, <code>age = 22</code>.</p>
+<p>Khi đã nhận đủ 2 người, nút LIMIT yêu cầu toàn bộ dây chuyền dừng lại. Đồng thời, Executor cũng đọc metadata trong Tuple Header để kiểm tra xem dữ liệu có được phép hiển thị hay không.</p>
+<h4 id="giai-oan-5-tang-bo-nho-em-va-luu-tru-vat-ly-storage-engine">Giai đoạn 5: Tầng bộ nhớ đệm và lưu trữ vật lý (Storage Engine)</h4>
+<p>Ở giai đoạn này, khi các nút cần đọc dữ liệu, Executor không bao giờ làm việc trực tiếp với ổ đĩa mà gửi yêu cầu tới <strong>Buffer Manager</strong>. Buffer Manager tra bảng băm (<strong>Buffer Mapping Hash Table</strong>). Nếu dữ liệu đã có trên RAM, Executor trực tiếp trích xuất dữ liệu và trả về nút cha. Dữ liệu có sẵn trên RAM giúp giảm chi phí đọc từ ổ đĩa.</p>
+<p>Khi dữ liệu không có trên RAM (<strong>Buffer Miss</strong>), Buffer Manager phải nạp trang từ ổ đĩa vào <code>shared_buffers</code>. Sau đó, Executor đọc dữ liệu từ đây.</p>
+<p>Khi cần ghi dữ liệu, các thay đổi được thực hiện trên RAM và các page tương ứng được đánh dấu là Dirty Page. Ngay tại thời điểm sửa dữ liệu trên RAM, PostgreSQL sinh ra <strong>WAL record</strong> và lưu vào <code>wal_buffers</code> trên RAM.</p>
+<p>Khi người dùng <code>COMMIT</code>, hệ thống không ghi ngay các Dirty Page xuống đĩa mà ghi nội dung <code>wal_buffers</code> xuống trước, theo một nguyên tắc bất biến của database: <strong>Một Dirty Page trên RAM tuyệt đối không được ghi xuống đĩa nếu bản ghi WAL mô tả thay đổi của trang đó chưa được lưu an toàn trên đĩa.</strong></p>
+<p>Các Dirty Page vẫn nằm trong <code>shared_buffers</code> trên RAM để các tiến trình nền như Checkpointer hoặc <code>bgwriter</code> ghi dần xuống đĩa sau đó. Chỉ khi chip nhớ của ổ đĩa phát tín hiệu xác nhận “Các byte WAL đã được lưu an toàn trên đĩa vật lý”, PostgreSQL mới gửi phản hồi <code>COMMIT</code> thành công về cho client.</p>
+<div class="highlight"><pre><span></span><code>[Executor]
+                   │
+                   ▼ (Hỏi khối số 45)
+          [Buffer Mapping Table] (Bảng băm tra cứu)
+             /                \
+      (Đã có trên RAM)      (Chưa có trên RAM)
+           /                    \
+          ▼                      ▼
+    [BUFFER HIT]           [BUFFER MISS]
+   - Ghim trang (Pin)     - Chạy Clock Sweep tìm ô trống
+   - Khóa nhẹ (LWLock)    - Đọc từ OS Page Cache / Đĩa (Async I/O PG 18)
+   - Đọc dữ liệu          - Đưa lên shared_buffers &amp; Pin trang
+</code></pre></div>
+<h5 id="cac-khai-niem-can-biet-o-giai-oan-nay">Các khái niệm cần biết ở giai đoạn này</h5>
+<p>Để dễ hiểu hơn về giai đoạn này, ta sẽ cùng tìm hiểu những khái niệm sau:</p>
+<p><strong>Dirty Page:</strong> Là một page trên RAM có nội dung đã bị thay đổi. Để dễ hình dung, với <strong>Clean Page</strong>, dữ liệu trên RAM và trên ổ đĩa giống nhau 100%; với Dirty Page, dữ liệu trên RAM là phiên bản mới nhất, còn dữ liệu trên đĩa là phiên bản cũ.</p>
+<p>Vòng đời của một Dirty Page diễn ra như sau:</p>
+<div class="highlight"><pre><span></span><code>     [Ổ đĩa] ──(Đọc lên)──&gt; [Shared Buffers: Clean Page]
+                             │
+                      (UPDATE / INSERT)
+                             │
+                             ▼
+                    [Ghi nhật ký WAL]
+                             │
+                             ▼
+               [Shared Buffers: Dirty Page] (Đánh dấu cờ BM_DIRTY)
+                             │
+                  (Checkpointer / Bgwriter)
+                             │
+                             ▼
+[Ổ đĩa] &lt;──(Ghi &amp; Fsync)─────┘ (Trang trở lại trạng thái Clean)
+</code></pre></div>
+<h6 id="thanh-phan-nao-chiu-trach-nhiem-don-dep-dirty-page">Thành phần nào chịu trách nhiệm dọn dẹp Dirty Page?</h6>
+<ul>
+<li><strong>Checkpointer:</strong> Quét toàn bộ <code>shared_buffers</code>, tìm tất cả Dirty Page và buộc ghi xuống ổ đĩa. Checkpointer đánh dấu một checkpoint vào file WAL để hệ thống biết đã xử lý đến đâu.</li>
+<li><strong>Background Writer (<code>bgwriter</code>):</strong> Tìm một lượng nhỏ Dirty Page ít dùng và ghi dần xuống đĩa trước khi checkpoint diễn ra.</li>
+<li><strong>Backend Allocation (người dùng tự dọn).</strong></li>
+</ul>
+<p>Vậy là chúng ta đã cùng tìm hiểu toàn bộ các giai đoạn ở tầng 2 của PostgreSQL. Dưới đây là sơ đồ minh họa cách tầng này vận hành:</p>
+<pre class="mermaid"><code>flowchart TD
+    C["Client"] --&gt;|Kết nối| P["Tầng 1: Postmaster"]
+    P --&gt;|Tạo tiến trình phục vụ| B["Backend Process"]
+    C --&gt;|Gửi SQL| B
+
+    B --&gt; Q["Tầng 2: SQL Engine&lt;br/&gt;Parser → Analyzer / Rewriter → Planner → Executor"]
+    Q &lt;--&gt;|Đọc / sửa dữ liệu| M["Tầng 3: Buffer Manager&lt;br/&gt;shared_buffers trên RAM"]
+
+    D["Lưu trữ vật lý&lt;br/&gt;File bảng / index"] --&gt;|Nạp trang khi buffer miss| M
+    M --&gt;|Dirty page được ghi bởi&lt;br/&gt;Checkpointer / Bgwriter / Backend| D
+
+    Q --&gt;|Khi thay đổi dữ liệu, sinh WAL| W["wal_buffers trên RAM"]
+    W --&gt;|Flush WAL| WD["Lưu trữ vật lý&lt;br/&gt;pg_wal"]
+    WD --&gt;|WAL của COMMIT đã bền vững| OK["Backend xác nhận COMMIT"]
+    OK --&gt; C
+
+    Q --&gt;|Trả kết quả truy vấn| C</code></pre>
+<h3 id="tang-3-bo-nho-em-va-giao-dich">Tầng 3: Bộ nhớ đệm và giao dịch</h3>
+<p>Shared Memory gồm các thành phần sau:</p>
+<div class="highlight"><pre><span></span><code>+-----------------------------------------------------------------------------------------+
+|                                    SHARED MEMORY (RAM)                                  |
+|  +---------------------+    +--------------------+    +------------------------------+  |
+|  |   shared_buffers    |    |    wal_buffers     |    |   Commit Log (CLOG/pg_xact)  |  |
+|  | (Trang dữ liệu 8 KB)|    | (Nhật ký WAL đệm)  |    |  (Mảng bit XID status)       |  |
+|  +---------------------+    +--------------------+    +------------------------------+  |
+|  | Lock Manager (Bảng khóa Table/Wait Queue) &amp; SIREAD Locks (Predicates cho SSI)        |  |
++-----------------------------------------------------------------------------------------+
+</code></pre></div>
+<h4 id="bo-em-shared_buffers_1">Bộ đệm <code>shared_buffers</code></h4>
+<p><code>shared_buffers</code> là vùng RAM dùng chung lớn nhất trong PostgreSQL, đóng vai trò bộ đệm đọc và ghi trung gian cho các khối 8 KB của bảng và index. Vùng nhớ này vừa lưu các trang đã đọc từ đĩa để phục vụ những truy vấn sau (<strong>Read Cache</strong>), vừa là nơi trực tiếp chỉnh sửa dữ liệu thành các <strong>Dirty Page</strong> trước khi đồng bộ xuống đĩa vật lý.</p>
+<p>PostgreSQL sử dụng kết hợp <code>shared_buffers</code> và OS Page Cache của Linux kernel. Sự kết hợp này được gọi là <strong>cơ chế đệm kép</strong>.</p>
+<p>Khi <code>shared_buffers</code> đã đầy mà một truy vấn mới cần nạp thêm trang 8 KB từ ổ đĩa vào RAM, hệ thống sử dụng cơ chế <strong>Clock Sweep</strong> để giải phóng vùng RAM. <code>shared_buffers</code> được chia thành một mảng các ô đệm (<strong>Buffer Frames</strong>) có kích thước cố định 8 KB. Mỗi ô đệm chứa hai giá trị:</p>
+<ul>
+<li><strong><code>refcount</code>:</strong> Số tiến trình đang sử dụng ô đệm. Nếu <code>refcount &gt; 0</code>, ô đệm không thể được giải phóng; nếu <code>refcount = 0</code>, hệ thống có thể xem xét giải phóng ô đệm và ghi dữ liệu xuống ổ đĩa.</li>
+<li><strong><code>usage_count</code> (0–5):</strong> Giá trị càng cao cho biết dữ liệu đã được sử dụng càng nhiều lần.</li>
+</ul>
+<p>Cách Clock Sweep vận hành:</p>
+<div class="highlight"><pre><span></span><code>    [Ô số 0] (usage = 2)
+              ↗           ↖
+      [Ô số 5]             [Ô số 1] (usage = 0, ref = 0) ──► Ô ĐỆM ĐƯỢC GIẢI PHÓNG
+         ↑         KIM       |
+         |        ĐỒNG HỒ    |
+      [Ô số 4]  ────────►  [Ô số 2] (usage = 3)
+              ↘           ↙
+                 [Ô số 3] (refcount = 1 - Đang bận)
+</code></pre></div>
+<p>Clock Sweep kiểm tra các ô đệm theo vòng tròn để tìm ô đủ điều kiện giải phóng. Cơ chế này chỉ xét các ô có <code>refcount = 0</code>; mỗi lần xét một ô, <code>usage_count</code> giảm 1 đơn vị. Quá trình tiếp tục cho đến khi tìm được ô thỏa điều kiện giải phóng.</p>
+<p>Bạn đã biết <code>shared_buffers</code> giống như một chiếc tủ chứa các trang dữ liệu 8 KB trên RAM để có thể sử dụng ngay khi cần, không phải đọc lại từ ổ đĩa. Vậy hệ thống xử lý thế nào khi gặp một câu lệnh quét bảng quá lớn?</p>
+<p>Khi phát hiện một câu lệnh đang quét bảng quá lớn, PostgreSQL giới hạn phạm vi sử dụng <code>shared_buffers</code> của câu lệnh đó. Hệ thống chỉ cấp một số ô đệm, tùy vào tính chất thao tác, để tạo thành <strong>Buffer Ring</strong> ngay trong <code>shared_buffers</code>.</p>
+<p>Khi câu lệnh bắt đầu, nó sử dụng 32 ô đệm từ <code>shared_buffers</code>. Khi quét đến trang thứ 33, thay vì dùng Clock Sweep để tìm thêm ô mới trên toàn bộ RAM, hệ thống quay lại ô đệm số 1 trong vòng 32 ô đó, loại dữ liệu cũ và nạp trang thứ 33 vào.</p>
+<ul>
+<li><strong>Khi bảng nhỏ:</strong> PostgreSQL vẫn nạp trực tiếp vào cache chung.</li>
+<li><strong><code>BAS_BULKREAD</code>:</strong> Khi quét bảng lớn, tức dung lượng bảng ước tính lớn hơn 25% tổng dung lượng <code>shared_buffers</code>, Buffer Ring gồm 32 trang 8 KB.</li>
+<li><strong><code>BAS_VACUUM</code>:</strong> Giúp Autovacuum quét các bảng lớn để dọn Dead Tuple; Buffer Ring gồm 32 trang 8 KB.</li>
+<li><strong><code>BAS_BULKWRITE</code>:</strong> Khi nạp một lượng lớn dữ liệu, Buffer Ring gồm 32 trang 8 KB.</li>
+</ul>
+<p>Vấn đề phát sinh khi vùng RAM này phải phục vụ một câu lệnh quét bảng quá lớn.</p>
+<h4 id="bo-em-wal_buffers">Bộ đệm <code>wal_buffers</code></h4>
+<p><code>wal_buffers</code> chứa các bản ghi WAL được tạo ra khi một thao tác sửa đổi trang diễn ra trên RAM. Dữ liệu trong vùng đệm này được ghi xuống tệp tin vật lý (<code>pg_wal</code>) khi hệ thống nhận lệnh <code>COMMIT</code>.</p>
+<h4 id="commit-log-clog-pg_xact">Commit Log (CLOG / <code>pg_xact</code>)</h4>
+<p>Commit Log là cấu trúc mảng bit nhỏ gọn, lưu trạng thái của từng Transaction ID. Trên ổ đĩa, dữ liệu này được lưu trong thư mục <code>pg_clog</code>; trên RAM, dữ liệu được lưu trong <strong>SLRU Buffer</strong>.</p>
+<p>Commit Log ghi nhận giao dịch đã <code>COMMIT</code> hay đang thực hiện (in-progress). Các trạng thái được biểu diễn bằng 2 bit nhị phân để tối ưu bộ nhớ. Khi SLRU Buffer trên RAM đầy, hệ thống đẩy các Transaction ID lâu không sử dụng xuống ổ đĩa theo cơ chế <strong>LRU</strong>.</p>
+<h4 id="cau-hoi-lien-quan-en-kien-truc-tang-nay">Câu hỏi liên quan đến kiến trúc tầng này</h4>
+<p>Nếu bạn chạy một truy vấn kéo dài 10 phút, trong khoảng thời gian đó có hàng nghìn câu lệnh <code>UPDATE</code> hoặc <code>DELETE</code> khác diễn ra liên tục. Hệ thống sẽ xử lý truy vấn này như thế nào?</p>
+<p>Trước tiên, ta cùng tìm hiểu khái niệm <strong>MVCC</strong>. MVCC (Multi-Version Concurrency Control — kiểm soát đồng thời đa phiên bản) là cơ chế cho phép nhiều người đọc và ghi dữ liệu cùng lúc mà không chặn nhau. Quy tắc của MVCC là: “Luồng đọc không chặn luồng ghi, và luồng ghi không chặn luồng đọc.”</p>
+<p>Khi thực hiện các thao tác DDL, hệ thống thực thi các bước sau:</p>
+<ul>
+<li><strong><code>INSERT</code>:</strong> <code>t_xmin = XID</code> hiện tại, <code>t_xmax = 0</code>.</li>
+<li><strong><code>DELETE</code>:</strong> <code>t_xmax = XID</code> hiện tại.</li>
+<li><strong><code>UPDATE</code>:</strong> Tạo một dòng mới được dòng cũ trỏ tới. Dòng cũ có <code>t_xmax = XID</code> hiện tại; dòng mới có <code>t_xmin = XID</code> hiện tại và <code>t_xmax = 0</code>.</li>
+</ul>
+<p>Khi thực thi câu lệnh truy vấn, hệ thống chụp lại một ảnh trạng thái gọi là <strong>Transaction Snapshot</strong>. Khi Executor đọc một dòng, nó đối chiếu <code>t_xmax</code> và <code>t_xmin</code> của dòng đó với snapshot:</p>
+<ul>
+<li><strong>Được phép nhìn thấy:</strong> <code>xmin</code> thuộc về một giao dịch đã <code>COMMIT</code> trước khi snapshot được tạo, và <code>xmax</code> chưa được đặt hoặc thuộc về một giao dịch được thực hiện sau snapshot.</li>
+<li><strong>Bị ẩn:</strong> Dòng được tạo bởi một giao dịch đang thực hiện dở dang hoặc một giao dịch sinh ra sau snapshot.</li>
+</ul>
+<p>Nhờ snapshot, nếu bạn chạy một truy vấn báo cáo kéo dài 10 phút, dữ liệu trả về luôn nhất quán với thời điểm 10 phút trước, bất chấp việc trong khoảng thời gian đó có hàng nghìn câu lệnh <code>UPDATE</code> hoặc <code>DELETE</code> khác diễn ra liên tục. Nếu mỗi lệnh <code>UPDATE</code> hoặc <code>INSERT</code> đang chạy đều khóa dòng dữ liệu tương ứng, hệ thống sẽ quay lại mô hình khóa chặn hai chiều truyền thống. MVCC sử dụng snapshot để cho phép thao tác ghi diễn ra song song với thao tác đọc mà không ảnh hưởng lẫn nhau.</p>
+<p>Một Transaction Snapshot chứa 3 thông số:</p>
+<ul>
+<li><strong><code>xmin</code>:</strong> XID của giao dịch cũ nhất vẫn đang chạy.</li>
+<li><strong><code>xmax</code>:</strong> XID đầu tiên chưa được cấp phát; mọi XID $\ge$ <code>xmax</code> đều không hiển thị.</li>
+<li><strong><code>xip_list</code>:</strong> Mảng chứa danh sách các XID đang hoạt động tại thời điểm chụp snapshot.</li>
+</ul>
+<p>Ta sẽ cùng tìm hiểu thuật toán <strong>Serializable Snapshot Isolation (SSI)</strong> và <strong>SIREAD Locks</strong>.</p>
+<p>Trước tiên, ta cần hiểu thuật ngữ <strong>Serializable</strong>. Các giao dịch chạy song song nhưng tạo ra kết quả đầu ra tương đương với việc thực thi tuần tự, tức giao dịch này hoàn tất trước khi giao dịch tiếp theo bắt đầu, được gọi là Serializable.</p>
+<p>Một vấn đề thường gặp là <strong>bài toán trực ca bác sĩ (Doctor on-call problem)</strong>. Bệnh viện quy định phải có ít nhất một bác sĩ trực. Hiện tại, hai bác sĩ A và B cùng trực (<code>on_call = true</code>). Hai bác sĩ đồng thời gửi yêu cầu xin nghỉ thông qua hai giao dịch song song ($T_1$ và $T_2$):</p>
+<ul>
+<li><strong>$T_1$ (Bác sĩ A):</strong> Đọc bảng và đếm số người đang trực bằng câu lệnh <code>SELECT count(*) FROM doctors WHERE on_call = true;</code>. Kết quả trả về là 2. Vì kết quả lớn hơn 1, $T_1$ cập nhật trạng thái của bác sĩ A thành <code>false</code>.</li>
+<li><strong>$T_2$ (Bác sĩ B):</strong> Chạy song song và thực hiện phép đếm tương tự. Kết quả vẫn là 2 vì $T_1$ chưa <code>COMMIT</code>. Vì kết quả lớn hơn 1, $T_2$ cập nhật trạng thái của bác sĩ B thành <code>false</code>.</li>
+</ul>
+<p>Cả $T_1$ và $T_2$ đều <code>COMMIT</code> thành công. Hậu quả là bệnh viện không còn bác sĩ trực, vi phạm tính toàn vẹn của logic nghiệp vụ.</p>
+<p>Để giải quyết tình trạng trên, PostgreSQL sử dụng thuật toán SSI thông qua SIREAD Locks. SIREAD Lock không phải khóa vật lý, mà là một thẻ đánh dấu được lưu trong Shared Memory để ghi nhận rằng $T_1$ đã từng đọc dòng dữ liệu này. Khi một truy vấn đọc nhiều dữ liệu, hệ thống có thể gộp các SIREAD Lock từ cấp dòng thành cấp page, rồi từ nhiều page thành cấp bảng.</p>
+<p>Việc gộp các SIREAD Lock chỉ mở rộng phạm vi theo dõi và tránh làm cạn kiệt RAM, không khóa vật lý các bảng.</p>
+<p>Xung đột xuất hiện khi tồn tại quan hệ phụ thuộc <strong>rw-antidependency</strong>, còn gọi là <strong>rw-conflict</strong>: giao dịch $T_1$ đọc một tập dữ liệu, sau đó giao dịch $T_2$ ghi hoặc sửa đổi tập dữ liệu đó, khiến dữ liệu mà $T_1$ đã đọc trở nên lỗi thời. Mối quan hệ này được biểu diễn bằng một cạnh trên đồ thị: $T_1 \xrightarrow{rw} T_2$.</p>
+<p>Dị thường <strong>Write Skew (non-serializable execution)</strong> chỉ có thể xảy ra khi đồ thị xuất hiện hai cạnh $rw$ liên tiếp: $T_1 \xrightarrow{rw} T_2 \xrightarrow{rw} T_3$. Trong đó, $T_1$ và $T_3$ có thể là cùng một giao dịch, tạo thành chu trình. Trong ví dụ trên, $T_1$ đọc dữ liệu từ bảng chung trong khi $T_2$ sửa một dòng của bảng đó, làm dữ liệu mà $T_1$ đã đọc bị sai lệch. Khi phát hiện dị thường Write Skew, hệ thống lập tức hủy giao dịch thực hiện <code>COMMIT</code> sau cùng để bảo toàn dữ liệu.</p>
+<p>Khi tạo cây B-tree, dữ liệu trên cây không chứa các thông tin phiên bản giao dịch (MVCC Metadata) như <code>t_xmin</code>, <code>t_xmax</code> và <code>t_infomask</code>. Những thông tin này chỉ nằm trong bản ghi chính. Do đó, khi sử dụng chỉ mục bao phủ (covering index), hệ thống duyệt đến index entry chứa dữ liệu hợp lệ, kiểm tra số hiệu của trang chứa dòng đó, rồi kiểm tra bit <code>all-visible</code> của trang trong tệp <code>_vm</code> trên RAM.</p>
+<p>Tệp <code>_vm</code> đại diện cho một mảng bit dùng để theo dõi các trang dữ liệu. Mỗi trang trên heap được gắn với hai bit trong tệp <code>_vm</code>: <code>all-visible</code> và <code>all-frozen</code>. Vì tệp <code>_vm</code> thường khá nhỏ nên hệ thống hiếm khi đẩy tệp này xuống ổ đĩa.</p>
+<p>Nếu <code>all-visible = 1</code>, dữ liệu của toàn bộ page được xem là hợp lệ nên dòng đó cũng hợp lệ với snapshot hiện tại. Hệ thống không cần đọc trang heap trên đĩa để kiểm tra <code>t_xmin</code> và <code>t_xmax</code>, nhờ đó tránh được thao tác đọc ngẫu nhiên từ đĩa. Nếu <code>all-visible = 0</code>, hệ thống không thể xác định chắc chắn dữ liệu có hợp lệ với snapshot hiện tại hay không, nên phải đọc ổ đĩa để kiểm tra, làm tăng chi phí I/O.</p>
+<p>Hiện tượng phải đọc ổ đĩa để kiểm tra này được gọi là <strong>Heap Fetches</strong>. Heap Fetches tăng cao khi bạn cập nhật một lượng lớn dữ liệu mà Autovacuum chưa kịp quét qua. Khi đó, dù đã sử dụng covering index, hiệu năng vẫn không tăng. Có thể kiểm tra hiện tượng này qua chỉ số Heap Fetches khi sử dụng <code>EXPLAIN</code>.</p>
+<p><strong>Bit trong tệp <code>_vm</code> được cập nhật khi nào và như thế nào?</strong></p>
+<ul>
+<li>Khi tiến trình Vacuum quét các trang và xác định không có Dead Tuple cũng như không có dữ liệu lệch snapshot, Vacuum bật bit <code>all-visible</code> thành <code>1</code>.</li>
+<li>Khi một lệnh DML chạm vào trang đang có bit <code>all-visible = 1</code>, hệ thống lập tức chuyển bit này về <code>0</code>.</li>
+</ul>
+<p><strong>Tệp <code>_vm</code> có phải chỉ tồn tại khi bảng có index không?</strong></p>
+<p>Không. Tệp <code>_vm</code> vẫn tồn tại khi bảng không có index và đảm nhiệm hai vai trò quan trọng:</p>
+<ul>
+<li><strong>Tối ưu hóa tiến trình Vacuum:</strong> Hệ thống không cần đọc toàn bộ bảng để kiểm tra Dead Tuple. Thay vào đó, hệ thống duyệt tệp <code>_vm</code> và bỏ qua các trang có bit <code>all-visible = 1</code>.</li>
+<li><strong>Ngăn tràn Transaction ID:</strong> Sử dụng bit <code>all-frozen</code>.</li>
+</ul>
+<hr />
+<h2 id="loi-ket">Lời kết</h2>
+<figure class="airflow-closing-comic" id="loi-ket">
+  <img
+    src="../../assets/images/postgres/end_pos.png"
+    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu kiến trúc PostgreSQL và cảm ơn người đọc"
+    loading="lazy"
+  >
+  <figcaption>
+    <span>LỜI KẾT</span>
+    <div>
+      <strong>Cảm ơn bạn đã đọc đến cuối!</strong>
+      <p>Hy vọng bài viết giúp bạn hiểu kiến trúc PostgreSQL rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
+    </div>
+  </figcaption>
+</figure>
+
+<footer class="airflow-article-end postgres-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 004</span>
+    <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
+  </div>
+  <a href="../../">Trở về thư viện <span aria-hidden="true">→</span></a>
+</footer>
 
 
 
@@ -1258,6 +1848,8 @@ Trang ảo: 0x1000  --------&gt;  (Tra Bảng trang B)  --------&gt;  Khung tran
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
       
     
   </body>

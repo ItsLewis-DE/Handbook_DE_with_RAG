@@ -232,6 +232,17 @@ body:has(.airflow-article-hero) .md-typeset {
   white-space: nowrap;
 }
 
+.index-article-hero::before {
+  content: "INDEX";
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+.postgres-article-hero::before {
+  content: "POSTGRESQL";
+}
+
 .airflow-article-hero::after {
   background: var(--airflow-accent-bright);
   content: "";
@@ -857,6 +868,10 @@ body:has(.airflow-article-hero) .md-typeset .airflow-closing-comic figcaption p 
 
 body:has(.airflow-article-hero) .index-article-end::after {
   content: "03";
+}
+
+body:has(.airflow-article-hero) .postgres-article-end::after {
+  content: "04";
 }
 
 .airflow-article-end {

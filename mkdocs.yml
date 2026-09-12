@@ -3,6 +3,7 @@ site_description: Đi vào phía sau những hệ thống và pipeline dữ li�
 
 theme:
   name: material
+  custom_dir: overrides
   language: vi
   logo: assets/images/behind-the-pipeline-logo.svg
   favicon: assets/images/behind-the-pipeline-favicon.svg
@@ -43,6 +44,8 @@ extra_css:
   - stylesheets/landing.css
   - stylesheets/article.css
   - stylesheets/technology-background.css
+  - stylesheets/marquee.css
 
 extra_javascript:
   - javascripts/article-deck.js
+  - javascripts/author-dialog.js
