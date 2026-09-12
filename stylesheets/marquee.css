@@ -330,10 +330,78 @@
 /* Sticky TOC offset adjustment for the new header height */
 @media screen and (min-width: 60rem) {
   body:has(.airflow-article-hero) .md-sidebar--secondary {
-    top: 5.6rem !important;
-    height: calc(100vh - 5.6rem) !important;
-    max-height: calc(100vh - 5.6rem) !important;
+    top: var(--site-header-offset, 5.6rem) !important;
+    height: calc(100vh - var(--site-header-offset, 5.6rem)) !important;
+    max-height: calc(100vh - var(--site-header-offset, 5.6rem)) !important;
   }
 }
 
 
+
+html {
+  scroll-padding-top: var(--site-header-offset, 5.6rem);
+}
+
+/* Give navigation its own row before the brand crowds out the links. */
+@media screen and (max-width: 76.25rem) {
+  :root {
+    --site-header-offset: calc(124px + 2rem);
+  }
+
+  .custom-header__inner {
+    flex-wrap: wrap;
+    gap: 0.3rem 0.75rem;
+    padding-inline: max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right));
+  }
+
+  .custom-header__brand {
+    min-height: 44px;
+  }
+
+  .custom-header__nav {
+    order: 3;
+    flex: 0 0 100%;
+    min-width: 0;
+    gap: 0.4rem;
+    padding-block: 0.2rem;
+    scrollbar-width: thin;
+  }
+
+  .custom-header__nav::-webkit-scrollbar {
+    display: block;
+    height: 3px;
+  }
+
+  .custom-nav-pill {
+    flex-shrink: 0;
+    justify-content: center;
+    min-height: 44px;
+    padding-inline: 0.7rem;
+    font-family: var(--font-ui);
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+}
+
+.custom-nav-pill:focus-visible {
+  outline: 2px solid var(--c-header-fg);
+  outline-offset: -4px;
+}
+
+@media screen and (max-width: 36rem) {
+  .custom-header__wordmark {
+    font-size: clamp(12px, 3.5vw, 16px);
+  }
+
+  .custom-header__logo-wrap {
+    width: 28px;
+    flex-shrink: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-marquee__track,
+  .custom-header__status-dot {
+    animation: none;
+  }
+}
