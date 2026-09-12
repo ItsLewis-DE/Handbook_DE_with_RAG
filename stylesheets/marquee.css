@@ -1,0 +1,339 @@
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+
+/* --------------------------------------------------------------------------
+   Color Tokens & Unified Palette (Synchronized with CatalystPack & Brand)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Default / Landing Palette */
+  --marquee-bg: #ed6840;
+  --marquee-fg: #17302d;
+  --marquee-border: rgba(23, 48, 45, 0.35);
+  --marquee-gem-1: #17302d;
+  --marquee-gem-2: #ffffff;
+
+  --c-header-bg: #17302d;
+  --c-header-fg: #f3f0e8;
+  --c-header-border: rgba(243, 240, 232, 0.14);
+  --c-pill-bg: rgba(243, 240, 232, 0.08);
+  --c-pill-fg: #e5e2da;
+  --c-pill-active-bg: #ed6840;
+  --c-pill-active-fg: #17302d;
+  --c-badge-bg: rgba(237, 104, 64, 0.18);
+  --c-badge-fg: #ed6840;
+  --c-status-dot: #3fcb6b;
+
+  /* Typography matching play.catalystpack.com */
+  --font-display: "Dela Gothic One", "Arial Black", sans-serif;
+  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", SFMono-Regular, Consolas, Menlo, monospace;
+}
+
+/* --------------------------------------------------------------------------
+   Header Shell Override
+   -------------------------------------------------------------------------- */
+.md-header.custom-theme-header {
+  background: var(--c-header-bg) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Hide any residual default mkdocs header inner if present */
+.custom-theme-header > .md-header__inner {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   1. CatalystPack Marquee Ticker Strip (Dela Gothic One)
+   -------------------------------------------------------------------------- */
+.top-marquee {
+  width: 100%;
+  height: 36px;
+  background: var(--marquee-bg);
+  color: var(--marquee-fg);
+  border-bottom: 2px solid var(--marquee-border);
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  z-index: 2;
+}
+
+.top-marquee:hover .top-marquee__track {
+  animation-play-state: paused;
+}
+
+.top-marquee__track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  animation: top-marquee-scroll 32s linear infinite;
+  will-change: transform;
+}
+
+.top-marquee__group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.top-marquee span {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  padding-right: 24px;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.top-marquee b {
+  color: var(--marquee-gem-1);
+  font-size: 9px;
+  display: inline-block;
+  line-height: 1;
+  transform: translateY(-0.5px);
+  transition: color 0.3s ease;
+}
+
+.top-marquee span:nth-child(2n) b {
+  color: var(--marquee-gem-2);
+}
+
+@keyframes top-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Custom Brand & Navigation Bar
+   -------------------------------------------------------------------------- */
+.custom-header {
+  width: 100%;
+  background: var(--c-header-bg);
+  border-bottom: 1px solid var(--c-header-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.custom-header__inner {
+  max-width: 86rem;
+  margin: 0 auto;
+  padding: 0.45rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Brand & Logo */
+.custom-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none !important;
+  color: var(--c-header-fg) !important;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+}
+
+.custom-header__brand:hover {
+  opacity: 0.9;
+}
+
+.custom-header__logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 1.5rem;
+}
+
+.custom-header__logo-wrap img,
+.custom-header__logo-wrap svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.custom-header__wordmark {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--c-header-fg);
+  line-height: 1;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28rem;
+}
+
+.custom-header__wordmark em {
+  font-style: normal;
+  color: var(--brand-accent, #ed6840);
+  font-weight: 400;
+}
+
+.custom-header__badge {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 0.14rem 0.4rem;
+  border-radius: 4px;
+  background: var(--c-badge-bg);
+  color: var(--c-badge-fg);
+  border: 1px solid currentColor;
+  line-height: 1;
+}
+
+/* Nav Pills */
+.custom-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.custom-header__nav::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.24rem 0.48rem;
+  font-family: var(--font-display);
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-decoration: none !important;
+  color: var(--c-pill-fg) !important;
+  background: var(--c-pill-bg);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
+
+.custom-nav-pill:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.custom-nav-pill.is-active {
+  background: var(--c-pill-active-bg);
+  color: var(--c-pill-active-fg) !important;
+  border-color: transparent;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.32);
+}
+
+/* System Status Tag */
+.custom-header__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  font-family: var(--header-font-mono);
+  font-size: 0.66rem;
+  color: rgba(243, 240, 232, 0.72);
+  letter-spacing: 0.05em;
+}
+
+.custom-header__status-dot {
+  width: 6.5px;
+  height: 6.5px;
+  border-radius: 50%;
+  background: var(--c-status-dot);
+  box-shadow: 0 0 6px var(--c-status-dot);
+  animation: status-pulse 2s infinite ease-in-out;
+}
+
+.custom-header__status-tag {
+  font-family: var(--header-font-mono);
+  font-weight: 600;
+  color: var(--c-badge-fg);
+  background: var(--c-badge-bg);
+  border: 1px solid rgba(237, 104, 64, 0.4);
+  padding: 0.12rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.6rem;
+  letter-spacing: 0.07em;
+}
+
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile & Responsive Tweaks
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 55rem) {
+  .custom-header__badge,
+  .custom-header__status-text {
+    display: none;
+  }
+
+  .top-marquee {
+    height: 30px;
+  }
+
+  .top-marquee span {
+    font-size: 11px;
+    gap: 16px;
+    padding-right: 16px;
+  }
+
+  .custom-header__inner {
+    padding: 0.45rem 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .custom-nav-pill {
+    padding: 0.28rem 0.55rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 36rem) {
+  .custom-header__status {
+    display: none;
+  }
+  .custom-header__wordmark {
+    font-size: 0.82rem;
+  }
+}
+
+/* Sticky TOC offset adjustment for the new header height */
+@media screen and (min-width: 60rem) {
+  body:has(.airflow-article-hero) .md-sidebar--secondary {
+    top: 5.6rem !important;
+    height: calc(100vh - 5.6rem) !important;
+    max-height: calc(100vh - 5.6rem) !important;
+  }
+}
+
+
