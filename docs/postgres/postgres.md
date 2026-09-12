@@ -224,6 +224,7 @@ Ví dụ, một trang 8 KB (Page) trên Buffer Pool:
 Tiếp nối phần lưu trữ trạng thái khóa, ta sẽ cùng tìm hiểu các loại khóa bảng trong PostgreSQL.
 
 ##### Các loại khóa bảng trong Postgres
+
 Khi một câu lệnh SQL được thực thi, PostgreSQL tự động cấp phát một trong **8 chế độ khóa cấp bảng** tương ứng để bảo vệ cấu trúc hoặc dữ liệu bảng. Các khóa này được lưu trên RAM trong Shared Memory.
 
 - Khi sử dụng câu lệnh `SELECT`, hệ thống cấp phát một khóa `AccessShareLock`. Đây là loại khóa nhẹ nhất. Các khóa này có thể tồn tại đồng thời nên nhiều câu lệnh `SELECT` có thể cùng thực thi. Khóa này chỉ xung đột với `AccessExclusiveLock`, được dùng khi chạy các câu lệnh thay đổi cấu trúc bảng như `ALTER TABLE`.
@@ -235,6 +236,7 @@ Khi một câu lệnh SQL được thực thi, PostgreSQL tự động cấp ph�
 - Khi chạy các lệnh DDL nặng như `ALTER TABLE`, `DROP TABLE`, `TRUNCATE`, `VACUUM FULL` và `REINDEX`, hệ thống dùng khóa độc quyền tuyệt đối, chặn **toàn bộ** luồng đọc và ghi (`SELECT`, `INSERT`, `UPDATE`, `DELETE`).
 
 Bạn có thể nhớ rằng: Trong PostgreSQL, khóa dòng được **ghi trực tiếp vào trường t_xmax** ngay trên header của từng bản ghi để tránh cạn kiệt bộ nhớ, còn **khóa bảng** được quản lý tập trung hoàn toàn **trên RAM** (trong Lock Manager) để kiểm tra và giải phóng tức thì.
+
 Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa và các loại khóa của PostgreSQL, ta sẽ cùng tìm hiểu khái niệm **Lock Escalation**.
 
 **Lock Escalation (leo thang khóa)** là cơ chế tự động của hệ quản trị cơ sở dữ liệu nhằm chuyển đổi nhiều khóa ở cấp độ chi tiết, như khóa dòng (Row Lock) hoặc khóa trang (Page Lock), thành một khóa duy nhất ở cấp độ bao quát hơn, thường là khóa toàn bảng (Table Lock), trong cùng một giao dịch.
@@ -261,7 +263,9 @@ Luồng hoạt động như sau:
 
 Tiến trình mẹ **Postmaster** chạy ngầm, khởi tạo Shared Memory và mở cổng mạng. Khi client gửi yêu cầu kết nối, Postmaster sẽ fork tiến trình hiện tại thành một tiến trình mới gọi là **Backend Dedicated Process**. Nhờ cơ chế của fork(), tiến trình backend con tự động kế thừa bảng trang để trỏ vào vùng Shared Memory dùng chung; còn các vùng bộ nhớ riêng phục vụ truy vấn sẽ được cấp phát động và chỉ thực sự ánh xạ vào thanh RAM vật lý khi có phát sinh thao tác đọc/ghi.
 
-KHÔNG GIAN ĐỊA CHỈ TIẾN TRÌNH CON
+**Không gian địa chỉ tiến trình con:**
+
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │ 1. Bộ nhớ chia sẻ (Shared Memory)                           │
 │    - Ánh xạ chung với mọi process khác                       │
@@ -272,6 +276,7 @@ KHÔNG GIAN ĐỊA CHỈ TIẾN TRÌNH CON
 │    - Hệ điều hành cô lập, các tiến trình khác không sờ tới   │
 │    - Chứa: work_mem, temp_buffers, MemoryContexts...         │
 └──────────────────────────────────────────────────────────────┘
+```
 
 Postmaster bàn giao socket kết nối mạng của client cho backend process mới, rồi lập tức đóng socket đó ở phía mình để tiếp tục lắng nghe các kết nối khác. Sau đó, backend process tự khởi tạo tài nguyên bộ nhớ. Mỗi tiến trình con sử dụng khoảng **5 MB đến 10 MB RAM**, ngay cả khi ở trạng thái nhàn rỗi (Idle).
 
@@ -349,7 +354,7 @@ Khác với mô hình đa tiến trình của PostgreSQL, các cơ sở dữ li�
 
 #### Mô hình đa luồng của các hệ quản trị cơ sở khác
 
-Mỗi client kết nối tới database được gán cho một luồng với dung lượng Stack nhỏ (256 KB đến 1 MB).Khi một luồng gặp lỗi nghiêm trọng, toàn bộ database instance có nguy cơ ngừng hoạt động.
+Mỗi client kết nối tới database được gán cho một luồng với dung lượng Stack nhỏ (256 KB đến 1 MB). Khi một luồng gặp lỗi nghiêm trọng, toàn bộ database instance có nguy cơ ngừng hoạt động.
 
 Luồng hoạt động như sau:
 
@@ -398,8 +403,13 @@ Chúng ta đã cùng tìm hiểu về kiến trúc tầng 1 của PostgreSQL. Ti
 
 **Tầng 2 (SQL Engine / Query Processing Layer)** là bộ phận điều hành logic của PostgreSQL, chịu trách nhiệm chuyển câu lệnh SQL dạng văn bản khai báo (Declarative Text), ví dụ `SELECT * FROM table`, thành kế hoạch thực thi vật lý tối ưu nhất dựa trên chi phí tính toán. Tầng này vận hành hoàn toàn bên trong bộ nhớ ảo cục bộ của backend process.
 
-#### Câu hỏi:
-  Thêm hình floor_2 trong folder postgres vào
+#### Câu hỏi liên quan
+
+**Tại sao lại nói tầng 2 vận hành hoàn toàn bên trong bộ nhớ ảo cục bộ?**
+
+Tầng 2 nằm bên trong không gian bộ nhớ ảo cục bộ vì toàn bộ các bước phân tích, lập kế hoạch và tính toán dữ liệu, như Sort hay Hash Join, đều phục vụ riêng cho một truy vấn của tiến trình đó, thay vì xử lý dữ liệu dùng chung của toàn hệ thống.
+
+![Vì sao tầng 2 chủ yếu hoạt động trong vùng nhớ riêng](../assets/images/postgres/floor_2.png)
 
 Chuỗi biên dịch và thực thi của tầng 2 gồm các giai đoạn sau:
 
@@ -538,8 +548,13 @@ Vòng đời của một Dirty Page diễn ra như sau:
 [Ổ đĩa] <──(Ghi & Fsync)─────┘ (Trang trở lại trạng thái Clean)
 ```
 
-###### Câu hỏi:
-  Thêm hình ảnh dirty_page vào, trong folder postgres nhé
+###### Thành phần nào chịu trách nhiệm dọn dẹp Dirty Page?
+
+- **Checkpointer:** Quét toàn bộ `shared_buffers`, tìm tất cả Dirty Page và buộc ghi xuống ổ đĩa. Checkpointer đánh dấu một checkpoint vào file WAL để hệ thống biết đã xử lý đến đâu.
+- **Background Writer (`bgwriter`):** Tìm một lượng nhỏ Dirty Page ít dùng và ghi dần xuống đĩa trước khi checkpoint diễn ra.
+- **Backend (client process):** Khi cần nạp một buffer mới nhưng buffer được chọn để tái sử dụng đang là Dirty Page, backend có thể tự ghi buffer đó xuống đĩa trước khi sử dụng.
+
+![Thành phần chịu trách nhiệm dọn dẹp Dirty Page trong PostgreSQL](../assets/images/postgres/dirty_page.png)
 
 Vậy là chúng ta đã cùng tìm hiểu toàn bộ các giai đoạn ở tầng 2 của PostgreSQL. Dưới đây là sơ đồ minh họa cách tầng này vận hành:
 
@@ -563,6 +578,7 @@ flowchart TD
     Q -->|Trả kết quả truy vấn| C
 ```
 
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │               TIẾN TRÌNH BACKEND (BỘ NHỚ RIÊNG)             │
 │                                                             │
@@ -580,6 +596,8 @@ flowchart TD
 │  - Lock Manager: Quản lý khóa bảng                          │
 │  - wal_buffers: Ghi nhật ký thay đổi                        │
 └─────────────────────────────────────────────────────────────┘
+```
+
 ### Tầng 3: Bộ nhớ đệm và giao dịch
 
 Shared Memory gồm các thành phần sau:

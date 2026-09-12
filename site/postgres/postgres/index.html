@@ -624,10 +624,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cau-hoi" class="md-nav__link">
+  <a href="#cau-hoi-lien-quan_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Câu hỏi:
+        Câu hỏi liên quan
       
     </span>
   </a>
@@ -1120,10 +1120,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cau-hoi" class="md-nav__link">
+  <a href="#cau-hoi-lien-quan_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Câu hỏi:
+        Câu hỏi liên quan
       
     </span>
   </a>
@@ -1450,8 +1450,8 @@ Trang ảo: 0x1000  --------&gt;  (Tra bảng trang B)  --------&gt;  Khung tran
 <li><strong><code>ExclusiveLock</code>:</strong> Chỉ cho phép các tiến trình đọc (<code>AccessShareLock</code>) chạy song song [cite: 154]. Khóa này được kích hoạt bởi <code>REFRESH MATERIALIZED VIEW CONCURRENTLY</code>.</li>
 <li>Khi chạy các lệnh DDL nặng như <code>ALTER TABLE</code>, <code>DROP TABLE</code>, <code>TRUNCATE</code>, <code>VACUUM FULL</code> và <code>REINDEX</code>, hệ thống dùng khóa độc quyền tuyệt đối, chặn <strong>toàn bộ</strong> luồng đọc và ghi (<code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>).</li>
 </ul>
-<p>Bạn có thể nhớ rằng: Trong PostgreSQL, khóa dòng được <strong>ghi trực tiếp vào trường t_xmax</strong> ngay trên header của từng bản ghi để tránh cạn kiệt bộ nhớ, còn <strong>khóa bảng</strong> được quản lý tập trung hoàn toàn <strong>trên RAM</strong> (trong Lock Manager) để kiểm tra và giải phóng tức thì.
-Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa và các loại khóa của PostgreSQL, ta sẽ cùng tìm hiểu khái niệm <strong>Lock Escalation</strong>.</p>
+<p>Bạn có thể nhớ rằng: Trong PostgreSQL, khóa dòng được <strong>ghi trực tiếp vào trường t_xmax</strong> ngay trên header của từng bản ghi để tránh cạn kiệt bộ nhớ, còn <strong>khóa bảng</strong> được quản lý tập trung hoàn toàn <strong>trên RAM</strong> (trong Lock Manager) để kiểm tra và giải phóng tức thì.</p>
+<p>Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa và các loại khóa của PostgreSQL, ta sẽ cùng tìm hiểu khái niệm <strong>Lock Escalation</strong>.</p>
 <p><strong>Lock Escalation (leo thang khóa)</strong> là cơ chế tự động của hệ quản trị cơ sở dữ liệu nhằm chuyển đổi nhiều khóa ở cấp độ chi tiết, như khóa dòng (Row Lock) hoặc khóa trang (Page Lock), thành một khóa duy nhất ở cấp độ bao quát hơn, thường là khóa toàn bảng (Table Lock), trong cùng một giao dịch.</p>
 <p>Các hệ quản trị cơ sở dữ liệu như SQL Server lưu trữ khóa trên RAM. Một khóa thường tiêu tốn khoảng 64 đến 128 byte:</p>
 <ul>
@@ -1467,8 +1467,8 @@ Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa v�
 <h5 id="luong-hoat-ong-cua-ket-noi">Luồng hoạt động của kết nối</h5>
 <p>Luồng hoạt động như sau:</p>
 <p>Tiến trình mẹ <strong>Postmaster</strong> chạy ngầm, khởi tạo Shared Memory và mở cổng mạng. Khi client gửi yêu cầu kết nối, Postmaster sẽ fork tiến trình hiện tại thành một tiến trình mới gọi là <strong>Backend Dedicated Process</strong>. Nhờ cơ chế của fork(), tiến trình backend con tự động kế thừa bảng trang để trỏ vào vùng Shared Memory dùng chung; còn các vùng bộ nhớ riêng phục vụ truy vấn sẽ được cấp phát động và chỉ thực sự ánh xạ vào thanh RAM vật lý khi có phát sinh thao tác đọc/ghi.</p>
-<p>KHÔNG GIAN ĐỊA CHỈ TIẾN TRÌNH CON
-┌──────────────────────────────────────────────────────────────┐
+<p><strong>Không gian địa chỉ tiến trình con:</strong></p>
+<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────────────────────────────┐
 │ 1. Bộ nhớ chia sẻ (Shared Memory)                           │
 │    - Ánh xạ chung với mọi process khác                       │
 │    - Chứa: shared_buffers, WAL buffers, Lock Manager, VM...  │
@@ -1477,7 +1477,8 @@ Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa v�
 │    - Độc quyền của riêng tiến trình con này                  │
 │    - Hệ điều hành cô lập, các tiến trình khác không sờ tới   │
 │    - Chứa: work_mem, temp_buffers, MemoryContexts...         │
-└──────────────────────────────────────────────────────────────┘</p>
+└──────────────────────────────────────────────────────────────┘
+</code></pre></div>
 <p>Postmaster bàn giao socket kết nối mạng của client cho backend process mới, rồi lập tức đóng socket đó ở phía mình để tiếp tục lắng nghe các kết nối khác. Sau đó, backend process tự khởi tạo tài nguyên bộ nhớ. Mỗi tiến trình con sử dụng khoảng <strong>5 MB đến 10 MB RAM</strong>, ngay cả khi ở trạng thái nhàn rỗi (Idle).</p>
 <pre class="mermaid"><code>graph TD
     subgraph OS_RAM [Hệ điều hành &amp; RAM vật lý]
@@ -1533,7 +1534,7 @@ Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa v�
 </code></pre></div>
 <p>Khác với mô hình đa tiến trình của PostgreSQL, các cơ sở dữ liệu như MySQL và SQL Server sử dụng mô hình đa luồng.</p>
 <h4 id="mo-hinh-a-luong-cua-cac-he-quan-tri-co-so-khac">Mô hình đa luồng của các hệ quản trị cơ sở khác</h4>
-<p>Mỗi client kết nối tới database được gán cho một luồng với dung lượng Stack nhỏ (256 KB đến 1 MB).Khi một luồng gặp lỗi nghiêm trọng, toàn bộ database instance có nguy cơ ngừng hoạt động.</p>
+<p>Mỗi client kết nối tới database được gán cho một luồng với dung lượng Stack nhỏ (256 KB đến 1 MB). Khi một luồng gặp lỗi nghiêm trọng, toàn bộ database instance có nguy cơ ngừng hoạt động.</p>
 <p>Luồng hoạt động như sau:</p>
 <p><strong>Thiết lập kết nối:</strong> Client kết nối tới cổng của cơ sở dữ liệu.</p>
 <p><strong>Dispatcher tiếp nhận:</strong> Một luồng đặc biệt đóng vai trò lắng nghe kết nối (Listener Thread) đón nhận yêu cầu kết nối.</p>
@@ -1567,8 +1568,10 @@ Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa v�
 <p>Chúng ta đã cùng tìm hiểu về kiến trúc tầng 1 của PostgreSQL. Tiếp theo, ta cùng tìm hiểu về kiến trúc tầng 2.</p>
 <h3 id="tang-2">Tầng 2</h3>
 <p><strong>Tầng 2 (SQL Engine / Query Processing Layer)</strong> là bộ phận điều hành logic của PostgreSQL, chịu trách nhiệm chuyển câu lệnh SQL dạng văn bản khai báo (Declarative Text), ví dụ <code>SELECT * FROM table</code>, thành kế hoạch thực thi vật lý tối ưu nhất dựa trên chi phí tính toán. Tầng này vận hành hoàn toàn bên trong bộ nhớ ảo cục bộ của backend process.</p>
-<h4 id="cau-hoi">Câu hỏi:</h4>
-<p>Thêm hình floor_2 trong folder postgres vào</p>
+<h4 id="cau-hoi-lien-quan_1">Câu hỏi liên quan</h4>
+<p><strong>Tại sao lại nói tầng 2 vận hành hoàn toàn bên trong bộ nhớ ảo cục bộ?</strong></p>
+<p>Tầng 2 nằm bên trong không gian bộ nhớ ảo cục bộ vì toàn bộ các bước phân tích, lập kế hoạch và tính toán dữ liệu, như Sort hay Hash Join, đều phục vụ riêng cho một truy vấn của tiến trình đó, thay vì xử lý dữ liệu dùng chung của toàn hệ thống.</p>
+<p><img alt="Vì sao tầng 2 chủ yếu hoạt động trong vùng nhớ riêng" src="../../assets/images/postgres/floor_2.png" /></p>
 <p>Chuỗi biên dịch và thực thi của tầng 2 gồm các giai đoạn sau:</p>
 <pre class="mermaid"><code>flowchart TB
     QUERY["Query Text"] --&gt; PARSER["1. Parser"]
@@ -1660,8 +1663,13 @@ Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa v�
                              ▼
 [Ổ đĩa] &lt;──(Ghi &amp; Fsync)─────┘ (Trang trở lại trạng thái Clean)
 </code></pre></div>
-<h6 id="cau-hoi_1">Câu hỏi:</h6>
-<p>Thêm hình ảnh dirty_page vào, trong folder postgres nhé</p>
+<h6 id="thanh-phan-nao-chiu-trach-nhiem-don-dep-dirty-page">Thành phần nào chịu trách nhiệm dọn dẹp Dirty Page?</h6>
+<ul>
+<li><strong>Checkpointer:</strong> Quét toàn bộ <code>shared_buffers</code>, tìm tất cả Dirty Page và buộc ghi xuống ổ đĩa. Checkpointer đánh dấu một checkpoint vào file WAL để hệ thống biết đã xử lý đến đâu.</li>
+<li><strong>Background Writer (<code>bgwriter</code>):</strong> Tìm một lượng nhỏ Dirty Page ít dùng và ghi dần xuống đĩa trước khi checkpoint diễn ra.</li>
+<li><strong>Backend (client process):</strong> Khi cần nạp một buffer mới nhưng buffer được chọn để tái sử dụng đang là Dirty Page, backend có thể tự ghi buffer đó xuống đĩa trước khi sử dụng.</li>
+</ul>
+<p><img alt="Thành phần chịu trách nhiệm dọn dẹp Dirty Page trong PostgreSQL" src="../../assets/images/postgres/dirty_page.png" /></p>
 <p>Vậy là chúng ta đã cùng tìm hiểu toàn bộ các giai đoạn ở tầng 2 của PostgreSQL. Dưới đây là sơ đồ minh họa cách tầng này vận hành:</p>
 <pre class="mermaid"><code>flowchart TD
     C["Client"] --&gt;|Kết nối| P["Tầng 1: Postmaster"]
@@ -1680,7 +1688,7 @@ Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa v�
     OK --&gt; C
 
     Q --&gt;|Trả kết quả truy vấn| C</code></pre>
-<p>┌─────────────────────────────────────────────────────────────┐
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────────────────────┐
 │               TIẾN TRÌNH BACKEND (BỘ NHỚ RIÊNG)             │
 │                                                             │
 │  [Chuỗi SQL] ──► [Parse Tree] ──► [Plan] ──► [Executor Engine]
@@ -1696,7 +1704,8 @@ Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa v�
 │  - shared_buffers: Chứa các khối dữ liệu 8KB của bảng       │
 │  - Lock Manager: Quản lý khóa bảng                          │
 │  - wal_buffers: Ghi nhật ký thay đổi                        │
-└─────────────────────────────────────────────────────────────┘</p>
+└─────────────────────────────────────────────────────────────┘
+</code></pre></div>
 <h3 id="tang-3-bo-nho-em-va-giao-dich">Tầng 3: Bộ nhớ đệm và giao dịch</h3>
 <p>Shared Memory gồm các thành phần sau:</p>
 <div class="highlight"><pre><span></span><code>+-----------------------------------------------------------------------------------------+
@@ -1771,11 +1780,11 @@ Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa v�
 <li><strong>T2 (Bác sĩ B):</strong> Chạy song song và thực hiện phép đếm tương tự. Kết quả vẫn là 2 vì T1 chưa <code>COMMIT</code>. Vì kết quả lớn hơn 1, T2 cập nhật trạng thái của bác sĩ B thành <code>false</code>.</li>
 </ul>
 <p>Cả T1 và T2 đều <code>COMMIT</code> thành công. Hậu quả là bệnh viện không còn bác sĩ trực, vi phạm tính toàn vẹn của logic nghiệp vụ.</p>
-<p>Để giải quyết tình trạng trên, PostgreSQL sử dụng thuật toán SSI thông qua SIREAD Locks. SIREAD Lock không phải khóa vật lý, mà là một thẻ đánh dấu được lưu trong Shared Memory để ghi nhận rằng T1 đã từng đọc dòng dữ liệu này. Khi một truy vấn đọc nhiều dữ liệu, hệ thống có thể gộp các SIREAD Lock từ cấp dòng thành cấp page, rồi từ nhiều page thành cấp bảng.</p>
-<p>Việc gộp các SIREAD Lock chỉ mở rộng phạm vi theo dõi và tránh làm cạn kiệt RAM, không khóa vật lý các bảng.</p>
-<p>Xung đột xuất hiện khi tồn tại quan hệ phụ thuộc <strong>rw-antidependency</strong>, còn gọi là <strong>rw-conflict</strong>: giao dịch T1 đọc một tập dữ liệu, sau đó giao dịch T2 ghi hoặc sửa đổi tập dữ liệu đó, khiến dữ liệu mà T1 đã đọc trở nên lỗi thời. Mối quan hệ này được biểu diễn bằng một cạnh trên đồ thị: T1 ──(rw)──► T2.</p>
-<p>Dị thường <strong>Write Skew (non-serializable execution)</strong> chỉ có thể xảy ra khi đồ thị xuất hiện hai cạnh rw liên tiếp: T1 ──(rw)──► T2 ──(rw)──► T3. Trong đó, T1 và T3 có thể là cùng một giao dịch, tạo thành chu trình. Trong ví dụ trên, T1 đọc dữ liệu từ bảng chung trong khi T2 sửa một dòng của bảng đó, làm dữ liệu mà T1 đã đọc bị sai lệch. Khi phát hiện dị thường Write Skew, hệ thống lập tức hủy giao dịch thực hiện <code>COMMIT</code> sau cùng để bảo toàn dữ liệu.</p>
-<p>Khi tạo cây B-tree, dữ liệu trên cây không chứa các thông tin phiên bản giao dịch (MVCC Metadata) như <code>t_xmin</code>, <code>t_xmax</code> và <code>t_infomask</code>. Những thông tin này chỉ nằm trong bản ghi chính. Do đó, khi sử dụng chỉ mục bao phủ (covering index), hệ thống duyệt đến index entry chứa dữ liệu hợp lệ, kiểm tra số hiệu của trang chứa dòng đó, rồi kiểm tra bit <code>all-visible</code> của trang trong tệp <code>_vm</code> trên RAM.</p>
+<p>Để giải quyết tình trạng trên, PostgreSQL sử dụng thuật toán <strong>SSI thông qua SIREAD Locks</strong>. SIREAD Lock không phải khóa vật lý, mà là một <strong>thẻ đánh dấu</strong> được lưu trong <strong>Shared Memory</strong> để ghi nhận rằng T1 đã từng đọc dòng dữ liệu này. Khi một truy vấn đọc nhiều dữ liệu, hệ thống có thể gộp các SIREAD Lock từ cấp dòng thành cấp page, rồi từ nhiều page thành cấp bảng.</p>
+<p>Việc gộp các SIREAD Lock chỉ mở rộng phạm vi theo dõi và tránh làm <strong>cạn kiệt RAM</strong>, không khóa vật lý các bảng.</p>
+<p>Quan hệ phụ thuộc <strong>rw-antidependency</strong>, còn gọi là <strong>rw-conflict</strong>: giao dịch T1 đọc một tập dữ liệu, sau đó giao dịch T2 ghi hoặc sửa đổi tập dữ liệu đó, khiến dữ liệu mà T1 đã đọc trở nên lỗi thời. Mối quan hệ này được biểu diễn bằng một cạnh trên đồ thị: T1 ──(rw)──► T2.</p>
+<p>Dị thường <strong>Write Skew (non-serializable execution)</strong> chỉ có thể xảy ra khi đồ thị xuất hiện hai cạnh rw liên tiếp: T1 ──(rw)──► T2 ──(rw)──► T3. Trong đó, T1 và T3 có thể là cùng một giao dịch, tạo thành chu trình. Trong ví dụ trên, T1 đọc dữ liệu từ bảng chung trong khi T2 sửa một dòng của bảng đó, làm dữ liệu mà T1 đã đọc bị sai lệch. Khi phát hiện dị thường Write Skew, hệ thống lập tức <strong>hủy giao dịch</strong> thực hiện <code>COMMIT</code> sau cùng để bảo toàn dữ liệu.</p>
+<p>Khi tạo cây B-tree, dữ liệu trên cây <strong>không chứa</strong> các thông tin phiên bản giao dịch (MVCC Metadata) như <code>t_xmin</code>, <code>t_xmax</code> và <code>t_infomask</code>. Những thông tin này chỉ nằm trong bản ghi chính. Do đó, khi sử dụng <strong>chỉ mục bao phủ (covering index)</strong>, hệ thống duyệt đến index entry chứa dữ liệu hợp lệ, kiểm tra số hiệu của trang chứa dòng đó, rồi kiểm tra bit <code>all-visible</code> của trang trong tệp <code>_vm</code> trên RAM.</p>
 <p>Tệp <code>_vm</code> đại diện cho một mảng bit dùng để theo dõi các trang dữ liệu. Mỗi trang trên heap được gắn với hai bit trong tệp <code>_vm</code>: <code>all-visible</code> và <code>all-frozen</code>. Vì tệp <code>_vm</code> thường khá nhỏ nên hệ thống hiếm khi đẩy tệp này xuống ổ đĩa.</p>
 <p>Nếu <code>all-visible = 1</code>, dữ liệu của toàn bộ page được xem là hợp lệ nên dòng đó cũng hợp lệ với snapshot hiện tại. Hệ thống không cần đọc trang heap trên đĩa để kiểm tra <code>t_xmin</code> và <code>t_xmax</code>, nhờ đó tránh được thao tác đọc ngẫu nhiên từ đĩa. Nếu <code>all-visible = 0</code>, hệ thống không thể xác định chắc chắn dữ liệu có hợp lệ với snapshot hiện tại hay không, nên phải đọc ổ đĩa để kiểm tra, làm tăng chi phí I/O.</p>
 <p>Hiện tượng phải đọc ổ đĩa để kiểm tra này được gọi là <strong>Heap Fetches</strong>. Heap Fetches tăng cao khi bạn cập nhật một lượng lớn dữ liệu mà Autovacuum chưa kịp quét qua. Khi đó, dù đã sử dụng covering index, hiệu năng vẫn không tăng. Có thể kiểm tra hiện tượng này qua chỉ số Heap Fetches khi sử dụng <code>EXPLAIN</code>.</p>
