@@ -4103,3 +4103,40 @@ html.author-dialog-open {
   .author-character__outline,
   .author-photo__hint { transition: none; }
 }
+
+/* Final phone overrides for the refined cards and touch controls. */
+@media screen and (max-width: 45rem) {
+  .stack-card {
+    transform: none;
+  }
+
+  .article-deck__control {
+    flex-shrink: 0;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .article-sheet__foot a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .landing-page .landing-hero,
+  .landing-page .library-section,
+  .landing-page .writing-section,
+  .landing-page .author-section,
+  .landing-page .landing-footer {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  .author-dialog[open] {
+    align-items: safe center;
+  }
+
+  .author-dialog__close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

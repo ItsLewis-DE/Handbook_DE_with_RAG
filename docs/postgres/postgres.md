@@ -100,7 +100,7 @@ PGDATA/                          <-- Thư mục gốc của toàn bộ Cluster (
 
 ##### Tiến trình và luồng
 
-**Tiến trình:** Là một thực thể chạy độc lập, sở hữu một không gian địa chỉ ảo riêng biệt. Không gian này là cơ chế trừu tượng hóa bộ nhớ của hệ điều hành, cụ thể là RAM. Các địa chỉ trong không gian này được đánh số liên tục từ `0` đến địa chỉ cao nhất.
+**Tiến trình:** Là một thực thể chạy **độc lập**, sở hữu một không gian địa chỉ ảo riêng biệt. Không gian này là cơ chế trừu tượng hóa bộ nhớ của hệ điều hành, cụ thể là RAM. Các địa chỉ trong không gian này được đánh số liên tục từ `0` đến địa chỉ cao nhất. Nó được chia ra thành 2 phần, 1 là vùng nhớ riêng để chứa các biến cục bộ, 2 là vùng nhớ dùng chung (trỏ tới shared memory)
 
 Sau đó, tiến trình chỉ cần sử dụng không gian địa chỉ ảo này. **MMU** (phần cứng tích hợp trong CPU) ánh xạ địa chỉ ảo đến địa chỉ vật lý thông qua **Page Table** (bảng trang dùng để ánh xạ địa chỉ ảo đến địa chỉ vật lý).
 
@@ -112,21 +112,21 @@ Trang ảo: 0x1000  -------->  (Tra bảng trang A)  -------->  Khung trang: 0x8
 Trang ảo: 0x1000  -------->  (Tra bảng trang B)  -------->  Khung trang: 0x42000
 ```
 
-Do bảng trang A không chứa ánh xạ đến các ô nhớ được ánh xạ bởi bảng trang B, tiến trình A không thể đọc hoặc sử dụng dữ liệu của tiến trình B.
+Do bảng trang của tiến trình A không chứa ánh xạ tới các khung trang RAM vật lý thuộc về tiến trình B, nên tiến trình A hoàn toàn bị cô lập và không thể đọc hay can thiệp vào **bộ nhớ riêng** của tiến trình B.
 
 **Luồng:** Là một nhánh thực thi nằm bên trong một tiến trình duy nhất. Tất cả các luồng chạy song song đều chia sẻ chung không gian địa chỉ ảo, phân vùng Heap, mã máy thực thi (Code Segment) và các kết nối mạng của tiến trình cha.
 
-Mỗi luồng chỉ sở hữu một phân vùng **Stack riêng biệt** (thường có kích thước vài MB hoặc vài trăm KB, dùng để lưu các biến cục bộ, …) và **con trỏ lệnh (Instruction Pointer)** giúp CPU xác định vị trí mã mà luồng đã thực thi đến. Mỗi core trong CPU chỉ xử lý mã của một luồng duy nhất. Bộ điều phối của hệ điều hành (OS Scheduler) có thể luân chuyển một luồng từ core này sang core khác giữa các chu kỳ chạy. Vì vậy, core không được dành cố định cho một luồng nào.
+Mỗi luồng chỉ sở hữu một phân vùng **Stack riêng biệt** (thường có kích thước vài MB hoặc vài trăm KB, dùng để lưu các biến cục bộ, …) và **con trỏ lệnh (Instruction Pointer)** giúp CPU xác định vị trí mã mà luồng đã thực thi đến. Mỗi core trong CPU chỉ xử lý mã của **một luồng duy nhất**. Bộ điều phối của hệ điều hành (OS Scheduler) có thể luân chuyển một luồng từ core này sang core khác giữa các chu kỳ chạy. Vì vậy, core không được dành cố định cho một luồng nào. Ví dụ khi luồng chạy cần đọc I/O luồng sẽ tạm thời sleep, core đó sẽ dành cho một luồng khác để chạy. 
 
 ##### Bộ đệm `shared_buffers`
 
-`shared_buffers` là dung lượng RAM mà một instance sử dụng làm **bộ nhớ đệm**, với mục đích chính là giảm thiểu việc đọc và ghi xuống ổ đĩa.
+`shared_buffers` là dung lượng RAM mà một instance sử dụng làm **bộ nhớ đệm**, với mục đích chính là giảm thiểu việc đọc và ghi xuống ổ đĩa. Nằm trong Shared Memory (bộ nhớ dùng chung cho các tiến trình)
 
 Bộ đệm này được chia thành hàng nghìn khối nhỏ bằng nhau. Mỗi khối có kích thước **8 KB**, bằng kích thước của một Data Page trên đĩa.
 
 ##### Latch, Lock và Lock Accumulation
 
-**Latch:** Là khóa ở cấp độ vật lý, giúp ngăn hai luồng ghi đè vào cùng một trang. Ví dụ, một luồng ghi và một luồng đọc trên cùng một trang 8 KB.
+**Latch:** Là khóa ở **cấp độ vật lý**, giúp ngăn hai luồng ghi đè vào cùng một trang. Ví dụ, một luồng ghi và một luồng đọc trên cùng một trang 8 KB.
 
 Giả sử bảng `users` có một trang dữ liệu 8 KB (Page 42) đang nằm sẵn trên RAM trong Buffer Pool. Trang này chứa 5 bản ghi, từ dòng 1 đến dòng 5.
 
@@ -150,7 +150,7 @@ Về mặt logic (Lock), luồng A chỉ khóa nghiệp vụ dòng 1, luồng B 
 
 **Luồng A hoàn tất thao tác:** Luồng A cập nhật vài byte trên RAM trong khoảng 1–2 microsecond, sau đó nhả Exclusive Latch.
 
-**Luồng B tiếp tục:** Luồng B ngay lập tức nhận được Shared Latch, đọc an toàn dữ liệu của dòng 5 và nhả Shared Latch.
+**Luồng B tiếp tục:** Luồng B ngay lập tức có thể đọc an toàn dữ liệu ở dòng 5.
 
 Nếu không có Latch, luồng B có thể đọc Page 42 đúng thời điểm CPU của luồng A đang ghi dở một phần số byte của tiêu đề trang (Page Header). Kết quả là luồng B đọc phải con trỏ hỏng.
 
@@ -185,7 +185,7 @@ Khi ta thay đổi một dòng, database sẽ sử dụng đồng thời cả ha
 
 Khi nhìn vào sơ đồ trên, bạn có tự hỏi: Tại sao hệ thống vẫn giữ khóa cũ khi đã chuyển sang thực hiện các tác vụ không còn liên quan đến dòng đó?
 
-Trong suốt thời gian một giao dịch diễn ra, các khóa hoạt động theo **nguyên lý tích lũy (Lock Accumulation)**. Khi bạn xử lý một dòng, hệ thống giữ khóa của dòng đó. Khi xử lý các dòng khác, hệ thống tiếp tục giữ khóa của các dòng mới đồng thời giữ cả khóa của dòng cũ. Chỉ khi gặp lệnh `COMMIT` hoặc `ROLLBACK`, hệ thống mới nhả khóa.
+Trong suốt thời gian một giao dịch diễn ra, các khóa hoạt động theo **nguyên lý tích lũy (Lock Accumulation)**. Khi bạn xử lý một dòng, hệ thống giữ khóa của dòng đó. Khi xử lý các dòng khác, hệ thống tiếp tục giữ khóa của các dòng mới **đồng thời giữ cả khóa của dòng cũ**. Chỉ khi gặp lệnh `COMMIT` hoặc `ROLLBACK`, hệ thống mới nhả khóa.
 
 Vậy tại sao khi xử lý các dòng khác lại không nhả khóa của dòng cũ? Nếu hệ thống vừa sửa xong `id = 1` đã vội nhả khóa:
 
@@ -221,27 +221,9 @@ Ví dụ, một trang 8 KB (Page) trên Buffer Pool:
 +-------------------------------------------------------------------------+
 ```
 
-Trong SQL Server và MySQL, trạng thái khóa được quản lý bởi **Lock Manager** và lưu trữ hoàn toàn trên RAM. Với mỗi dòng bị khóa, Lock Manager tạo một đối tượng khóa (Lock Resource / Lock Head) trong RAM, chứa:
-
-- **Resource ID:** Mã băm định danh đối tượng bị khóa: `DatabaseID + TableID + PageID + RowID/Hash(PrimaryKey)`.
-- **Lock Mode:** Chế độ khóa: Exclusive (X), Shared (S), Update (U).
-- **Owner:** ID của giao dịch đang giữ khóa.
-- **Wait List:** Danh sách các giao dịch khác đang xếp hàng chờ xin khóa dòng này.
-
-Lock Manager Hash Table nằm trên RAM, trong Shared Memory:
-
-```text
-[Bucket 12] ──► [Lock Node: Hash(Row_1)]
-                 ├── Owner: Tx_501 (Mode: Exclusive)
-                 └── Waiters: [Tx_502]
-
-[Bucket 45] ──► [Lock Node: Hash(Row_2)]
-                 ├── Owner: Tx_501 (Mode: Exclusive)
-                 └── Waiters: (None)
-```
-
 Tiếp nối phần lưu trữ trạng thái khóa, ta sẽ cùng tìm hiểu các loại khóa bảng trong PostgreSQL.
 
+##### Các loại khóa bảng trong Postgres
 Khi một câu lệnh SQL được thực thi, PostgreSQL tự động cấp phát một trong **8 chế độ khóa cấp bảng** tương ứng để bảo vệ cấu trúc hoặc dữ liệu bảng. Các khóa này được lưu trên RAM trong Shared Memory.
 
 - Khi sử dụng câu lệnh `SELECT`, hệ thống cấp phát một khóa `AccessShareLock`. Đây là loại khóa nhẹ nhất. Các khóa này có thể tồn tại đồng thời nên nhiều câu lệnh `SELECT` có thể cùng thực thi. Khóa này chỉ xung đột với `AccessExclusiveLock`, được dùng khi chạy các câu lệnh thay đổi cấu trúc bảng như `ALTER TABLE`.
@@ -252,23 +234,24 @@ Khi một câu lệnh SQL được thực thi, PostgreSQL tự động cấp ph�
 - **`ExclusiveLock`:** Chỉ cho phép các tiến trình đọc (`AccessShareLock`) chạy song song [cite: 154]. Khóa này được kích hoạt bởi `REFRESH MATERIALIZED VIEW CONCURRENTLY`.
 - Khi chạy các lệnh DDL nặng như `ALTER TABLE`, `DROP TABLE`, `TRUNCATE`, `VACUUM FULL` và `REINDEX`, hệ thống dùng khóa độc quyền tuyệt đối, chặn **toàn bộ** luồng đọc và ghi (`SELECT`, `INSERT`, `UPDATE`, `DELETE`).
 
+Bạn có thể nhớ rằng: Trong PostgreSQL, khóa dòng được **ghi trực tiếp vào trường t_xmax** ngay trên header của từng bản ghi để tránh cạn kiệt bộ nhớ, còn **khóa bảng** được quản lý tập trung hoàn toàn **trên RAM** (trong Lock Manager) để kiểm tra và giải phóng tức thì.
 Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa và các loại khóa của PostgreSQL, ta sẽ cùng tìm hiểu khái niệm **Lock Escalation**.
 
 **Lock Escalation (leo thang khóa)** là cơ chế tự động của hệ quản trị cơ sở dữ liệu nhằm chuyển đổi nhiều khóa ở cấp độ chi tiết, như khóa dòng (Row Lock) hoặc khóa trang (Page Lock), thành một khóa duy nhất ở cấp độ bao quát hơn, thường là khóa toàn bảng (Table Lock), trong cùng một giao dịch.
 
 Các hệ quản trị cơ sở dữ liệu như SQL Server lưu trữ khóa trên RAM. Một khóa thường tiêu tốn khoảng 64 đến 128 byte:
 
-- Khóa 10 dòng: tốn khoảng 1 KB RAM.
-- Khóa 100.000 dòng: tốn khoảng 10 MB RAM.
-- Khóa 10.000.000 dòng: tốn khoảng 1 GB RAM chỉ để ghi nhớ danh sách các dòng đang bị khóa.
+- Khóa 10 dòng: tốn khoảng **1 KB RAM**.
+- Khóa 100.000 dòng: tốn khoảng **10 MB RAM**.
+- Khóa 10.000.000 dòng: tốn khoảng **1 GB RAM** chỉ để ghi nhớ danh sách các dòng đang bị khóa.
 
 Để tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.
 
-Đối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation.
+Đối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng **không tiêu tốn RAM** để lưu các khóa dòng này. Vì vậy, PostgreSQL **không xảy ra Lock Escalation**.
 
 #### Mô hình đa tiến trình của PostgreSQL
 
-PostgreSQL sử dụng **mô hình đa tiến trình**: mỗi client kết nối vào cơ sở dữ liệu có một tiến trình riêng biệt. Các tiến trình này trao đổi dữ liệu và đồng bộ thông qua **Shared Memory**, chủ yếu là `shared_buffers`.
+PostgreSQL sử dụng **mô hình đa tiến trình**: mỗi client kết nối vào cơ sở dữ liệu có một tiến trình riêng biệt. Các tiến trình này trao đổi dữ liệu và đồng bộ thông qua **Shared Memory**.
 
 Nếu Backend A vừa đọc một trang bảng từ đĩa vào `shared_buffers` (thành phần con lớn nhất trong Shared Memory), Backend B khi cần trang đó có thể đọc trực tiếp từ `shared_buffers` mà không cần truy cập ổ đĩa lần nữa.
 
@@ -276,9 +259,21 @@ Nếu Backend A vừa đọc một trang bảng từ đĩa vào `shared_buffers`
 
 Luồng hoạt động như sau:
 
-Tiến trình mẹ **Postmaster** chạy ngầm, khởi tạo Shared Memory và mở cổng mạng. Khi client gửi yêu cầu kết nối, Postmaster sẽ fork tiến trình hiện tại thành một tiến trình mới gọi là **Backend Dedicated Process**. Do cơ chế của `fork()`, các backend process con này tự động kế thừa và ánh xạ dải địa chỉ ảo của mình vào cùng khối Shared Memory đó.
+Tiến trình mẹ **Postmaster** chạy ngầm, khởi tạo Shared Memory và mở cổng mạng. Khi client gửi yêu cầu kết nối, Postmaster sẽ fork tiến trình hiện tại thành một tiến trình mới gọi là **Backend Dedicated Process**. Nhờ cơ chế của fork(), tiến trình backend con tự động kế thừa bảng trang để trỏ vào vùng Shared Memory dùng chung; còn các vùng bộ nhớ riêng phục vụ truy vấn sẽ được cấp phát động và chỉ thực sự ánh xạ vào thanh RAM vật lý khi có phát sinh thao tác đọc/ghi.
 
-Postmaster bàn giao socket kết nối mạng của client cho backend process mới, rồi lập tức đóng socket đó ở phía mình để tiếp tục lắng nghe các kết nối khác. Sau đó, backend process tự khởi tạo tài nguyên bộ nhớ và gắn kết vào `shared_buffers` để phục vụ truy vấn. Mỗi tiến trình con sử dụng khoảng **5 MB đến 10 MB RAM**, ngay cả khi ở trạng thái nhàn rỗi (Idle).
+KHÔNG GIAN ĐỊA CHỈ TIẾN TRÌNH CON
+┌──────────────────────────────────────────────────────────────┐
+│ 1. Bộ nhớ chia sẻ (Shared Memory)                           │
+│    - Ánh xạ chung với mọi process khác                       │
+│    - Chứa: shared_buffers, WAL buffers, Lock Manager, VM...  │
+├──────────────────────────────────────────────────────────────┤
+│ 2. Bộ nhớ riêng (Private Memory / Local Backend Memory)       │
+│    - Độc quyền của riêng tiến trình con này                  │
+│    - Hệ điều hành cô lập, các tiến trình khác không sờ tới   │
+│    - Chứa: work_mem, temp_buffers, MemoryContexts...         │
+└──────────────────────────────────────────────────────────────┘
+
+Postmaster bàn giao socket kết nối mạng của client cho backend process mới, rồi lập tức đóng socket đó ở phía mình để tiếp tục lắng nghe các kết nối khác. Sau đó, backend process tự khởi tạo tài nguyên bộ nhớ. Mỗi tiến trình con sử dụng khoảng **5 MB đến 10 MB RAM**, ngay cả khi ở trạng thái nhàn rỗi (Idle).
 
 ```mermaid
 graph TD
@@ -352,9 +347,9 @@ ORDER BY o.total DESC;                     -- Phép toán 3: Sort
 
 Khác với mô hình đa tiến trình của PostgreSQL, các cơ sở dữ liệu như MySQL và SQL Server sử dụng mô hình đa luồng.
 
-#### Mô hình đa luồng
+#### Mô hình đa luồng của các hệ quản trị cơ sở khác
 
-Mỗi client kết nối tới database được gán cho một luồng với dung lượng Stack nhỏ (256 KB đến 1 MB). Vì các luồng đều truy cập vào cùng một không gian bộ nhớ ảo nên hệ thống phải dùng các khóa như Latch hoặc Lock. Tuy nhiên, khi một luồng gặp lỗi nghiêm trọng, toàn bộ database instance có nguy cơ ngừng hoạt động.
+Mỗi client kết nối tới database được gán cho một luồng với dung lượng Stack nhỏ (256 KB đến 1 MB).Khi một luồng gặp lỗi nghiêm trọng, toàn bộ database instance có nguy cơ ngừng hoạt động.
 
 Luồng hoạt động như sau:
 
@@ -403,9 +398,8 @@ Chúng ta đã cùng tìm hiểu về kiến trúc tầng 1 của PostgreSQL. Ti
 
 **Tầng 2 (SQL Engine / Query Processing Layer)** là bộ phận điều hành logic của PostgreSQL, chịu trách nhiệm chuyển câu lệnh SQL dạng văn bản khai báo (Declarative Text), ví dụ `SELECT * FROM table`, thành kế hoạch thực thi vật lý tối ưu nhất dựa trên chi phí tính toán. Tầng này vận hành hoàn toàn bên trong bộ nhớ ảo cục bộ của backend process.
 
-Tại sao lại nói tầng 2 vận hành hoàn toàn bên trong bộ nhớ ảo cục bộ?
-
-Tầng 2 nằm bên trong không gian bộ nhớ ảo cục bộ vì toàn bộ các bước phân tích, lập kế hoạch và tính toán dữ liệu, như Sort hay Hash Join, đều phục vụ riêng cho một truy vấn của tiến trình đó, thay vì xử lý dữ liệu dùng chung của toàn hệ thống.
+#### Câu hỏi:
+  Thêm hình floor_2 trong folder postgres vào
 
 Chuỗi biên dịch và thực thi của tầng 2 gồm các giai đoạn sau:
 
@@ -523,7 +517,7 @@ Các Dirty Page vẫn nằm trong `shared_buffers` trên RAM để các tiến t
 
 Để dễ hiểu hơn về giai đoạn này, ta sẽ cùng tìm hiểu những khái niệm sau:
 
-**Dirty Page:** Là một page trên RAM có nội dung đã bị thay đổi. Để dễ hình dung, với **Clean Page**, dữ liệu trên RAM và trên ổ đĩa giống nhau 100%; với Dirty Page, dữ liệu trên RAM là phiên bản mới nhất, còn dữ liệu trên đĩa là phiên bản cũ.
+**Dirty Page:** Là một page trên RAM có nội dung đã bị thay đổi. Để dễ hình dung, với **Clean Page**, dữ liệu trên RAM và trên ổ đĩa **giống nhau 100%**; với Dirty Page, dữ liệu trên RAM là **phiên bản mới nhất**, còn dữ liệu trên đĩa là **phiên bản cũ**.
 
 Vòng đời của một Dirty Page diễn ra như sau:
 
@@ -544,11 +538,8 @@ Vòng đời của một Dirty Page diễn ra như sau:
 [Ổ đĩa] <──(Ghi & Fsync)─────┘ (Trang trở lại trạng thái Clean)
 ```
 
-###### Thành phần nào chịu trách nhiệm dọn dẹp Dirty Page?
-
-- **Checkpointer:** Quét toàn bộ `shared_buffers`, tìm tất cả Dirty Page và buộc ghi xuống ổ đĩa. Checkpointer đánh dấu một checkpoint vào file WAL để hệ thống biết đã xử lý đến đâu.
-- **Background Writer (`bgwriter`):** Tìm một lượng nhỏ Dirty Page ít dùng và ghi dần xuống đĩa trước khi checkpoint diễn ra.
-- **Backend Allocation (người dùng tự dọn).**
+###### Câu hỏi:
+  Thêm hình ảnh dirty_page vào, trong folder postgres nhé
 
 Vậy là chúng ta đã cùng tìm hiểu toàn bộ các giai đoạn ở tầng 2 của PostgreSQL. Dưới đây là sơ đồ minh họa cách tầng này vận hành:
 
@@ -572,6 +563,23 @@ flowchart TD
     Q -->|Trả kết quả truy vấn| C
 ```
 
+┌─────────────────────────────────────────────────────────────┐
+│               TIẾN TRÌNH BACKEND (BỘ NHỚ RIÊNG)             │
+│                                                             │
+│  [Chuỗi SQL] ──► [Parse Tree] ──► [Plan] ──► [Executor Engine]
+│                                                      │      │
+│  [work_mem: Hash Table / Vùng QuickSort] ◄──────────┘      │
+│                                                             │
+└──────────────────────────────┬──────────────────────────────┘
+                               │ Đọc tuple / Ghi WAL
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   SHARED MEMORY (DÙNG CHUNG)                │
+│                                                             │
+│  - shared_buffers: Chứa các khối dữ liệu 8KB của bảng       │
+│  - Lock Manager: Quản lý khóa bảng                          │
+│  - wal_buffers: Ghi nhật ký thay đổi                        │
+└─────────────────────────────────────────────────────────────┘
 ### Tầng 3: Bộ nhớ đệm và giao dịch
 
 Shared Memory gồm các thành phần sau:
@@ -653,34 +661,34 @@ Khi thực thi câu lệnh truy vấn, hệ thống chụp lại một ảnh tr�
 - **Được phép nhìn thấy:** `xmin` thuộc về một giao dịch đã `COMMIT` trước khi snapshot được tạo, và `xmax` chưa được đặt hoặc thuộc về một giao dịch được thực hiện sau snapshot.
 - **Bị ẩn:** Dòng được tạo bởi một giao dịch đang thực hiện dở dang hoặc một giao dịch sinh ra sau snapshot.
 
-Nhờ snapshot, nếu bạn chạy một truy vấn báo cáo kéo dài 10 phút, dữ liệu trả về luôn nhất quán với thời điểm 10 phút trước, bất chấp việc trong khoảng thời gian đó có hàng nghìn câu lệnh `UPDATE` hoặc `DELETE` khác diễn ra liên tục. Nếu mỗi lệnh `UPDATE` hoặc `INSERT` đang chạy đều khóa dòng dữ liệu tương ứng, hệ thống sẽ quay lại mô hình khóa chặn hai chiều truyền thống. MVCC sử dụng snapshot để cho phép thao tác ghi diễn ra song song với thao tác đọc mà không ảnh hưởng lẫn nhau.
+Nhờ snapshot, nếu bạn chạy một truy vấn báo cáo kéo dài 10 phút, dữ liệu trả về luôn nhất quán với thời điểm 10 phút trước, bất chấp việc trong khoảng thời gian đó có hàng nghìn câu lệnh **`UPDATE`** hoặc **`DELETE`** khác diễn ra liên tục. Nếu mỗi lệnh **`UPDATE`** hoặc **`INSERT`** đang chạy đều khóa dòng dữ liệu tương ứng, hệ thống sẽ quay lại mô hình khóa chặn hai chiều truyền thống. MVCC sử dụng snapshot để cho phép thao tác ghi diễn ra song song với thao tác đọc mà không ảnh hưởng lẫn nhau.
 
 Một Transaction Snapshot chứa 3 thông số:
 
 - **`xmin`:** XID của giao dịch cũ nhất vẫn đang chạy.
-- **`xmax`:** XID đầu tiên chưa được cấp phát; mọi XID $\ge$ `xmax` đều không hiển thị.
+- **`xmax`:** XID đầu tiên chưa được cấp phát; mọi XID >= `xmax` đều không hiển thị.
 - **`xip_list`:** Mảng chứa danh sách các XID đang hoạt động tại thời điểm chụp snapshot.
 
 Ta sẽ cùng tìm hiểu thuật toán **Serializable Snapshot Isolation (SSI)** và **SIREAD Locks**.
 
 Trước tiên, ta cần hiểu thuật ngữ **Serializable**. Các giao dịch chạy song song nhưng tạo ra kết quả đầu ra tương đương với việc thực thi tuần tự, tức giao dịch này hoàn tất trước khi giao dịch tiếp theo bắt đầu, được gọi là Serializable.
 
-Một vấn đề thường gặp là **bài toán trực ca bác sĩ (Doctor on-call problem)**. Bệnh viện quy định phải có ít nhất một bác sĩ trực. Hiện tại, hai bác sĩ A và B cùng trực (`on_call = true`). Hai bác sĩ đồng thời gửi yêu cầu xin nghỉ thông qua hai giao dịch song song ($T_1$ và $T_2$):
+Một vấn đề thường gặp là **bài toán trực ca bác sĩ (Doctor on-call problem)**. Bệnh viện quy định phải có ít nhất một bác sĩ trực. Hiện tại, hai bác sĩ A và B cùng trực (`on_call = true`). Hai bác sĩ đồng thời gửi yêu cầu xin nghỉ thông qua hai giao dịch song song (T1 và T2):
 
-- **$T_1$ (Bác sĩ A):** Đọc bảng và đếm số người đang trực bằng câu lệnh `SELECT count(*) FROM doctors WHERE on_call = true;`. Kết quả trả về là 2. Vì kết quả lớn hơn 1, $T_1$ cập nhật trạng thái của bác sĩ A thành `false`.
-- **$T_2$ (Bác sĩ B):** Chạy song song và thực hiện phép đếm tương tự. Kết quả vẫn là 2 vì $T_1$ chưa `COMMIT`. Vì kết quả lớn hơn 1, $T_2$ cập nhật trạng thái của bác sĩ B thành `false`.
+- **T1 (Bác sĩ A):** Đọc bảng và đếm số người đang trực bằng câu lệnh `SELECT count(*) FROM doctors WHERE on_call = true;`. Kết quả trả về là 2. Vì kết quả lớn hơn 1, T1 cập nhật trạng thái của bác sĩ A thành `false`.
+- **T2 (Bác sĩ B):** Chạy song song và thực hiện phép đếm tương tự. Kết quả vẫn là 2 vì T1 chưa `COMMIT`. Vì kết quả lớn hơn 1, T2 cập nhật trạng thái của bác sĩ B thành `false`.
 
-Cả $T_1$ và $T_2$ đều `COMMIT` thành công. Hậu quả là bệnh viện không còn bác sĩ trực, vi phạm tính toàn vẹn của logic nghiệp vụ.
+Cả T1 và T2 đều `COMMIT` thành công. Hậu quả là bệnh viện không còn bác sĩ trực, vi phạm tính toàn vẹn của logic nghiệp vụ.
 
-Để giải quyết tình trạng trên, PostgreSQL sử dụng thuật toán SSI thông qua SIREAD Locks. SIREAD Lock không phải khóa vật lý, mà là một thẻ đánh dấu được lưu trong Shared Memory để ghi nhận rằng $T_1$ đã từng đọc dòng dữ liệu này. Khi một truy vấn đọc nhiều dữ liệu, hệ thống có thể gộp các SIREAD Lock từ cấp dòng thành cấp page, rồi từ nhiều page thành cấp bảng.
+Để giải quyết tình trạng trên, PostgreSQL sử dụng thuật toán **SSI thông qua SIREAD Locks**. SIREAD Lock không phải khóa vật lý, mà là một **thẻ đánh dấu** được lưu trong **Shared Memory** để ghi nhận rằng T1 đã từng đọc dòng dữ liệu này. Khi một truy vấn đọc nhiều dữ liệu, hệ thống có thể gộp các SIREAD Lock từ cấp dòng thành cấp page, rồi từ nhiều page thành cấp bảng.
 
-Việc gộp các SIREAD Lock chỉ mở rộng phạm vi theo dõi và tránh làm cạn kiệt RAM, không khóa vật lý các bảng.
+Việc gộp các SIREAD Lock chỉ mở rộng phạm vi theo dõi và tránh làm **cạn kiệt RAM**, không khóa vật lý các bảng.
 
-Xung đột xuất hiện khi tồn tại quan hệ phụ thuộc **rw-antidependency**, còn gọi là **rw-conflict**: giao dịch $T_1$ đọc một tập dữ liệu, sau đó giao dịch $T_2$ ghi hoặc sửa đổi tập dữ liệu đó, khiến dữ liệu mà $T_1$ đã đọc trở nên lỗi thời. Mối quan hệ này được biểu diễn bằng một cạnh trên đồ thị: $T_1 \xrightarrow{rw} T_2$.
+Quan hệ phụ thuộc **rw-antidependency**, còn gọi là **rw-conflict**: giao dịch T1 đọc một tập dữ liệu, sau đó giao dịch T2 ghi hoặc sửa đổi tập dữ liệu đó, khiến dữ liệu mà T1 đã đọc trở nên lỗi thời. Mối quan hệ này được biểu diễn bằng một cạnh trên đồ thị: T1 ──(rw)──► T2.
 
-Dị thường **Write Skew (non-serializable execution)** chỉ có thể xảy ra khi đồ thị xuất hiện hai cạnh $rw$ liên tiếp: $T_1 \xrightarrow{rw} T_2 \xrightarrow{rw} T_3$. Trong đó, $T_1$ và $T_3$ có thể là cùng một giao dịch, tạo thành chu trình. Trong ví dụ trên, $T_1$ đọc dữ liệu từ bảng chung trong khi $T_2$ sửa một dòng của bảng đó, làm dữ liệu mà $T_1$ đã đọc bị sai lệch. Khi phát hiện dị thường Write Skew, hệ thống lập tức hủy giao dịch thực hiện `COMMIT` sau cùng để bảo toàn dữ liệu.
+Dị thường **Write Skew (non-serializable execution)** chỉ có thể xảy ra khi đồ thị xuất hiện hai cạnh rw liên tiếp: T1 ──(rw)──► T2 ──(rw)──► T3. Trong đó, T1 và T3 có thể là cùng một giao dịch, tạo thành chu trình. Trong ví dụ trên, T1 đọc dữ liệu từ bảng chung trong khi T2 sửa một dòng của bảng đó, làm dữ liệu mà T1 đã đọc bị sai lệch. Khi phát hiện dị thường Write Skew, hệ thống lập tức **hủy giao dịch** thực hiện `COMMIT` sau cùng để bảo toàn dữ liệu.
 
-Khi tạo cây B-tree, dữ liệu trên cây không chứa các thông tin phiên bản giao dịch (MVCC Metadata) như `t_xmin`, `t_xmax` và `t_infomask`. Những thông tin này chỉ nằm trong bản ghi chính. Do đó, khi sử dụng chỉ mục bao phủ (covering index), hệ thống duyệt đến index entry chứa dữ liệu hợp lệ, kiểm tra số hiệu của trang chứa dòng đó, rồi kiểm tra bit `all-visible` của trang trong tệp `_vm` trên RAM.
+Khi tạo cây B-tree, dữ liệu trên cây **không chứa** các thông tin phiên bản giao dịch (MVCC Metadata) như `t_xmin`, `t_xmax` và `t_infomask`. Những thông tin này chỉ nằm trong bản ghi chính. Do đó, khi sử dụng **chỉ mục bao phủ (covering index)**, hệ thống duyệt đến index entry chứa dữ liệu hợp lệ, kiểm tra số hiệu của trang chứa dòng đó, rồi kiểm tra bit `all-visible` của trang trong tệp `_vm` trên RAM.
 
 Tệp `_vm` đại diện cho một mảng bit dùng để theo dõi các trang dữ liệu. Mỗi trang trên heap được gắn với hai bit trong tệp `_vm`: `all-visible` và `all-frozen`. Vì tệp `_vm` thường khá nhỏ nên hệ thống hiếm khi đẩy tệp này xuống ổ đĩa.
 

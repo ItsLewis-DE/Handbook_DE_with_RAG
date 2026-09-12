@@ -1001,50 +1001,14 @@ body:has(.airflow-article-hero) .postgres-article-end::after {
     width: 100%;
   }
 
-  body:has(.airflow-article-hero) .md-typeset table:not([class]),
-  body:has(.airflow-article-hero) .md-typeset table:not([class]) tbody,
-  body:has(.airflow-article-hero) .md-typeset table:not([class]) tr,
-  body:has(.airflow-article-hero) .md-typeset table:not([class]) td {
-    display: block;
-    width: 100%;
-  }
-
+  /* Keep column headings and comparisons together; scroll wide tables locally. */
   body:has(.airflow-article-hero) .md-typeset table:not([class]) {
-    background: transparent;
-    border: 0;
-    font-size: 0.67rem;
+    min-width: 30rem;
+    font-size: 0.75rem;
   }
 
-  body:has(.airflow-article-hero) .md-typeset table:not([class]) thead {
-    display: none;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset table:not([class]) tr {
-    border: 1px solid var(--airflow-line);
-    margin-bottom: 0.75rem;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset table:not([class]) td {
-    border: 0;
-    min-width: 0;
-    padding: 0.8rem;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset table:not([class]) td:first-child {
-    background: var(--airflow-ink);
-    color: var(--airflow-canvas);
-    min-width: 0;
-    padding-block: 0.6rem;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset table:not([class]) td:first-child code {
-    background: rgba(243, 240, 232, 0.08);
-    border-color: rgba(243, 240, 232, 0.2);
-    color: var(--airflow-canvas);
-  }
-
-  body:has(.airflow-article-hero) .md-typeset table:not([class]) td+td {
-    background: rgba(255, 255, 255, 0.3);
+  body:has(.airflow-article-hero) .md-typeset table:not([class]) th {
+    font-size: 0.6rem;
   }
 
   .airflow-article-end {
@@ -1227,7 +1191,7 @@ body:has(.storage-article-hero) .md-typeset blockquote {
   body:has(.airflow-article-hero) .md-typeset__scrollwrap {
     margin-inline: 0;
     max-width: 100%;
-    overflow-x: visible;
+    overflow-x: auto;
   }
 
   .airflow-article-end {
@@ -1259,12 +1223,4 @@ body:has(.storage-article-hero) .md-typeset blockquote {
   .airflow-article-hero__meta span:last-child {
     display: none;
   }
-}
-
-font-size: 2.05rem;
-}
-
-.airflow-article-hero__meta span:last-child {
-  display: none;
-}
 }
