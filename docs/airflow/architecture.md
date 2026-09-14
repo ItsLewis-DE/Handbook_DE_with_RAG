@@ -22,7 +22,7 @@ hide:
 
 <figure class="airflow-opening-comic">
   <img
-    src="../../assets/images/image4.png"
+    src="../../assets/images/airflow/image4.png"
     alt="Truyện tranh vui nhắc người đọc chuẩn bị cho một bài viết dài về kiến trúc Apache Airflow"
     loading="eager"
   >
@@ -310,7 +310,7 @@ with DAG(
 <div class="airflow-comic-gallery" aria-label="Hai hình minh họa về cách Scheduler theo dõi trạng thái task">
   <figure>
     <img
-      src="../../assets/images/image.png"
+      src="../../assets/images/airflow/image.png"
       alt="Truyện tranh minh họa worker gửi trạng thái Task Instance qua API Server, lưu vào Metadata Database để Scheduler quyết định task tiếp theo"
       loading="lazy"
     >
@@ -318,7 +318,7 @@ with DAG(
   </figure>
   <figure>
     <img
-      src="../../assets/images/image1.png"
+      src="../../assets/images/airflow/image1.png"
       alt="Truyện tranh minh họa Airflow API Server và Metadata Database truyền trạng thái task cho Scheduler"
       loading="lazy"
     >
@@ -372,7 +372,7 @@ flowchart TD
 <div class="airflow-comic-gallery" aria-label="Hình minh họa quá trình DAG Processor gửi đối tượng DAG để lưu vào Metadata Database">
   <figure>
     <img
-      src="../../assets/images/image3.png"
+      src="../../assets/images/airflow/image3.png"
       alt="Truyện tranh minh họa DagFileProcessor gửi đối tượng DAG cho DagFileProcessorManager để serialize sang JSON, lưu vào Metadata Database và cung cấp thông tin cho Scheduler"
       loading="lazy"
     >
@@ -411,7 +411,7 @@ Scheduler và các component khác dựa vào dữ liệu này để theo dõi v
 <div class="airflow-comic-gallery" aria-label="Hình minh họa lý do Airflow thường sử dụng PostgreSQL hoặc MySQL làm Metadata Database">
   <figure>
     <img
-      src="../../assets/images/SQL_alchemy.png"
+      src="../../assets/images/airflow/SQL_alchemy.png"
       alt="Truyện tranh minh họa PostgreSQL và MySQL hỗ trợ transaction, concurrent access, locking và tính nhất quán dữ liệu cho Metadata Database trong Airflow"
       loading="lazy"
     >
@@ -548,7 +548,7 @@ Cụ thể, luồng này gồm các bước sau:
 <div class="airflow-comic-gallery" aria-label="Hình minh họa cách worker và task runner xác thực với API Server qua JWT token">
   <figure>
     <img
-      src="../../assets/images/JWT.png"
+      src="../../assets/images/airflow/JWT.png"
       alt="Truyện tranh minh họa luồng Supervisor gửi request đính kèm JWT token đến API Server để lấy thông tin kết nối an toàn"
       loading="lazy"
     >
@@ -562,7 +562,7 @@ Cụ thể, luồng này gồm các bước sau:
 
 <figure class="airflow-closing-comic" id="loi-ket">
   <img
-    src="../../assets/images/end.png"
+    src="../../assets/images/airflow/end.png"
     alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Airflow và cảm ơn người đọc"
     loading="lazy"
   >

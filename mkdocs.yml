@@ -5,8 +5,8 @@ theme:
   name: material
   custom_dir: overrides
   language: vi
-  logo: assets/images/behind-the-pipeline-logo.svg
-  favicon: assets/images/behind-the-pipeline-favicon.svg
+  logo: assets/images/brand/behind-the-pipeline-logo.svg
+  favicon: assets/images/brand/behind-the-pipeline-favicon.svg
   font:
     text: Manrope
     code: IBM Plex Mono

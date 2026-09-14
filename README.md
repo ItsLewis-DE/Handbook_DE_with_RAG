@@ -78,6 +78,10 @@ uv run mkdocs build --strict
 
 Website sau khi build được tạo trong thư mục `site/`.
 
+## Thực hành tích hợp RAG
+
+[Bộ hướng dẫn xây RAG theo từng phase](guides/rag/README.md) bắt đầu bằng backend Python, Chroma và `qwen3:4b-instruct` qua Ollama; sau đó lần lượt thêm tài liệu dự án, lưu chỉ mục, dẫn nguồn, đánh giá tìm kiếm và giao diện chat trên MkDocs.
+
 ## Cấu trúc dự án
 
 ```text

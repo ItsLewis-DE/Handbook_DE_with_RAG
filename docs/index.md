@@ -7,17 +7,11 @@ hide:
 <div class="landing-page">
   <section class="landing-hero" aria-labelledby="landing-title">
     <div class="blueprint-watermark blueprint-watermark--hero" aria-hidden="true">
-      <img src="assets/images/blueprint-hero.svg" alt="" width="1440" height="900">
+      <img src="assets/images/home/blueprint-hero.svg" alt="" width="1440" height="900">
       <span class="blueprint-signal blueprint-signal--hero"></span>
     </div>
 
     <div class="landing-hero__copy">
-      <div class="landing-kicker">
-        <span class="landing-kicker__mark" aria-hidden="true"></span>
-        <span class="landing-brand"><strong>Behind the</strong><b>Pipeline</b></span>
-        <small>Est. 2026</small>
-      </div>
-
       <h1 id="landing-title">Một bản đồ sống cho thế giới <em>Data Engineering.</em></h1>
       <p class="landing-hero__lead">
         Tập hợp những bài viết đi từ <strong>lý do một công cụ tồn tại</strong>
@@ -192,7 +186,7 @@ hide:
 
   <section class="library-section" id="thu-vien" aria-labelledby="library-title">
     <div class="blueprint-watermark blueprint-watermark--shelf" aria-hidden="true">
-      <img src="assets/images/blueprint-shelf.svg" alt="" width="1200" height="700" loading="lazy">
+      <img src="assets/images/home/blueprint-shelf.svg" alt="" width="1200" height="700" loading="lazy">
     </div>
     <div class="section-heading section-heading--split">
       <div>
@@ -252,7 +246,7 @@ hide:
 
   <section class="writing-section" id="cach-viet" aria-labelledby="writing-title">
     <div class="blueprint-watermark blueprint-watermark--writing" aria-hidden="true">
-      <img src="assets/images/blueprint-writing.svg" alt="" width="1440" height="600" loading="lazy">
+      <img src="assets/images/home/blueprint-writing.svg" alt="" width="1440" height="600" loading="lazy">
     </div>
 
     <div class="writing-section__intro">
@@ -273,15 +267,25 @@ hide:
     </div>
 
     <div class="blueprint-dag-stream" aria-hidden="true">
-      <div class="dag-node"><span>SOURCE</span><i></i></div>
+      <div class="dag-node dag-node--source"><span>SOURCE</span><i class="dag-portal dag-portal--source"></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node dag-node--active"><span>01 · PROBLEM</span><i></i></div>
+      <div class="dag-node dag-node--active dag-node--step-1"><span>01 · PROBLEM</span><i></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node dag-node--active"><span>02 · INTERNALS</span><i></i></div>
+      <div class="dag-node dag-node--active dag-node--step-2"><span>02 · INTERNALS</span><i></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node dag-node--active"><span>03 · TRADE-OFF</span><i></i></div>
+      <div class="dag-node dag-node--active dag-node--step-3"><span>03 · TRADE-OFF</span><i></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node"><span>PRODUCTION</span><i></i></div>
+      <div class="dag-node dag-node--production"><span>PRODUCTION</span><i class="dag-portal dag-portal--production"></i></div>
+
+      <div class="dag-track-runner">
+        <div class="dag-vehicle">
+          <div class="dag-vehicle__chassis">
+            <img class="dag-vehicle__body" src="assets/images/home/chicken-car.webp" alt="" width="56" height="44" />
+            <img class="dag-vehicle__wheel dag-vehicle__wheel--rear" src="assets/images/home/chicken-wheel.webp" alt="" width="13" height="13" />
+            <img class="dag-vehicle__wheel dag-vehicle__wheel--front" src="assets/images/home/chicken-wheel.webp" alt="" width="13" height="13" />
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="writing-principles" role="list" aria-label="Quy trình 3 bước mổ xẻ kiến trúc">
@@ -375,7 +379,7 @@ hide:
 
   <section class="author-section" id="nguoi-viet" aria-labelledby="author-title">
     <div class="blueprint-watermark blueprint-watermark--author" aria-hidden="true">
-      <img src="assets/images/blueprint-author.svg" alt="" width="1440" height="600" loading="lazy">
+      <img src="assets/images/home/blueprint-author.svg" alt="" width="1440" height="600" loading="lazy">
     </div>
 
     <div class="author-section__masthead">
@@ -387,7 +391,7 @@ hide:
       <span class="author-primary-card__watermark" aria-hidden="true">TOGETHER</span>
       <figure class="author-photo">
         <div class="author-photo__frame">
-          <img src="assets/images/phong-thanh-at-the-sea.webp" alt="Người viết đứng bên bờ biển" width="1920" height="1296" loading="lazy">
+          <img src="assets/images/home/phong-thanh-at-the-sea.webp" alt="Người viết đứng bên bờ biển" width="1920" height="1296" loading="lazy">
         </div>
         <figcaption><span>OFFLINE / PHAN THIET</span><span>© 28.08.2026</span></figcaption>
       </figure>
@@ -448,8 +452,7 @@ hide:
 
       <figure class="coauthor-card__photo">
         <div class="coauthor-card__photo-frame">
-          <img src="assets/images/danh.png" alt="Đồng tác giả Danh đứng bên bờ biển" width="460" height="460" loading="lazy">
-          <span class="coauthor-card__photo-number" aria-hidden="true">02</span>
+          <img src="assets/images/home/danh.png" alt="Đồng tác giả Danh đứng bên bờ biển" width="460" height="460" loading="lazy">
         </div>
         <figcaption><span>CO-AUTHOR PORTRAIT</span><span>BEHIND THE PIPELINE / 2026</span></figcaption>
       </figure>
