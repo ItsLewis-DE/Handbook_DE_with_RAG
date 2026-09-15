@@ -1,0 +1,488 @@
+:root {
+  --pip-paper: #f3f0e8;
+  --pip-ivory: #fffaf0;
+  --pip-ink: #17302d;
+  --pip-muted: #52706a;
+  --pip-coral: #ed6840;
+  --pip-sage: #a8c8c1;
+  --pip-line: rgba(23, 48, 45, 0.16);
+}
+
+.pip-chat,
+.pip-chat * { box-sizing: border-box; }
+
+.pip-chat {
+  bottom: 1.25rem;
+  font-family: var(--md-text-font-family, "Manrope", sans-serif);
+  position: fixed;
+  left: 1.25rem;
+  z-index: 110;
+}
+
+/* On desktop, anchor Pip cleanly to the bottom-left corner */
+@media screen and (min-width: 76.25rem) {
+  .pip-chat {
+    left: 1.5rem;
+    bottom: 1.5rem;
+  }
+}
+
+/* Pip Floating Mascot Trigger - Pure Transparent Stage */
+.pip-launcher {
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: none;
+  padding: 0;
+  position: relative;
+  transition: transform 250ms cubic-bezier(.34, 1.56, .64, 1), opacity 200ms ease;
+  width: auto;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pip-launcher:hover {
+  background: transparent;
+  box-shadow: none;
+  transform: translateY(-4px);
+}
+
+.pip-launcher:focus-visible {
+  outline: none;
+}
+
+.pip-launcher:focus-visible .pip-speech-bubble {
+  box-shadow: 0 0 0 3px rgba(237, 104, 64, 0.4), 0 4px 14px rgba(23, 48, 45, 0.2);
+}
+
+.pip-mascot-wrapper {
+  align-items: center;
+  display: flex;
+  height: 98px;
+  justify-content: center;
+  position: relative;
+  width: 78px;
+}
+
+/* Comic Speech Bubble - Robot talking to reader */
+.pip-speech-bubble {
+  align-items: center;
+  animation: pip-bubble-float 3.2s ease-in-out infinite;
+  background: var(--pip-ink);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(23, 48, 45, 0.22), 0 1px 3px rgba(23, 48, 45, 0.12);
+  color: var(--pip-ivory);
+  display: inline-flex;
+  font-family: var(--md-text-font-family, "Manrope", sans-serif);
+  font-size: 0.72rem;
+  font-weight: 800;
+  gap: 6px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 7px;
+  padding: 6px 12px 6px 10px;
+  pointer-events: none;
+  position: relative;
+  transform-origin: center bottom;
+  transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 200ms ease, box-shadow 250ms ease;
+  white-space: nowrap;
+}
+
+/* Speech bubble downward pointer tail targeting Pip's head */
+.pip-speech-bubble::after {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--pip-ink);
+  bottom: -5px;
+  content: "";
+  height: 0;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  transition: border-top-color 200ms ease;
+  width: 0;
+}
+
+.pip-speech-bubble__dot {
+  animation: pip-pulse 2s infinite ease-in-out;
+  background: var(--pip-coral);
+  border-radius: 50%;
+  flex-shrink: 0;
+  height: 6px;
+  width: 6px;
+}
+
+.pip-speech-bubble__text {
+  display: inline-block;
+}
+
+@keyframes pip-bubble-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3.5px); }
+}
+
+.pip-launcher:hover .pip-speech-bubble {
+  background: #112623;
+  box-shadow: 0 6px 18px rgba(23, 48, 45, 0.28), 0 2px 4px rgba(23, 48, 45, 0.15);
+  transform: translateY(-3px) scale(1.06);
+}
+
+.pip-launcher:hover .pip-speech-bubble::after {
+  border-top-color: #112623;
+}
+
+.pip-launcher__badge {
+  display: none;
+}
+
+.pip-launcher__dot {
+  animation: pip-pulse 2s infinite ease-in-out;
+  background: var(--pip-coral);
+  border-radius: 50%;
+  height: 6px;
+  width: 6px;
+}
+
+@keyframes pip-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.65; }
+}
+
+/* --- Pip Mascot Vector Rig --- */
+.pip-mascot {
+  display: block;
+  height: 100%;
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 10px rgba(23, 48, 45, 0.1));
+  transition: transform 250ms cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.pip-mascot svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Idle Breathing Float */
+.pip-float-wrapper {
+  animation: pip-float 3.2s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+@keyframes pip-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4.5px); }
+}
+
+/* Ground Shadow Synchronized Breathing */
+.pip-shadow {
+  animation: pip-shadow-breathe 3.2s ease-in-out infinite;
+  transform-origin: 60px 142px;
+}
+@keyframes pip-shadow-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.25; }
+  50% { transform: scale(0.85); opacity: 0.14; }
+}
+
+/* Antenna Wobble */
+.pip-antenna {
+  transform-origin: 60px 24px;
+  animation: pip-antenna-wobble 3.2s ease-in-out infinite;
+}
+@keyframes pip-antenna-wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
+}
+
+/* Eye Blinking */
+.pip-eye {
+  transform-origin: center;
+  animation: pip-eye-blink 4.2s infinite;
+}
+@keyframes pip-eye-blink {
+  0%, 93%, 97%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+
+/* Dynamic Poses Transitions */
+.pip-head-group,
+.pip-arm-right,
+.pip-forearm,
+.pip-arm-left,
+.pip-book-closed,
+.pip-book-open {
+  transition: transform 380ms cubic-bezier(.34, 1.56, .64, 1), opacity 250ms ease;
+  transform-origin: center;
+}
+
+/* GREETING POSE - Articulated Natural Waving Gesture */
+.pip-chat[data-pose="greeting"] .pip-head-group {
+  transform: rotate(5deg) translateY(-1px);
+}
+
+/* Constant waving speed: both hover and idle wave at the exact same energetic speed */
+.pip-chat .pip-arm-right {
+  transform-origin: 84px 74px;
+  animation: pip-upper-wave 0.75s ease-in-out infinite alternate;
+}
+@keyframes pip-upper-wave {
+  0% { transform: rotate(-2deg); }
+  100% { transform: rotate(6deg); }
+}
+
+.pip-chat .pip-forearm {
+  transform-origin: 99px 68px;
+  animation: pip-forearm-wave 0.65s ease-in-out infinite alternate;
+}
+@keyframes pip-forearm-wave {
+  0% { transform: rotate(-6deg); }
+  100% { transform: rotate(24deg); }
+}
+
+/* Greeting Pose (Hover) - fast antenna and head tilt, waving speed stays equal */
+.pip-chat[data-pose="greeting"] .pip-head-group {
+  transform: rotate(5deg) translateY(-1px);
+}
+
+.pip-chat[data-pose="greeting"] .pip-antenna {
+  animation: pip-antenna-fast 0.6s ease-in-out infinite alternate;
+}
+@keyframes pip-antenna-fast {
+  0% { transform: rotate(-7deg); }
+  100% { transform: rotate(7deg); }
+}
+
+/* READING POSE */
+.pip-chat[data-pose="reading"] .pip-float-wrapper {
+  animation-duration: 4.5s;
+}
+.pip-chat[data-pose="reading"] .pip-head-group {
+  transform: translateY(3px) rotate(-3deg);
+}
+.pip-chat[data-pose="reading"] .pip-eye {
+  animation: pip-eye-read 2s ease-in-out infinite alternate;
+}
+@keyframes pip-eye-read {
+  0% { transform: translateX(-2.5px) translateY(1.5px) scale(0.95); }
+  100% { transform: translateX(2.5px) translateY(1.5px) scale(0.95); }
+}
+.pip-chat[data-pose="reading"] .pip-book-closed {
+  opacity: 0;
+  transform: scale(0.7);
+}
+.pip-chat[data-pose="reading"] .pip-book-open {
+  opacity: 1;
+  transform: scale(1.08) translateY(-2px);
+}
+.pip-chat[data-pose="reading"] .pip-arm-right {
+  animation: none;
+  transform-origin: 84px 74px;
+  transform: rotate(16deg);
+}
+.pip-chat[data-pose="reading"] .pip-forearm {
+  animation: none;
+  transform: none;
+}
+
+.pip-chat.is-paused svg * { animation-play-state: paused; }
+
+.pip-chat.is-open .pip-launcher {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.85);
+  visibility: hidden;
+}
+
+/* Chat Panel */
+.pip-panel {
+  background: var(--pip-paper);
+  border: 1px solid var(--pip-line);
+  border-radius: 1.35rem;
+  bottom: 0;
+  box-shadow: 0 1.2rem 4rem rgba(23, 48, 45, .2);
+  color: var(--pip-ink);
+  display: flex;
+  flex-direction: column;
+  height: min(39rem, calc(100vh - 5rem));
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  transform: translateY(1rem) scale(.96);
+  transform-origin: bottom left;
+  transition: opacity 180ms ease, transform 220ms cubic-bezier(.2, .8, .2, 1);
+  visibility: hidden;
+  width: min(22.5rem, calc(100vw - 2rem));
+}
+
+.pip-chat.is-open .pip-panel { opacity: 1; pointer-events: auto; transform: none; visibility: visible; }
+
+.pip-panel__head {
+  align-items: center;
+  background: var(--pip-ink);
+  color: var(--pip-paper);
+  display: grid;
+  gap: .72rem;
+  grid-template-columns: 3.2rem 1fr auto;
+  min-height: 5.2rem;
+  padding: .72rem .85rem;
+}
+
+.pip-panel__avatar {
+  background: var(--pip-ivory);
+  border: 2px solid var(--pip-coral);
+  border-radius: 50%;
+  height: 3.2rem;
+  overflow: hidden;
+  width: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pip-panel__avatar .pip-mascot {
+  width: 100%;
+  height: 100%;
+  filter: none;
+}
+
+/* Avatar Continuous Waving Animation - Always Alive */
+.pip-panel__avatar .pip-float-wrapper {
+  animation: pip-avatar-breathe 2.8s ease-in-out infinite;
+}
+@keyframes pip-avatar-breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.8px); }
+}
+
+.pip-panel__avatar .pip-head-group {
+  animation: pip-avatar-head 2.8s ease-in-out infinite alternate;
+  transform-origin: 60px 65px;
+}
+@keyframes pip-avatar-head {
+  0% { transform: rotate(-2deg); }
+  100% { transform: rotate(3deg) translateY(-1px); }
+}
+
+.pip-panel__avatar .pip-arm-left {
+  transform-origin: 36px 74px;
+  animation: pip-left-arm-sway 2.8s ease-in-out infinite alternate;
+}
+@keyframes pip-left-arm-sway {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-3deg) translateY(0.5px); }
+}
+
+.pip-panel__avatar .pip-arm-right {
+  transform-origin: 84px 74px;
+  animation: pip-upper-wave 0.75s ease-in-out infinite alternate;
+}
+
+.pip-panel__avatar .pip-forearm {
+  transform-origin: 99px 68px;
+  animation: pip-forearm-wave 0.65s ease-in-out infinite alternate;
+}
+
+.pip-panel__title { color: inherit; font-size: .83rem; font-weight: 800; line-height: 1.2; margin: 0; }
+.pip-panel__status { align-items: center; color: var(--pip-sage); display: flex; font-family: var(--md-code-font-family, monospace); font-size: .5rem; gap: .35rem; letter-spacing: .07em; margin-top: .3rem; text-transform: uppercase; }
+.pip-panel__status::before { background: var(--pip-coral); border-radius: 50%; box-shadow: 0 0 0 3px rgba(237, 104, 64, .18); content: ""; height: .38rem; width: .38rem; }
+
+.pip-panel__close {
+  align-items: center;
+  background: rgba(243, 240, 232, .08);
+  border: 1px solid rgba(243, 240, 232, .18);
+  border-radius: 50%;
+  color: var(--pip-paper);
+  cursor: pointer;
+  display: flex;
+  font-size: 1rem;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
+.pip-context {
+  align-items: center;
+  background: #e9e5da;
+  border-bottom: 1px solid var(--pip-line);
+  color: var(--pip-muted);
+  display: flex;
+  font-family: var(--md-code-font-family, monospace);
+  font-size: .5rem;
+  gap: .45rem;
+  letter-spacing: .04em;
+  line-height: 1.45;
+  padding: .58rem .9rem;
+}
+
+.pip-context svg { color: var(--pip-coral); flex: 0 0 auto; }
+.pip-context strong { color: var(--pip-ink); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.pip-messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: .85rem;
+  overflow-y: auto;
+  padding: 1rem .9rem .7rem;
+  scrollbar-color: var(--pip-sage) transparent;
+}
+
+.pip-message { display: flex; flex-direction: column; gap: .3rem; max-width: 88%; }
+.pip-message--bot { align-self: flex-start; }
+.pip-message--user { align-items: flex-end; align-self: flex-end; }
+.pip-message__label { color: var(--pip-muted); font-family: var(--md-code-font-family, monospace); font-size: .46rem; letter-spacing: .08em; padding-inline: .15rem; text-transform: uppercase; }
+.pip-message__bubble { border-radius: .9rem; font-size: .68rem; line-height: 1.65; padding: .72rem .82rem; }
+.pip-message--bot .pip-message__bubble { background: var(--pip-ivory); border: 1px solid var(--pip-line); border-bottom-left-radius: .2rem; }
+.pip-message--user .pip-message__bubble { background: var(--pip-ink); border-bottom-right-radius: .2rem; color: var(--pip-paper); }
+
+.pip-suggestions { display: flex; flex-wrap: wrap; gap: .42rem; padding: 0 .9rem .8rem; }
+.pip-suggestions[hidden] { display: none; }
+.pip-suggestion { background: transparent; border: 1px solid rgba(166, 63, 35, .36); border-radius: 999px; color: #a63f23; cursor: pointer; font-family: inherit; font-size: .56rem; font-weight: 700; line-height: 1.3; padding: .45rem .62rem; }
+.pip-suggestion:hover { background: rgba(237, 104, 64, .09); border-color: var(--pip-coral); }
+
+.pip-composer { align-items: flex-end; background: var(--pip-ivory); border-top: 1px solid var(--pip-line); display: grid; gap: .55rem; grid-template-columns: 1fr 2.45rem; padding: .72rem; }
+.pip-composer textarea { background: var(--pip-paper); border: 1px solid var(--pip-line); border-radius: .8rem; color: var(--pip-ink); font: 600 .64rem/1.5 var(--md-text-font-family, "Manrope", sans-serif); max-height: 7rem; min-height: 2.45rem; padding: .68rem .72rem; resize: none; width: 100%; }
+.pip-composer textarea::placeholder { color: #6f827e; opacity: 1; }
+.pip-composer__send { align-items: center; background: var(--pip-coral); border: 0; border-radius: .75rem; color: var(--pip-ink); cursor: pointer; display: flex; height: 2.45rem; justify-content: center; width: 2.45rem; }
+.pip-composer__send:hover { background: #f47a55; transform: translateY(-1px); }
+.pip-composer__send:disabled { cursor: wait; opacity: .55; transform: none; }
+
+.pip-typing { align-items: center; display: flex; gap: .22rem; min-width: 3.2rem; }
+.pip-typing i { animation: pip-dot 1s ease-in-out infinite; background: var(--pip-muted); border-radius: 50%; height: .3rem; width: .3rem; }
+.pip-typing i:nth-child(2) { animation-delay: .14s; }
+.pip-typing i:nth-child(3) { animation-delay: .28s; }
+@keyframes pip-dot { 0%, 60%, 100% { opacity: .35; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-.2rem); } }
+
+.pip-panel button:focus-visible,
+.pip-chat textarea:focus-visible { outline: 2px solid var(--pip-sage); outline-offset: 2px; }
+
+@media screen and (max-width: 37.5rem) {
+  .pip-chat { bottom: .75rem; left: .75rem; }
+  .pip-launcher { padding: 0; }
+  .pip-mascot-wrapper { height: 80px; width: 64px; }
+  .pip-speech-bubble { font-size: 0.65rem; padding: 4px 10px 5px; margin-bottom: 4px; }
+  .pip-panel { border-radius: 1.1rem; height: min(39rem, calc(100dvh - 1.5rem)); width: calc(100vw - 1.5rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pip-panel, .pip-launcher, .pip-composer__send, .pip-speech-bubble { transition: none; animation: none !important; }
+  .pip-typing i { animation: none; }
+  .pip-chat .pip-float-wrapper,
+  .pip-chat .pip-shadow,
+  .pip-chat .pip-antenna,
+  .pip-chat .pip-eye,
+  .pip-chat .pip-arm-right,
+  .pip-chat .pip-forearm { animation: none !important; transition: none !important; }
+}
+
+html:has(.pip-chat) .md-sidebar--secondary .md-sidebar__scrollwrap { padding-bottom: 160px; }

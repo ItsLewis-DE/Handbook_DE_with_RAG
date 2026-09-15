@@ -34,7 +34,29 @@ Tạo thư mục `backend/evals`, rồi tạo `backend/evals/questions.jsonl`. M
 
 Nhãn chỉ ra section kỳ vọng, không phải câu trả lời mẫu. Hãy đọc section để kiểm tra nhãn trước khi đo. Một câu hỏi có thể có nhiều section hợp lệ; bổ sung nhãn nếu retriever tìm được nguồn khác thực sự trả lời được câu hỏi.
 
-Chín câu chỉ đủ smoke test. Mở rộng lên khoảng 30 câu, thêm tiếng Việt không dấu, diễn đạt gián tiếp, câu có nhiều chủ đề và câu ngoài phạm vi. Giữ một phần câu hỏi chưa dùng khi điều chỉnh tham số để hạn chế tối ưu quá mức trên tập nhỏ.
+Chín câu chỉ đủ smoke test. Mở rộng lên khoảng 30–50 câu, thêm tiếng Việt không dấu, diễn đạt gián tiếp, câu có nhiều chủ đề và câu ngoài phạm vi. Giữ một phần câu hỏi chưa dùng khi điều chỉnh tham số để hạn chế tối ưu quá mức trên tập nhỏ.
+
+### Tập phát triển và tập kiểm tra giữ riêng
+
+Chia câu hỏi thành `evals/dev.jsonl` để điều chỉnh và `evals/heldout.jsonl` để nghiệm thu, ví dụ 30 câu và 10 câu. Các biến thể diễn đạt của cùng một câu phải ở cùng tập; không dùng câu giữ riêng để chọn model hoặc tham số. Chín câu mẫu ở trên chỉ là điểm khởi đầu, không phải benchmark đầy đủ.
+
+Mỗi câu bổ sung các trường sau để người chấm kiểm tra bằng chứng, không chỉ tên heading:
+
+```json
+{
+  "id": "pg-buffer-evidence",
+  "question": "shared_buffers dùng để làm gì?",
+  "category": "term",
+  "expected": [{"source": "postgres/postgres.md", "heading_contains": "shared_buffers"}],
+  "expected_answer": "Vùng bộ nhớ dùng chung để cache các page dữ liệu PostgreSQL.",
+  "required_evidence": ["Chứa các page dữ liệu", "Được các backend PostgreSQL dùng chung"],
+  "should_abstain": false
+}
+```
+
+Đối chiếu đáp án và từng ý bằng chứng với bài thật trước khi dùng. `required_evidence` là các ý để chấm thủ công, không phải chuỗi bắt buộc model phải lặp nguyên văn. Với câu ngoài phạm vi, dùng `expected=[]`, `should_abstain=true` và ghi rõ lý do trong `expected_answer`.
+
+Phân bố đủ nhóm: thuật ngữ chính xác, không dấu, diễn đạt gián tiếp, so sánh nhiều section, nhiều bài, ngoài phạm vi. Đánh dấu `category="multi_part"` cho nhóm thử decomposition ở phase 08. Câu đơn giản vẫn phải nằm trong tập kiểm tra để phát hiện hồi quy.
 
 ## 2. Tạo retriever có hai chế độ
 
@@ -60,7 +82,9 @@ def tokenize(text):
     return re.findall(r"\w+(?:[+_-]\w+)*\+*", text.casefold())
 
 
-def make_retriever(store, mode="vector", k=4):
+def make_retriever(store, mode="vector", k=4, candidate_k=8):
+    if not 1 <= k <= candidate_k:
+        raise ValueError("Cần 1 <= k <= candidate_k")
     if mode == "vector":
         return store.as_retriever(search_kwargs={"k": k})
     if mode != "hybrid":
@@ -77,14 +101,14 @@ def make_retriever(store, mode="vector", k=4):
     bm25 = BM25Okapi([tokenize(doc.page_content) for doc in documents])
 
     def search(question):
-        vector_hits = store.similarity_search(question, k=min(8, len(documents)))
+        vector_hits = store.similarity_search(question, k=min(candidate_k, len(documents)))
         lexical_scores = bm25.get_scores(tokenize(question))
         ranked_indices = sorted(
             range(len(documents)), key=lambda i: (-float(lexical_scores[i]), i)
         )
         lexical_hits = [
             documents[i] for i in ranked_indices if lexical_scores[i] > 0
-        ][:8]
+        ][:candidate_k]
 
         scores = defaultdict(float)
         by_id = {}
@@ -112,12 +136,13 @@ Tokenizer BM25 ở đây chưa tách từ tiếng Việt nhiều âm tiết và 
 ```python
 import argparse
 import json
+import math
 from pathlib import Path
 from time import perf_counter
 
 from rag import INDEX_SPEC, make_embeddings
 from retrieval import make_retriever
-from storage import open_store
+from storage import MANIFEST_PATH, open_store
 
 
 def matches(document, expected):
@@ -131,10 +156,17 @@ def matches(document, expected):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=["vector", "hybrid"], default="vector")
+    parser.add_argument("--dataset", type=Path, default=Path(__file__).resolve().parent / "evals" / "questions.jsonl")
+    parser.add_argument("--run-id", required=True)
     args = parser.parse_args()
     store = open_store(make_embeddings(), INDEX_SPEC)
     retriever = make_retriever(store, mode=args.mode, k=4)
-    path = Path(__file__).resolve().parent / "evals" / "questions.jsonl"
+    path = args.dataset
+    print(json.dumps({
+        "run_id": args.run_id, "mode": args.mode, "dataset": str(path),
+        "manifest": json.loads(MANIFEST_PATH.read_text(encoding="utf-8")),
+        "k": 4,
+    }, ensure_ascii=False))
     cases = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()
              if line.strip()]
 
@@ -161,6 +193,7 @@ def main():
         record = {
             "id": case["id"], "mode": args.mode, "seconds": round(duration, 3),
             "retrieved": [doc.metadata["url"] for doc in hits],
+            "contexts": [{"text": doc.page_content, "metadata": doc.metadata} for doc in hits],
         }
         if expected:
             covered = sum(any(matches(doc, item) for doc in hits) for item in expected)
@@ -186,6 +219,7 @@ def main():
         "section_recall_at_4": sum(recalls) / len(recalls),
         "mrr_at_4": sum(reciprocal_ranks) / len(reciprocal_ranks),
         "mean_retrieval_seconds": sum(elapsed) / len(elapsed),
+        "p95_retrieval_seconds": sorted(elapsed)[math.ceil(0.95 * len(elapsed)) - 1],
     }, ensure_ascii=False))
 
 
@@ -196,8 +230,8 @@ if __name__ == "__main__":
 Tại `backend`, với chỉ mục phase 04 đã tạo:
 
 ```bash
-uv run python evaluate.py --mode vector > evals/vector.jsonl
-uv run python evaluate.py --mode hybrid > evals/hybrid.jsonl
+uv run python evaluate.py --mode vector --run-id phase05-vector > evals/vector.jsonl
+uv run python evaluate.py --mode hybrid --run-id phase05-hybrid > evals/hybrid.jsonl
 ```
 
 Hai lệnh dùng cùng snapshot; không ingest giữa hai lần đo. Script không gọi LLM nên bạn có thể sửa retrieval mà chưa phải chờ generation. Thời gian này không bao gồm startup, và lần query đầu có thể chịu ảnh hưởng warm-up; đây chưa phải benchmark tải hệ thống.
@@ -249,11 +283,89 @@ Gọi `/chat` cho cùng bộ câu hỏi với từng chế độ. Lưu câu tr�
 
 Hai câu `expected=[]` không được tính vào recall: retriever top-k vẫn thường trả những đoạn gần nhất dù không đoạn nào đủ để trả lời. Khả năng từ chối cần đo ở câu trả lời, không suy ra từ việc có kết quả retrieval.
 
+### Lưu đầu ra từ đúng đường trả lời của backend
+
+Tạo `backend/evaluate_answers.py`. Script gọi cùng `build_retriever`, `build_answerer`, `answer_question` mà API sử dụng; không xây một pipeline đánh giá riêng. Đo này bỏ qua HTTP và UI, nên vẫn phải kiểm tra `/chat` để đo độ trễ người dùng thấy.
+
+```python
+import argparse
+import json
+import os
+from pathlib import Path
+from time import perf_counter
+
+from langchain_core.runnables import RunnableLambda
+
+from answering import answer_question, build_answerer
+from rag import build_retriever
+from storage import MANIFEST_PATH
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset", type=Path, required=True)
+    parser.add_argument("--run-id", required=True)
+    args = parser.parse_args()
+    retriever = build_retriever()
+    answerer = build_answerer()
+    print(json.dumps({
+        "run_id": args.run_id,
+        "mode": os.getenv("RETRIEVAL_MODE", "vector"),
+        "manifest": json.loads(MANIFEST_PATH.read_text(encoding="utf-8")),
+    }, ensure_ascii=False))
+    cases = [json.loads(line) for line in args.dataset.read_text(encoding="utf-8").splitlines()
+             if line.strip()]
+    for case in cases:
+        captured = {}
+
+        def retrieve(question):
+            start = perf_counter()
+            hits = retriever.invoke(question)
+            captured["retrieval_seconds"] = perf_counter() - start
+            captured["contexts"] = [
+                {"text": doc.page_content, "metadata": doc.metadata} for doc in hits
+            ]
+            return hits
+
+        start = perf_counter()
+        result = answer_question(case["question"], RunnableLambda(retrieve), answerer)
+        print(json.dumps({
+            "id": case["id"], "question": case["question"],
+            "expected_answer": case.get("expected_answer"),
+            "required_evidence": case.get("required_evidence", []),
+            "should_abstain": case.get("should_abstain", not case["expected"]),
+            "seconds": perf_counter() - start, **captured, **result,
+        }, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Tại `backend`, sau khi đã tạo tập phát triển:
+
+```bash
+RETRIEVAL_MODE=vector uv run python evaluate_answers.py --dataset evals/dev.jsonl --run-id phase05-vector-answers > evals/vector-answers.jsonl
+RETRIEVAL_MODE=hybrid uv run python evaluate_answers.py --dataset evals/dev.jsonl --run-id phase05-hybrid-answers > evals/hybrid-answers.jsonl
+```
+
+Mỗi nhận định chính phải được một context thực sự hỗ trợ. Tính tỷ lệ nhận định có bằng chứng và tỷ lệ từ chối đúng trên câu ngoài phạm vi; đồng thời đếm số câu có đủ dữ liệu nhưng bị từ chối. `invalid_citation` là lỗi tạo câu trả lời, không được tính là từ chối đúng. Mã `[S1]` hợp lệ vẫn có thể dẫn tới đoạn không hỗ trợ nhận định.
+
+### Chấm ngữ nghĩa và quản lý lần chạy
+
+Có thể dùng LLM-as-a-judge hoặc RAGAS để hỗ trợ chấm **context precision/recall**. Hai chỉ số đó đánh giá context, không tự chứng minh đáp án đúng hay bám nguồn. Chấm câu trả lời cần truyền cả đáp án sinh ra, context và đáp án kỳ vọng; đọc lại thủ công các ca sai và một mẫu ca được chấm đúng. Không bắt buộc cài RAGAS trong phase này.
+
+Mỗi lần chạy lưu thêm file ghi chú cạnh JSONL: Git commit của tài liệu/code, hash tập câu hỏi, `backend/uv.lock`, model và revision embedding/reranker/LLM, cấu hình retrieval, prompt, thiết bị, số request đồng thời, warm-up và số lần lặp. Manifest đã ghi corpus/index spec; nó chưa thay thế thông tin về model weights và môi trường. Không ghi đè kết quả lần trước khi đổi tham số.
+
+Đo trên cùng snapshot, cùng top-k cuối là 4, cùng câu hỏi và LLM. Báo cáo theo từng nhóm và toàn bộ tập; ghi trung bình/p95, tách startup và lượt đầu khỏi các lượt đã warm-up khi benchmark chính thức. P95 trên vài chục câu chỉ mang tính tham khảo. Nếu dùng checkpoint, khóa theo cấu hình + corpus hash + dataset hash, không chỉ theo nội dung câu hỏi.
+
 ## 6. Quyết định sau khi đo
 
 - Vector bỏ sót thuật ngữ, hybrid cải thiện mà không làm hỏng câu hỏi chính: dùng hybrid.
 - Đúng bài nhưng sai đoạn: xem lại chunk/heading trước khi tăng `k`.
 - Đúng đoạn nhưng câu trả lời sai: xem prompt và giới hạn model, không sửa retrieval vô cớ.
-- Hai nhánh đã tìm được nguồn nhưng xếp hạng kém: lúc đó mới thử reranker như bài tập tiếp theo.
+- Hai nhánh đã tìm được nguồn nhưng xếp hạng kém: lúc đó mới thử [phase 07 — reranker](07-reranker.md).
 
 **Hoàn thành phase khi:** có hai báo cáo thực tế và giải thích được vì sao chọn vector hoặc hybrid. Không ghi số liệu “đẹp” vào tài liệu trước khi chạy.
+
+Sau khi chọn cấu hình trên tập phát triển, chạy lại trên `--dataset evals/heldout.jsonl` với `--run-id` mới. Chỉ tiếp tục [phase 08](08-tach-cau-hoi.md) nếu nhóm câu nhiều vế vẫn thiếu bằng chứng. Mục tiêu là cải thiện ca sai đã quan sát, không thêm thành phần chỉ vì repo tham khảo có chúng.

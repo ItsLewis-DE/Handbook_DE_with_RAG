@@ -61,6 +61,8 @@
     
       <link rel="stylesheet" href="../../stylesheets/marquee.css">
     
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1537,8 +1539,8 @@ Trang ảo: 0x1000  --------&gt;  (Tra bảng trang B)  --------&gt;  Khung tran
 <p>Trong mỗi backend process có <code>work_mem</code>. Đây là cấu hình giới hạn lượng RAM mà tiến trình yêu cầu cấp thêm để xử lý các tác vụ, được dùng cho các phép tính tốn tài nguyên như <code>ORDER BY</code>, <code>DISTINCT</code>, Hash Join, Merge Join và các hàm Window Function. <strong><code>work_mem</code> không phải giới hạn trên mỗi truy vấn, mà là trên mỗi phép toán (node) trong cây thực thi (Execution Plan).</strong></p>
 <h6 id="pipeline-va-cac-phep-toan-chan">Pipeline và các phép toán chặn</h6>
 <p>Để dễ hiểu hơn, hãy xem cách PostgreSQL xử lý dữ liệu:</p>
-<p>PostgreSQL xử lý dữ liệu theo mô hình đường ống (pipeline): kết quả của node cấp dưới được truyền dần lên node cấp trên.</p>
-<p>Tuy nhiên, có những phép toán được gọi là <strong>Blocking Operator (phép toán chặn)</strong>. Chúng phải tập hợp toàn bộ hoặc phần lớn dữ liệu vào RAM trước khi tiếp tục tính toán.</p>
+<p>PostgreSQL xử lý dữ liệu theo mô hình đường ống (pipeline): kết quả của node cấp dưới được <strong>truyền dần</strong> lên node cấp trên.</p>
+<p>Tuy nhiên, có những phép toán được gọi là <strong>Blocking Operator (phép toán chặn)</strong>. Chúng phải tập hợp toàn bộ hoặc phần lớn dữ liệu vào RAM trước khi tiếp tục tính toán. Ví dụ như phép sort,..</p>
 <p>Ví dụ, đối với node Hash Join 1, PostgreSQL yêu cầu cấp RAM tới mức trần <code>work_mem</code>. Cùng lúc đó, node Hash Join 2 và node Sort phía trên cũng cần được cấp RAM. Vì các node Hash phía dưới phải duy trì liên tục để thu thập đủ dữ liệu, xử lý và chuyển dữ liệu lên node phía trên, sẽ có một khoảng thời gian cả ba node cùng được duy trì và có thể chiếm tới <strong>3 × <code>work_mem</code></strong>.</p>
 <div class="highlight"><pre><span></span><code>RAM tối đa của 1 truy vấn ≈ ∑ (work_mem của các node cần gom dữ liệu đồng thời)
 </code></pre></div>
@@ -1960,9 +1962,13 @@ Trang ảo: 0x1000  --------&gt;  (Tra bảng trang B)  --------&gt;  Khung tran
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
+        <script src="../../javascripts/lottie.min.js"></script>
+      
         <script src="../../javascripts/article-deck.js"></script>
       
         <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
       
     
   </body>

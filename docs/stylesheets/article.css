@@ -59,6 +59,7 @@ body:has(.airflow-article-hero) .md-content__inner {
   margin-inline: auto;
   max-width: 47rem;
   padding-top: clamp(2rem, 5vw, 4rem);
+  padding-bottom: 5rem;
 }
 
 body:has(.airflow-article-hero) .md-content__inner::before {

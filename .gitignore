@@ -10,3 +10,8 @@ wheels/
 .venv
 
 AGENTS.md
+
+backend/.venv/
+backend/.data/
+backend/__pycache__/
+backend/.env

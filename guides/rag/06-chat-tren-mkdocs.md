@@ -1,6 +1,6 @@
 # Phase 06 — Tích hợp khung chat vào MkDocs
 
-[Trước](05-danh-gia-hybrid-search.md) · [Lộ trình](README.md)
+[Trước](05-danh-gia-hybrid-search.md) · [Lộ trình](README.md) · [Tiếp, tùy chọn](07-reranker.md)
 
 ## Mục tiêu
 
@@ -293,3 +293,7 @@ Nếu repo vốn có cảnh báo strict từ nội dung cũ, phân biệt với 
 Website tĩnh không tự chạy Python hoặc Ollama. Cần máy chạy backend + model, giữ chỉ mục cùng phiên bản với tài liệu đã xuất bản. Trước khi mở public, bổ sung giới hạn request và số lần generation đồng thời, timeout phía server và theo dõi tài nguyên. Không expose trực tiếp cổng Ollama cho trình duyệt; frontend chỉ gọi backend.
 
 **Hoàn thành phase khi:** hỏi được trên website local, nguồn đến đúng mục, lỗi được xử lý rõ ràng và không thay đổi chất lượng retrieval đã đo ở phase 05.
+
+## Sau khi tích hợp giao diện
+
+Nếu phase 05 cho thấy nguồn đúng có trong tập ứng viên nhưng xếp thấp, tiếp tục [phase 07](07-reranker.md). Nếu câu nhiều vế vẫn thiếu bằng chứng, cân nhắc [phase 08](08-tach-cau-hoi.md). Hai bước giữ response `answer`, `sources`, `status`; không cần đổi widget. Decomposition có thêm một lần gọi LLM nên phải đo lại thời gian toàn request và kiểm tra timeout 210 giây của giao diện trước khi bật cho người dùng.

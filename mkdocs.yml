@@ -45,7 +45,11 @@ extra_css:
   - stylesheets/article.css
   - stylesheets/technology-background.css
   - stylesheets/marquee.css
+  - stylesheets/chat.css
 
 extra_javascript:
+  - javascripts/lottie.min.js
   - javascripts/article-deck.js
   - javascripts/author-dialog.js
+  - javascripts/chat.js
+
