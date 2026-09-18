@@ -3251,6 +3251,7 @@ body:has(.landing-page) .md-content__inner::before {
   border-color: var(--landing-ink);
   box-shadow: 0.7rem 0.7rem 0 var(--landing-orange-soft);
   color: var(--landing-paper);
+  grid-column: 1 / -1;
 }
 
 .published-article > :not(.published-article__number) {
