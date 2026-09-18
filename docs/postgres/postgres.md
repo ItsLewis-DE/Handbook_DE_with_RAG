@@ -18,7 +18,7 @@ hide:
 
 <figure class="airflow-opening-comic">
   <img
-    src="../../assets/images/image4.png"
+    src="../../assets/images/postgres/image4.png"
     alt="Truyện tranh vui nhắc người đọc chuẩn bị cho một bài viết dài về kiến trúc PostgreSQL"
     loading="eager"
   >
@@ -62,37 +62,7 @@ Schema nằm trong database, và một database có thể có nhiều schema. C�
 - **Tiết kiệm tài nguyên:** Nhiều người cùng sử dụng một database giúp tiết kiệm tài nguyên hơn so với việc mỗi người sử dụng một database riêng.
 - **Đơn giản hóa việc cấp quyền:** Cấp quyền cho từng bảng trở nên khó khăn khi hệ thống mở rộng. Khi sử dụng schema, chỉ cần cấp quyền cho role trên schema đó.
 
-## 2. Lưu trữ vật lý: cấu trúc thư mục PGDATA
-
-### Vị trí lưu trữ của schema
-
-Về mặt vật lý, schema không có nơi lưu trữ riêng biệt. Mọi schema trong cùng một database đều nằm chung tại thư mục:
-
-```text
-PGDATA/base/<db_oid>/
-```
-
-Trong đó, `db_oid` là mã được hệ thống sinh ra mỗi khi gọi `CREATE DATABASE`.
-
-### Cấu trúc thư mục PGDATA
-
-Minh họa một thư mục `PGDATA`:
-
-```text
-PGDATA/                          <-- Thư mục gốc của toàn bộ Cluster (Instance)
-├── pg_wal/                      <-- Chứa các file Write-Ahead Log (WAL)
-├── pg_xact/                     <-- Chứa trạng thái commit giao dịch (CLOG)
-├── global/                      <-- Chứa bảng hệ thống chung toàn cluster (pg_database, pg_authid, ...)
-└── base/                        <-- Thư mục chứa dữ liệu của tất cả các database
-    ├── 1/                       <-- Thư mục của database 'template1' (OID = 1)
-    ├── 13745/                   <-- Thư mục của database 'postgres' (OID = 13745)
-    └── 16384/                   <-- Thư mục của database 'my_sales_db' do bạn tạo (OID = 16384)
-        ├── 16388                <-- Tệp chứa các trang dữ liệu (Heap) của Table A
-        ├── 16388_fsm            <-- Bản đồ không gian trống (Free Space Map) của Table A
-        └── 16390                <-- Tệp chứa chỉ mục B-Tree (Index) của Table A
-```
-
-## 3. Các tầng kiến trúc của PostgreSQL
+## 2. Các tầng kiến trúc của PostgreSQL
 
 ### Tầng 1
 
@@ -100,7 +70,7 @@ PGDATA/                          <-- Thư mục gốc của toàn bộ Cluster (
 
 ##### Tiến trình và luồng
 
-**Tiến trình:** Là một thực thể chạy **độc lập**, sở hữu một không gian địa chỉ ảo riêng biệt. Không gian này là cơ chế trừu tượng hóa bộ nhớ của hệ điều hành, cụ thể là RAM. Các địa chỉ trong không gian này được đánh số liên tục từ `0` đến địa chỉ cao nhất. Nó được chia ra thành 2 phần, 1 là vùng nhớ riêng để chứa các biến cục bộ, 2 là vùng nhớ dùng chung (trỏ tới shared memory)
+**Tiến trình:** Một thực thể chạy **độc lập**, sở hữu không gian địa chỉ ảo riêng biệt. Không gian này là cơ chế trừu tượng hóa bộ nhớ của hệ điều hành, cụ thể là RAM. Các địa chỉ trong không gian được đánh số liên tục từ `0` đến địa chỉ cao nhất và chia thành hai phần: vùng nhớ riêng chứa các biến cục bộ và vùng nhớ dùng chung trỏ tới Shared Memory.
 
 Sau đó, tiến trình chỉ cần sử dụng không gian địa chỉ ảo này. **MMU** (phần cứng tích hợp trong CPU) ánh xạ địa chỉ ảo đến địa chỉ vật lý thông qua **Page Table** (bảng trang dùng để ánh xạ địa chỉ ảo đến địa chỉ vật lý).
 
@@ -114,19 +84,19 @@ Trang ảo: 0x1000  -------->  (Tra bảng trang B)  -------->  Khung trang: 0x4
 
 Do bảng trang của tiến trình A không chứa ánh xạ tới các khung trang RAM vật lý thuộc về tiến trình B, nên tiến trình A hoàn toàn bị cô lập và không thể đọc hay can thiệp vào **bộ nhớ riêng** của tiến trình B.
 
-**Luồng:** Là một nhánh thực thi nằm bên trong một tiến trình duy nhất. Tất cả các luồng chạy song song đều chia sẻ chung không gian địa chỉ ảo, phân vùng Heap, mã máy thực thi (Code Segment) và các kết nối mạng của tiến trình cha.
+**Luồng:** Một nhánh thực thi nằm bên trong một tiến trình. Tất cả các luồng chạy song song đều chia sẻ không gian địa chỉ ảo, phân vùng Heap, mã máy thực thi (Code Segment) và các kết nối mạng của tiến trình cha.
 
-Mỗi luồng chỉ sở hữu một phân vùng **Stack riêng biệt** (thường có kích thước vài MB hoặc vài trăm KB, dùng để lưu các biến cục bộ, …) và **con trỏ lệnh (Instruction Pointer)** giúp CPU xác định vị trí mã mà luồng đã thực thi đến. Mỗi core trong CPU chỉ xử lý mã của **một luồng duy nhất**. Bộ điều phối của hệ điều hành (OS Scheduler) có thể luân chuyển một luồng từ core này sang core khác giữa các chu kỳ chạy. Vì vậy, core không được dành cố định cho một luồng nào. Ví dụ khi luồng chạy cần đọc I/O luồng sẽ tạm thời sleep, core đó sẽ dành cho một luồng khác để chạy. 
+Mỗi luồng chỉ sở hữu một phân vùng **Stack riêng biệt** (thường có kích thước vài MB hoặc vài trăm KB, dùng để lưu các biến cục bộ, …) và **con trỏ lệnh (Instruction Pointer)** giúp CPU xác định vị trí mã mà luồng đã thực thi đến. Mỗi core trong CPU chỉ xử lý mã của **một luồng duy nhất**. Bộ điều phối của hệ điều hành (OS Scheduler) có thể luân chuyển một luồng từ core này sang core khác giữa các chu kỳ chạy. Vì vậy, core không được dành cố định cho một luồng. Khi một luồng cần đọc I/O và tạm thời chuyển sang trạng thái sleep, core có thể được dành cho luồng khác.
 
 ##### Bộ đệm `shared_buffers`
 
-`shared_buffers` là dung lượng RAM mà một instance sử dụng làm **bộ nhớ đệm**, với mục đích chính là giảm thiểu việc đọc và ghi xuống ổ đĩa. Nằm trong Shared Memory (bộ nhớ dùng chung cho các tiến trình)
+`shared_buffers` là dung lượng RAM mà một instance sử dụng làm **bộ nhớ đệm**, với mục đích chính là giảm thao tác đọc và ghi xuống ổ đĩa. Bộ đệm này nằm trong Shared Memory, vùng nhớ dùng chung cho các tiến trình.
 
 Bộ đệm này được chia thành hàng nghìn khối nhỏ bằng nhau. Mỗi khối có kích thước **8 KB**, bằng kích thước của một Data Page trên đĩa.
 
 ##### Latch, Lock và Lock Accumulation
 
-**Latch:** Là khóa ở **cấp độ vật lý**, giúp ngăn hai luồng ghi đè vào cùng một trang. Ví dụ, một luồng ghi và một luồng đọc trên cùng một trang 8 KB.
+**Latch:** Khóa ở **cấp độ vật lý**, giúp ngăn hai luồng ghi đè vào cùng một trang, chẳng hạn một luồng ghi và một luồng đọc trên cùng một trang 8 KB.
 
 Giả sử bảng `users` có một trang dữ liệu 8 KB (Page 42) đang nằm sẵn trên RAM trong Buffer Pool. Trang này chứa 5 bản ghi, từ dòng 1 đến dòng 5.
 
@@ -154,9 +124,9 @@ Về mặt logic (Lock), luồng A chỉ khóa nghiệp vụ dòng 1, luồng B 
 
 Nếu không có Latch, luồng B có thể đọc Page 42 đúng thời điểm CPU của luồng A đang ghi dở một phần số byte của tiêu đề trang (Page Header). Kết quả là luồng B đọc phải con trỏ hỏng.
 
-**Lock:** Là khóa bảo vệ dữ liệu nghiệp vụ logic (dòng, bảng, view), đảm bảo tính cô lập (Isolation) của các giao dịch theo chuẩn ACID. Ví dụ, khi giao dịch 1 đang `UPDATE` số dư tài khoản của khách hàng A, Lock sẽ ngăn giao dịch 2 sửa đổi hoặc đọc số dư đó cho đến khi giao dịch 1 hoàn tất.
+**Lock:** Khóa bảo vệ dữ liệu nghiệp vụ logic (dòng, bảng, view), đảm bảo tính cô lập (Isolation) của các giao dịch theo chuẩn ACID. Ví dụ, khi giao dịch 1 đang `UPDATE` số dư tài khoản của khách hàng A, Lock ngăn giao dịch 2 sửa đổi hoặc đọc số dư đó cho đến khi giao dịch 1 hoàn tất.
 
-Khi ta thay đổi một dòng, database sẽ sử dụng đồng thời cả hai khóa:
+Khi một dòng thay đổi, database sử dụng đồng thời cả hai loại khóa:
 
 ```text
 [Bắt đầu Transaction]
@@ -183,17 +153,15 @@ Khi ta thay đổi một dòng, database sẽ sử dụng đồng thời cả ha
 6. Chính thức nhả LOCK ──────────────┘
 ```
 
-Khi nhìn vào sơ đồ trên, bạn có tự hỏi: Tại sao hệ thống vẫn giữ khóa cũ khi đã chuyển sang thực hiện các tác vụ không còn liên quan đến dòng đó?
+Sơ đồ trên đặt ra một câu hỏi: Tại sao hệ thống vẫn giữ khóa cũ khi đã chuyển sang thực hiện các tác vụ không còn liên quan đến dòng đó?
 
 Trong suốt thời gian một giao dịch diễn ra, các khóa hoạt động theo **nguyên lý tích lũy (Lock Accumulation)**. Khi bạn xử lý một dòng, hệ thống giữ khóa của dòng đó. Khi xử lý các dòng khác, hệ thống tiếp tục giữ khóa của các dòng mới **đồng thời giữ cả khóa của dòng cũ**. Chỉ khi gặp lệnh `COMMIT` hoặc `ROLLBACK`, hệ thống mới nhả khóa.
 
-Vậy tại sao khi xử lý các dòng khác lại không nhả khóa của dòng cũ? Nếu hệ thống vừa sửa xong `id = 1` đã vội nhả khóa:
+Vậy tại sao hệ thống không nhả khóa của dòng cũ khi xử lý các dòng khác? Nếu hệ thống nhả khóa ngay sau khi sửa xong `id = 1`, trình tự sau có thể xảy ra:
 
-Giao dịch của bạn đã trừ 100 đồng ở `id = 1`, nhưng chưa kịp cộng tiền cho `id = 2`.
-
-Một giao dịch khác đọc hoặc sửa đổi số dư của `id = 1`.
-
-Đột nhiên, câu lệnh ở `id = 2` bị lỗi, chẳng hạn tài khoản bị khóa hoặc mất kết nối mạng, buộc toàn bộ giao dịch phải `ROLLBACK` để hoàn tiền lại cho `id = 1`.
+1. Giao dịch ban đầu đã trừ 100 đồng ở `id = 1`, nhưng chưa kịp cộng tiền cho `id = 2`.
+2. Một giao dịch khác đọc hoặc sửa đổi số dư của `id = 1`.
+3. Câu lệnh ở `id = 2` gặp lỗi, chẳng hạn tài khoản bị khóa hoặc mất kết nối mạng, buộc toàn bộ giao dịch ban đầu phải `ROLLBACK` để hoàn tiền lại cho `id = 1`.
 
 Lúc này, giao dịch kia đã sử dụng dữ liệu chưa hoàn tất để tính toán, gây ra lỗi **Dirty Read** hoặc **Lost Update**, phá vỡ tính nguyên tử (Atomicity) và tính cô lập (Isolation) của ACID.
 
@@ -223,7 +191,7 @@ Ví dụ, một trang 8 KB (Page) trên Buffer Pool:
 
 Tiếp nối phần lưu trữ trạng thái khóa, ta sẽ cùng tìm hiểu các loại khóa bảng trong PostgreSQL.
 
-##### Các loại khóa bảng trong Postgres
+##### Các loại khóa bảng trong PostgreSQL
 
 Khi một câu lệnh SQL được thực thi, PostgreSQL tự động cấp phát một trong **8 chế độ khóa cấp bảng** tương ứng để bảo vệ cấu trúc hoặc dữ liệu bảng. Các khóa này được lưu trên RAM trong Shared Memory.
 
@@ -232,10 +200,10 @@ Khi một câu lệnh SQL được thực thi, PostgreSQL tự động cấp ph�
 - Khi chạy các câu lệnh DML sửa đổi dữ liệu dòng như `INSERT`, `UPDATE`, `DELETE` và `MERGE`, hệ thống cấp khóa `RowExclusiveLock`. Khóa này xung đột với `ShareLock`, `ShareRowExclusiveLock`, `ExclusiveLock` và `AccessExclusiveLock`.
 - Khi các tiến trình nền thực thi, khóa này không chặn luồng đọc và ghi nên các tiến trình nền có thể chạy song song mà không gây downtime cho ứng dụng. Khóa xung đột với chính nó để đảm bảo chỉ có một tiến trình chạy tại một thời điểm.
 - Khi chạy các câu lệnh như thêm Foreign Key hoặc tạo index, dữ liệu cần được giữ nguyên trong quá trình thực thi. Hệ thống cấp khóa `ShareRowExclusiveLock`. Khóa này cho phép người dùng đọc nhưng không cho phép ghi hoặc thay đổi dữ liệu.
-- **`ExclusiveLock`:** Chỉ cho phép các tiến trình đọc (`AccessShareLock`) chạy song song [cite: 154]. Khóa này được kích hoạt bởi `REFRESH MATERIALIZED VIEW CONCURRENTLY`.
+- **`ExclusiveLock`:** Chỉ cho phép các tiến trình đọc (`AccessShareLock`) chạy song song. Khóa này được kích hoạt bởi `REFRESH MATERIALIZED VIEW CONCURRENTLY`.
 - Khi chạy các lệnh DDL nặng như `ALTER TABLE`, `DROP TABLE`, `TRUNCATE`, `VACUUM FULL` và `REINDEX`, hệ thống dùng khóa độc quyền tuyệt đối, chặn **toàn bộ** luồng đọc và ghi (`SELECT`, `INSERT`, `UPDATE`, `DELETE`).
 
-Bạn có thể nhớ rằng: Trong PostgreSQL, khóa dòng được **ghi trực tiếp vào trường t_xmax** ngay trên header của từng bản ghi để tránh cạn kiệt bộ nhớ, còn **khóa bảng** được quản lý tập trung hoàn toàn **trên RAM** (trong Lock Manager) để kiểm tra và giải phóng tức thì.
+Điểm cần lưu ý: Trong PostgreSQL, khóa dòng được **ghi trực tiếp vào trường `t_xmax`** trên header của từng bản ghi để tránh cạn kiệt bộ nhớ, còn **khóa bảng** được quản lý tập trung hoàn toàn **trên RAM** (trong Lock Manager) để kiểm tra và giải phóng tức thì.
 
 Khi đã tìm hiểu cách các cơ sở dữ liệu lưu trạng thái khóa và các loại khóa của PostgreSQL, ta sẽ cùng tìm hiểu khái niệm **Lock Escalation**.
 
@@ -261,7 +229,7 @@ Nếu Backend A vừa đọc một trang bảng từ đĩa vào `shared_buffers`
 
 Luồng hoạt động như sau:
 
-Tiến trình mẹ **Postmaster** chạy ngầm, khởi tạo Shared Memory và mở cổng mạng. Khi client gửi yêu cầu kết nối, Postmaster sẽ fork tiến trình hiện tại thành một tiến trình mới gọi là **Backend Dedicated Process**. Nhờ cơ chế của fork(), tiến trình backend con tự động kế thừa bảng trang để trỏ vào vùng Shared Memory dùng chung; còn các vùng bộ nhớ riêng phục vụ truy vấn sẽ được cấp phát động và chỉ thực sự ánh xạ vào thanh RAM vật lý khi có phát sinh thao tác đọc/ghi.
+Tiến trình mẹ **Postmaster** chạy ngầm, khởi tạo Shared Memory và mở cổng mạng. Khi client gửi yêu cầu kết nối, Postmaster fork tiến trình hiện tại thành một tiến trình mới gọi là **Backend Dedicated Process**. Nhờ cơ chế của `fork()`, tiến trình backend con tự động kế thừa bảng trang để trỏ vào vùng Shared Memory dùng chung; các vùng bộ nhớ riêng phục vụ truy vấn được cấp phát động và chỉ thực sự ánh xạ vào RAM vật lý khi phát sinh thao tác đọc hoặc ghi.
 
 **Không gian địa chỉ tiến trình con:**
 
@@ -273,7 +241,7 @@ Tiến trình mẹ **Postmaster** chạy ngầm, khởi tạo Shared Memory và 
 ├──────────────────────────────────────────────────────────────┤
 │ 2. Bộ nhớ riêng (Private Memory / Local Backend Memory)       │
 │    - Độc quyền của riêng tiến trình con này                  │
-│    - Hệ điều hành cô lập, các tiến trình khác không sờ tới   │
+│    - Hệ điều hành cô lập, các tiến trình khác không truy cập │
 │    - Chứa: work_mem, temp_buffers, MemoryContexts...         │
 └──────────────────────────────────────────────────────────────┘
 ```
@@ -318,9 +286,9 @@ Trong mỗi backend process có `work_mem`. Đây là cấu hình giới hạn l
 
 Để dễ hiểu hơn, hãy xem cách PostgreSQL xử lý dữ liệu:
 
-PostgreSQL xử lý dữ liệu theo mô hình đường ống (pipeline): kết quả của node cấp dưới được truyền dần lên node cấp trên.
+PostgreSQL xử lý dữ liệu theo mô hình đường ống (pipeline): kết quả của node cấp dưới được **truyền dần** lên node cấp trên.
 
-Tuy nhiên, có những phép toán được gọi là **Blocking Operator (phép toán chặn)**. Chúng phải tập hợp toàn bộ hoặc phần lớn dữ liệu vào RAM trước khi tiếp tục tính toán.
+Tuy nhiên, có những phép toán được gọi là **Blocking Operator (phép toán chặn)**. Chúng phải tập hợp toàn bộ hoặc phần lớn dữ liệu vào RAM trước khi tiếp tục tính toán. Ví dụ như phép sort,..
 
 Ví dụ, đối với node Hash Join 1, PostgreSQL yêu cầu cấp RAM tới mức trần `work_mem`. Cùng lúc đó, node Hash Join 2 và node Sort phía trên cũng cần được cấp RAM. Vì các node Hash phía dưới phải duy trì liên tục để thu thập đủ dữ liệu, xử lý và chuyển dữ liệu lên node phía trên, sẽ có một khoảng thời gian cả ba node cùng được duy trì và có thể chiếm tới **3 × `work_mem`**.
 
@@ -366,7 +334,7 @@ Luồng hoạt động như sau:
 
 **Thực thi trực tiếp:** Worker Thread xử lý câu lệnh SQL trực tiếp bên trong không gian bộ nhớ chung, đọc và ghi vào vùng bộ nhớ đệm Buffer Pool.
 
-**Trả luồng về Thread Pool:** Khi client ngắt kết nối, luồng này không bị hủy hoàn toàn. Luồng dọn dẹp các biến trạng thái phiên làm việc (Session State) và trở về trạng thái nhàn rỗi trong Thread Pool để chờ kết nối tiếp theo [cite: 281].
+**Trả luồng về Thread Pool:** Khi client ngắt kết nối, luồng này không bị hủy hoàn toàn. Luồng dọn dẹp các biến trạng thái phiên làm việc (Session State) và trở về trạng thái nhàn rỗi trong Thread Pool để chờ kết nối tiếp theo.
 
 #### Câu hỏi liên quan
 
@@ -726,7 +694,67 @@ Không. Tệp `_vm` vẫn tồn tại khi bảng không có index và đảm nhi
 - **Tối ưu hóa tiến trình Vacuum:** Hệ thống không cần đọc toàn bộ bảng để kiểm tra Dead Tuple. Thay vào đó, hệ thống duyệt tệp `_vm` và bỏ qua các trang có bit `all-visible = 1`.
 - **Ngăn tràn Transaction ID:** Sử dụng bit `all-frozen`.
 
+### Tầng 4: Lưu trữ vật lý và phục hồi thảm họa
+
+Mỗi database cluster có một vùng nhớ chung (`shared_buffers`) trên RAM và một thư mục dữ liệu (`PGDATA`) trên ổ đĩa. Dữ liệu của các database được lưu trong thư mục `base/`.
+
+#### Vị trí lưu trữ của schema
+
+Về mặt vật lý, schema không có nơi lưu trữ riêng biệt. Mọi schema trong cùng một database đều nằm chung tại thư mục:
+
+```text
+PGDATA/base/<db_oid>/
+```
+
+Trong đó, `db_oid` là mã được hệ thống sinh ra mỗi khi gọi `CREATE DATABASE`.
+
+#### Cấu trúc thư mục `PGDATA`
+
+Minh họa một thư mục `PGDATA`:
+
+```text
+PGDATA/                          <-- Thư mục gốc của toàn bộ Cluster (Instance)
+├── pg_wal/                      <-- Chứa các file Write-Ahead Log (WAL)
+├── pg_xact/                     <-- Chứa trạng thái commit giao dịch (CLOG)
+├── global/                      <-- Chứa bảng hệ thống chung toàn cluster (pg_database, pg_authid, ...)
+└── base/                        <-- Thư mục chứa dữ liệu của tất cả các database
+    ├── 1/                       <-- Thư mục của database 'template1' (OID = 1)
+    ├── 13745/                   <-- Thư mục của database 'postgres' (OID = 13745)
+    └── 16384/                   <-- Thư mục của database 'my_sales_db' do bạn tạo (OID = 16384)
+        ├── 16388                <-- Tệp chứa các trang dữ liệu (Heap) của Table A
+        ├── 16388_fsm            <-- Bản đồ không gian trống (Free Space Map) của Table A
+        ├── 16388_vm
+        ├── 16388_init
+        └── 16390                <-- Tệp chứa chỉ mục B-Tree (Index) của Table A
+```
+
+Các thư mục bên trong `PGDATA` có vai trò như sau:
+
+- **`pg_wal`:** Chứa các tệp WAL, mặc định mỗi tệp có dung lượng 16 MB. WAL (Write-Ahead Logging) là cơ chế cốt lõi của PostgreSQL, quy định mọi thay đổi đối với bảng và chỉ mục phải được ghi và đồng bộ vào nhật ký trước khi các trang dữ liệu thực tế (các page 8 KB) được phép ghi xuống ổ đĩa. Vùng nhớ `wal_buffers` đẩy dữ liệu vào thư mục này mỗi khi có lệnh `COMMIT`.
+- **`pg_xact`:** Lưu trạng thái commit của giao dịch (CLOG) đã được đề cập ở phần trước.
+- **`global`:** Lưu các bảng danh mục hệ thống (system catalogs) và tệp cấu hình trạng thái dùng chung cho toàn bộ database cluster.
+
+Thư mục `16384/` chứa toàn bộ dữ liệu của một database. Khi các tệp đạt ngưỡng 1 GB hoặc ngưỡng được cấu hình, storage engine tự động tách chúng thành các phân đoạn kế tiếp, ví dụ `16388.1`, `16388.2`. Thay vì gộp các tệp `_fsm`, `_vm` và `_init` vào một tệp lớn, hệ thống tách chúng thành các tệp riêng nằm cạnh nhau: Main Fork (`16388`), FSM Fork, VM Fork và Init Fork.
+
+- **Tệp `_fsm`:** Khi `INSERT` một dòng dữ liệu, hệ thống tìm khoảng trống trong một trang để lưu dòng đó. Nếu không có tệp FSM, engine phải đọc tuần tự từng trang 8 KB từ đầu đến cuối tệp `16388` để tìm chỗ trống, gây nghẽn Disk I/O nghiêm trọng khi bảng có dung lượng lớn. Tệp này được cập nhật liên tục khi có thao tác chèn, sửa hoặc khi tiến trình `VACUUM` dọn Dead Tuple.
+- **Tệp `_vm`:** Chứa hai bit `all-visible` và `all-frozen` đã được đề cập ở phần trước, giúp tránh phải đọc ổ đĩa nhiều lần và ngăn hiện tượng tràn số giao dịch.
+- **Tệp `_init`:** Được tạo khi bảng là unlogged table, dùng để xóa toàn bộ dữ liệu trong bảng và khôi phục bảng về trạng thái ban đầu khi có sự cố.
+
+#### Xử lý cột dữ liệu lớn bằng TOAST
+
+TOAST được kích hoạt khi một dòng vượt quá 2 KB theo cấu hình mặc định. Khi tạo các cột có kích thước biến thiên như `TEXT` hoặc `VARCHAR`, PostgreSQL tự động tạo một bảng phụ `pg_toast` trong thư mục của database, kèm theo một TOAST index. Cơ chế này tránh tình trạng một dòng quá lớn chiếm đến hai data page. Cột dữ liệu lớn được cắt nhỏ và chuyển vào bảng TOAST; dữ liệu tương ứng trên Main Fork của bảng chính được thay bằng một cấu trúc tham chiếu nhỏ gọn gọi là TOAST Pointer. Nhờ đó, dòng trên Main Fork chỉ còn vài chục byte và có thể nằm gọn trong trang 8 KB.
+
 ---
+
+#### Tóm tắt
+
+<figure class="airflow-opening-comic">
+  <img
+    src="../../assets/images/postgres/archi.png"
+    alt="Sơ đồ tóm tắt kiến trúc và lưu trữ PostgreSQL"
+    loading="lazy"
+  >
+</figure>
 
 ## Lời kết
 

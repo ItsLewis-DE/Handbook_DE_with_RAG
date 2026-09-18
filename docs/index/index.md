@@ -22,7 +22,7 @@ hide:
 
 <figure class="airflow-opening-comic">
   <img
-    src="../assets/images/image4.png"
+    src="../../assets/images/index/image4.png"
     alt="Truyện tranh vui nhắc người đọc chuẩn bị cho một bài viết dài về index trong cơ sở dữ liệu"
     loading="eager"
   >

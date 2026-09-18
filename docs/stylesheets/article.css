@@ -59,6 +59,7 @@ body:has(.airflow-article-hero) .md-content__inner {
   margin-inline: auto;
   max-width: 47rem;
   padding-top: clamp(2rem, 5vw, 4rem);
+  padding-bottom: 5rem;
 }
 
 body:has(.airflow-article-hero) .md-content__inner::before {
@@ -220,7 +221,7 @@ body:has(.airflow-article-hero) .md-typeset {
 .airflow-article-hero::before {
   color: rgba(23, 48, 45, 0.04);
   content: "AIRFLOW";
-  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-family: var(--landing-display-font);
   font-size: clamp(7rem, 18vw, 13rem);
   font-weight: 500;
   letter-spacing: -0.08em;
@@ -291,11 +292,11 @@ body:has(.airflow-article-hero) .md-typeset {
 
 .md-typeset .airflow-article-hero h1 {
   color: var(--airflow-ink);
-  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-family: var(--landing-display-font);
   font-size: clamp(3.2rem, 7vw, 5.9rem);
   font-weight: 500;
-  letter-spacing: -0.065em;
-  line-height: 0.88;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
   margin: 0;
   max-width: 39rem;
 }
@@ -332,7 +333,7 @@ body:has(.airflow-article-hero) .md-typeset {
 body:has(.airflow-article-hero) .md-typeset>h2 {
   color: var(--airflow-ink);
   counter-increment: airflow-section;
-  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-family: var(--landing-display-font);
   font-size: clamp(2rem, 4.5vw, 3.3rem);
   font-weight: 500;
   letter-spacing: -0.05em;
@@ -365,7 +366,7 @@ body:has(.airflow-article-hero) .airflow-opening-comic+h2 {
 
 body:has(.airflow-article-hero) .md-typeset h3 {
   color: var(--airflow-ink);
-  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-family: var(--landing-display-font);
   font-size: clamp(1.45rem, 3vw, 2rem);
   font-weight: 500;
   letter-spacing: -0.035em;
@@ -388,7 +389,7 @@ body:has(.airflow-article-hero) .md-typeset h3::before {
 body:has(.airflow-article-hero) .md-typeset h4 {
   border-bottom: 1px solid var(--airflow-line);
   color: var(--airflow-ink);
-  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-family: var(--landing-display-font);
   font-size: 1.35rem;
   font-weight: 600;
   letter-spacing: -0.025em;
@@ -751,7 +752,7 @@ body:has(.airflow-article-hero) h2+.airflow-closing-comic {
 
 .airflow-closing-comic figcaption strong {
   color: var(--airflow-ink);
-  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-family: var(--landing-display-font);
   font-size: clamp(1.2rem, 2.8vw, 1.45rem);
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -891,7 +892,7 @@ body:has(.airflow-article-hero) .postgres-article-end::after {
 .airflow-article-end::after {
   color: rgba(23, 48, 45, 0.04);
   content: "01";
-  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-family: var(--landing-display-font);
   font-size: 10rem;
   line-height: 0.7;
   position: absolute;
@@ -920,11 +921,11 @@ body:has(.airflow-article-hero) .postgres-article-end::after {
 
 .airflow-article-end strong {
   color: var(--airflow-ink);
-  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-family: var(--landing-display-font);
   font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: 500;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
 }
 
 .md-typeset .airflow-article-end>a {
@@ -1083,8 +1084,8 @@ body:has(.storage-article-hero) .md-typeset blockquote {
 
   .md-typeset .airflow-article-hero h1 {
     font-size: clamp(2.55rem, 12.5vw, 3.7rem);
-    letter-spacing: -0.055em;
-    line-height: 0.94;
+    letter-spacing: -0.035em;
+    line-height: 1.12;
     overflow-wrap: anywhere;
   }
 

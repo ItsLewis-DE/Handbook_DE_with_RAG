@@ -1,0 +1,667 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Đi vào phía sau những hệ thống và pipeline dữ liệu">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Pip animation assets - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture-visuals" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Custom Brand & Retro Navigation Bar -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <!-- Brand & Logo -->
+      <a href="../../../.." class="custom-header__brand" title="Behind the Pipeline">
+        <span class="custom-header__logo-wrap">
+          
+  <img src="../../brand/behind-the-pipeline-logo.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__wordmark">
+          BEHIND THE <em>PIPELINE</em>
+        </span>
+        <span class="custom-header__badge">ARCH.DOCS</span>
+      </a>
+
+      <!-- Retro Nav Pills -->
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../../../.." class="custom-nav-pill ">
+          <span>HOME</span>
+        </a>
+        <a href="../../../../postgres/postgres/" class="custom-nav-pill ">
+          <span>POSTGRESQL</span>
+        </a>
+        <a href="../../../../airflow/architecture/" class="custom-nav-pill ">
+          <span>AIRFLOW</span>
+        </a>
+        <a href="../../../../architecture/shared-disk-vs-shared-nothing/" class="custom-nav-pill ">
+          <span>SHARED-DISK</span>
+        </a>
+        <a href="../../../../index/" class="custom-nav-pill ">
+          <span>INDEXING</span>
+        </a>
+      </nav>
+
+      <!-- System Status / Meta Indicator -->
+      <div class="custom-header__status" aria-label="Trạng thái hệ thống">
+        <span class="custom-header__status-dot" aria-hidden="true"></span>
+        <span class="custom-header__status-text">EDITION 2026</span>
+        <span class="custom-header__status-tag">SYS.ONLINE</span>
+      </div>
+    </div>
+  </div>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../brand/behind-the-pipeline-logo.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../architecture/shared-disk-vs-shared-nothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared-disk vs shared-nothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phân cấp & Lưu trữ PostgreSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Apache Airflow
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-visuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture &amp; Visuals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#states" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        States
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="pip-animation-assets">Pip animation assets</h1>
+<p><code>pip-robot.png</code> is the original 3D mascot reference image.
+<code>pip.json</code> is the Lottie animation format containing vector paths, claymorphic gradients, skeletal keyframes, and markers (<code>idle</code>, <code>greeting</code>, <code>reading</code>).
+<code>docs/javascripts/lottie.min.js</code> provides the lightweight SVG runtime for Lottie animations.</p>
+<p>The mascot animation system uses a fluid vector puppet engine designed to eliminate the stiff "cardboard cutout" feel of 2D sliced sprites:</p>
+<h2 id="architecture-visuals">Architecture &amp; Visuals</h2>
+<ul>
+<li><strong>Harmonic Breathing &amp; Hovering</strong>: The body and ground shadow float in a synchronized 3.2s sine wave.</li>
+<li><strong>Antenna Spring Physics</strong>: The antenna wobbles naturally with delayed inertia relative to body and head motion.</li>
+<li><strong>Eye Blinking</strong>: The smiling eyes (<code>^ ^</code>) blink realistically every 4 seconds.</li>
+<li><strong>Waving Arm (Greeting Pose)</strong>: The right arm smoothly waves back and forth with elastic spring easing when hovered or focused.</li>
+<li><strong>Interactive Reading Pose</strong>: When the chat panel opens, the orange book opens with visible reading pages, the head tilts down, and eyes scan back and forth across the lines.</li>
+<li><strong>Speech Bubble</strong>: The launcher tooltip is formatted as a responsive speech bubble pointing directly at Pip with a pop-spring entrance.</li>
+<li><strong>Focus Ring Elimination</strong>: Removed the tight rectangular <code>:focus-visible</code> outline around the launcher, replacing it with an ambient soft glow to keep Pip unconstrained.</li>
+</ul>
+<h2 id="states">States</h2>
+<ul>
+<li><code>idle</code>: Smooth continuous breathing float, antenna lag wobble, periodic eye blink, breathing shadow.</li>
+<li><code>greeting</code>: Head tilt, lively waving hand loop, speech bubble pop-in.</li>
+<li><code>reading</code>: Relaxed pose, book opened, head tilted down reading, eyes scanning.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../../javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../../javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../../../javascripts/article-deck.js"></script>
+      
+        <script src="../../../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>

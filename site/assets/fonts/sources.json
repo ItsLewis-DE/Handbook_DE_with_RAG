@@ -1,0 +1,116 @@
+[
+  {
+    "family": "manrope",
+    "license_url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/manrope/OFL.txt",
+    "files": [
+      {
+        "file": "manrope-normal-200-800.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/manrope/Manrope%5Bwght%5D.ttf",
+        "source_sha256": "3ae11c49db0455a3cc33e37d380f20fdb8c7f8b41dc07625c177e3d87a9d6ae6",
+        "sha256": "6722391a72cc401b2fc8fddce6a9342c2000f15c484b3eba2a2e3a38424645a0",
+        "subset": null
+      }
+    ]
+  },
+  {
+    "family": "inter",
+    "license_url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/inter/OFL.txt",
+    "files": [
+      {
+        "file": "inter-normal-100-900.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf",
+        "source_sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+        "sha256": "a7ecb8f3ee2ebb2b9698807cbb2639c1e18fff1a064a23237ae423c1414008f4",
+        "subset": null
+      },
+      {
+        "file": "inter-italic-100-900.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/inter/Inter-Italic%5Bopsz%2Cwght%5D.ttf",
+        "source_sha256": "acd98e64795781b2058f07b18475e0ecee2a0fe2b42a49e2f9e37d0d6bf66ce6",
+        "sha256": "985d14b71ea0e7cc8db8a95dfccb904cde774a27b6d8ff538f9a576591a69959",
+        "subset": null
+      }
+    ]
+  },
+  {
+    "family": "lora",
+    "license_url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/lora/OFL.txt",
+    "files": [
+      {
+        "file": "lora-normal-400-700.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/lora/Lora%5Bwght%5D.ttf",
+        "source_sha256": "822a6621ccbe8d97d20ac88c1c41f5615c9c2c202eaa75f272cd452aac6475a7",
+        "sha256": "d86b02fe6b6ece63cc17cb65178ea44ceb546ede96d2cbfc38739e1460f5ab30",
+        "subset": null
+      },
+      {
+        "file": "lora-italic-400-700.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/lora/Lora-Italic%5Bwght%5D.ttf",
+        "source_sha256": "22d8d8854b53807aa664ca34f2031a9ed57a1d0dea296b8b96cdd3aad937a2b3",
+        "sha256": "84ef8aa39adcd8e77fae71ee7cfd4c7a597abc92a28e4f922fde71bd9edd9039",
+        "subset": null
+      }
+    ]
+  },
+  {
+    "family": "ibmplexmono",
+    "license_url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/ibmplexmono/OFL.txt",
+    "files": [
+      {
+        "file": "ibmplexmono-normal-400.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+        "source_sha256": "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46",
+        "sha256": "ca4e77bc191852c2c069674e617a416e29d7edbe49f10dd3cd46d890f9eab9d7",
+        "subset": null
+      },
+      {
+        "file": "ibmplexmono-normal-500.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/ibmplexmono/IBMPlexMono-Medium.ttf",
+        "source_sha256": "a9b4c49bb299e05b5f6c481e7fb5e78943d2793249a0c8874ab574a2d1ea6755",
+        "sha256": "bc0730ceee12e9e52313425794ed78e88fcd987a94edfaf0a94559f994b33139",
+        "subset": null
+      },
+      {
+        "file": "ibmplexmono-normal-600.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/ibmplexmono/IBMPlexMono-SemiBold.ttf",
+        "source_sha256": "d3c38e55c78f5b0f28009fddba4834ec503278936a5986032424c9bd2d23aa46",
+        "sha256": "fc44908eebc85afd4e827270ae7cd871158482f3cdbc1d8497c8c824c0aa6916",
+        "subset": null
+      },
+      {
+        "file": "ibmplexmono-normal-700.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/ibmplexmono/IBMPlexMono-Bold.ttf",
+        "source_sha256": "ac27abd6450a64dd94467580a02fe6235156d5b92f2926ebbc8e7489df64e0be",
+        "sha256": "445991e4d4d79976975ff9e31ffc12b486335388640f48159210f13b5a7316ef",
+        "subset": null
+      },
+      {
+        "file": "ibmplexmono-italic-400.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/ibmplexmono/IBMPlexMono-Italic.ttf",
+        "source_sha256": "3362fc791b0652193328b862c1c5f23a789bc7288b1617fa63302f88689a2a34",
+        "sha256": "39faa17295eafbc3335b8f8bafe07c5052d9db6783d75e5547b60addeb2dfa62",
+        "subset": null
+      },
+      {
+        "file": "ibmplexmono-italic-700.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/ibmplexmono/IBMPlexMono-BoldItalic.ttf",
+        "source_sha256": "af4e05a761e98c1adf064c48a6352c9bec1a6ad70982cd2a544149323391f98e",
+        "sha256": "b7a623bb5e6511a831d4e6c28c4f30d56006fddc54f8adb51a7598a0ed8bbd13",
+        "subset": null
+      }
+    ]
+  },
+  {
+    "family": "delagothicone",
+    "license_url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/delagothicone/OFL.txt",
+    "files": [
+      {
+        "file": "delagothicone-normal-400.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/17a09263737c8347b1e92b9b6ad22f66d1783280/ofl/delagothicone/DelaGothicOne-Regular.ttf",
+        "source_sha256": "4ff87a0965f1b0505e5a2c58424bc6ad3cff27e56a82f21c2fc9d6b0e3857ee2",
+        "sha256": "9b05be66c1d35d0d438dabf477503cb67233116ee849983f7ce6bb928ba93cdf",
+        "subset": "U+0000-036F,U+1E00-1EFF,U+2000-27FF"
+      }
+    ]
+  }
+]

@@ -5,11 +5,9 @@ theme:
   name: material
   custom_dir: overrides
   language: vi
-  logo: assets/images/behind-the-pipeline-logo.svg
-  favicon: assets/images/behind-the-pipeline-favicon.svg
-  font:
-    text: Manrope
-    code: IBM Plex Mono
+  logo: assets/images/brand/behind-the-pipeline-logo.svg
+  favicon: assets/images/brand/behind-the-pipeline-favicon.svg
+  font: false
   palette:
     primary: indigo
     accent: deep purple
@@ -40,12 +38,16 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 extra_css:
+  - stylesheets/fonts.css
   - stylesheets/brand.css
   - stylesheets/landing.css
   - stylesheets/article.css
   - stylesheets/technology-background.css
   - stylesheets/marquee.css
+  - stylesheets/chat.css
 
 extra_javascript:
+  - javascripts/lottie.min.js
   - javascripts/article-deck.js
   - javascripts/author-dialog.js
+  - javascripts/chat.js

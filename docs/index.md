@@ -7,18 +7,15 @@ hide:
 <div class="landing-page">
   <section class="landing-hero" aria-labelledby="landing-title">
     <div class="blueprint-watermark blueprint-watermark--hero" aria-hidden="true">
-      <img src="assets/images/blueprint-hero.svg" alt="" width="1440" height="900">
+      <img src="assets/images/home/blueprint-hero.svg" alt="" width="1440" height="900">
       <span class="blueprint-signal blueprint-signal--hero"></span>
     </div>
 
     <div class="landing-hero__copy">
-      <div class="landing-kicker">
-        <span class="landing-kicker__mark" aria-hidden="true"></span>
-        <span class="landing-brand"><strong>Behind the</strong><b>Pipeline</b></span>
-        <small>Est. 2026</small>
-      </div>
-
-      <h1 id="landing-title">Một bản đồ sống cho thế giới <em>Data Engineering.</em></h1>
+      <h1 id="landing-title">
+        <span>Hiểu sâu thế giới</span>
+        <em>Data Engineering.</em>
+      </h1>
       <p class="landing-hero__lead">
         Tập hợp những bài viết đi từ <strong>lý do một công cụ tồn tại</strong>
         đến cách nó vận hành bên trong — để chúng ta không chỉ biết dùng tool,
@@ -191,13 +188,10 @@ hide:
   </section>
 
   <section class="library-section" id="thu-vien" aria-labelledby="library-title">
-    <div class="blueprint-watermark blueprint-watermark--shelf" aria-hidden="true">
-      <img src="assets/images/blueprint-shelf.svg" alt="" width="1200" height="700" loading="lazy">
-    </div>
     <div class="section-heading section-heading--split">
       <div>
         <p class="section-eyebrow">THE KNOWLEDGE SHELF / 01</p>
-        <h2 id="library-title">Hôm nay bạn muốn<br>tìm hiểu điều gì?</h2>
+        <h2 id="library-title">Hôm nay bạn muốn tìm hiểu điều gì?</h2>
       </div>
     </div>
 
@@ -205,10 +199,10 @@ hide:
       <article class="published-article published-article--latest published-article--postgres">
         <span class="published-article__number" aria-hidden="true">04</span>
         <div class="published-article__header">
-          <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 45V64M70 82V64H290V82M180 64V82M70 112V137M180 112V137M290 112V137"/><g class="diagram-node diagram-node--accent"><rect x="128" y="15" width="104" height="30" rx="6"/><text x="180.0" y="34">CLUSTER</text></g><g class="diagram-node"><rect x="28" y="82" width="84" height="30" rx="6"/><text x="70.0" y="101">database</text></g><g class="diagram-node"><rect x="138" y="82" width="84" height="30" rx="6"/><text x="180.0" y="101">database</text></g><g class="diagram-node"><rect x="248" y="82" width="84" height="30" rx="6"/><text x="290.0" y="101">database</text></g><g class="diagram-node"><path d="M46 146v16c0 10 48 10 48 0v-16"/><ellipse cx="70" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M156 146v16c0 10 48 10 48 0v-16"/><ellipse cx="180" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M266 146v16c0 10 48 10 48 0v-16"/><ellipse cx="290" cy="146" rx="24" ry="8"/></g><circle class="diagram-signal" cx="180" cy="64" r="4"/></svg>
           <p class="published-article__meta">DATABASE INTERNALS · ED. 04</p>
           <span class="published-article__status">Bài mới nhất</span>
         </div>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 45V64M70 82V64H290V82M180 64V82M70 112V137M180 112V137M290 112V137"/><g class="diagram-node diagram-node--accent"><rect x="128" y="15" width="104" height="30" rx="6"/><text x="180.0" y="34">CLUSTER</text></g><g class="diagram-node"><rect x="28" y="82" width="84" height="30" rx="6"/><text x="70.0" y="101">database</text></g><g class="diagram-node"><rect x="138" y="82" width="84" height="30" rx="6"/><text x="180.0" y="101">database</text></g><g class="diagram-node"><rect x="248" y="82" width="84" height="30" rx="6"/><text x="290.0" y="101">database</text></g><g class="diagram-node"><path d="M46 146v16c0 10 48 10 48 0v-16"/><ellipse cx="70" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M156 146v16c0 10 48 10 48 0v-16"/><ellipse cx="180" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M266 146v16c0 10 48 10 48 0v-16"/><ellipse cx="290" cy="146" rx="24" ry="8"/></g><circle class="diagram-signal" cx="180" cy="64" r="4"/></svg>
         <h3>PostgreSQL<br>Phân cấp &amp; lưu trữ</h3>
         <p>Database cluster, bộ đệm shared_buffers, database, schema và cấu trúc thư mục PGDATA.</p>
         <a href="postgres/postgres/">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
@@ -217,9 +211,9 @@ hide:
       <article class="published-article published-article--index">
         <span class="published-article__number" aria-hidden="true">03</span>
         <div class="published-article__header">
-          <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 43V63H80V82M180 63H280V82M80 112V134H38V148M80 134H125V148M280 112V134H235V148M280 134H322V148"/><path class="diagram-route diagram-route--accent" d="M180 43V63H280V82M280 112V134H235V148"/><g class="diagram-node diagram-node--accent"><rect x="149" y="13" width="62" height="30" rx="6"/><text x="180.0" y="32">42</text></g><g class="diagram-node"><rect x="49" y="82" width="62" height="30" rx="6"/><text x="80.0" y="101">18</text></g><g class="diagram-node diagram-node--accent"><rect x="249" y="82" width="62" height="30" rx="6"/><text x="280.0" y="101">67</text></g><g class="diagram-node"><rect x="8" y="148" width="60" height="30" rx="6"/><text x="38.0" y="167">08 · 12</text></g><g class="diagram-node"><rect x="95" y="148" width="60" height="30" rx="6"/><text x="125.0" y="167">24 · 36</text></g><g class="diagram-node diagram-node--accent"><rect x="205" y="148" width="60" height="30" rx="6"/><text x="235.0" y="167">51 · 58</text></g><g class="diagram-node"><rect x="292" y="148" width="60" height="30" rx="6"/><text x="322.0" y="167">73 · 91</text></g><circle class="diagram-signal" cx="235" cy="134" r="4"/></svg>
           <p class="published-article__meta">DATABASE INTERNALS · ED. 03</p>
         </div>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 43V63H80V82M180 63H280V82M80 112V134H38V148M80 134H125V148M280 112V134H235V148M280 134H322V148"/><path class="diagram-route diagram-route--accent" d="M180 43V63H280V82M280 112V134H235V148"/><g class="diagram-node diagram-node--accent"><rect x="149" y="13" width="62" height="30" rx="6"/><text x="180.0" y="32">42</text></g><g class="diagram-node"><rect x="49" y="82" width="62" height="30" rx="6"/><text x="80.0" y="101">18</text></g><g class="diagram-node diagram-node--accent"><rect x="249" y="82" width="62" height="30" rx="6"/><text x="280.0" y="101">67</text></g><g class="diagram-node"><rect x="8" y="148" width="60" height="30" rx="6"/><text x="38.0" y="167">08 · 12</text></g><g class="diagram-node"><rect x="95" y="148" width="60" height="30" rx="6"/><text x="125.0" y="167">24 · 36</text></g><g class="diagram-node diagram-node--accent"><rect x="205" y="148" width="60" height="30" rx="6"/><text x="235.0" y="167">51 · 58</text></g><g class="diagram-node"><rect x="292" y="148" width="60" height="30" rx="6"/><text x="322.0" y="167">73 · 91</text></g><circle class="diagram-signal" cx="235" cy="134" r="4"/></svg>
         <h3>Index trong<br>cơ sở dữ liệu</h3>
         <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
         <a href="index/">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
@@ -228,9 +222,9 @@ hide:
       <article class="published-article published-article--airflow">
         <span class="published-article__number" aria-hidden="true">01</span>
         <div class="published-article__header">
-          <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M69 94H110V40H145M110 94V148H145M215 40H249V94H289M215 148H249V94M215 94H289M110 94H145"/><g class="diagram-node diagram-node--accent"><rect x="7" y="79" width="62" height="30" rx="6"/><text x="38.0" y="98">DAG</text></g><g class="diagram-node"><rect x="145" y="25" width="70" height="30" rx="6"/><text x="180.0" y="44">extract</text></g><g class="diagram-node"><rect x="145" y="79" width="70" height="30" rx="6"/><text x="180.0" y="98">check</text></g><g class="diagram-node"><rect x="145" y="133" width="70" height="30" rx="6"/><text x="180.0" y="152">load</text></g><g class="diagram-node diagram-node--accent"><rect x="289" y="79" width="64" height="30" rx="6"/><text x="321.0" y="98">ready</text></g><circle class="diagram-signal" cx="110" cy="94" r="4"/><circle class="diagram-signal diagram-signal--late" cx="249" cy="94" r="4"/></svg>
           <p class="published-article__meta">ORCHESTRATION · ED. 01</p>
         </div>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M69 94H110V40H145M110 94V148H145M215 40H249V94H289M215 148H249V94M215 94H289M110 94H145"/><g class="diagram-node diagram-node--accent"><rect x="7" y="79" width="62" height="30" rx="6"/><text x="38.0" y="98">DAG</text></g><g class="diagram-node"><rect x="145" y="25" width="70" height="30" rx="6"/><text x="180.0" y="44">extract</text></g><g class="diagram-node"><rect x="145" y="79" width="70" height="30" rx="6"/><text x="180.0" y="98">check</text></g><g class="diagram-node"><rect x="145" y="133" width="70" height="30" rx="6"/><text x="180.0" y="152">load</text></g><g class="diagram-node diagram-node--accent"><rect x="289" y="79" width="64" height="30" rx="6"/><text x="321.0" y="98">ready</text></g><circle class="diagram-signal" cx="110" cy="94" r="4"/><circle class="diagram-signal diagram-signal--late" cx="249" cy="94" r="4"/></svg>
         <h3>Hiểu kiến trúc<br>Apache Airflow</h3>
         <p>Từ nhu cầu điều phối đến Scheduler, Executor và High Availability.</p>
         <a href="airflow/architecture/">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
@@ -239,9 +233,9 @@ hide:
       <article class="published-article published-article--storage">
         <span class="published-article__number" aria-hidden="true">02</span>
         <div class="published-article__header">
-          <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-divider" d="M180 15V176"/><path class="diagram-route" d="M45 58V90H135V58M90 90V116M225 58V116M315 58V116"/><g class="diagram-node"><rect x="18" y="28" width="54" height="30" rx="6"/><text x="45.0" y="47">CPU</text></g><g class="diagram-node"><rect x="108" y="28" width="54" height="30" rx="6"/><text x="135.0" y="47">CPU</text></g><g class="diagram-node"><rect x="198" y="28" width="54" height="30" rx="6"/><text x="225.0" y="47">CPU</text></g><g class="diagram-node"><rect x="288" y="28" width="54" height="30" rx="6"/><text x="315.0" y="47">CPU</text></g><g class="diagram-node diagram-node--accent"><path d="M63 125v23c0 12 54 12 54 0v-23"/><ellipse cx="90" cy="125" rx="27" ry="9"/></g><g class="diagram-node diagram-node--accent"><path d="M198 125v23c0 12 54 12 54 0v-23"/><ellipse cx="225" cy="125" rx="27" ry="9"/></g><g class="diagram-node diagram-node--accent"><path d="M288 125v23c0 12 54 12 54 0v-23"/><ellipse cx="315" cy="125" rx="27" ry="9"/></g><text class="diagram-caption" x="90" y="181">SHARED DISK</text><text class="diagram-caption" x="270" y="181">SHARED NOTHING</text><circle class="diagram-signal" cx="90" cy="90" r="4"/></svg>
           <p class="published-article__meta">DATA ARCHITECTURE · ED. 02</p>
         </div>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-divider" d="M180 15V176"/><path class="diagram-route" d="M45 58V90H135V58M90 90V116M225 58V116M315 58V116"/><g class="diagram-node"><rect x="18" y="28" width="54" height="30" rx="6"/><text x="45.0" y="47">CPU</text></g><g class="diagram-node"><rect x="108" y="28" width="54" height="30" rx="6"/><text x="135.0" y="47">CPU</text></g><g class="diagram-node"><rect x="198" y="28" width="54" height="30" rx="6"/><text x="225.0" y="47">CPU</text></g><g class="diagram-node"><rect x="288" y="28" width="54" height="30" rx="6"/><text x="315.0" y="47">CPU</text></g><g class="diagram-node diagram-node--accent"><path d="M63 125v23c0 12 54 12 54 0v-23"/><ellipse cx="90" cy="125" rx="27" ry="9"/></g><g class="diagram-node diagram-node--accent"><path d="M198 125v23c0 12 54 12 54 0v-23"/><ellipse cx="225" cy="125" rx="27" ry="9"/></g><g class="diagram-node diagram-node--accent"><path d="M288 125v23c0 12 54 12 54 0v-23"/><ellipse cx="315" cy="125" rx="27" ry="9"/></g><text class="diagram-caption" x="90" y="181">SHARED DISK</text><text class="diagram-caption" x="270" y="181">SHARED NOTHING</text><circle class="diagram-signal" cx="90" cy="90" r="4"/></svg>
         <h3>Shared-disk vs<br>shared-nothing</h3>
         <p>Chọn topology dữ liệu từ góc nhìn Data Engineer: query, shuffle và failure.</p>
         <a href="architecture/shared-disk-vs-shared-nothing/">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
@@ -252,7 +246,7 @@ hide:
 
   <section class="writing-section" id="cach-viet" aria-labelledby="writing-title">
     <div class="blueprint-watermark blueprint-watermark--writing" aria-hidden="true">
-      <img src="assets/images/blueprint-writing.svg" alt="" width="1440" height="600" loading="lazy">
+      <img src="assets/images/home/blueprint-writing.svg" alt="" width="1440" height="600" loading="lazy">
     </div>
 
     <div class="writing-section__intro">
@@ -273,15 +267,25 @@ hide:
     </div>
 
     <div class="blueprint-dag-stream" aria-hidden="true">
-      <div class="dag-node"><span>SOURCE</span><i></i></div>
+      <div class="dag-node dag-node--source"><span>SOURCE</span><i class="dag-portal dag-portal--source"></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node dag-node--active"><span>01 · PROBLEM</span><i></i></div>
+      <div class="dag-node dag-node--active dag-node--step-1"><span>01 · PROBLEM</span><i></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node dag-node--active"><span>02 · INTERNALS</span><i></i></div>
+      <div class="dag-node dag-node--active dag-node--step-2"><span>02 · INTERNALS</span><i></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node dag-node--active"><span>03 · TRADE-OFF</span><i></i></div>
+      <div class="dag-node dag-node--active dag-node--step-3"><span>03 · TRADE-OFF</span><i></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node"><span>PRODUCTION</span><i></i></div>
+      <div class="dag-node dag-node--production"><span>PRODUCTION</span><i class="dag-portal dag-portal--production"></i></div>
+
+      <div class="dag-track-runner">
+        <div class="dag-vehicle">
+          <div class="dag-vehicle__chassis">
+            <img class="dag-vehicle__body" src="assets/images/home/chicken-car.webp" alt="" width="56" height="44" />
+            <img class="dag-vehicle__wheel dag-vehicle__wheel--rear" src="assets/images/home/chicken-wheel.webp" alt="" width="13" height="13" />
+            <img class="dag-vehicle__wheel dag-vehicle__wheel--front" src="assets/images/home/chicken-wheel.webp" alt="" width="13" height="13" />
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="writing-principles" role="list" aria-label="Quy trình 3 bước mổ xẻ kiến trúc">
@@ -375,7 +379,7 @@ hide:
 
   <section class="author-section" id="nguoi-viet" aria-labelledby="author-title">
     <div class="blueprint-watermark blueprint-watermark--author" aria-hidden="true">
-      <img src="assets/images/blueprint-author.svg" alt="" width="1440" height="600" loading="lazy">
+      <img src="assets/images/home/blueprint-author.svg" alt="" width="1440" height="600" loading="lazy">
     </div>
 
     <div class="author-section__masthead">
@@ -387,7 +391,7 @@ hide:
       <span class="author-primary-card__watermark" aria-hidden="true">TOGETHER</span>
       <figure class="author-photo">
         <div class="author-photo__frame">
-          <img src="assets/images/phong-thanh-at-the-sea.webp" alt="Người viết đứng bên bờ biển" width="1920" height="1296" loading="lazy">
+          <img src="assets/images/home/phong-thanh-at-the-sea.webp" alt="Người viết đứng bên bờ biển" width="1920" height="1296" loading="lazy">
         </div>
         <figcaption><span>OFFLINE / PHAN THIET</span><span>© 28.08.2026</span></figcaption>
       </figure>
@@ -448,8 +452,7 @@ hide:
 
       <figure class="coauthor-card__photo">
         <div class="coauthor-card__photo-frame">
-          <img src="assets/images/danh.png" alt="Đồng tác giả Danh đứng bên bờ biển" width="460" height="460" loading="lazy">
-          <span class="coauthor-card__photo-number" aria-hidden="true">02</span>
+          <img src="assets/images/home/danh.png" alt="Đồng tác giả Danh đứng bên bờ biển" width="460" height="460" loading="lazy">
         </div>
         <figcaption><span>CO-AUTHOR PORTRAIT</span><span>BEHIND THE PIPELINE / 2026</span></figcaption>
       </figure>
