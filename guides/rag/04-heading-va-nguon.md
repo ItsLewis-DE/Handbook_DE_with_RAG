@@ -65,8 +65,9 @@ def read_sections(repo_root, article_paths):
                 "header, footer, script, style, .headerlink, "
                 ".airflow-opening-comic, .airflow-closing-comic"
             ):
-                node.decompose()
-
+                node.decompose() #Giúp dọn sạch các các thẻ rác
+            
+            #Đóng gói các đoạn văn bản trong cùng 1 mục thành 1 Document    
             headings = []
             anchor = ""
             blocks = []
@@ -98,7 +99,9 @@ def read_sections(repo_root, article_paths):
                     headings.append((level, node.get_text(" ", strip=True)))
                     anchor = node.get("id", "")
                     continue
-                if name in {"hr"}:
+                if name in {"hr"} or :
+                    continue
+                if any(c in node.get("class", []) for c in ["mermaid", "highlight"]):
                     continue
                 if name == "table" or node.find("table") is not None:
                     table = node if name == "table" else node.find("table")
@@ -113,7 +116,7 @@ def read_sections(repo_root, article_paths):
                 else:
                     text = node.get_text(" ", strip=True)
                 if text:
-                    blocks.append(text)
+                    blocks.append(text)  
             flush()
 
     if not documents:

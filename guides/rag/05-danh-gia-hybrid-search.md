@@ -216,7 +216,7 @@ def main():
         "summary": True,
         "mode": args.mode,
         "hit_at_4": sum(hit_rates) / len(hit_rates),
-        "section_recall_at_4": sum(recalls) / len(recalls),
+        "section_recall_at_4": sum(recalls) / len(recalls), 
         "mrr_at_4": sum(reciprocal_ranks) / len(reciprocal_ranks),
         "mean_retrieval_seconds": sum(elapsed) / len(elapsed),
         "p95_retrieval_seconds": sorted(elapsed)[math.ceil(0.95 * len(elapsed)) - 1],

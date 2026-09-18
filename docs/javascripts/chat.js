@@ -1,5 +1,6 @@
 (() => {
   const lottieUrl = new URL("../assets/images/pip/pip.json", document.currentScript.src).href;
+  const avatarUrl = new URL("../assets/images/chat/tuat-danh-binh-avatar.png", document.currentScript.src).href;
   const endpoint = document.querySelector('meta[name="pip-chat-endpoint"]')?.content
     || "http://127.0.0.1:8001/chat";
 
@@ -161,10 +162,39 @@
 
   function createMessage(role, text) {
     const message = createElement("div", `pip-message pip-message--${role}`);
-    const label = createElement("span", "pip-message__label", role === "bot" ? "Pip" : "Bạn");
+    const label = createElement("span", "pip-message__label", role === "bot" ? "Tuất Danh Bình" : "Bạn");
     const bubble = createElement("div", "pip-message__bubble", text);
     message.append(label, bubble);
     return message;
+  }
+
+  function createAnswerMessage(answer, sources) {
+    const message = createMessage("bot", answer);
+    if (!sources.length) return message;
+
+    const sourceList = createElement("ul", "pip-sources");
+    sourceList.setAttribute("aria-label", "Nguồn tham khảo");
+    for (const source of sources) {
+      const item = createElement("li", "pip-source");
+      const link = createElement("a", "pip-source__link");
+      link.href = source.url;
+      link.textContent = `[${source.id}] ${source.title}${source.heading ? ` · ${source.heading}` : ""}`;
+      item.append(link);
+      sourceList.append(item);
+    }
+    message.append(sourceList);
+    return message;
+  }
+
+  function validSources(sources) {
+    if (!Array.isArray(sources)) return false;
+    return sources.every((source) => (
+      source
+      && typeof source.id === "string"
+      && typeof source.title === "string"
+      && typeof source.heading === "string"
+      && typeof source.url === "string"
+    ));
   }
 
   function mountChat() {
@@ -175,13 +205,13 @@
     const chat = createElement("aside", "pip-chat");
     const launcher = createElement("button", "pip-launcher");
     launcher.type = "button";
-    launcher.setAttribute("aria-label", "Hỏi Pip về bài viết này");
+    launcher.setAttribute("aria-label", "Hỏi Tuất Danh Bình về bài viết này");
     launcher.setAttribute("aria-expanded", "false");
     launcher.setAttribute("aria-controls", "pip-chat-panel");
     launcher.innerHTML = `
       <div class="pip-speech-bubble" aria-hidden="true">
         <span class="pip-speech-bubble__dot"></span>
-        <span class="pip-speech-bubble__text">Hỏi Pip 👋</span>
+        <span class="pip-speech-bubble__text">Hỏi Tuất Danh Bình 👋</span>
       </div>
       <div class="pip-mascot-wrapper">${robotMarkup("full")}</div>
     `;
@@ -193,8 +223,8 @@
     panel.setAttribute("aria-labelledby", "pip-chat-title");
     panel.innerHTML = `
       <header class="pip-panel__head">
-        <span class="pip-panel__avatar">${robotMarkup("avatar")}</span>
-        <div><h2 class="pip-panel__title" id="pip-chat-title">Pip · Bạn đọc cùng bạn</h2><span class="pip-panel__status">Sẵn sàng đọc bài</span></div>
+        <span class="pip-panel__avatar"><img src="${avatarUrl}" alt="Avatar Tuất Danh Bình"></span>
+        <div><h2 class="pip-panel__title" id="pip-chat-title">Tuất Danh Bình · Bạn đọc cùng bạn</h2><span class="pip-panel__status">Sẵn sàng đọc bài</span></div>
         <button class="pip-panel__close" type="button" aria-label="Thu nhỏ khung chat">×</button>
       </header>
       <div class="pip-context">
@@ -268,7 +298,7 @@
     pose("idle");
     scheduleReading();
     panel.querySelector(".pip-context strong").textContent = articleTitle;
-    messages.append(createMessage("bot", "Mình cùng đọc bài này nhé. Bạn muốn Pip làm rõ phần nào?"));
+    messages.append(createMessage("bot", "Mình cùng đọc bài này nhé. Bạn muốn Tuất Danh Bình làm rõ phần nào?"));
 
     ["Tóm tắt bài này", "Giải thích bằng ví dụ", "Nêu ý chính cần nhớ"].forEach((text) => {
       const button = createElement("button", "pip-suggestion", text);
@@ -313,7 +343,7 @@
       status.textContent = "Đang tìm trong tài liệu";
 
       const typing = createMessage("bot", "");
-      typing.querySelector(".pip-message__bubble").innerHTML = '<span class="pip-typing" aria-label="Pip đang suy nghĩ"><i></i><i></i><i></i></span>';
+      typing.querySelector(".pip-message__bubble").innerHTML = '<span class="pip-typing" aria-label="Tuất Danh Bình đang suy nghĩ"><i></i><i></i><i></i></span>';
       messages.append(typing);
       messages.scrollTop = messages.scrollHeight;
 
@@ -332,12 +362,16 @@
         }
 
         const data = await response.json();
-        if (typeof data.answer !== "string") {
+        if (
+          typeof data.answer !== "string"
+          || !["answered", "insufficient_evidence", "generation_error"].includes(data.status)
+          || !validSources(data.sources)
+        ) {
           throw new Error("Backend trả dữ liệu không hợp lệ.");
         }
 
         typing.remove();
-        messages.append(createMessage("bot", data.answer));
+        messages.append(createAnswerMessage(data.answer, data.sources));
         status.textContent = "Sẵn sàng đọc bài";
       } catch (error) {
         typing.remove();

@@ -302,11 +302,18 @@
 
 /* Chat Panel */
 .pip-panel {
+  /* Opaque defaults also cover browsers without backdrop-filter support. */
+  --pip-glass-header: var(--pip-ink);
+  --pip-glass-context: #e9e5da;
+  --pip-glass-bubble: var(--pip-ivory);
+  --pip-glass-footer: var(--pip-ivory);
+  --pip-glass-input: var(--pip-paper);
+  --pip-glass-chip: var(--pip-paper);
   background: var(--pip-paper);
-  border: 1px solid var(--pip-line);
+  border: 1px solid rgba(255, 250, 240, .72);
   border-radius: 1.35rem;
   bottom: 0;
-  box-shadow: 0 1.2rem 4rem rgba(23, 48, 45, .2);
+  box-shadow: 0 1.2rem 4rem rgba(23, 48, 45, .26), 0 2px 8px rgba(23, 48, 45, .12), inset 0 1px 0 rgba(255, 255, 255, .65);
   color: var(--pip-ink);
   display: flex;
   flex-direction: column;
@@ -323,11 +330,34 @@
   width: min(22.5rem, calc(100vw - 2rem));
 }
 
+@supports ((backdrop-filter: blur(3px)) or (-webkit-backdrop-filter: blur(3px))) {
+  .pip-panel {
+    --pip-glass-header: rgba(23, 48, 45, .94);
+    --pip-glass-context: rgba(243, 240, 232, .68);
+    --pip-glass-bubble: rgba(255, 250, 240, .97);
+    --pip-glass-footer: rgba(255, 250, 240, .7);
+    --pip-glass-input: rgba(255, 250, 240, .98);
+    --pip-glass-chip: rgba(255, 250, 240, .94);
+    /* Keep article text visible between the more opaque reading surfaces. */
+    background: linear-gradient(135deg, rgba(255, 250, 240, .62), rgba(243, 240, 232, .44));
+    -webkit-backdrop-filter: blur(3px) saturate(115%);
+    backdrop-filter: blur(3px) saturate(115%);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .pip-panel {
+    background: var(--pip-paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 .pip-chat.is-open .pip-panel { opacity: 1; pointer-events: auto; transform: none; visibility: visible; }
 
 .pip-panel__head {
   align-items: center;
-  background: var(--pip-ink);
+  background: var(--pip-glass-header);
   color: var(--pip-paper);
   display: grid;
   gap: .72rem;
@@ -349,10 +379,12 @@
   flex-shrink: 0;
 }
 
-.pip-panel__avatar .pip-mascot {
-  width: 100%;
+.pip-panel__avatar img {
+  display: block;
   height: 100%;
-  filter: none;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
 }
 
 /* Avatar Continuous Waving Animation - Always Alive */
@@ -412,7 +444,7 @@
 
 .pip-context {
   align-items: center;
-  background: #e9e5da;
+  background: var(--pip-glass-context);
   border-bottom: 1px solid var(--pip-line);
   color: var(--pip-muted);
   display: flex;
@@ -440,19 +472,22 @@
 .pip-message { display: flex; flex-direction: column; gap: .3rem; max-width: 88%; }
 .pip-message--bot { align-self: flex-start; }
 .pip-message--user { align-items: flex-end; align-self: flex-end; }
-.pip-message__label { color: var(--pip-muted); font-family: var(--md-code-font-family, monospace); font-size: .46rem; letter-spacing: .08em; padding-inline: .15rem; text-transform: uppercase; }
-.pip-message__bubble { border-radius: .9rem; font-size: .68rem; line-height: 1.65; padding: .72rem .82rem; }
-.pip-message--bot .pip-message__bubble { background: var(--pip-ivory); border: 1px solid var(--pip-line); border-bottom-left-radius: .2rem; }
+.pip-message__label { color: var(--pip-ink); font-weight: 700; font-family: var(--md-code-font-family, monospace); font-size: .46rem; letter-spacing: .08em; padding-inline: .15rem; text-transform: uppercase; }
+.pip-message__bubble { border-radius: .9rem; box-shadow: 0 3px 12px rgba(23, 48, 45, .1); font-size: .72rem; font-weight: 500; line-height: 1.65; padding: .72rem .82rem; }
+.pip-message--bot .pip-message__bubble { background: var(--pip-glass-bubble); border: 1px solid rgba(23, 48, 45, .24); border-bottom-left-radius: .2rem; }
 .pip-message--user .pip-message__bubble { background: var(--pip-ink); border-bottom-right-radius: .2rem; color: var(--pip-paper); }
+.pip-sources { display: flex; flex-direction: column; gap: .28rem; list-style: none; margin: 0; padding: 0 .15rem; }
+.pip-source__link { color: #a63f23; display: block; font-family: var(--md-code-font-family, monospace); font-size: .53rem; line-height: 1.45; overflow: hidden; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }
+.pip-source__link:hover { color: var(--pip-coral); text-decoration: underline; }
 
 .pip-suggestions { display: flex; flex-wrap: wrap; gap: .42rem; padding: 0 .9rem .8rem; }
 .pip-suggestions[hidden] { display: none; }
-.pip-suggestion { background: transparent; border: 1px solid rgba(166, 63, 35, .36); border-radius: 999px; color: #a63f23; cursor: pointer; font-family: inherit; font-size: .56rem; font-weight: 700; line-height: 1.3; padding: .45rem .62rem; }
-.pip-suggestion:hover { background: rgba(237, 104, 64, .09); border-color: var(--pip-coral); }
+.pip-suggestion { background: var(--pip-glass-chip); border: 1px solid rgba(166, 63, 35, .36); border-radius: 999px; color: #a63f23; cursor: pointer; font-family: inherit; font-size: .56rem; font-weight: 700; line-height: 1.3; padding: .45rem .62rem; }
+.pip-suggestion:hover { background: rgba(255, 233, 219, .9); border-color: var(--pip-coral); }
 
-.pip-composer { align-items: flex-end; background: var(--pip-ivory); border-top: 1px solid var(--pip-line); display: grid; gap: .55rem; grid-template-columns: 1fr 2.45rem; padding: .72rem; }
-.pip-composer textarea { background: var(--pip-paper); border: 1px solid var(--pip-line); border-radius: .8rem; color: var(--pip-ink); font: 600 .64rem/1.5 var(--md-text-font-family, "Manrope", sans-serif); max-height: 7rem; min-height: 2.45rem; padding: .68rem .72rem; resize: none; width: 100%; }
-.pip-composer textarea::placeholder { color: #6f827e; opacity: 1; }
+.pip-composer { align-items: flex-end; background: var(--pip-glass-footer); border-top: 1px solid var(--pip-line); display: grid; gap: .55rem; grid-template-columns: 1fr 2.45rem; padding: .72rem; }
+.pip-composer textarea { background: var(--pip-glass-input); border: 1px solid var(--pip-line); border-radius: .8rem; color: var(--pip-ink); font: 600 .64rem/1.5 var(--md-text-font-family, "Manrope", sans-serif); max-height: 7rem; min-height: 2.45rem; padding: .68rem .72rem; resize: none; width: 100%; }
+.pip-composer textarea::placeholder { color: var(--pip-muted); opacity: 1; }
 .pip-composer__send { align-items: center; background: var(--pip-coral); border: 0; border-radius: .75rem; color: var(--pip-ink); cursor: pointer; display: flex; height: 2.45rem; justify-content: center; width: 2.45rem; }
 .pip-composer__send:hover { background: #f47a55; transform: translateY(-1px); }
 .pip-composer__send:disabled { cursor: wait; opacity: .55; transform: none; }
