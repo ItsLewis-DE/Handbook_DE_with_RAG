@@ -49,6 +49,17 @@ Bài toán thực tế
 
 Đọc tài liệu tại [Kiến trúc Apache Airflow](docs/airflow/architecture.md).
 
+### Apache Spark
+
+- Spark nằm ở đâu trong một data platform?
+- Driver, Cluster Manager, Worker Node và Executor phối hợp như thế nào?
+- Application, Job, Stage, Task và Partition liên hệ với nhau ra sao?
+- Lazy evaluation biến DataFrame transformations thành execution plan như thế nào?
+- Shuffle, memory, cache, spill và data skew tác động tới hiệu năng ra sao?
+- Spark UI giúp xác định bottleneck ở đâu?
+
+Đọc tài liệu tại [Apache Spark toàn cảnh](docs/spark/overview.md).
+
 ## Chạy tài liệu trên máy cá nhân
 
 ### Yêu cầu
@@ -88,6 +99,9 @@ Website sau khi build được tạo trong thư mục `site/`.
 │   │   └── shared-disk-vs-shared-nothing.md
 │   ├── airflow/
 │   │   └── architecture.md      # Kiến trúc Apache Airflow
+│   ├── spark/
+│   │   ├── overview.md          # Tổng quan Apache Spark
+│   │   └── *.md                 # Mười chương chuyên sâu trong series Spark
 │   └── stylesheets/
 │       └── landing.css          # Giao diện landing page
 ├── mkdocs.yml                   # Cấu hình website
