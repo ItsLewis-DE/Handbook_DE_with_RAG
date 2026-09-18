@@ -13,6 +13,111 @@
   position: relative;
 }
 
+/* Anchor the light to the shelf, but paint behind the shared page content.
+   The oversized ellipses fade into the paper across both adjacent sections. */
+.landing-page .library-section {
+  isolation: auto;
+}
+
+.landing-page .library-section::before {
+  background:
+    radial-gradient(ellipse at 28% 46%, rgba(95, 126, 120, 0.24), rgba(95, 126, 120, 0.1) 38%, transparent 72%),
+    radial-gradient(ellipse at 76% 54%, rgba(237, 151, 108, 0.16), rgba(237, 151, 108, 0.06) 36%, transparent 70%);
+  content: "";
+  inset-block: -14rem;
+  left: 50%;
+  -webkit-mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
+  mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%);
+  width: 100vw;
+  z-index: -1;
+}
+
+.landing-page .writing-section {
+  background-color: transparent;
+  border-top-color: transparent;
+  isolation: auto;
+  overflow: visible;
+}
+
+/* Shift the warm wash to the left here so the sections share a palette
+   without repeating the same arrangement. All four edges fade to paper. */
+.landing-page .writing-principles::before {
+  background:
+    radial-gradient(ellipse at 20% 38%, rgba(238, 157, 109, 0.5), transparent 43%),
+    radial-gradient(ellipse at 39% 67%, rgba(245, 194, 148, 0.38), transparent 39%),
+    radial-gradient(ellipse at 78% 51%, rgba(87, 153, 122, 0.53), transparent 43%),
+    radial-gradient(ellipse at 59% 25%, rgba(151, 190, 155, 0.32), transparent 40%);
+  content: "";
+  inset: -10rem -10vw;
+  -webkit-mask-image: radial-gradient(ellipse, #000 28%, transparent 72%);
+  mask-image: radial-gradient(ellipse, #000 28%, transparent 72%);
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+.landing-page .writing-card,
+.landing-page .writing-section__lead-box {
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.35), transparent 45%), #f7f5ee;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(23, 48, 45, 0.08), 0 16px 40px -14px rgba(23, 48, 45, 0.22);
+}
+
+@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+  .landing-page .writing-card,
+  .landing-page .writing-section__lead-box {
+    background: linear-gradient(125deg, rgba(255, 255, 255, 0.35), transparent 45%), rgba(250, 248, 241, 0.2);
+    -webkit-backdrop-filter: blur(12px) saturate(115%);
+    backdrop-filter: blur(12px) saturate(115%);
+  }
+}
+
+.landing-page .writing-card:hover {
+  border-color: #fffaf0;
+  box-shadow: inset 0 1px 0 #fff, 0 22px 48px -14px rgba(23, 48, 45, 0.28);
+  transform: translateY(-3px);
+}
+
+.landing-page .writing-card::before {
+  color: rgba(23, 48, 45, 0.035);
+  font-size: 5rem;
+  right: 1rem;
+  top: 1.5rem;
+}
+
+.landing-page .writing-card::after {
+  display: none;
+}
+
+.landing-page .writing-card__stamp {
+  border-radius: 8px;
+  box-shadow: none;
+  transform: none;
+}
+
+.landing-page .writing-card__stage {
+  color: #3c5952;
+}
+
+.landing-page .writing-card__tags span {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+}
+
+.landing-page .blueprint-watermark--writing {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-page .writing-card:hover {
+    transform: none;
+  }
+}
+
 .landing-page .blueprint-watermark {
   inset: 0;
   overflow: hidden;
