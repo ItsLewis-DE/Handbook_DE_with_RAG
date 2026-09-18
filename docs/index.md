@@ -104,7 +104,7 @@ hide:
               </div>
               <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>04 / 08</b></div>
               <div class="article-sheet__body">
-                <span class="article-sheet__status article-sheet__status--published">Bài mới nhất</span>
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>PostgreSQL<br>Phân cấp &amp; lưu trữ</h2>
                 <p>Database cluster, bộ đệm shared_buffers, database, schema và cấu trúc thư mục PGDATA.</p>
               </div>
@@ -114,17 +114,20 @@ hide:
               </div>
             </article>
 
-            <article class="article-sheet article-sheet--planned" data-article-title="Apache Spark internals" data-deck-position="hidden">
+            <article class="article-sheet article-sheet--spark" data-article-title="Apache Spark toàn cảnh" data-deck-position="hidden">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
               </div>
               <div class="article-sheet__meta"><span>PROCESSING</span><b>05 / 08</b></div>
               <div class="article-sheet__body">
-                <span class="article-sheet__status">Trong lộ trình</span>
-                <h2>Apache Spark<br>internals</h2>
-                <p>Partition, DAG execution, shuffle và cách một job thật sự chạy qua cluster.</p>
+                <span class="article-sheet__status article-sheet__status--published">Bài mới nhất</span>
+                <h2>Apache Spark<br>toàn cảnh</h2>
+                <p>Driver, Executor, Partition, execution plan và cách một application chạy qua cluster.</p>
               </div>
-              <div class="article-sheet__foot"><span>Dự kiến</span><em>Đang lên dàn ý</em></div>
+              <div class="article-sheet__foot">
+                <span>DISTRIBUTED PROCESSING</span>
+                <a href="spark/overview/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
             </article>
 
             <article class="article-sheet article-sheet--planned article-sheet--clay" data-article-title="Apache Kafka internals" data-deck-position="hidden">
@@ -176,9 +179,9 @@ hide:
         </div>
 
         <div class="stack-card__footer">
-          <span><b>04</b> bài đã mở</span>
-          <span><b>04</b> bài sắp tới</span>
-          <span class="article-deck__count"><b>04</b> / 08</span>
+          <span><b>05</b> bài đã mở</span>
+          <span><b>03</b> bài sắp tới</span>
+          <span class="article-deck__count"><b>05</b> / 08</span>
         </div>
       </div>
 
@@ -195,12 +198,23 @@ hide:
       </div>
     </div>
 
-    <div class="published-articles" aria-label="Bốn bài viết đã xuất bản">
-      <article class="published-article published-article--latest published-article--postgres">
+    <div class="published-articles" aria-label="Năm bài viết đã xuất bản">
+      <article class="published-article published-article--latest published-article--spark">
+        <span class="published-article__number" aria-hidden="true">05</span>
+        <div class="published-article__header">
+          <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 44V67M180 67H72V91M180 67H288V91M72 121V145M288 121V145"/><path class="diagram-route diagram-route--accent" d="M110 160H250"/><g class="diagram-node diagram-node--accent"><rect x="137" y="14" width="86" height="30" rx="6"/><text x="180" y="33">DRIVER</text></g><g class="diagram-node"><rect x="28" y="91" width="88" height="30" rx="6"/><text x="72" y="110">EXECUTOR A</text></g><g class="diagram-node"><rect x="244" y="91" width="88" height="30" rx="6"/><text x="288" y="110">EXECUTOR B</text></g><g class="diagram-node"><rect x="35" y="145" width="74" height="30" rx="6"/><text x="72" y="164">P0 · P1</text></g><g class="diagram-node"><rect x="251" y="145" width="74" height="30" rx="6"/><text x="288" y="164">P2 · P3</text></g><circle class="diagram-signal" cx="180" cy="67" r="4"/><circle class="diagram-signal diagram-signal--late" cx="180" cy="160" r="4"/></svg>
+          <p class="published-article__meta">DISTRIBUTED PROCESSING · ED. 05</p>
+          <span class="published-article__status">Bài mới nhất</span>
+        </div>
+        <h3>Apache Spark<br>toàn cảnh</h3>
+        <p>Từ Driver và Executor đến Job, Stage, Task, Partition và Shuffle.</p>
+        <a href="spark/overview/">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+      </article>
+
+      <article class="published-article published-article--postgres">
         <span class="published-article__number" aria-hidden="true">04</span>
         <div class="published-article__header">
           <p class="published-article__meta">DATABASE INTERNALS · ED. 04</p>
-          <span class="published-article__status">Bài mới nhất</span>
         </div>
         <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 45V64M70 82V64H290V82M180 64V82M70 112V137M180 112V137M290 112V137"/><g class="diagram-node diagram-node--accent"><rect x="128" y="15" width="104" height="30" rx="6"/><text x="180.0" y="34">CLUSTER</text></g><g class="diagram-node"><rect x="28" y="82" width="84" height="30" rx="6"/><text x="70.0" y="101">database</text></g><g class="diagram-node"><rect x="138" y="82" width="84" height="30" rx="6"/><text x="180.0" y="101">database</text></g><g class="diagram-node"><rect x="248" y="82" width="84" height="30" rx="6"/><text x="290.0" y="101">database</text></g><g class="diagram-node"><path d="M46 146v16c0 10 48 10 48 0v-16"/><ellipse cx="70" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M156 146v16c0 10 48 10 48 0v-16"/><ellipse cx="180" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M266 146v16c0 10 48 10 48 0v-16"/><ellipse cx="290" cy="146" rx="24" ry="8"/></g><circle class="diagram-signal" cx="180" cy="64" r="4"/></svg>
         <h3>PostgreSQL<br>Phân cấp &amp; lưu trữ</h3>

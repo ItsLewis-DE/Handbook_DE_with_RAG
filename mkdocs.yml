@@ -26,6 +26,18 @@ nav:
       - Index trong cơ sở dữ liệu: index/index.md
   - Apache Airflow:
       - Architecture: airflow/architecture.md
+  - Apache Spark:
+      - Overview: spark/overview.md
+      - Khi nào nên dùng Spark?: spark/when-to-use.md
+      - Kiến trúc Spark: spark/architecture.md
+      - RDD, DataFrame và Dataset: spark/data-abstractions.md
+      - Execution Model: spark/execution-model.md
+      - Query Planning: spark/query-planning.md
+      - Partitioning và Shuffle: spark/partition-shuffle.md
+      - Memory và Fault Tolerance: spark/memory-fault-tolerance.md
+      - Deployment: spark/deployment.md
+      - Performance: spark/performance.md
+      - Structured Streaming: spark/structured-streaming.md
 
 markdown_extensions:
   - toc:
