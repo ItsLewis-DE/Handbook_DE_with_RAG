@@ -1,117 +1,151 @@
-# Behind the Pipeline
+<div align="center">
+  <img src="docs/assets/images/brand/behind-the-pipeline-logo.svg" alt="Behind the Pipeline" width="88">
+  <h1>Behind the Pipeline</h1>
+  <p><strong>Hiểu sâu thế giới Data Engineering.</strong></p>
+  <p>Cẩm nang tiếng Việt về kiến trúc hệ thống dữ liệu, database internals<br>và những cơ chế phía sau các công cụ bạn sử dụng hằng ngày.</p>
+  <a href="https://itslewis-de.github.io/behind-the-pipeline/">
+    <img src="https://img.shields.io/badge/🌐_KHÁM_PHÁ_WEBSITE-GitHub_Pages-ed6840?style=for-the-badge&amp;labelColor=17302d" alt="Khám phá website trên GitHub Pages">
+  </a>
+  <p>
+    <a href="https://itslewis-de.github.io/behind-the-pipeline/#thu-vien">Thư viện bài viết</a> ·
+    <a href="#chatbot-đọc-cùng-bạn">Chatbot</a> ·
+    <a href="#chạy-trên-máy-cá-nhân">Chạy tại local</a>
+  </p>
+</div>
 
-> Cẩm nang kiến thức cốt lõi về những công cụ Data Engineer sử dụng hằng ngày.
+> [!IMPORTANT]
+> **[→ MỞ WEBSITE: itslewis-de.github.io/behind-the-pipeline](https://itslewis-de.github.io/behind-the-pipeline/)**
+>
+> Đọc bài viết, khám phá sơ đồ kiến trúc và tìm hiểu cách các hệ thống dữ liệu hoạt động từ bên trong.
 
-Behind the Pipeline là một dự án tài liệu mở, tập trung giải thích cách các công cụ trong hệ sinh thái Data Engineering hoạt động từ bên trong. Nội dung không chỉ hướng dẫn *cách sử dụng*, mà còn trả lời những câu hỏi quan trọng hơn: công cụ đó giải quyết vấn đề gì, vì sao nó tồn tại, kiến trúc của nó được thiết kế như thế nào và khi nào chúng ta nên sử dụng nó.
+[![Giao diện trang chủ Behind the Pipeline](assets/readme/website-desktop.png)](https://itslewis-de.github.io/behind-the-pipeline/)
 
-Tài liệu được viết bằng tiếng Việt và xuất bản dưới dạng website với MkDocs Material.
+## Về dự án
 
-## Mục tiêu
+**Behind the Pipeline** đi từ bài toán thực tế đến kiến trúc, cơ chế vận hành và những đánh đổi khi thiết kế hệ thống. Dự án dành cho người đang học hoặc làm Data Engineering, muốn hiểu vì sao một công cụ tồn tại và khi nào nên sử dụng nó.
 
-Behind the Pipeline hướng đến việc giúp Data Engineer:
+- **Kiến thức bằng tiếng Việt:** giải thích theo mạch bài toán → khái niệm → kiến trúc → vận hành → giới hạn.
+- **Minh họa trực quan:** sơ đồ, hình ảnh và ví dụ gắn với nội dung bài viết.
+- **Thư viện tương tác:** thẻ bài viết có thể lật bằng nút, phím mũi tên hoặc thao tác kéo.
+- **Trải nghiệm đọc:** mục lục, tìm kiếm, liên kết tới từng phần và sao chép đoạn mã.
+- **Chatbot RAG:** hỏi đáp trên tài liệu dự án, trả lời bằng tiếng Việt và dẫn nguồn về bài viết.
 
-- nắm vững các khái niệm nền tảng thay vì chỉ ghi nhớ câu lệnh;
-- hiểu kiến trúc và cơ chế vận hành bên trong mỗi công cụ;
-- nhận biết giới hạn, trade-off và trường hợp sử dụng phù hợp;
-- kết nối kiến thức giữa orchestration, processing, storage, streaming và infrastructure;
-- có một nguồn tài liệu ngắn gọn để tra cứu trong công việc hằng ngày.
+## Nội dung trong thư viện
 
-Mỗi chủ đề sẽ cố gắng đi theo một mạch kiến thức thống nhất:
+| Chủ đề | Nội dung chính | Đọc trên website |
+| --- | --- | --- |
+| Data Architecture | Shared-disk, shared-nothing, data locality, shuffle, skew và mở rộng hệ thống | [Shared-disk vs. shared-nothing](https://itslewis-de.github.io/behind-the-pipeline/architecture/shared-disk-vs-shared-nothing/) |
+| Apache Airflow | DAG, Scheduler, DAG File Processor, Executor và High Availability | [Kiến trúc Airflow](https://itslewis-de.github.io/behind-the-pipeline/airflow/architecture/) |
+| PostgreSQL | Database cluster, schema, `shared_buffers` và cấu trúc lưu trữ | [Phân cấp & lưu trữ](https://itslewis-de.github.io/behind-the-pipeline/postgres/postgres/) |
+| Database Index | Full table scan, cấu trúc index và cách database tìm bản ghi | [Index trong cơ sở dữ liệu](https://itslewis-de.github.io/behind-the-pipeline/index/) |
+| Apache Spark | Kiến trúc, execution model, partition, shuffle, query planning, tuning và streaming | [Bộ bài Apache Spark](https://itslewis-de.github.io/behind-the-pipeline/spark/overview/) |
 
-```text
-Bài toán thực tế
-    → Khái niệm cốt lõi
-    → Kiến trúc bên trong
-    → Cơ chế vận hành
-    → Khả năng mở rộng và giới hạn
-    → Kinh nghiệm sử dụng thực tế
-```
+**Trong lộ trình:** Apache Kafka, dbt, Docker và Kubernetes cho Data Engineer.
 
-## Nội dung hiện có
+## Thiết kế website
 
-### Data Architecture
+Giao diện sử dụng nền giấy sáng, màu xanh trầm và điểm nhấn cam; kết hợp họa tiết bản vẽ kỹ thuật với thẻ bài viết dạng chồng giấy. Trang bài viết dành nhiều không gian cho nội dung, mục lục và hình minh họa. Bố cục thích ứng với desktop và điện thoại, cùng font được lưu trong dự án.
 
-- Shared-disk và shared-nothing khác nhau ở quyền sở hữu memory/storage như thế nào?
-- Distribution key, data locality, shuffle và skew tác động tới ETL/ELT ra sao?
-- Khi thêm hoặc mất node, coordination, replication và rebalance diễn ra ở đâu?
-- Oracle RAC, Db2 pureScale, Teradata, Citus, Greenplum và Snowflake nằm ở vị trí nào trong taxonomy?
+![Trang bài viết Airflow với mục lục và robot mở chatbot](assets/readme/article-and-mascot.png)
 
-Đọc tài liệu tại [Shared-disk và shared-nothing dưới góc nhìn Data Engineer](docs/architecture/shared-disk-vs-shared-nothing.md).
+*Ảnh chụp giao diện thật từ bản build của dự án: trang chủ ở phía trên và trang đọc bài Airflow cùng robot Pip.*
 
-### Apache Airflow
+## Chatbot đọc cùng bạn
 
-- Vì sao cần Airflow thay vì chỉ sử dụng Bash và Cron?
-- DAG, Task, Task Instance, Schedule và Dependency.
-- Scheduler và scheduling loop.
-- DAG File Processor.
-- HA Scheduler và Critical Section.
-- Pool, Executor và các nút thắt khi mở rộng.
+<p align="center">
+  <img src="assets/readme/chatbot-panel.png" alt="Khung chat Tuất Danh Bình với ngữ cảnh bài Airflow, lời chào và câu hỏi gợi ý" width="460">
+</p>
 
-Đọc tài liệu tại [Kiến trúc Apache Airflow](docs/airflow/architecture.md).
+**Tuất Danh Bình** là trợ lý đọc tài liệu, được mở qua robot **Pip** ở góc trang bài viết. Khung chat hiển thị tên bài đang đọc, các gợi ý câu hỏi và ô nhập để trao đổi với backend RAG.
 
-### Apache Spark
+- Tìm nội dung liên quan bằng tìm kiếm ngữ nghĩa kết hợp BM25.
+- Sinh câu trả lời tiếng Việt bằng Ollama với model `qwen3:4b-instruct`.
+- Đính kèm nguồn tham khảo, liên kết tới đúng phần trong bài viết.
+- Có xử lý trường hợp thiếu bằng chứng, lỗi kết nối và thời gian chờ.
+- Hỗ trợ `Enter` để gửi, `Shift + Enter` để xuống dòng và `Escape` để thu nhỏ.
 
-- Spark nằm ở đâu trong một data platform?
-- Driver, Cluster Manager, Worker Node và Executor phối hợp như thế nào?
-- Application, Job, Stage, Task và Partition liên hệ với nhau ra sao?
-- Lazy evaluation biến DataFrame transformations thành execution plan như thế nào?
-- Shuffle, memory, cache, spill và data skew tác động tới hiệu năng ra sao?
-- Spark UI giúp xác định bottleneck ở đâu?
+Ví dụ câu hỏi: “Executor trong Airflow làm gì?”, “Shared-disk khác shared-nothing thế nào?” hoặc “shared_buffers có vai trò gì trong PostgreSQL?”.
 
-Đọc tài liệu tại [Apache Spark toàn cảnh](docs/spark/overview.md).
+> [!NOTE]
+> GitHub Pages phục vụ website tĩnh. Chatbot hiện mặc định gọi `http://127.0.0.1:8001/chat` và cần backend chạy riêng; chưa có API công khai được cấu hình sẵn. Ảnh trên là giao diện chào của chatbot, không phải một phiên trả lời trực tuyến. Chỉ mục hiện bao gồm bài Airflow, Shared-disk vs. shared-nothing, PostgreSQL và Index; bộ bài Spark chưa được đưa vào RAG.
 
-## Chạy tài liệu trên máy cá nhân
+## Công nghệ
 
-### Yêu cầu
+| Thành phần | Công nghệ |
+| --- | --- |
+| Website | MkDocs Material, Markdown, HTML, CSS, JavaScript |
+| Xuất bản | GitHub Pages |
+| API chatbot | Python, FastAPI, Uvicorn |
+| RAG | LangChain, Chroma, BM25 |
+| Embedding | `intfloat/multilingual-e5-small` |
+| Mô hình trả lời | Ollama · `qwen3:4b-instruct` |
+| Quản lý dependency | uv |
 
-- Python 3.12 trở lên;
-- [uv](https://docs.astral.sh/uv/).
+## Chạy trên máy cá nhân
 
-### Cài đặt dependency
+### Website
+
+Cần **Python 3.12+** và [uv](https://docs.astral.sh/uv/).
 
 ```bash
+git clone https://github.com/ItsLewis-DE/behind-the-pipeline.git
+cd behind-the-pipeline
 uv sync
-```
-
-### Khởi chạy development server
-
-```bash
 uv run mkdocs serve
 ```
 
-Sau đó truy cập `http://127.0.0.1:8000` để xem handbook.
-
-### Kiểm tra bản build
+Mở **http://127.0.0.1:8000**. Để kiểm tra bản build:
 
 ```bash
 uv run mkdocs build --strict
 ```
 
-Website sau khi build được tạo trong thư mục `site/`.
+Kết quả được tạo trong thư mục `site/`.
 
-## Thực hành tích hợp RAG
+### Backend chatbot
 
-[Bộ hướng dẫn xây RAG theo từng phase](guides/rag/README.md) bắt đầu bằng backend Python, Chroma và `qwen3:4b-instruct` qua Ollama; sau đó lần lượt thêm tài liệu dự án, lưu chỉ mục, dẫn nguồn, đánh giá tìm kiếm và giao diện chat trên MkDocs.
+Cài [Ollama](https://ollama.com/), khởi động dịch vụ và tải model:
+
+```bash
+ollama pull qwen3:4b-instruct
+```
+
+Mở terminal khác, từ thư mục gốc dự án:
+
+```bash
+cd backend
+uv sync
+uv run python ingest.py
+uv run uvicorn app:app --host 127.0.0.1 --port 8001
+```
+
+Lần ingest đầu tiên cần tải model embedding và tạo chỉ mục tại `backend/.data/`. Chạy lại ingest sau khi cập nhật tài liệu trong danh sách `ARTICLE_PATHS` hoặc thay đổi cấu hình chỉ mục, rồi khởi động lại backend.
+
+Giữ cả website và backend đang chạy. Mở một bài viết trên website local, bấm robot Pip và nhập câu hỏi. Có thể kiểm tra API tại **http://127.0.0.1:8001/health** hoặc **http://127.0.0.1:8001/docs**.
+
+Khi triển khai chatbot cho website công khai, cần một backend HTTPS, cấu hình `pip-chat-endpoint` trong thẻ meta của trang và thêm origin `https://itslewis-de.github.io` vào CORS tại `backend/app.py`. GitHub Pages chỉ lưu trữ phần giao diện.
 
 ## Cấu trúc dự án
 
 ```text
 .
-├── docs/
-│   ├── index.md                 # Landing page
-│   ├── architecture/
-│   │   └── shared-disk-vs-shared-nothing.md
-│   ├── airflow/
-│   │   └── architecture.md      # Kiến trúc Apache Airflow
-│   ├── spark/
-│   │   ├── overview.md          # Tổng quan Apache Spark
-│   │   └── *.md                 # Mười chương chuyên sâu trong series Spark
-│   └── stylesheets/
-│       └── landing.css          # Giao diện landing page
-├── mkdocs.yml                   # Cấu hình website
-├── pyproject.toml               # Dependency của dự án
-└── uv.lock                      # Phiên bản dependency được khóa
+├── docs/                 # Bài viết, landing page, hình ảnh, CSS và JavaScript
+├── backend/              # API chatbot, ingestion, retrieval và đánh giá RAG
+├── overrides/            # Tùy biến template MkDocs Material
+├── assets/readme/        # Ảnh chụp website và chatbot cho README
+├── scripts/              # Công cụ hỗ trợ phát triển
+├── mkdocs.yml            # Điều hướng và cấu hình website
+├── pyproject.toml        # Dependency cho website
+└── uv.lock               # Phiên bản dependency được khóa
 ```
+
+## Đóng góp
+
+Bạn có thể [mở issue](https://github.com/ItsLewis-DE/behind-the-pipeline/issues) để báo lỗi, góp ý cách giải thích hoặc đề xuất chủ đề. Với thay đổi nội dung, hãy ghi rõ nguồn tham khảo, kiểm tra hình ảnh và liên kết, sau đó chạy `uv run mkdocs build --strict` trước khi gửi pull request.
+
 ---
 
-Behind the Pipeline được xây dựng với mục tiêu biến những kiến thức rời rạc trong công việc hằng ngày thành một hệ thống kiến thức rõ ràng, có thể tra cứu và tiếp tục mở rộng.
+<p align="center">
+  <strong>Behind the Pipeline — từ sử dụng công cụ đến hiểu hệ thống.</strong><br>
+  <a href="https://itslewis-de.github.io/behind-the-pipeline/">Khám phá thư viện →</a>
+</p>

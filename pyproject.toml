@@ -1,7 +1,7 @@
 [project]
 name = "architecture-notes"
 version = "0.1.0"
-description = "Add your description here"
+description = "Vietnamese Data Engineering handbook with system architecture deep dives, database internals, and a RAG reading assistant."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
