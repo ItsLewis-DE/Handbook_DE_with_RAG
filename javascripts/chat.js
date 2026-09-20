@@ -1,6 +1,5 @@
 (() => {
   const lottieUrl = new URL("../assets/images/pip/pip.json", document.currentScript.src).href;
-  const avatarUrl = new URL("../assets/images/chat/tuat-danh-binh-avatar.png", document.currentScript.src).href;
   const endpoint = document.querySelector('meta[name="pip-chat-endpoint"]')?.content
     || "http://127.0.0.1:8001/chat";
 
@@ -162,7 +161,7 @@
 
   function createMessage(role, text) {
     const message = createElement("div", `pip-message pip-message--${role}`);
-    const label = createElement("span", "pip-message__label", role === "bot" ? "Tuất Danh Bình" : "Bạn");
+    const label = createElement("span", "pip-message__label", role === "bot" ? "Pip" : "Bạn");
     const bubble = createElement("div", "pip-message__bubble", text);
     message.append(label, bubble);
     return message;
@@ -205,13 +204,13 @@
     const chat = createElement("aside", "pip-chat");
     const launcher = createElement("button", "pip-launcher");
     launcher.type = "button";
-    launcher.setAttribute("aria-label", "Hỏi Tuất Danh Bình về bài viết này");
+    launcher.setAttribute("aria-label", "Hỏi Pip về bài viết này");
     launcher.setAttribute("aria-expanded", "false");
     launcher.setAttribute("aria-controls", "pip-chat-panel");
     launcher.innerHTML = `
       <div class="pip-speech-bubble" aria-hidden="true">
         <span class="pip-speech-bubble__dot"></span>
-        <span class="pip-speech-bubble__text">Hỏi Tuất Danh Bình 👋</span>
+        <span class="pip-speech-bubble__text">Hỏi Pip 👋</span>
       </div>
       <div class="pip-mascot-wrapper">${robotMarkup("full")}</div>
     `;
@@ -223,8 +222,8 @@
     panel.setAttribute("aria-labelledby", "pip-chat-title");
     panel.innerHTML = `
       <header class="pip-panel__head">
-        <span class="pip-panel__avatar"><img src="${avatarUrl}" alt="Avatar Tuất Danh Bình"></span>
-        <div><h2 class="pip-panel__title" id="pip-chat-title">Tuất Danh Bình · Bạn đọc cùng bạn</h2><span class="pip-panel__status">Sẵn sàng đọc bài</span></div>
+        <span class="pip-panel__avatar" role="img" aria-label="Robot Pip">${robotMarkup("avatar")}</span>
+        <div><h2 class="pip-panel__title" id="pip-chat-title">Pip · Bạn đọc cùng bạn</h2><span class="pip-panel__status">Sẵn sàng đọc bài</span></div>
         <button class="pip-panel__close" type="button" aria-label="Thu nhỏ khung chat">×</button>
       </header>
       <div class="pip-context">
@@ -298,7 +297,7 @@
     pose("idle");
     scheduleReading();
     panel.querySelector(".pip-context strong").textContent = articleTitle;
-    messages.append(createMessage("bot", "Mình cùng đọc bài này nhé. Bạn muốn Tuất Danh Bình làm rõ phần nào?"));
+    messages.append(createMessage("bot", "Mình cùng đọc bài này nhé. Bạn muốn Pip làm rõ phần nào?"));
 
     ["Tóm tắt bài này", "Giải thích bằng ví dụ", "Nêu ý chính cần nhớ"].forEach((text) => {
       const button = createElement("button", "pip-suggestion", text);
@@ -343,7 +342,7 @@
       status.textContent = "Đang tìm trong tài liệu";
 
       const typing = createMessage("bot", "");
-      typing.querySelector(".pip-message__bubble").innerHTML = '<span class="pip-typing" aria-label="Tuất Danh Bình đang suy nghĩ"><i></i><i></i><i></i></span>';
+      typing.querySelector(".pip-message__bubble").innerHTML = '<span class="pip-typing" aria-label="Pip đang suy nghĩ"><i></i><i></i><i></i></span>';
       messages.append(typing);
       messages.scrollTop = messages.scrollHeight;
 
