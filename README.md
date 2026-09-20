@@ -1,54 +1,52 @@
 <div align="center">
   <img src="docs/assets/images/brand/behind-the-pipeline-logo.svg" alt="Behind the Pipeline" width="88">
-  <h1>Behind the Pipeline</h1>
-  <p><strong>Hiểu sâu thế giới Data Engineering.</strong></p>
-  <p>Cẩm nang tiếng Việt về kiến trúc hệ thống dữ liệu, database internals<br>và những cơ chế phía sau các công cụ bạn sử dụng hằng ngày.</p>
-  <a href="https://itslewis-de.github.io/behind-the-pipeline/">
+  <h1>Pipeline RAG</h1>
+  <p><strong>Retrieval-Augmented Generation for Data Engineering.</strong></p>
+  <p>Hệ thống hỏi đáp tài liệu tiếng Việt với hybrid retrieval, câu trả lời có dẫn nguồn<br>và chatbot tích hợp trong website kiến thức Behind the Pipeline.</p>
+  <a href="https://itslewis-de.github.io/pipeline-rag/">
     <img src="https://img.shields.io/badge/🌐_KHÁM_PHÁ_WEBSITE-GitHub_Pages-ed6840?style=for-the-badge&amp;labelColor=17302d" alt="Khám phá website trên GitHub Pages">
   </a>
   <p>
-    <a href="https://itslewis-de.github.io/behind-the-pipeline/#thu-vien">Thư viện bài viết</a> ·
+    <a href="https://itslewis-de.github.io/pipeline-rag/#thu-vien">Thư viện bài viết</a> ·
     <a href="#chatbot-đọc-cùng-bạn">Chatbot</a> ·
     <a href="#chạy-trên-máy-cá-nhân">Chạy tại local</a>
   </p>
 </div>
 
 > [!IMPORTANT]
-> **[→ MỞ WEBSITE: itslewis-de.github.io/behind-the-pipeline](https://itslewis-de.github.io/behind-the-pipeline/)**
+> **[→ MỞ WEBSITE: itslewis-de.github.io/pipeline-rag](https://itslewis-de.github.io/pipeline-rag/)**
 >
-> Đọc bài viết, khám phá sơ đồ kiến trúc và tìm hiểu cách các hệ thống dữ liệu hoạt động từ bên trong.
-
-[![Giao diện trang chủ Behind the Pipeline](assets/readme/website-desktop.png)](https://itslewis-de.github.io/behind-the-pipeline/)
+> Khám phá kho kiến thức Behind the Pipeline và giao diện chatbot. Chạy backend local theo hướng dẫn bên dưới để trải nghiệm hỏi đáp RAG.
 
 ## Về dự án
 
-**Behind the Pipeline** đi từ bài toán thực tế đến kiến trúc, cơ chế vận hành và những đánh đổi khi thiết kế hệ thống. Dự án dành cho người đang học hoặc làm Data Engineering, muốn hiểu vì sao một công cụ tồn tại và khi nào nên sử dụng nó.
+**Pipeline RAG** là dự án **Retrieval-Augmented Generation (RAG)** cho kho kiến thức Data Engineering bằng tiếng Việt. Hệ thống xử lý tài liệu, tạo chỉ mục, truy xuất các đoạn liên quan và dùng mô hình ngôn ngữ để tạo câu trả lời kèm nguồn tham khảo. **Behind the Pipeline** là website xuất bản tài liệu và giao diện để người đọc tương tác với chatbot.
 
-- **Kiến thức bằng tiếng Việt:** giải thích theo mạch bài toán → khái niệm → kiến trúc → vận hành → giới hạn.
-- **Minh họa trực quan:** sơ đồ, hình ảnh và ví dụ gắn với nội dung bài viết.
-- **Thư viện tương tác:** thẻ bài viết có thể lật bằng nút, phím mũi tên hoặc thao tác kéo.
-- **Trải nghiệm đọc:** mục lục, tìm kiếm, liên kết tới từng phần và sao chép đoạn mã.
-- **Chatbot RAG:** hỏi đáp trên tài liệu dự án, trả lời bằng tiếng Việt và dẫn nguồn về bài viết.
+- **Hybrid retrieval:** kết hợp tìm kiếm vector trong Chroma với BM25 để tìm theo ngữ nghĩa và thuật ngữ kỹ thuật.
+- **Hợp nhất kết quả bằng RRF:** kết hợp thứ hạng của hai bộ tìm kiếm và chọn các section khác nhau làm ngữ cảnh.
+- **Trả lời có dẫn nguồn:** liên kết từ câu trả lời về đúng phần trong bài viết; kiểm tra citation và xử lý trường hợp thiếu bằng chứng.
+- **Mô hình chạy local:** Ollama phục vụ `qwen3:4b-instruct`; embedding đa ngôn ngữ dùng `intfloat/multilingual-e5-small`.
+- **Pipeline có thể đánh giá:** các script và bộ câu hỏi trong `backend/` hỗ trợ đánh giá retrieval và câu trả lời.
+- **Giao diện tích hợp:** API FastAPI kết nối chatbot ngay trong trang đọc bài, đi cùng thư viện kiến thức trực quan.
 
-## Nội dung trong thư viện
+## Luồng hoạt động RAG
 
-| Chủ đề | Nội dung chính | Đọc trên website |
-| --- | --- | --- |
-| Data Architecture | Shared-disk, shared-nothing, data locality, shuffle, skew và mở rộng hệ thống | [Shared-disk vs. shared-nothing](https://itslewis-de.github.io/behind-the-pipeline/architecture/shared-disk-vs-shared-nothing/) |
-| Apache Airflow | DAG, Scheduler, DAG File Processor, Executor và High Availability | [Kiến trúc Airflow](https://itslewis-de.github.io/behind-the-pipeline/airflow/architecture/) |
-| PostgreSQL | Database cluster, schema, `shared_buffers` và cấu trúc lưu trữ | [Phân cấp & lưu trữ](https://itslewis-de.github.io/behind-the-pipeline/postgres/postgres/) |
-| Database Index | Full table scan, cấu trúc index và cách database tìm bản ghi | [Index trong cơ sở dữ liệu](https://itslewis-de.github.io/behind-the-pipeline/index/) |
-| Apache Spark | Kiến trúc, execution model, partition, shuffle, query planning, tuning và streaming | [Bộ bài Apache Spark](https://itslewis-de.github.io/behind-the-pipeline/spark/overview/) |
+```mermaid
+flowchart LR
+    D[Markdown tài liệu] --> C[Chia đoạn và metadata]
+    C --> E[Multilingual E5 embeddings]
+    E --> V[(Chroma)]
+    V --> B[BM25 trên corpus đã lưu]
+    Q[Câu hỏi] --> H[Hybrid retrieval: vector + BM25]
+    V --> H
+    B --> H
+    H --> R[RRF và chọn section]
+    R --> L[Ollama / Qwen3]
+    L --> A[Câu trả lời và nguồn tham khảo]
+    A --> U[Chatbot trên website]
+```
 
-**Trong lộ trình:** Apache Kafka, dbt, Docker và Kubernetes cho Data Engineer.
-
-## Thiết kế website
-
-Giao diện sử dụng nền giấy sáng, màu xanh trầm và điểm nhấn cam; kết hợp họa tiết bản vẽ kỹ thuật với thẻ bài viết dạng chồng giấy. Trang bài viết dành nhiều không gian cho nội dung, mục lục và hình minh họa. Bố cục thích ứng với desktop và điện thoại, cùng font được lưu trong dự án.
-
-![Trang bài viết Airflow với mục lục và robot mở chatbot](assets/readme/article-and-mascot.png)
-
-*Ảnh chụp giao diện thật từ bản build của dự án: trang chủ ở phía trên và trang đọc bài Airflow cùng robot Pip.*
+`ingest.py` tạo và lưu chỉ mục; `retrieval.py` truy xuất ngữ cảnh; `answering.py` sinh, kiểm tra câu trả lời và citation; `app.py` cung cấp API `/chat` cho giao diện.
 
 ## Chatbot đọc cùng bạn
 
@@ -69,6 +67,28 @@ Ví dụ câu hỏi: “Executor trong Airflow làm gì?”, “Shared-disk khá
 > [!NOTE]
 > GitHub Pages phục vụ website tĩnh. Chatbot hiện mặc định gọi `http://127.0.0.1:8001/chat` và cần backend chạy riêng; chưa có API công khai được cấu hình sẵn. Ảnh trên là giao diện chào của chatbot, không phải một phiên trả lời trực tuyến. Chỉ mục hiện bao gồm bài Airflow, Shared-disk vs. shared-nothing, PostgreSQL và Index; bộ bài Spark chưa được đưa vào RAG.
 
+## Nội dung trong thư viện
+
+| Chủ đề | Nội dung chính | Đọc trên website |
+| --- | --- | --- |
+| Data Architecture | Shared-disk, shared-nothing, data locality, shuffle, skew và mở rộng hệ thống | [Shared-disk vs. shared-nothing](https://itslewis-de.github.io/pipeline-rag/architecture/shared-disk-vs-shared-nothing/) |
+| Apache Airflow | DAG, Scheduler, DAG File Processor, Executor và High Availability | [Kiến trúc Airflow](https://itslewis-de.github.io/pipeline-rag/airflow/architecture/) |
+| PostgreSQL | Database cluster, schema, `shared_buffers` và cấu trúc lưu trữ | [Phân cấp & lưu trữ](https://itslewis-de.github.io/pipeline-rag/postgres/postgres/) |
+| Database Index | Full table scan, cấu trúc index và cách database tìm bản ghi | [Index trong cơ sở dữ liệu](https://itslewis-de.github.io/pipeline-rag/index/) |
+| Apache Spark | Kiến trúc, execution model, partition, shuffle, query planning, tuning và streaming | [Bộ bài Apache Spark](https://itslewis-de.github.io/pipeline-rag/spark/overview/) |
+
+**Trong lộ trình:** Apache Kafka, dbt, Docker và Kubernetes cho Data Engineer.
+
+## Thiết kế website
+
+[![Giao diện trang chủ Behind the Pipeline](assets/readme/website-desktop.png)](https://itslewis-de.github.io/pipeline-rag/)
+
+Giao diện sử dụng nền giấy sáng, màu xanh trầm và điểm nhấn cam; kết hợp họa tiết bản vẽ kỹ thuật với thẻ bài viết dạng chồng giấy. Trang bài viết dành nhiều không gian cho nội dung, mục lục và hình minh họa. Bố cục thích ứng với desktop và điện thoại, cùng font được lưu trong dự án.
+
+![Trang bài viết Airflow với mục lục và robot mở chatbot](assets/readme/article-and-mascot.png)
+
+*Ảnh chụp giao diện thật từ bản build của dự án: trang chủ ở phía trên và trang đọc bài Airflow cùng robot Pip.*
+
 ## Công nghệ
 
 | Thành phần | Công nghệ |
@@ -88,8 +108,8 @@ Ví dụ câu hỏi: “Executor trong Airflow làm gì?”, “Shared-disk khá
 Cần **Python 3.12+** và [uv](https://docs.astral.sh/uv/).
 
 ```bash
-git clone https://github.com/ItsLewis-DE/behind-the-pipeline.git
-cd behind-the-pipeline
+git clone https://github.com/ItsLewis-DE/pipeline-rag.git
+cd pipeline-rag
 uv sync
 uv run mkdocs serve
 ```
@@ -141,11 +161,11 @@ Khi triển khai chatbot cho website công khai, cần một backend HTTPS, cấ
 
 ## Đóng góp
 
-Bạn có thể [mở issue](https://github.com/ItsLewis-DE/behind-the-pipeline/issues) để báo lỗi, góp ý cách giải thích hoặc đề xuất chủ đề. Với thay đổi nội dung, hãy ghi rõ nguồn tham khảo, kiểm tra hình ảnh và liên kết, sau đó chạy `uv run mkdocs build --strict` trước khi gửi pull request.
+Bạn có thể [mở issue](https://github.com/ItsLewis-DE/pipeline-rag/issues) để báo lỗi, góp ý cách giải thích hoặc đề xuất chủ đề. Với thay đổi nội dung, hãy ghi rõ nguồn tham khảo, kiểm tra hình ảnh và liên kết, sau đó chạy `uv run mkdocs build --strict` trước khi gửi pull request.
 
 ---
 
 <p align="center">
-  <strong>Behind the Pipeline — từ sử dụng công cụ đến hiểu hệ thống.</strong><br>
-  <a href="https://itslewis-de.github.io/behind-the-pipeline/">Khám phá thư viện →</a>
+  <strong>Pipeline RAG — hỏi từ tài liệu, trả lời có nguồn.</strong><br>
+  <a href="https://itslewis-de.github.io/pipeline-rag/">Khám phá thư viện →</a>
 </p>

@@ -1,8 +1,8 @@
 site_name: Behind the Pipeline
-site_description: Cẩm nang Data Engineering bằng tiếng Việt — kiến trúc hệ thống, database internals và chatbot RAG hỗ trợ đọc tài liệu.
-site_url: https://itslewis-de.github.io/behind-the-pipeline/
-repo_url: https://github.com/ItsLewis-DE/behind-the-pipeline
-repo_name: ItsLewis-DE/behind-the-pipeline
+site_description: Pipeline RAG — chatbot hỏi đáp tài liệu Data Engineering bằng tiếng Việt, kết hợp tìm kiếm hybrid, mô hình ngôn ngữ local và trích dẫn nguồn.
+site_url: https://itslewis-de.github.io/pipeline-rag/
+repo_url: https://github.com/ItsLewis-DE/pipeline-rag
+repo_name: ItsLewis-DE/pipeline-rag
 
 theme:
   name: material

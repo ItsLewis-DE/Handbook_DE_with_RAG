@@ -1,7 +1,7 @@
 [project]
 name = "architecture-notes"
 version = "0.1.0"
-description = "Vietnamese Data Engineering handbook with system architecture deep dives, database internals, and a RAG reading assistant."
+description = "Retrieval-Augmented Generation for Vietnamese Data Engineering knowledge with hybrid search, source citations, and a local LLM chatbot."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
