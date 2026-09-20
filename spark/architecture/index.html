@@ -1,0 +1,1528 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Driver, Executor, Cluster Manager, Spark Classic, Spark Connect và ranh giới lỗi của một application.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/pipeline-rag/spark/architecture/">
+      
+      
+        <link rel="prev" href="../when-to-use/">
+      
+      
+        <link rel="next" href="../data-abstractions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Kiến trúc Apache Spark - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-hai-lop-can-tach-biet" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>APACHE SPARK OVERVIEW <b>♦</b></span>
+        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>APACHE SPARK OVERVIEW <b>♦</b></span>
+        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Custom Brand & Retro Navigation Bar -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <!-- Brand & Logo -->
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline">
+        <span class="custom-header__logo-wrap">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__wordmark">
+          BEHIND THE <em>PIPELINE</em>
+        </span>
+        <span class="custom-header__badge">ARCH.DOCS</span>
+      </a>
+
+      <!-- Retro Nav Pills -->
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-nav-pill ">
+          <span>HOME</span>
+        </a>
+        <a href="../../postgres/postgres/" class="custom-nav-pill ">
+          <span>POSTGRESQL</span>
+        </a>
+        <a href="../../airflow/architecture/" class="custom-nav-pill ">
+          <span>AIRFLOW</span>
+        </a>
+        <a href="../overview/" class="custom-nav-pill is-active">
+          <span>SPARK</span>
+        </a>
+        <a href="../../architecture/shared-disk-vs-shared-nothing/" class="custom-nav-pill ">
+          <span>SHARED-DISK</span>
+        </a>
+        <a href="../../index/" class="custom-nav-pill ">
+          <span>INDEXING</span>
+        </a>
+      </nav>
+
+      <!-- System Status / Meta Indicator -->
+      <div class="custom-header__status" aria-label="Trạng thái hệ thống">
+        <span class="custom-header__status-dot" aria-hidden="true"></span>
+        <span class="custom-header__status-text">EDITION 2026</span>
+        <span class="custom-header__status-tag">SYS.ONLINE</span>
+      </div>
+    </div>
+  </div>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/pipeline-rag" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/pipeline-rag
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/shared-disk-vs-shared-nothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared-disk vs shared-nothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phân cấp & Lưu trữ PostgreSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Apache Airflow
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Apache Spark
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../when-to-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Khi nào nên dùng Spark?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Spark
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-hai-lop-can-tach-biet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Hai lớp cần tách biệt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-driver-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Driver internals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Driver internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparksession-va-sparkcontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SparkSession và SparkContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dagscheduler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DAGScheduler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskscheduler-va-schedulerbackend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TaskScheduler và SchedulerBackend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-at-ap-luc-len-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata đặt áp lực lên Driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-executor-va-blockmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Executor và BlockManager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-vong-oi-mot-application-classic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Vòng đời một application Classic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-spark-connect-thay-oi-ranh-gioi-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Spark Connect thay đổi ranh giới nào?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-failure-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Failure domain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-network-va-security-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Network và security boundary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cach-oc-log-theo-kien-truc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Cách đọc log theo kiến trúc
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ket-luan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kết luận
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tai-lieu-chinh-thuc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tài liệu chính thức
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-abstractions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDD, DataFrame và Dataset
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../execution-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execution Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../query-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Query Planning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partition-shuffle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Partitioning và Shuffle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-fault-tolerance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory và Fault Tolerance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structured-streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Structured Streaming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-hai-lop-can-tach-biet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Hai lớp cần tách biệt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-driver-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Driver internals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Driver internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparksession-va-sparkcontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SparkSession và SparkContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dagscheduler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DAGScheduler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskscheduler-va-schedulerbackend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TaskScheduler và SchedulerBackend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-at-ap-luc-len-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata đặt áp lực lên Driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-executor-va-blockmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Executor và BlockManager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-vong-oi-mot-application-classic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Vòng đời một application Classic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-spark-connect-thay-oi-ranh-gioi-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Spark Connect thay đổi ranh giới nào?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-failure-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Failure domain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-network-va-security-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Network và security boundary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cach-oc-log-theo-kien-truc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Cách đọc log theo kiến trúc
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ket-luan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kết luận
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tai-lieu-chinh-thuc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tài liệu chính thức
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="kien-truc-apache-spark">Kiến trúc Apache Spark</h1>
+<blockquote>
+<p><strong>Phạm vi:</strong> Apache Spark 4.2.0. Phần tiến trình và cấp tài nguyên bên dưới mô tả <strong>Spark Classic</strong>. Với Spark Connect, client nói chuyện với một Spark Connect server qua giao thức riêng; <code>SparkContext</code> không nằm trong client như Classic.</p>
+</blockquote>
+<p>Một Spark application không phải một process “phình to” trên nhiều máy. Nó là một tập process có vai trò và vòng đời khác nhau: Driver giữ quyền điều phối, Cluster Manager cấp tài nguyên, Executor thực thi Task và giữ dữ liệu trung gian của riêng application.</p>
+<h2 id="1-hai-lop-can-tach-biet">1. Hai lớp cần tách biệt</h2>
+<pre class="mermaid"><code>flowchart TB
+    subgraph Control[Control plane của application]
+        D["Driver&lt;br/&gt;SparkSession · SparkContext&lt;br/&gt;DAGScheduler · TaskScheduler"]
+        CM["Cluster Manager&lt;br/&gt;Standalone · YARN · Kubernetes"]
+        D &lt;--&gt;|"yêu cầu/cập nhật tài nguyên"| CM
+    end
+    subgraph Data[Execution và data plane]
+        E1["Executor A&lt;br/&gt;Task threads · BlockManager"]
+        E2["Executor B&lt;br/&gt;Task threads · BlockManager"]
+        E3["Executor C&lt;br/&gt;Task threads · BlockManager"]
+        E1 &lt;--&gt;|"shuffle blocks"| E2
+        E2 &lt;--&gt;|"shuffle blocks"| E3
+    end
+    D --&gt;|"launch task / status"| E1
+    D --&gt;|"launch task / status"| E2
+    D --&gt;|"launch task / status"| E3
+    CM --&gt;|"allocate process"| E1
+    CM --&gt;|"allocate process"| E2
+    CM --&gt;|"allocate process"| E3</code></pre>
+<p>Cluster Manager quyết định <strong>process được chạy ở đâu và có bao nhiêu tài nguyên</strong>. Driver quyết định <strong>Task nào chạy trên Executor nào</strong>. Nhầm hai lớp này dẫn đến chẩn đoán sai: YARN/Kubernetes có thể báo application được cấp đủ container/pod, nhưng Spark vẫn chậm vì plan, số partition hoặc skew.</p>
+<h2 id="2-driver-internals">2. Driver internals</h2>
+<h3 id="sparksession-va-sparkcontext">SparkSession và SparkContext</h3>
+<p><code>SparkSession</code> là entry point thống nhất cho DataFrame, SQL, catalog và configuration theo session. Trong Classic, nó dựa trên <code>SparkContext</code>, đối tượng đại diện cho kết nối của application tới cluster và là entry point của Spark Core/RDD.</p>
+<p>Không nên tạo nhiều <code>SparkContext</code> trong cùng JVM. Session mới có thể chia sẻ context nhưng mang SQL configuration/catalog state khác tùy cách tạo.</p>
+<h3 id="dagscheduler">DAGScheduler</h3>
+<p>DAGScheduler chuyển một Job thành DAG các Stage. Nó theo dõi dependency, xác định shuffle boundary, tạo <code>ShuffleMapStage</code>/<code>ResultStage</code>, và yêu cầu chạy lại Stage hoặc partition cần thiết khi output bị mất.</p>
+<h3 id="taskscheduler-va-schedulerbackend">TaskScheduler và SchedulerBackend</h3>
+<p>TaskScheduler nhận các TaskSet của từng Stage, áp dụng locality/fairness/FIFO và retry task. SchedulerBackend giao tiếp với Executor/cluster-specific backend để nhận resource offer và launch task. Đây là lý do Stage graph và placement của Task là trách nhiệm Spark, không phải trực tiếp của Kubernetes/YARN scheduler.</p>
+<h3 id="metadata-at-ap-luc-len-driver">Metadata đặt áp lực lên Driver</h3>
+<p>Driver giữ logical/physical plan, trạng thái Job/Stage/Task, broadcast metadata và kết quả nhỏ trả về. Hàng triệu Task, plan sinh tự động quá lớn, <code>collect()</code> hoặc broadcast object khổng lồ đều có thể làm Driver thiếu heap dù Executor còn dư memory.</p>
+<h2 id="3-executor-va-blockmanager">3. Executor và BlockManager</h2>
+<p>Executor là JVM process dành riêng cho một application. Mỗi Executor:</p>
+<ul>
+<li>chạy nhiều Task đồng thời, thường theo số executor cores;</li>
+<li>quản lý execution/storage memory;</li>
+<li>giữ cached partitions và broadcast blocks;</li>
+<li>ghi/đọc shuffle blocks trên local disk và qua network;</li>
+<li>heartbeat và gửi Task metrics/status về Driver.</li>
+</ul>
+<p><code>BlockManager</code> quản lý block ở memory/disk và truyền block giữa các node. Cache và shuffle đều dùng local resource, nhưng có vòng đời/phục hồi khác nhau: cached partition có thể recompute từ lineage; shuffle output mất có thể buộc map stage chạy lại.</p>
+<p>Executor không được chia sẻ giữa applications. Hai application muốn dùng chung một dataset phải ghi/đọc qua storage bên ngoài; cache của application A không trở thành cache của application B.</p>
+<h2 id="4-vong-oi-mot-application-classic">4. Vòng đời một application Classic</h2>
+<ol>
+<li><code>spark-submit</code> chuẩn bị classpath, Spark configuration và application arguments.</li>
+<li>Driver chạy ở client hoặc được cluster manager khởi tạo trong cluster.</li>
+<li>Driver tạo <code>SparkContext</code>, đăng ký với cluster manager và yêu cầu Executor.</li>
+<li>Executor khởi động, đăng ký ngược với Driver và sẵn sàng nhận Task.</li>
+<li>Action tạo Job; Driver lập Stage và Task rồi gửi closure/code tới Executor.</li>
+<li>Executor đọc partition, chạy operator, tạo cache/shuffle/output và báo metrics.</li>
+<li>Khi application kết thúc, Executor bị thu hồi; local cache và local state không còn là durable data.</li>
+</ol>
+<p>Với Python, Executor JVM còn khởi tạo Python worker cho Python UDF/RDD function. Dữ liệu phải đi qua ranh giới JVM–Python; Arrow có thể vector hóa một số đường truyền nhưng không xóa hoàn toàn chi phí serialization và process boundary.</p>
+<h2 id="5-spark-connect-thay-oi-ranh-gioi-nao">5. Spark Connect thay đổi ranh giới nào?</h2>
+<p>Spark Connect tách client application khỏi Spark Driver bằng giao thức client–server. Client xây unresolved logical plan và gửi plan tới server; server phân tích và thực thi trên Spark cluster.</p>
+<pre class="mermaid"><code>flowchart LR
+    C["Ứng dụng client&lt;br/&gt;Python/Scala"] --&gt;|"gRPC · logical plan"| S["Spark Connect Server&lt;br/&gt;Driver-side session"]
+    S --&gt; E[Executors]
+    E --&gt;|"distributed result"| S
+    S --&gt;|"Arrow/result/error"| C</code></pre>
+<p>Hệ quả quan trọng:</p>
+<ul>
+<li>client không truy cập trực tiếp <code>SparkContext</code> hay RDD internals như Classic;</li>
+<li>dependency của client được tách khỏi dependency server tốt hơn;</li>
+<li>server có thể phục vụ nhiều session, vì vậy isolation, authentication và quota phải được thiết kế ở ranh giới server;</li>
+<li>lỗi client network không nhất thiết giống lỗi Driver, nhưng session/query lifecycle phải được quản lý rõ.</li>
+</ul>
+<p>Khi đọc một tài liệu nói “Driver chạy hàm <code>main</code> của bạn”, cần kiểm tra tài liệu đó đang nói về Classic hay Connect.</p>
+<h2 id="6-failure-domain">6. Failure domain</h2>
+<table>
+<thead>
+<tr>
+<th>Thành phần mất</th>
+<th>Tác động trực tiếp</th>
+<th>Cơ chế/điều kiện phục hồi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Một Task</td>
+<td>Partition đó chưa hoàn thành</td>
+<td>TaskScheduler retry đến giới hạn cấu hình</td>
+</tr>
+<tr>
+<td>Executor</td>
+<td>Task đang chạy, cache và local shuffle blocks có thể mất</td>
+<td>Thay Executor; recompute Task/Stage cần thiết</td>
+</tr>
+<tr>
+<td>Worker/node</td>
+<td>Mọi Executor/pod trên node mất</td>
+<td>Cluster manager cấp lại ở node khác nếu còn capacity</td>
+</tr>
+<tr>
+<td>Driver</td>
+<td>Control state của application mất</td>
+<td>Thường application thất bại; recovery tùy cluster mode/supervision và workload</td>
+</tr>
+<tr>
+<td>Cluster manager</td>
+<td>Không cấp/thu hồi được resource mới</td>
+<td>Task đang chạy có thể tiếp tục một thời gian; hành vi phụ thuộc nền tảng</td>
+</tr>
+<tr>
+<td>External storage</td>
+<td>Input/output không khả dụng</td>
+<td>Spark retry hữu hạn; phải xử lý consistency/idempotency ở hệ thống ngoài</td>
+</tr>
+</tbody>
+</table>
+<p>Spark fault tolerance bảo vệ computation tốt hơn side effect. Một Task ghi API bên ngoài rồi mất acknowledgement có thể được retry và ghi hai lần. Output committer, transactional table format hoặc idempotency key là phần của thiết kế end-to-end.</p>
+<h2 id="7-network-va-security-boundary">7. Network và security boundary</h2>
+<p>Driver phải được Executor truy cập; Executor trao đổi shuffle data với nhau; UI/event log có thể chứa SQL text, path hoặc metadata nhạy cảm. Production topology cần xem xét:</p>
+<ul>
+<li>DNS/routing và port reachability giữa Driver–Executor;</li>
+<li>TLS/authentication theo cluster manager và Spark network settings;</li>
+<li>secret injection thay vì đặt credential trong command line/config được log;</li>
+<li>quyền của service account lên input, output, checkpoint và event-log location;</li>
+<li>network policy không chặn shuffle/block transfer;</li>
+<li>redaction cho configuration và environment hiển thị trong UI.</li>
+</ul>
+<h2 id="8-cach-oc-log-theo-kien-truc">8. Cách đọc log theo kiến trúc</h2>
+<ul>
+<li>Driver log: planning, stage submission, executor registration/loss, job-level failure.</li>
+<li>Executor log: Task exception, OOM, Python worker failure, fetch/write issue cục bộ.</li>
+<li>Cluster-manager events: pod/container pending, eviction, quota, image pull, node pressure.</li>
+<li>Spark event log/UI: timeline và metrics đã tổng hợp; không thay thế hoàn toàn raw log.</li>
+</ul>
+<p>Nếu Executor liên tục bị “lost”, đừng chỉ tăng retry. Đối chiếu thời điểm mất Executor với GC, container exit code, node eviction và shuffle fetch failure để xác định failure domain thật.</p>
+<h2 id="ket-luan">Kết luận</h2>
+<p>Mental model đúng là: Cluster Manager cấp process; Driver biến plan thành công việc và điều phối; Executor thực thi và giữ dữ liệu tạm. Spark Connect thêm một ranh giới client–server phía trước Driver, chứ không loại bỏ kiến trúc thực thi phân tán phía sau.</p>
+<p><strong>Đọc tiếp:</strong> <a href="../execution-model/">Execution model</a> · <a href="../deployment/">Deployment</a> · <a href="../memory-fault-tolerance/">Memory và Fault Tolerance</a></p>
+<h2 id="tai-lieu-chinh-thuc">Tài liệu chính thức</h2>
+<ul>
+<li><a href="https://spark.apache.org/docs/4.2.0/cluster-overview.html">Cluster Mode Overview 4.2.0</a></li>
+<li><a href="https://spark.apache.org/spark-connect/">Spark Connect Overview</a></li>
+<li><a href="https://spark.apache.org/docs/4.2.0/api/java/org/apache/spark/sql/SparkSession.html">SparkSession API</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>
