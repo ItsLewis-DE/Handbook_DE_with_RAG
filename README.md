@@ -51,10 +51,10 @@ flowchart LR
 ## Chatbot đọc cùng bạn
 
 <p align="center">
-  <img src="assets/readme/chatbot-panel.png" alt="Khung chat Tuất Danh Bình với ngữ cảnh bài Airflow, lời chào và câu hỏi gợi ý" width="460">
+  <img src="assets/readme/chatbot-panel.png" alt="Khung chat Pip với ngữ cảnh bài Airflow, lời chào và câu hỏi gợi ý" width="460">
 </p>
 
-**Tuất Danh Bình** là trợ lý đọc tài liệu, được mở qua robot **Pip** ở góc trang bài viết. Khung chat hiển thị tên bài đang đọc, các gợi ý câu hỏi và ô nhập để trao đổi với backend RAG.
+**Pip** là trợ lý đọc tài liệu, được mở qua biểu tượng robot ở góc trang bài viết. Khung chat hiển thị tên bài đang đọc, các gợi ý câu hỏi và ô nhập để trao đổi với backend RAG.
 
 - Tìm nội dung liên quan bằng tìm kiếm ngữ nghĩa kết hợp BM25.
 - Sinh câu trả lời tiếng Việt bằng Ollama với model `qwen3:4b-instruct`.
