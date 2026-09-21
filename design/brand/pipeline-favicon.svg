@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="title">
-  <title id="title">Behind the Pipeline</title>
-  <rect width="32" height="32" rx="7" fill="#17302D"/>
-  <path d="M9 26V7H17C22 7 25 10 25 15S22 23 17 23H15" fill="none" stroke="#F3F0E8" stroke-width="4"/>
-  <path d="M9 15H17" stroke="#B38A58" stroke-width="3"/>
-</svg>

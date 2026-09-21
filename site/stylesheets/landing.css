@@ -3638,6 +3638,7 @@ body:has(.landing-page) .md-content__inner::before {
   background: linear-gradient(135deg, rgba(181, 216, 199, 0.19), transparent 60%), var(--glass-surface);
   box-shadow: inset 0 1px 0 rgba(223, 243, 231, 0.5), inset 0 -1px 0 rgba(4, 18, 16, 0.18), 0 16px 40px -14px rgba(23, 48, 45, 0.32);
   color: var(--landing-paper);
+  grid-column: 1 / -1;
 }
 
 .published-article--latest:hover {

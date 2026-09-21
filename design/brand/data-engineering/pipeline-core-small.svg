@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-labelledby="title">
-  <title id="title">Behind the Pipeline — biểu tượng cỡ nhỏ</title>
-  <g stroke="#17302D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 7H8Q12 7 12 11V21Q12 25 8 25H6M12 16H18"/>
-    <ellipse cx="24" cy="8" rx="6" ry="3"/>
-    <path d="M18 8V23C18 24.7 20.7 26 24 26S30 24.7 30 23V8"/>
-  </g>
-  <path d="M2 5H6V9H2ZM2 23H6V27H2Z" fill="#B38A58"/>
-</svg>

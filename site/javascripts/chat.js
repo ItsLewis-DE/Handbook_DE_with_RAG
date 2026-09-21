@@ -375,7 +375,7 @@
     launcher.innerHTML = `
       <div class="pip-speech-bubble" aria-hidden="true">
         <span class="pip-speech-bubble__dot"></span>
-        <span class="pip-speech-bubble__text">Hỏi Pip</span>
+        <span class="pip-speech-bubble__text">Hỏi Pip 👋</span>
       </div>
       <div class="pip-mascot-wrapper">${robotMarkup("full")}</div>
     `;

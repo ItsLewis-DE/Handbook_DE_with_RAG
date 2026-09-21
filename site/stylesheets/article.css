@@ -275,6 +275,13 @@ body:has(.airflow-article-hero) .md-typeset {
   content: "POSTGRESQL";
 }
 
+.spark-article-hero::before {
+  content: "SPARK";
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
 .airflow-article-hero::after {
   background: var(--airflow-accent-bright);
   content: "";
