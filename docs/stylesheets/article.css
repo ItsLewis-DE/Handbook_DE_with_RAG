@@ -1288,7 +1288,7 @@ body:has(.spark-chapter-hero) .spark-article-hero::after {
   letter-spacing: 0.08em;
 }
 
-.spark-series-progress__track {
+body:has(.spark-chapter-hero) .md-typeset .spark-series-progress__track {
   display: grid;
   gap: 0.35rem;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1412,11 +1412,21 @@ body:has(.spark-chapter-hero) .spark-article-hero::after {
 }
 
 @media screen and (max-width: 45rem) {
-  .spark-series-progress {
-    margin-inline: 1rem;
+  body:has(.spark-chapter-hero) .md-content__inner {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  .spark-series-progress__track {
+  body:has(.spark-chapter-hero) .spark-article-hero {
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+
+  .spark-series-progress {
+    margin-inline: 0;
+  }
+
+  body:has(.spark-chapter-hero) .md-typeset .spark-series-progress__track {
     display: flex;
     max-width: 100% !important;
     overflow-x: auto;
