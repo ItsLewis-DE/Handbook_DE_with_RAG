@@ -1231,3 +1231,217 @@ body:has(.storage-article-hero) .md-typeset blockquote {
     display: none;
   }
 }
+
+/* Spark handbook chapters: one visual system across the ten deep dives. */
+body:has(.spark-chapter-hero) {
+  --airflow-canvas: #f6f1e8;
+  --airflow-ink: #17232b;
+  --airflow-muted: #52636d;
+  --airflow-accent: #c64f1a;
+  --airflow-accent-bright: #f06b2b;
+  --airflow-diagram-bg: #eee7dc;
+  --airflow-diagram-node: #fffaf2;
+  --airflow-line: rgba(23, 35, 43, 0.15);
+}
+
+.spark-chapter-hero {
+  display: contents;
+}
+
+body:has(.spark-chapter-hero) .spark-article-hero {
+  background:
+    linear-gradient(135deg, rgba(240, 107, 43, 0.08), transparent 46%),
+    radial-gradient(circle at 85% 20%, rgba(198, 79, 26, 0.1), transparent 28%);
+}
+
+body:has(.spark-chapter-hero) .spark-article-hero::after {
+  left: clamp(2rem, 6vw, 4.3rem);
+  right: auto;
+  width: clamp(4rem, 12vw, 8rem);
+}
+
+.spark-series-progress {
+  border-bottom: 1px solid var(--airflow-line);
+  margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+  padding: 0 0 1.2rem;
+}
+
+.spark-series-progress__heading {
+  align-items: baseline;
+  display: flex;
+  font-family: var(--md-code-font-family);
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.spark-series-progress__heading span {
+  color: var(--airflow-muted);
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+}
+
+.spark-series-progress__heading strong {
+  color: var(--airflow-accent);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+}
+
+.spark-series-progress__track {
+  display: grid;
+  gap: 0.35rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  list-style: none !important;
+  margin: 0 !important;
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+.spark-series-progress__track li {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.spark-series-progress__track a {
+  align-items: center;
+  border: 1px solid var(--airflow-line);
+  color: var(--airflow-muted) !important;
+  display: flex;
+  gap: 0.42rem;
+  min-height: 2.25rem;
+  padding: 0.42rem 0.5rem;
+  text-decoration: none !important;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.spark-series-progress__track a:hover,
+.spark-series-progress__track a:focus-visible {
+  border-color: var(--airflow-accent);
+  color: var(--airflow-ink) !important;
+}
+
+.spark-series-progress__track b {
+  color: var(--airflow-accent);
+  font-family: var(--md-code-font-family);
+  font-size: 0.48rem;
+  letter-spacing: 0.04em;
+}
+
+.spark-series-progress__track span {
+  font-size: 0.56rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.spark-series-progress__track .is-complete a {
+  background: rgba(23, 35, 43, 0.035);
+}
+
+.spark-series-progress__track .is-current a {
+  background: var(--airflow-ink);
+  border-color: var(--airflow-ink);
+  color: var(--airflow-canvas) !important;
+}
+
+.spark-series-progress__track .is-current b {
+  color: var(--airflow-accent-bright);
+}
+
+.spark-series-nav {
+  border-bottom: 1px solid var(--airflow-line);
+  border-top: 1px solid var(--airflow-line);
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: clamp(3rem, 7vw, 5rem) 0 2rem;
+}
+
+.md-typeset .spark-series-nav a {
+  color: var(--airflow-ink) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-height: 6rem;
+  padding: 1.15rem;
+  text-decoration: none !important;
+}
+
+.md-typeset .spark-series-nav a + a {
+  border-left: 1px solid var(--airflow-line);
+  text-align: right;
+}
+
+.md-typeset .spark-series-nav a:hover,
+.md-typeset .spark-series-nav a:focus-visible {
+  background: rgba(240, 107, 43, 0.08);
+}
+
+.spark-series-nav span {
+  color: var(--airflow-accent);
+  font-family: var(--md-code-font-family);
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.spark-series-nav strong {
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  font-size: clamp(1.05rem, 3vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.spark-reading-progress {
+  background: rgba(23, 35, 43, 0.12);
+  height: 0.16rem;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  top: 2.4rem;
+  z-index: 5;
+}
+
+.spark-reading-progress span {
+  background: var(--airflow-accent-bright, #f06b2b);
+  display: block;
+  height: 100%;
+  width: var(--spark-reading-progress, 0%);
+}
+
+@media screen and (max-width: 45rem) {
+  .spark-series-progress {
+    margin-inline: 1rem;
+  }
+
+  .spark-series-progress__track {
+    display: flex;
+    max-width: 100% !important;
+    overflow-x: auto;
+    padding-bottom: 0.55rem !important;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .spark-series-progress__track li {
+    flex: 0 0 7.2rem;
+    scroll-snap-align: start;
+  }
+
+  .spark-series-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .md-typeset .spark-series-nav a + a {
+    border-left: 0;
+    border-top: 1px solid var(--airflow-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spark-series-progress__track a {
+    transition: none;
+  }
+}

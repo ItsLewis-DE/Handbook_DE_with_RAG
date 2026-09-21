@@ -3,7 +3,19 @@ title: Khi nào nên dùng Apache Spark?
 description: Khung quyết định chọn Spark dựa trên workload, latency, data movement và chi phí vận hành.
 ---
 
-# Khi nào nên dùng Apache Spark?
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="01" data-reading-minutes="10">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 01 / DECISION</span>
+    </div>
+    <h1>Khi nào nên dùng<br><em>Apache Spark?</em></h1>
+    <p class="airflow-article-hero__dek">Chọn distributed compute từ hình dạng workload, SLA và data movement — không từ kích thước dữ liệu đứng riêng lẻ.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>DECISION FRAMEWORK</span><span>10 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0. Bài viết đánh giá Spark như một distributed compute engine, không mặc định gắn nó với một storage format hay một cluster manager cụ thể.
 
@@ -107,6 +119,24 @@ Task có thể retry. Bất kỳ side effect nào bên trong `mapPartitions`/UDF
 - Định nghĩa retry/idempotency cho output và side effect.
 - Lập kế hoạch quan sát: event log, Spark UI, application metrics và cost tags.
 - So sánh với phương án đơn giản hơn bằng cùng dataset và SLA.
+
+## 7. Thực chiến: có nên chuyển pipeline doanh thu sang Spark?
+
+Giả sử pipeline hiện tại đọc 1,8 TB Parquet mỗi ngày, join với bảng khách hàng 4 GB, tổng hợp theo quốc gia rồi ghi khoảng 3 GB kết quả. Job chạy trên một máy 95 phút; SLA là 45 phút. Đây chưa phải bằng chứng đủ để chọn Spark. Ta cần tách giới hạn hiện tại thành các phần đo được.
+
+| Câu hỏi | Bằng chứng cần thu | Ý nghĩa quyết định |
+| --- | --- | --- |
+| Scan có chia song song được không? | Số file, kích thước file, partition pruning và throughput object storage | Spark chỉ giúp nếu nhiều Task có thể đọc độc lập |
+| Join có làm phình dữ liệu không? | Cardinality trước/sau join, duplicate key và kích thước build side | Join sai grain có thể làm mọi engine chậm và cho kết quả sai |
+| Một máy nghẽn ở đâu? | CPU, memory peak, spill, disk/network throughput | Nếu source đã đạt quota, thêm Executor không tăng scan rate |
+| Đích chịu được bao nhiêu writer? | Request quota, commit latency, target file size | Parallelism phải bị chặn bởi downstream capacity |
+| Backfill có thường xuyên không? | RPO, số ngày phải chạy lại và cửa sổ vận hành | Đây thường là nơi distributed throughput tạo giá trị lớn nhất |
+
+Chạy ba benchmark trên cùng snapshot: engine hiện tại, Spark với DataFrame/SQL, và phương án warehouse nếu dữ liệu đã nằm trong warehouse. Giữ nguyên logic nghiệp vụ, kiểm tra equality của row count, key uniqueness, tổng doanh thu và null distribution. Với Spark, lưu `explain`, Spark event log, scan bytes, shuffle bytes, p50/p95 Task duration và tổng chi phí compute.
+
+Quyết định **go** khi Spark rút completion time xuống dưới SLA với headroom hợp lý, throughput tăng khi scale trong giới hạn source/sink, và team có thể vận hành event log, retry, data quality cùng chi phí. Quyết định **no-go** khi phần lớn 95 phút nằm ở một API đích tuần tự, một hot key không thể chia, cross-region I/O hoặc thời gian khởi tạo/queue. Trong các trường hợp đó, sửa data layout, business grain hay vị trí compute có giá trị hơn đổi engine.
+
+> **Điểm kiểm soát:** quyết định công nghệ phải kèm một workload fixture, một bảng số đo và tiêu chí dừng. “Dữ liệu sẽ lớn” không phải acceptance criterion.
 
 ## Kết luận
 

@@ -3,7 +3,19 @@ title: Kiến trúc Spark Structured Streaming
 description: Incremental execution, checkpoint, state store, watermark, output mode, delivery semantics và vận hành query dài hạn.
 ---
 
-# Kiến trúc Structured Streaming
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="10" data-reading-minutes="12">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 10 / STREAMING</span>
+    </div>
+    <h1>Kiến trúc<br><em>Structured Streaming</em></h1>
+    <p class="airflow-article-hero__dek">Thiết kế offset, checkpoint, state, watermark và sink commit như một protocol end-to-end có thể phục hồi.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>INCREMENTAL COMPUTE</span><span>12 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0. Micro-batch là execution mode mặc định. Continuous processing có feature/delivery semantics khác và không nên được suy diễn từ micro-batch.
 
@@ -152,6 +164,31 @@ Cảnh báo nên dựa trên end-to-end freshness và backlog growth, không ch�
 - Đánh giá additive/rename/type changes ở source, state và sink riêng biệt.
 - Không chạy hai query ghi cùng non-transactional sink mà thiếu coordination.
 - Với planned reset checkpoint, ghi rõ starting offsets và reconciliation window.
+
+## 12. Thực chiến: phân tích crash window của `foreachBatch`
+
+Một query đọc Kafka và dùng `foreachBatch` để upsert vào database. Spark truyền `batch_id`, nhưng điều đó tự nó chưa tạo exactly-once. Hãy xét crash xảy ra sau khi database commit nhưng trước khi Spark ghi nhận progress hoàn tất trong checkpoint. Khi restart, batch có thể được gọi lại; nếu code chỉ `INSERT`, dữ liệu trùng xuất hiện.
+
+Thiết kế protocol rõ ràng cho từng batch:
+
+1. Xác định business key và checkpoint/query lineage ổn định.
+2. Ghi staging theo `(query_id, batch_id)` hoặc idempotency key tương đương.
+3. Trong transaction đích, kiểm tra batch đã commit chưa, merge dữ liệu và đánh dấu batch commit atomically nếu nền tảng hỗ trợ.
+4. Chỉ trả thành công cho Spark sau khi transaction đích hoàn tất.
+5. Khi retry cùng `batch_id`, trả kết quả thành công mà không áp dụng side effect lần hai.
+
+| Crash point | Trạng thái quan sát được | Hành vi restart cần có |
+| --- | --- | --- |
+| Trước khi ghi sink | Chưa có commit đích | Chạy lại toàn batch |
+| Giữa các write không transaction | Có partial output | Reconcile/overwrite theo key; không append mù |
+| Sau sink commit, trước progress commit | Output đã có, Spark có thể replay | Deduplicate bằng batch/idempotency key |
+| Sau progress commit | Batch hoàn tất | Bắt đầu từ offset kế tiếp |
+
+Test phục hồi phải chủ động inject failure ở cả bốn điểm, không chỉ kill query giữa hai batch. Sau mỗi lần restart, kiểm tra uniqueness, count/sum theo business key, source offset coverage và batch ledger. Checkpoint nằm trên durable storage nhưng sink ledger là bằng chứng phía hệ thống đích.
+
+Watermark là một trục khác: nó giới hạn state/late-data semantics, không giải quyết duplicate do external commit. Với window aggregation, test record đúng hạn, trễ trong ngưỡng, trễ ngoài ngưỡng và thời điểm watermark tiến triển khi một source im lặng. Khi đổi code hoặc Spark version, chạy compatibility test trên bản sao checkpoint; không canary hai writer vào cùng sink nếu chưa có coordination.
+
+> **Correctness envelope:** source replay + deterministic transform + durable checkpoint + idempotent/transactional sink. Thiếu một cạnh thì nhãn “exactly-once” không còn là guarantee end-to-end.
 
 ## Kết luận
 

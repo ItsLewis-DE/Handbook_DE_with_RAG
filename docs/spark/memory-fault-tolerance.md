@@ -3,7 +3,19 @@ title: Memory và Fault Tolerance trong Spark
 description: Heap, overhead, unified memory, cache, spill, lineage, checkpoint và cơ chế phục hồi của Spark.
 ---
 
-# Memory và Fault Tolerance trong Spark
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="07" data-reading-minutes="11">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 07 / RESILIENCE</span>
+    </div>
+    <h1>Memory và<br><em>Fault Tolerance</em></h1>
+    <p class="airflow-article-hero__dek">Nối per-task working set, unified memory, spill, lineage và retry thành một mô hình chẩn đoán thống nhất.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>RESILIENCE</span><span>11 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0. Con số mặc định phụ thuộc version/deployment; luôn đối chiếu configuration của application đang chạy.
 
@@ -133,6 +145,30 @@ Fault tolerance của Spark không tạo exactly-once cho arbitrary side effect.
 5. Kiểm tra cache footprint, broadcast size, spill, GC và số Task đồng thời.
 6. Sửa distribution/plan/object representation trước.
 7. Chỉ sau đó sizing lại heap, overhead, cores per Executor và partition count.
+
+## 10. Thực chiến: container OOM dù heap còn trống
+
+Một PySpark Executor được cấu hình heap 8 GiB và memory overhead 2 GiB. Container bị kill ở gần 10 GiB RSS, nhưng GC log cho thấy JVM heap chỉ dùng 5 GiB. Kết luận “Spark báo sai memory” là không đúng: container limit bao quanh nhiều vùng hơn heap, gồm Python worker, direct/native memory, thread stack và overhead khác.
+
+Điều tra theo bản đồ process thay vì chỉ nhìn Storage tab:
+
+1. Xác nhận termination reason từ cluster manager và container peak RSS.
+2. Tách JVM heap/non-heap, Python worker RSS, off-heap/direct memory và số Task chạy đồng thời.
+3. Nối thời điểm peak với Stage, operator, Arrow/Pandas UDF batch, broadcast và partition lớn nhất.
+4. So Executor bình thường với Executor bị kill; nếu chỉ partition cực lớn gây peak, đây là distribution problem trước khi là sizing problem.
+5. Giảm một biến mỗi lần: batch size, cores/concurrency, partition working set hoặc cached/broadcast footprint.
+
+| Dấu hiệu | Giả thuyết mạnh hơn | Hành động đầu tiên |
+| --- | --- | --- |
+| Heap gần đầy, full GC dày | JVM object/execution pressure | Giảm working set, object overhead hoặc concurrency |
+| Heap thấp, container RSS cao | Python/native/off-heap/overhead | Đo process con và direct memory; chỉnh batch/overhead có căn cứ |
+| Một Executor duy nhất lặp lại OOM | Skew hoặc bad partition | So max/median input và key distribution |
+| Mọi Executor OOM sau broadcast | Build side lớn hơn estimate/budget | Bỏ hint, sửa statistics/strategy |
+| Driver OOM sau Task hoàn tất | Result/metadata về Driver | Loại `collect`, chia output, giảm Task/plan metadata |
+
+Sau khi sửa, chạy lại cùng input và lưu peak RSS theo Executor, GC time, spill, Task p95 và output equality. Tăng overhead có thể là thay đổi đúng nếu workload hợp lệ thực sự cần vùng non-heap; nhưng nếu peak tăng tuyến tính theo partition hoặc batch, tăng limit chỉ dời ngưỡng thất bại.
+
+Fault tolerance cũng ảnh hưởng memory incident: Executor chết làm cache/shuffle block mất, dẫn đến recomputation và thêm tải. Nếu retry lặp trên cùng partition, dừng việc “cứu” bằng failure count cao hơn; tìm record, key hoặc operator tạo working set không bounded.
 
 ## Kết luận
 

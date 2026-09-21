@@ -80,7 +80,7 @@ Spark cung cấp nhiều thư viện trên cùng nền tảng thực thi. Điề
 | **MLlib** | Thuật toán và pipeline machine learning phân tán | API dựa trên DataFrame là hướng sử dụng chính |
 | **GraphX** | Xử lý graph và graph-parallel computation | API dành cho Scala |
 
-[Tài liệu Spark SQL](https://spark.apache.org/docs/latest/sql-programming-guide) mô tả SQL, DataFrame và Dataset cùng sử dụng một execution engine, dù computation được biểu đạt bằng API hoặc ngôn ngữ khác nhau. Đây là lý do một pipeline có thể kết hợp SQL với DataFrame transformations mà không chuyển sang một hệ thống thực thi khác.
+[Tài liệu Spark SQL](https://spark.apache.org/docs/4.2.0/sql-programming-guide.html) mô tả SQL, DataFrame và Dataset cùng sử dụng một execution engine, dù computation được biểu đạt bằng API hoặc ngôn ngữ khác nhau. Đây là lý do một pipeline có thể kết hợp SQL với DataFrame transformations mà không chuyển sang một hệ thống thực thi khác.
 
 Structured Streaming tiếp tục ý tưởng đó cho dữ liệu không hữu hạn: developer mô tả phép xử lý bằng structured APIs quen thuộc, còn engine thực thi query theo cách tăng dần và quản lý các khái niệm như checkpoint, state và watermark.
 
@@ -277,7 +277,7 @@ Shuffle đắt vì dữ liệu cần được phân loại theo partition đích
 
 Không phải mọi shuffle đều xấu. Aggregate theo key và distributed join vốn cần đưa các record liên quan về cùng partition. Mục tiêu tối ưu là loại bỏ shuffle không cần thiết, giảm lượng dữ liệu trước shuffle và phân phối dữ liệu đủ đều — không phải cố xóa mọi `Exchange` khỏi plan.
 
-[RDD Programming Guide](https://spark.apache.org/docs/latest/rdd-programming-guide) của Spark liệt kê repartition operations, `groupByKey`, `reduceByKey`, `cogroup` và `join` trong các operation có thể tạo shuffle; tài liệu cũng nhấn mạnh ba nhóm chi phí chính là disk I/O, serialization và network I/O.
+[RDD Programming Guide](https://spark.apache.org/docs/4.2.0/rdd-programming-guide.html) của Spark liệt kê repartition operations, `groupByKey`, `reduceByKey`, `cogroup` và `join` trong các operation có thể tạo shuffle; tài liệu cũng nhấn mạnh ba nhóm chi phí chính là disk I/O, serialization và network I/O.
 
 [Đọc sâu: Partitioning, Dependency và Shuffle](partition-shuffle.md)
 

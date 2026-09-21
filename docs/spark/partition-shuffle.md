@@ -3,7 +3,19 @@ title: Partitioning và Shuffle trong Spark
 description: Input partition, shuffle exchange, spill, skew, locality và chiến lược kiểm soát data distribution.
 ---
 
-# Partitioning và Shuffle trong Spark
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="06" data-reading-minutes="11">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 06 / DATA MOVEMENT</span>
+    </div>
+    <h1>Partitioning<br><em>và Shuffle</em></h1>
+    <p class="airflow-article-hero__dek">Thiết kế cách dữ liệu được chia, trao đổi qua mạng và gom lại mà không tạo skew hay nợ file nhỏ.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>DATA MOVEMENT</span><span>11 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0. Giá trị cấu hình cần được benchmark theo workload; bài viết tập trung vào cơ chế và dấu hiệu quan sát được.
 
@@ -134,6 +146,26 @@ Output layout là đầu vào của job sau. Tuning chỉ cho một lần chạy
 6. Spill là do partition quá lớn hay memory pressure đồng thời?
 7. AQE final plan đã coalesce/split như mong đợi chưa?
 8. Output có tạo layout bền vững cho consumer tiếp theo không?
+
+## 9. Thực chiến: xử lý một hot key chiếm 62% dữ liệu
+
+Một Stage aggregate 480 GB theo `merchant_id` có 399 Task hoàn thành trong hai phút nhưng một Task chạy 38 phút và spill hàng trăm GB. Tăng từ 400 lên 2.000 shuffle partitions không giải quyết gốc rễ: mọi record của cùng hot key vẫn hash về một partition.
+
+Đầu tiên chứng minh skew bằng ba số: kích thước partition max/median, thời lượng Task max/median và top-key frequency trên input đại diện. Sau đó chọn kỹ thuật theo semantics:
+
+| Kỹ thuật | Khi phù hợp | Điều phải chứng minh |
+| --- | --- | --- |
+| Pre-aggregate | Nhiều row cùng key có thể combine sớm | Hàm aggregate associative/commutative theo contract |
+| AQE skew handling | Skew xuất hiện ở join partition được engine nhận diện | Final plan thật sự split partition; threshold phù hợp distribution |
+| Broadcast phía nhỏ | Một phía join bounded và vừa memory mỗi Executor | Growth guardrail, peak memory và fallback |
+| Salting hai pha | Hot key cần được chia trên nhiều Task | Kết quả gộp cuối tương đương, kể cả null/outer join |
+| Tách hot key | Ít key biết trước, cần logic rõ ràng | Hai nhánh không overlap/gap và schema giống nhau |
+
+Với phép `sum`, salting hai pha có thể thêm một salt ổn định cho hot key, aggregate theo `(merchant_id, salt)`, rồi aggregate lần hai theo `merchant_id`. Với `countDistinct`, median, top-k hoặc outer join, phép phân rã không đơn giản; cần thuật toán merge đúng hoặc chọn chiến lược khác. Salt ngẫu nhiên còn làm reproducibility khó hơn nếu không được kiểm soát.
+
+Sau thay đổi, không chỉ so total runtime. Xác minh max/median Task duration, shuffle bytes, spill, số output files và equality của kết quả theo key. Một giải pháp giảm straggler nhưng tạo 20.000 file nhỏ đã chuyển chi phí sang consumer kế tiếp. Nếu dùng AQE, lưu cả initial và final plan vì chỉ final plan cho biết partition nào thực sự được split/coalesce.
+
+> **Mental model:** partition count điều khiển số “thùng”; salting hoặc thay đổi strategy mới phân một hot key ra nhiều thùng. Hai thao tác giải quyết hai vấn đề khác nhau.
 
 ## Kết luận
 

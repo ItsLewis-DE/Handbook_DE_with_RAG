@@ -3,7 +3,19 @@ title: Kiến trúc Apache Spark
 description: Driver, Executor, Cluster Manager, Spark Classic, Spark Connect và ranh giới lỗi của một application.
 ---
 
-# Kiến trúc Apache Spark
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="02" data-reading-minutes="12">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 02 / ARCHITECTURE</span>
+    </div>
+    <h1>Kiến trúc<br><em>Apache Spark</em></h1>
+    <p class="airflow-article-hero__dek">Control plane, data plane và ranh giới lỗi từ Driver đến Executor trong Spark Classic và Spark Connect.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>SYSTEM INTERNALS</span><span>12 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0. Phần tiến trình và cấp tài nguyên bên dưới mô tả **Spark Classic**. Với Spark Connect, client nói chuyện với một Spark Connect server qua giao thức riêng; `SparkContext` không nằm trong client như Classic.
 
@@ -134,6 +146,26 @@ Driver phải được Executor truy cập; Executor trao đổi shuffle data v�
 - Spark event log/UI: timeline và metrics đã tổng hợp; không thay thế hoàn toàn raw log.
 
 Nếu Executor liên tục bị “lost”, đừng chỉ tăng retry. Đối chiếu thời điểm mất Executor với GC, container exit code, node eviction và shuffle fetch failure để xác định failure domain thật.
+
+## 9. Thực chiến: truy vết một Executor bị mất
+
+Một application đang ở Stage 17 thì Executor 6 biến mất, sau đó nhiều Task báo fetch failure. Chuỗi triệu chứng này thường bị diễn giải thành “shuffle lỗi”, nhưng shuffle failure có thể chỉ là hậu quả. Hãy lần theo control plane và data plane theo thứ tự thời gian.
+
+1. **Cluster manager:** lấy pod/container termination reason, node event và timestamp. `OOMKilled`, eviction, preemption và process exit tạo các nhánh điều tra khác nhau.
+2. **Driver:** tìm log `ExecutorLostFailure`, executor removal reason, Stage retry và thời điểm Driver nhận heartbeat cuối. Driver cho biết Spark đã phản ứng thế nào, không luôn cho biết process chết vì sao.
+3. **Executor:** đối chiếu GC pause, JVM/Python exception, peak heap/overhead và local disk. Nếu log kết thúc đột ngột, ưu tiên bằng chứng từ container/node thay vì suy đoán từ dòng log cuối.
+4. **Shuffle consumers:** xác định fetch failure cùng trỏ tới block trên Executor 6 hay phân tán nhiều host. Một nguồn block đã mất tạo fan-out lỗi ở nhiều reduce Task.
+5. **Recovery:** kiểm tra map stage có được chạy lại, output có idempotent, và application có vượt failure budget hay không.
+
+| Quan sát | Failure domain có khả năng | Thay đổi nên thử trước |
+| --- | --- | --- |
+| Container vượt memory limit, heap chưa đầy | Off-heap, Python worker hoặc native overhead | Đo RSS theo process; sizing overhead/giảm concurrency |
+| Full GC kéo dài rồi heartbeat timeout | JVM heap/object pressure | Sửa representation, partition hoặc cache trước khi tăng heap |
+| Node bị thu hồi, nhiều Executor mất cùng lúc | Infrastructure/preemption | Decommission, disruption policy và capacity headroom |
+| Local disk đầy trước fetch failure | Shuffle spill/storage | Giảm shuffle bytes, tăng/giám sát ephemeral disk |
+| Chỉ Driver mất, Executor bị thu hồi sau đó | Control plane | Driver sizing, deploy mode, supervision và HA boundary |
+
+Kết thúc incident bằng timeline nối bốn nguồn: cluster event, Driver log, Executor log và Spark UI/event log. Nếu chỉ tăng `spark.task.maxFailures`, hệ thống có thể chạy lâu hơn nhưng không thay đổi failure domain. Retry là cơ chế phục hồi hữu hạn, không phải cách che một lỗi lặp lại có tính hệ thống.
 
 ## Kết luận
 

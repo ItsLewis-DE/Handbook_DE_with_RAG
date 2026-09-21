@@ -3,7 +3,19 @@ title: RDD, DataFrame và Dataset trong Spark
 description: Semantics, optimizer visibility, partitioning và chi phí qua ranh giới JVM–Python của các abstraction dữ liệu Spark.
 ---
 
-# RDD, DataFrame và Dataset
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="03" data-reading-minutes="11">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 03 / ABSTRACTIONS</span>
+    </div>
+    <h1>RDD, DataFrame<br><em>và Dataset</em></h1>
+    <p class="airflow-article-hero__dek">Mỗi abstraction là một hợp đồng thông tin khác nhau giữa code của bạn và execution engine.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>DATA MODEL</span><span>11 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0. Mục tiêu không phải so API theo cú pháp, mà phân tích lượng thông tin mỗi abstraction cung cấp cho execution engine.
 
@@ -124,6 +136,36 @@ Một RDD pair có thể mang `Partitioner`, cho phép một số operation trá
 | Thư viện cần thao tác object đặc thù | Đánh giá Dataset/RDD | Chấp nhận ít optimizer visibility hơn |
 
 Không chuyển abstraction chỉ vì cú pháp ngắn hơn. Hãy kiểm tra physical plan, serialization path, số partition và khả năng observability sau khi chuyển.
+
+## 9. Thực chiến: thay Python UDF bằng expression có cấu trúc
+
+Giả sử pipeline chuẩn hóa mã quốc gia bằng một scalar Python UDF: trim khoảng trắng, đổi thành chữ hoa, rồi ánh xạ giá trị rỗng thành `UNKNOWN`. Logic đơn giản nhưng UDF biến biểu thức thành hộp đen ở ranh giới JVM–Python.
+
+```python
+from pyspark.sql import functions as F
+
+normalized = orders.withColumn(
+    "country_code",
+    F.when(
+        F.length(F.trim(F.col("country_code"))) == 0,
+        F.lit("UNKNOWN"),
+    ).otherwise(F.upper(F.trim(F.col("country_code")))),
+)
+```
+
+Việc viết lại không chỉ nhằm “tránh Python”. Built-in expression giữ type/null semantics trong logical plan, cho phép code generation và giúp người đọc thấy trực tiếp computation khi dùng `explain`. Tuy nhiên, thay đổi chỉ đúng nếu contract được khóa rõ:
+
+- `NULL` giữ là `NULL` hay cũng trở thành `UNKNOWN`?
+- chuỗi chỉ có whitespace có được coi là rỗng không?
+- Unicode upper-case và locale có ảnh hưởng mã hợp lệ không?
+- input ngoài domain được sửa, loại hay quarantine?
+- output column có nullability và độ dài nào?
+
+Trước khi thay, tạo fixture chứa `NULL`, chuỗi rỗng, whitespace, lowercase, Unicode và giá trị sai domain. So sánh output theo từng row, schema và null count. Sau đó so physical plan, Python worker time, serialization metrics và runtime trên partition đại diện. Nếu logic thật sự cần thư viện Python, Pandas UDF có thể giảm overhead truyền dữ liệu theo row nhưng vẫn cần kiểm soát batch memory và semantics.
+
+Quy tắc chọn abstraction trong case này là: dùng expression cấu trúc cho phần engine có thể hiểu; cô lập code opaque ở ranh giới nhỏ nhất; chỉ hạ xuống RDD khi thuật toán cần dependency/partition primitive mà DataFrame không biểu đạt được. Đừng chuyển cả pipeline sang RDD chỉ vì một bước chuẩn hóa khó — bạn sẽ đánh mất column pruning, query planning và phần lớn khả năng quan sát ở SQL tab.
+
+> **Invariant cần giữ:** cùng input contract phải tạo cùng business output. Hiệu năng chỉ được đánh giá sau khi equality và schema contract đã PASS.
 
 ## Kết luận
 

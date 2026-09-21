@@ -3,7 +3,19 @@ title: Spark SQL Query Planning
 description: Catalyst, statistics, logical và physical plan, join strategy, code generation và Adaptive Query Execution.
 ---
 
-# Spark SQL Query Planning
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="05" data-reading-minutes="11">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 05 / PLANNING</span>
+    </div>
+    <h1>Spark SQL<br><em>Query Planning</em></h1>
+    <p class="airflow-article-hero__dek">Từ unresolved logical plan đến physical operators, statistics và adaptive plan thực sự chạy.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>CATALYST + AQE</span><span>11 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0. Tên node và rule nội bộ có thể thay đổi theo version; hãy coi `explain` của chính application là bằng chứng cuối cùng.
 
@@ -133,6 +145,32 @@ Nếu `customers` bị estimate 8 MB nhưng runtime 2 GB, broadcast có thể g�
 4. Sửa data layout/expression/statistics trước khi tăng tài nguyên.
 5. Chạy A/B trên input đại diện, so median và tail Task metrics.
 6. Kiểm tra output equality; plan nhanh nhưng sai null/join semantics là thất bại.
+
+## 9. Thực chiến: từ `explain` đến một thay đổi có kiểm soát
+
+Một query join `orders` với `customers` đang dùng SortMergeJoin dù bảng khách hàng “thường nhỏ”. Đừng thêm broadcast hint ngay. Trước hết lưu ba lớp bằng chứng: statistics mà optimizer thấy, initial physical plan và runtime metrics của lần chạy đại diện.
+
+```python
+query.explain(mode="formatted")
+query.explain(mode="cost")
+```
+
+Nếu statistics của `customers` vắng hoặc cũ, planner không có cơ sở đáng tin để broadcast. Nếu estimate nhỏ nhưng runtime lớn, broadcast hint còn nguy hiểm hơn vì mỗi Executor phải giữ build relation và nhiều Task có thể chạy đồng thời. Nếu runtime thật sự nhỏ, AQE có thể chuyển strategy sau shuffle; final plan trong SQL UI mới là câu trả lời thực tế.
+
+Thực hiện thay đổi theo một hypothesis card:
+
+| Trường | Ví dụ |
+| --- | --- |
+| Hiện tượng | SortMergeJoin tạo 420 GB shuffle; build side runtime 32 MB |
+| Giả thuyết | Statistics thiếu làm initial plan không chọn broadcast |
+| Thay đổi | Cập nhật statistics hoặc dùng hint có guardrail cho dataset này |
+| Dự đoán | Giảm exchange/sort phía join; tăng memory nhỏ trên mỗi Executor |
+| Guardrail | Build side p99 dưới ngưỡng, không Executor OOM, output equality |
+| Rollback | Bỏ hint/khôi phục plan nếu dimension vượt budget |
+
+Chạy A/B trên cùng input snapshot và cluster shape. So scan bytes, shuffle read/write, task CPU, peak memory, p50/p95 runtime và output checksum/domain metrics. Nếu shuffle giảm nhưng p99 xấu đi do Executor memory pressure, hypothesis chưa thành công.
+
+Một plan cũng có thể nhanh hơn nhưng đổi nghĩa nếu filter bị đẩy qua outer join không tương đương với business rule, cast làm mất precision hoặc null bị xử lý khác. Vì vậy query tuning luôn có hai cổng độc lập: **semantic equivalence** và **resource improvement**. Catalyst tối ưu biểu thức được cung cấp; nó không biết intent nghiệp vụ nằm ngoài biểu thức đó.
 
 ## Kết luận
 

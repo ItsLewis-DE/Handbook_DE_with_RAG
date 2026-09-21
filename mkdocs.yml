@@ -61,3 +61,4 @@ extra_css:
 extra_javascript:
   - javascripts/article-deck.js
   - javascripts/author-dialog.js
+  - javascripts/spark-handbook.js

@@ -3,7 +3,19 @@ title: Triển khai Apache Spark
 description: Cluster manager, deploy mode, resource sizing, dynamic allocation, security và checklist production cho Spark.
 ---
 
-# Triển khai Apache Spark
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="08" data-reading-minutes="11">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 08 / DEPLOYMENT</span>
+    </div>
+    <h1>Triển khai<br><em>Apache Spark</em></h1>
+    <p class="airflow-article-hero__dek">Sizing từ working set, chọn deploy mode và biến resource, identity, network thành hợp đồng vận hành.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>PRODUCTION</span><span>11 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0. Managed services có thể đổi tên hoặc ẩn một số cấu hình; nguyên lý Driver/Executor và resource boundary vẫn cần được kiểm chứng trên nền tảng cụ thể.
 
@@ -130,6 +142,37 @@ spark-submit \
 - Version artifact/image/config và lưu cùng run metadata.
 - Thử node/Executor loss và restart, không chỉ happy path.
 - Đặt budget/cost attribution và cảnh báo application runaway.
+
+## 11. Thực chiến: sizing từ Stage nặng nhất
+
+Giả sử Stage nặng nhất có partition p95 khoảng 1,2 GiB sau khi decode, cần thêm hash/sort working set và có Python worker. Không thể suy ra ngay “Executor 8 GiB là đủ”: bốn cores có thể chạy bốn Task đồng thời, mỗi Task có peak riêng, trong khi JVM, broadcast, cache và overhead cùng chia container.
+
+Dùng worksheet thay vì một tỷ lệ cố định:
+
+```text
+container_peak
+  ≈ executor JVM baseline
+  + concurrent_tasks × per_task_peak
+  + broadcast/cache footprint
+  + Python/native/direct memory
+  + safety margin
+```
+
+Mỗi hạng phải đến từ measurement hoặc một giả định được ghi rõ. Nếu không có metrics, bắt đầu bằng representative load test, không bắt đầu bằng production quota lớn. Giảm cores mỗi Executor có thể hạ concurrent working set và failure blast radius, đổi lại nhiều process hơn, nhiều overhead hơn và có thể tăng shuffle connections.
+
+Capacity plan còn phải nối sang cluster và downstream:
+
+| Lớp | Câu hỏi bắt buộc |
+| --- | --- |
+| Application | Bao nhiêu Task chạy đồng thời để đạt SLA? Stage nào là critical path? |
+| Executor | Heap, overhead, cores và local disk chịu peak nào? |
+| Cluster | Quota có cấp được Driver/Executor lúc cao điểm? Autoscaling latency bao lâu? |
+| Source | Object store/database cho phép throughput và concurrency nào? |
+| Sink | Writer/connection/commit budget là bao nhiêu? |
+
+Triển khai theo ba cổng. **Canary:** chạy input đại diện với artifact/config được version hóa và checkpoint/output riêng. **Failure drill:** chủ động mất một Executor/node, xác nhận recomputation, decommission và output idempotency. **Rollout:** đặt min/max dynamic allocation, cost cap, timeout và rollback trigger trước khi tăng volume.
+
+Với Kubernetes, request/limit phải phản ánh tổng heap cộng overhead; ephemeral storage phải chứa shuffle/spill; service account và network policy phải cho phép đúng storage/checkpoint/event-log path. Với YARN, container memory, queue capacity và localization cũng là phần của contract. Cluster manager cấp tài nguyên; nó không sửa partition skew hay sink contention.
 
 ## Kết luận
 

@@ -3,7 +3,19 @@ title: Spark Execution Model
 description: Từ action đến Job, Stage, Task; dependency, scheduling, locality, retry và semantics của side effect.
 ---
 
-# Spark Execution Model
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="04" data-reading-minutes="10">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 04 / EXECUTION</span>
+    </div>
+    <h1>Spark<br><em>Execution Model</em></h1>
+    <p class="airflow-article-hero__dek">Theo một action từ dependency graph đến Job, Stage, Task và từng attempt chạy trên Executor.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>RUNTIME</span><span>10 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0, chủ yếu ở execution model của Spark Classic. SQL/DataFrame bổ sung query planning nhưng cuối cùng vẫn phát sinh Stage và Task trên engine lõi.
 
@@ -118,6 +130,31 @@ Khi một Job chậm:
 5. SQL tab nối Stage ID về physical operator.
 
 Một Task chậm duy nhất thường là skew/straggler; mọi Task cùng chậm có thể là I/O, CPU hoặc operator nặng; nhiều wave với Task cực ngắn là over-partitioning/small files.
+
+## 9. Thực chiến: đọc một action có hai shuffle boundary
+
+Xét pipeline đọc đơn hàng, join khách hàng theo `customer_id`, rồi tổng hợp doanh thu theo `segment`. Một lệnh `write` kích hoạt action. Nếu hai input chưa có distribution tương thích và dimension không được broadcast, join cần exchange; aggregation theo `segment` có thể tạo exchange tiếp theo. Kết quả thường là một Job có nhiều Stage, nhưng số Stage chính xác phải đọc từ physical plan và UI thay vì suy ra từ số dòng code.
+
+```text
+Stage A: scan orders      ─┐
+                           ├─ shuffle(customer_id) ─> Stage C: join
+Stage B: scan customers  ─┘                              │
+                                                         └─ shuffle(segment) ─> Stage D: aggregate + write
+```
+
+Để điều tra Stage D chậm, không bắt đầu từ tổng số Executor. Lấy các phân phối sau theo Task: input bytes, shuffle read, duration, records, spill và peak execution memory. Sau đó đặt câu hỏi theo bằng chứng:
+
+| Hình dạng Task metrics | Diễn giải đầu tiên | Kiểm tra kế tiếp |
+| --- | --- | --- |
+| Max shuffle read lớn hơn median nhiều lần | Skew theo `segment` hoặc partition lệch | Key frequency, null concentration, AQE final plan |
+| Mọi Task có read tương tự nhưng CPU time cao | Expression/serialization/CPU-bound | Operator, codegen, UDF và executor CPU utilization |
+| Nhiều Task ngắn dưới vài trăm ms | Partition quá nhỏ hoặc small-file overhead | Task count, scheduler delay, input file layout |
+| Task attempt lặp trên nhiều Executor | Lỗi deterministic/data-specific | Failure reason và record/partition gây lỗi |
+| Chỉ một attempt chậm, attempt speculative nhanh | Host/noisy-neighbor hoặc transient I/O | Executor/node metrics; không kết luận skew ngay |
+
+Nếu Stage C được AQE đổi sang broadcast join, Stage graph và final physical plan có thể khác initial plan. Vì vậy evidence bundle phải chứa cả initial/final plan, Stage IDs và event log. Khi retry xảy ra, một partition có nhiều Task **attempt**; metrics phải phân biệt work hữu ích với work bị hủy hoặc chạy lại.
+
+Cuối cùng kiểm tra side effect ở Stage D. File/table sink có commit protocol; một API call tùy ý trong `mapPartitions` thì không. Execution engine có thể chạy lại attempt để hoàn thành computation, nhưng chỉ ứng dụng biết thao tác bên ngoài có idempotent hay không.
 
 ## Kết luận
 

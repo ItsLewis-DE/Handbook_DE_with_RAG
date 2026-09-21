@@ -3,7 +3,19 @@ title: Quan sát và tối ưu Spark Application
 description: Phương pháp đọc Spark UI, phân loại bottleneck và kiểm chứng thay đổi hiệu năng bằng metrics.
 ---
 
-# Quan sát và tối ưu Spark Application
+<header class="airflow-article-hero spark-article-hero">
+  <div class="spark-chapter-hero" data-chapter="09" data-reading-minutes="11">
+    <div class="airflow-article-hero__eyebrow">
+      <a href="../overview/">SPARK HANDBOOK</a>
+      <span>CHAPTER 09 / PERFORMANCE</span>
+    </div>
+    <h1>Quan sát và tối ưu<br><em>Spark Application</em></h1>
+    <p class="airflow-article-hero__dek">Đi từ critical path và Task distribution đến thay đổi nhỏ có giả thuyết, số đo và điều kiện rollback.</p>
+    <div class="airflow-article-hero__meta" aria-label="Thông tin chương">
+      <span>SPARK UI</span><span>11 PHÚT ĐỌC</span><span>SPARK 4.2.0</span>
+    </div>
+  </div>
+</header>
 
 > **Phạm vi:** Apache Spark 4.2.0. UI field thay đổi theo workload/version; nguyên tắc là nối query operator → Stage → Task distribution → Executor/failure event.
 
@@ -133,6 +145,30 @@ Hướng xử lý: aggregate/limit có kiểm chứng, ghi distributed output, l
 ## 8. Điều kiện kết thúc tuning
 
 Tối ưu nên dừng khi đạt SLA/cost guardrail với margin, kết quả đúng, không làm downstream xấu đi và complexity bổ sung có owner/observability. Giảm thêm 5% runtime không đáng nếu salting/custom UDF làm pipeline khó kiểm chứng và dễ sai.
+
+## 9. Thực chiến: lập hồ sơ điều tra cho một Stage chậm
+
+Một tuning ticket tốt không bắt đầu bằng “tăng executor memory”. Nó bắt đầu bằng một evidence packet đủ để người khác tái lập kết luận:
+
+- application ID, Spark version, artifact/config version và cluster shape;
+- input snapshot hoặc partition range, row/byte count và file layout;
+- initial/final physical plan cùng Stage ID trên critical path;
+- Task metrics dạng phân phối: min, p50, p95, max — không chỉ average;
+- output invariants/checksum và cost của lần chạy;
+- một hypothesis, một thay đổi, một rollback condition.
+
+Giả sử Stage 23 có p50 là 52 giây, p95 là 61 giây nhưng max là 1.460 giây; Task cuối đọc shuffle gấp 34 lần median. Đây là tail problem, không phải thiếu tổng CPU. Tăng Executor có thể làm 399 Task vốn đã nhanh chạy sớm hơn, nhưng application vẫn đợi straggler.
+
+| Vòng thử | Thay đổi | Kỳ vọng trước khi chạy | Cổng chấp nhận |
+| --- | --- | --- | --- |
+| Baseline | Không | Khóa variance và output | Ba lần chạy trong dải ổn định |
+| A | Pre-aggregate trước exchange | Giảm shuffle bytes và hot partition | Output bằng baseline; max/median giảm |
+| B | AQE/skew strategy phù hợp | Split partition lệch ở final plan | Không tăng spill/cost ngoài guardrail |
+| C | Sizing lại sau khi sửa plan | Giảm waves, giữ per-task memory an toàn | SLA đạt với ít nhất 20% headroom |
+
+Mỗi vòng chỉ thay một nhóm biến để giữ quan hệ nhân quả. Lưu screenshot là hữu ích cho trao đổi, nhưng event log và dữ liệu metrics mới có thể so sánh tự động. Nếu run B nhanh hơn nhưng input cache ấm trong khi baseline cache lạnh, comparison không hợp lệ.
+
+Sau tối ưu, thêm regression guardrail: cảnh báo khi max/median Task duration, shuffle bytes/row, small-file count hoặc end-to-end cost vượt ngưỡng. Performance không phải một lần “tuning xong”; data distribution, statistics và connector behavior thay đổi theo thời gian.
 
 ## Kết luận
 
