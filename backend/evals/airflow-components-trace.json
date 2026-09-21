@@ -1,0 +1,1839 @@
+{
+  "status": "complete",
+  "created_at": "2026-09-18T13:30:09.579628+00:00",
+  "question": "trong airflow có bao nhiêu component",
+  "mode": "hybrid_decompose_rerank",
+  "configuration": {
+    "final_k": 8,
+    "candidate_k": 12,
+    "rrf_constant": 60,
+    "corpus_chunks": 162,
+    "index_spec": {
+      "embedding_model": "intfloat/multilingual-e5-small",
+      "embedding_prefixes": "passage/query",
+      "normalize_embeddings": true,
+      "chunking": "raw-markdown-char-1000-overlap-200-v1"
+    }
+  },
+  "manifest": {
+    "collection": "handbook_f841e5083ff64a25b269b1dfff8c9be9",
+    "spec": {
+      "embedding_model": "intfloat/multilingual-e5-small",
+      "embedding_prefixes": "passage/query",
+      "normalize_embeddings": true,
+      "chunking": "raw-markdown-char-1000-overlap-200-v1"
+    },
+    "corpus_hash": "bcf910e42ca494b50736aa1d80f4e779e0bf0fb2eb45dc23e4949e0330dbd342",
+    "chunk_count": 162
+  },
+  "stages": {
+    "initialization": {
+      "seconds": 11.476925671000572,
+      "includes": [
+        "embedding_model_setup",
+        "open_chroma_store",
+        "load_corpus",
+        "read_manifest"
+      ]
+    },
+    "bm25_index": {
+      "seconds": 0.007595521000439476,
+      "documents": 162
+    },
+    "decomposition": {
+      "seconds": 13.936311807000493,
+      "raw_model_output": "{\"queries\": [\"Airflow có bao nhiêu component chính?\"]}",
+      "queries": [
+        "trong airflow có bao nhiêu component",
+        "Airflow có bao nhiêu component chính?"
+      ],
+      "fallback_to_original": false,
+      "error": null
+    },
+    "retrieval_by_query": [
+      {
+        "query": "trong airflow có bao nhiêu component",
+        "query_tokens": [
+          "trong",
+          "airflow",
+          "có",
+          "bao",
+          "nhiêu",
+          "component"
+        ],
+        "seconds": 0.31363961800070683,
+        "fusion_seconds": 6.418000066332752e-05,
+        "vector": {
+          "seconds": 0.3128823970000667,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "bcf910e42ca4-17",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor",
+              "url": "airflow/architecture/#dag-processor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+            },
+            {
+              "rank": 2,
+              "chunk_id": "bcf910e42ca4-21",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan_1",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Câu hỏi liên quan\n\nMINH HỌA / 03 DAG Processor và Scheduler"
+            },
+            {
+              "rank": 3,
+              "chunk_id": "bcf910e42ca4-26",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan_2",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database > Câu hỏi liên quan\n\nMINH HỌA / 04 Metadata Database trong Airflow"
+            },
+            {
+              "rank": 4,
+              "chunk_id": "bcf910e42ca4-20",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor > Luồng xử lý file DAG",
+              "url": "airflow/architecture/#luong-xu-ly-file-dag",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Luồng xử lý file DAG\n\nNguồn: Airflow documentation."
+            },
+            {
+              "rank": 5,
+              "chunk_id": "bcf910e42ca4-14",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+            },
+            {
+              "rank": 6,
+              "chunk_id": "bcf910e42ca4-16",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Câu hỏi liên quan\n\nMINH HỌA / 01 Cách Scheduler theo dõi trạng thái task MINH HỌA / 02 Scheduler và task status"
+            },
+            {
+              "rank": 7,
+              "chunk_id": "bcf910e42ca4-22",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nComponent tiếp theo là DAG Bundles .\n\nTrong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua dags_folder , mặc định thường là $AIRFLOW_HOME/dags . DagFileProcessorManager quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.\n\nỞ Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do dags_folder cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống dags_folder ; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.\n\nTừ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn."
+            },
+            {
+              "rank": 8,
+              "chunk_id": "bcf910e42ca4-23",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nBạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm."
+            },
+            {
+              "rank": 9,
+              "chunk_id": "bcf910e42ca4-24",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > API Server",
+              "url": "airflow/architecture/#api-server",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > API Server\n\nTrước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.\n\nWeb UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà không phải thực hiện phần lớn thao tác qua CLI. Khi task chạy, worker hoặc task gửi heartbeat, trạng thái thực thi, XCom và các tương tác runtime đến API Server. Sau đó, API Server cập nhật các thông tin này vào Metadata Database.\n\nScheduler đọc Metadata Database để tạo DagRun , kiểm tra điều kiện thực thi rồi chuyển các TaskInstance đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng."
+            },
+            {
+              "rank": 10,
+              "chunk_id": "bcf910e42ca4-25",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database",
+              "url": "airflow/architecture/#metadata-database",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+            },
+            {
+              "rank": 11,
+              "chunk_id": "bcf910e42ca4-11",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nRemote Executor có thể được chia thành hai loại:"
+            },
+            {
+              "rank": 12,
+              "chunk_id": "bcf910e42ca4-2",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow? > Vì sao không chỉ dùng Bash?",
+              "url": "airflow/architecture/#vi-sao-khong-chi-dung-bash",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow? > Vì sao không chỉ dùng Bash?\n\nLiệu chúng ta có thể thay Airflow bằng các file Bash như trên để tiết kiệm tài nguyên không? Câu trả lời là không .\n\nBash phù hợp khi hệ thống chỉ có một vài luồng xử lý cơ bản và dependency chưa quá phức tạp. Tuy nhiên, khi workflow phát triển lên hàng trăm task, các dependency cũng trở nên khó quản lý hơn. Giả sử pipeline đã hoàn thành 99% nhưng task cuối cùng bị lỗi: với Bash, bạn phải tự viết checkpoint, tách task thành những script riêng hoặc bổ sung cơ chế retry cho task đó.\n\nBash không cung cấp sẵn cơ chế retry/rerun theo từng task, khả năng lưu trạng thái hay giao diện vận hành. Nếu phải tự xây dựng tất cả những khả năng này, hệ thống sẽ nhanh chóng trở nên phức tạp."
+            }
+          ]
+        },
+        "bm25": {
+          "seconds": 0.000691314000505372,
+          "results": [
+            {
+              "rank": 1,
+              "score": 9.052262727145692,
+              "chunk_id": "bcf910e42ca4-25",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database",
+              "url": "airflow/architecture/#metadata-database",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+            },
+            {
+              "rank": 2,
+              "score": 8.305779757203922,
+              "chunk_id": "bcf910e42ca4-17",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor",
+              "url": "airflow/architecture/#dag-processor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+            },
+            {
+              "rank": 3,
+              "score": 8.180159579009137,
+              "chunk_id": "bcf910e42ca4-11",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nRemote Executor có thể được chia thành hai loại:"
+            },
+            {
+              "rank": 4,
+              "score": 7.878358722083181,
+              "chunk_id": "bcf910e42ca4-14",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+            },
+            {
+              "rank": 5,
+              "score": 7.784602666214852,
+              "chunk_id": "bcf910e42ca4-9",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor",
+              "url": "airflow/architecture/#executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor\n\nExecutor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.\n\nExecutor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor."
+            },
+            {
+              "rank": 6,
+              "score": 7.625573632976293,
+              "chunk_id": "bcf910e42ca4-46",
+              "source": "architecture/shared-disk-vs-shared-nothing.md",
+              "title": "Shared-disk & shared-nothing",
+              "heading": "Shared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng",
+              "url": "architecture/shared-disk-vs-shared-nothing/#them-node-khong-co-nghia-data-tu-can-bang",
+              "text": "Shared-disk & shared-nothing\nShared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng\n\nNode mới cung cấp CPU, RAM và disk trống. Các shard hiện hữu vẫn nằm trên owner cũ cho tới khi hệ thống rebalance chúng.\n\nData movement này dùng network và I/O, có thể tranh tài nguyên với backfill hoặc daily batch. Citus cũng lưu ý rằng sau khi thêm node, node mới chưa chứa shard hiện hữu; muốn dùng capacity mới cho data cũ phải chạy shard rebalancer ( Citus cluster management ). Vì vậy một kế hoạch scale-out cần trả lời cả khi nào rebalance và giới hạn băng thông bao nhiêu , không chỉ khi nào provision node."
+            },
+            {
+              "rank": 7,
+              "score": 7.615227064709786,
+              "chunk_id": "bcf910e42ca4-23",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nBạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm."
+            },
+            {
+              "rank": 8,
+              "score": 7.488694527917984,
+              "chunk_id": "bcf910e42ca4-76",
+              "source": "postgres/postgres.md",
+              "title": "PostgreSQL Phân cấp & lưu trữ",
+              "heading": "2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL",
+              "url": "postgres/postgres/#cac-loai-khoa-bang-trong-postgresql",
+              "text": "PostgreSQL Phân cấp & lưu trữ\n2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL\n\nĐể tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.\n\nĐối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation ."
+            },
+            {
+              "rank": 9,
+              "score": 7.318804598265224,
+              "chunk_id": "bcf910e42ca4-15",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Cấu hình Executor",
+              "url": "airflow/architecture/#cau-hinh-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Cấu hình Executor\n\nĐể ghi đè Executor mặc định, cấu hình airflow.cfg như sau:\n\nBạn cũng có thể sử dụng biến môi trường:\n\nĐể kiểm tra Executor hiện tại, chạy lệnh:\n\nĐể chạy nhiều Executor đồng thời, sử dụng một trong hai cách sau:\n\nĐể chỉ định một Executor cụ thể cho từng task:\n\nNếu muốn đặt Executor mặc định cho các task trong DAG, khai báo trong default_args :"
+            },
+            {
+              "rank": 10,
+              "score": 7.237421988104397,
+              "chunk_id": "bcf910e42ca4-0",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow?",
+              "url": "airflow/architecture/#tai-sao-can-airflow",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow?\n\nBạn đã bao giờ tự hỏi tại sao chúng ta cần Airflow chưa? Nếu mục tiêu chỉ là điều phối các chương trình chạy tuần tự, một file Bash ( .sh ) hoàn toàn có thể đáp ứng. Khi cần chạy theo lịch, ta còn có thể kết hợp Bash với Cron."
+            },
+            {
+              "rank": 11,
+              "score": 7.225138580049078,
+              "chunk_id": "bcf910e42ca4-22",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nComponent tiếp theo là DAG Bundles .\n\nTrong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua dags_folder , mặc định thường là $AIRFLOW_HOME/dags . DagFileProcessorManager quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.\n\nỞ Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do dags_folder cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống dags_folder ; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.\n\nTừ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn."
+            },
+            {
+              "rank": 12,
+              "score": 7.219463353289288,
+              "chunk_id": "bcf910e42ca4-26",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan_2",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database > Câu hỏi liên quan\n\nMINH HỌA / 04 Metadata Database trong Airflow"
+            }
+          ]
+        },
+        "rrf": {
+          "constant": 60,
+          "ranking": [
+            {
+              "rank": 1,
+              "score": 0.03252247488101534,
+              "branch_ranks": {
+                "vector": 1,
+                "bm25": 2
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-17",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor",
+              "url": "airflow/architecture/#dag-processor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+            },
+            {
+              "rank": 2,
+              "score": 0.031009615384615385,
+              "branch_ranks": {
+                "vector": 5,
+                "bm25": 4
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-14",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+            },
+            {
+              "rank": 3,
+              "score": 0.030679156908665108,
+              "branch_ranks": {
+                "vector": 10,
+                "bm25": 1
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-25",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database",
+              "url": "airflow/architecture/#metadata-database",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+            },
+            {
+              "rank": 4,
+              "score": 0.029957522915269395,
+              "branch_ranks": {
+                "vector": 11,
+                "bm25": 3
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-11",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nRemote Executor có thể được chia thành hai loại:"
+            },
+            {
+              "rank": 5,
+              "score": 0.02976190476190476,
+              "branch_ranks": {
+                "vector": 3,
+                "bm25": 12
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-26",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan_2",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database > Câu hỏi liên quan\n\nMINH HỌA / 04 Metadata Database trong Airflow"
+            },
+            {
+              "rank": 6,
+              "score": 0.029631255487269532,
+              "branch_ranks": {
+                "vector": 8,
+                "bm25": 7
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-23",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nBạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm."
+            },
+            {
+              "rank": 7,
+              "score": 0.02900988017658188,
+              "branch_ranks": {
+                "vector": 7,
+                "bm25": 11
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-22",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nComponent tiếp theo là DAG Bundles .\n\nTrong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua dags_folder , mặc định thường là $AIRFLOW_HOME/dags . DagFileProcessorManager quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.\n\nỞ Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do dags_folder cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống dags_folder ; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.\n\nTừ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn."
+            },
+            {
+              "rank": 8,
+              "score": 0.016129032258064516,
+              "branch_ranks": {
+                "vector": 2
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-21",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan_1",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Câu hỏi liên quan\n\nMINH HỌA / 03 DAG Processor và Scheduler"
+            },
+            {
+              "rank": 9,
+              "score": 0.015625,
+              "branch_ranks": {
+                "vector": 4
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-20",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor > Luồng xử lý file DAG",
+              "url": "airflow/architecture/#luong-xu-ly-file-dag",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Luồng xử lý file DAG\n\nNguồn: Airflow documentation."
+            },
+            {
+              "rank": 10,
+              "score": 0.015384615384615385,
+              "branch_ranks": {
+                "bm25": 5
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-9",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor",
+              "url": "airflow/architecture/#executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor\n\nExecutor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.\n\nExecutor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor."
+            },
+            {
+              "rank": 11,
+              "score": 0.015151515151515152,
+              "branch_ranks": {
+                "vector": 6
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-16",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Câu hỏi liên quan\n\nMINH HỌA / 01 Cách Scheduler theo dõi trạng thái task MINH HỌA / 02 Scheduler và task status"
+            },
+            {
+              "rank": 12,
+              "score": 0.015151515151515152,
+              "branch_ranks": {
+                "bm25": 6
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-46",
+              "source": "architecture/shared-disk-vs-shared-nothing.md",
+              "title": "Shared-disk & shared-nothing",
+              "heading": "Shared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng",
+              "url": "architecture/shared-disk-vs-shared-nothing/#them-node-khong-co-nghia-data-tu-can-bang",
+              "text": "Shared-disk & shared-nothing\nShared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng\n\nNode mới cung cấp CPU, RAM và disk trống. Các shard hiện hữu vẫn nằm trên owner cũ cho tới khi hệ thống rebalance chúng.\n\nData movement này dùng network và I/O, có thể tranh tài nguyên với backfill hoặc daily batch. Citus cũng lưu ý rằng sau khi thêm node, node mới chưa chứa shard hiện hữu; muốn dùng capacity mới cho data cũ phải chạy shard rebalancer ( Citus cluster management ). Vì vậy một kế hoạch scale-out cần trả lời cả khi nào rebalance và giới hạn băng thông bao nhiêu , không chỉ khi nào provision node."
+            },
+            {
+              "rank": 13,
+              "score": 0.014705882352941176,
+              "branch_ranks": {
+                "bm25": 8
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-76",
+              "source": "postgres/postgres.md",
+              "title": "PostgreSQL Phân cấp & lưu trữ",
+              "heading": "2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL",
+              "url": "postgres/postgres/#cac-loai-khoa-bang-trong-postgresql",
+              "text": "PostgreSQL Phân cấp & lưu trữ\n2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL\n\nĐể tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.\n\nĐối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation ."
+            },
+            {
+              "rank": 14,
+              "score": 0.014492753623188406,
+              "branch_ranks": {
+                "bm25": 9
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-15",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Cấu hình Executor",
+              "url": "airflow/architecture/#cau-hinh-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Cấu hình Executor\n\nĐể ghi đè Executor mặc định, cấu hình airflow.cfg như sau:\n\nBạn cũng có thể sử dụng biến môi trường:\n\nĐể kiểm tra Executor hiện tại, chạy lệnh:\n\nĐể chạy nhiều Executor đồng thời, sử dụng một trong hai cách sau:\n\nĐể chỉ định một Executor cụ thể cho từng task:\n\nNếu muốn đặt Executor mặc định cho các task trong DAG, khai báo trong default_args :"
+            },
+            {
+              "rank": 15,
+              "score": 0.014492753623188406,
+              "branch_ranks": {
+                "vector": 9
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-24",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > API Server",
+              "url": "airflow/architecture/#api-server",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > API Server\n\nTrước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.\n\nWeb UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà không phải thực hiện phần lớn thao tác qua CLI. Khi task chạy, worker hoặc task gửi heartbeat, trạng thái thực thi, XCom và các tương tác runtime đến API Server. Sau đó, API Server cập nhật các thông tin này vào Metadata Database.\n\nScheduler đọc Metadata Database để tạo DagRun , kiểm tra điều kiện thực thi rồi chuyển các TaskInstance đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng."
+            },
+            {
+              "rank": 16,
+              "score": 0.014285714285714285,
+              "branch_ranks": {
+                "bm25": 10
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-0",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow?",
+              "url": "airflow/architecture/#tai-sao-can-airflow",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow?\n\nBạn đã bao giờ tự hỏi tại sao chúng ta cần Airflow chưa? Nếu mục tiêu chỉ là điều phối các chương trình chạy tuần tự, một file Bash ( .sh ) hoàn toàn có thể đáp ứng. Khi cần chạy theo lịch, ta còn có thể kết hợp Bash với Cron."
+            },
+            {
+              "rank": 17,
+              "score": 0.013888888888888888,
+              "branch_ranks": {
+                "vector": 12
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-2",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow? > Vì sao không chỉ dùng Bash?",
+              "url": "airflow/architecture/#vi-sao-khong-chi-dung-bash",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow? > Vì sao không chỉ dùng Bash?\n\nLiệu chúng ta có thể thay Airflow bằng các file Bash như trên để tiết kiệm tài nguyên không? Câu trả lời là không .\n\nBash phù hợp khi hệ thống chỉ có một vài luồng xử lý cơ bản và dependency chưa quá phức tạp. Tuy nhiên, khi workflow phát triển lên hàng trăm task, các dependency cũng trở nên khó quản lý hơn. Giả sử pipeline đã hoàn thành 99% nhưng task cuối cùng bị lỗi: với Bash, bạn phải tự viết checkpoint, tách task thành những script riêng hoặc bổ sung cơ chế retry cho task đó.\n\nBash không cung cấp sẵn cơ chế retry/rerun theo từng task, khả năng lưu trạng thái hay giao diện vận hành. Nếu phải tự xây dựng tất cả những khả năng này, hệ thống sẽ nhanh chóng trở nên phức tạp."
+            }
+          ]
+        },
+        "after_section_dedup": [
+          {
+            "rank": 1,
+            "chunk_id": "bcf910e42ca4-17",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > DAG Processor",
+            "url": "airflow/architecture/#dag-processor",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+          },
+          {
+            "rank": 2,
+            "chunk_id": "bcf910e42ca4-14",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > Executor > Remote Executor",
+            "url": "airflow/architecture/#remote-executor",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "bcf910e42ca4-25",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > Metadata Database",
+            "url": "airflow/architecture/#metadata-database",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "bcf910e42ca4-26",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > Metadata Database > Câu hỏi liên quan",
+            "url": "airflow/architecture/#cau-hoi-lien-quan_2",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database > Câu hỏi liên quan\n\nMINH HỌA / 04 Metadata Database trong Airflow"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "bcf910e42ca4-23",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > DAG Bundles",
+            "url": "airflow/architecture/#dag-bundles",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nBạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm."
+          },
+          {
+            "rank": 6,
+            "chunk_id": "bcf910e42ca4-21",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > DAG Processor > Câu hỏi liên quan",
+            "url": "airflow/architecture/#cau-hoi-lien-quan_1",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Câu hỏi liên quan\n\nMINH HỌA / 03 DAG Processor và Scheduler"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "bcf910e42ca4-20",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > DAG Processor > Luồng xử lý file DAG",
+            "url": "airflow/architecture/#luong-xu-ly-file-dag",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Luồng xử lý file DAG\n\nNguồn: Airflow documentation."
+          },
+          {
+            "rank": 8,
+            "chunk_id": "bcf910e42ca4-9",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > Executor",
+            "url": "airflow/architecture/#executor",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor\n\nExecutor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.\n\nExecutor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor."
+          },
+          {
+            "rank": 9,
+            "chunk_id": "bcf910e42ca4-16",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > Executor > Câu hỏi liên quan",
+            "url": "airflow/architecture/#cau-hoi-lien-quan",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Câu hỏi liên quan\n\nMINH HỌA / 01 Cách Scheduler theo dõi trạng thái task MINH HỌA / 02 Scheduler và task status"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "bcf910e42ca4-46",
+            "source": "architecture/shared-disk-vs-shared-nothing.md",
+            "title": "Shared-disk & shared-nothing",
+            "heading": "Shared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng",
+            "url": "architecture/shared-disk-vs-shared-nothing/#them-node-khong-co-nghia-data-tu-can-bang",
+            "text": "Shared-disk & shared-nothing\nShared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng\n\nNode mới cung cấp CPU, RAM và disk trống. Các shard hiện hữu vẫn nằm trên owner cũ cho tới khi hệ thống rebalance chúng.\n\nData movement này dùng network và I/O, có thể tranh tài nguyên với backfill hoặc daily batch. Citus cũng lưu ý rằng sau khi thêm node, node mới chưa chứa shard hiện hữu; muốn dùng capacity mới cho data cũ phải chạy shard rebalancer ( Citus cluster management ). Vì vậy một kế hoạch scale-out cần trả lời cả khi nào rebalance và giới hạn băng thông bao nhiêu , không chỉ khi nào provision node."
+          },
+          {
+            "rank": 11,
+            "chunk_id": "bcf910e42ca4-76",
+            "source": "postgres/postgres.md",
+            "title": "PostgreSQL Phân cấp & lưu trữ",
+            "heading": "2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL",
+            "url": "postgres/postgres/#cac-loai-khoa-bang-trong-postgresql",
+            "text": "PostgreSQL Phân cấp & lưu trữ\n2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL\n\nĐể tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.\n\nĐối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation ."
+          },
+          {
+            "rank": 12,
+            "chunk_id": "bcf910e42ca4-15",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > Executor > Cấu hình Executor",
+            "url": "airflow/architecture/#cau-hinh-executor",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Cấu hình Executor\n\nĐể ghi đè Executor mặc định, cấu hình airflow.cfg như sau:\n\nBạn cũng có thể sử dụng biến môi trường:\n\nĐể kiểm tra Executor hiện tại, chạy lệnh:\n\nĐể chạy nhiều Executor đồng thời, sử dụng một trong hai cách sau:\n\nĐể chỉ định một Executor cụ thể cho từng task:\n\nNếu muốn đặt Executor mặc định cho các task trong DAG, khai báo trong default_args :"
+          }
+        ]
+      },
+      {
+        "query": "Airflow có bao nhiêu component chính?",
+        "query_tokens": [
+          "airflow",
+          "có",
+          "bao",
+          "nhiêu",
+          "component",
+          "chính"
+        ],
+        "seconds": 0.019705296000211092,
+        "fusion_seconds": 6.601699988095788e-05,
+        "vector": {
+          "seconds": 0.019039783000152966,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "bcf910e42ca4-17",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor",
+              "url": "airflow/architecture/#dag-processor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+            },
+            {
+              "rank": 2,
+              "chunk_id": "bcf910e42ca4-14",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+            },
+            {
+              "rank": 3,
+              "chunk_id": "bcf910e42ca4-22",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nComponent tiếp theo là DAG Bundles .\n\nTrong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua dags_folder , mặc định thường là $AIRFLOW_HOME/dags . DagFileProcessorManager quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.\n\nỞ Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do dags_folder cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống dags_folder ; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.\n\nTừ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn."
+            },
+            {
+              "rank": 4,
+              "chunk_id": "bcf910e42ca4-24",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > API Server",
+              "url": "airflow/architecture/#api-server",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > API Server\n\nTrước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.\n\nWeb UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà không phải thực hiện phần lớn thao tác qua CLI. Khi task chạy, worker hoặc task gửi heartbeat, trạng thái thực thi, XCom và các tương tác runtime đến API Server. Sau đó, API Server cập nhật các thông tin này vào Metadata Database.\n\nScheduler đọc Metadata Database để tạo DagRun , kiểm tra điều kiện thực thi rồi chuyển các TaskInstance đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng."
+            },
+            {
+              "rank": 5,
+              "chunk_id": "bcf910e42ca4-26",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan_2",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database > Câu hỏi liên quan\n\nMINH HỌA / 04 Metadata Database trong Airflow"
+            },
+            {
+              "rank": 6,
+              "chunk_id": "bcf910e42ca4-3",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow? > Airflow giải quyết điều gì?",
+              "url": "airflow/architecture/#airflow-giai-quyet-ieu-gi",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow? > Airflow giải quyết điều gì?\n\nTrong trường hợp này, Airflow trở thành một lựa chọn phù hợp với những khả năng như:\n\nUI giúp quan sát workflow trực quan hơn; retry cho từng task; lưu lại lịch sử chạy mà không phải tự xây dựng cấu hình phức tạp như khi dùng Bash; backfill để chạy lại một workflow trong quá khứ.\n\nAirflow mang lại nhiều khả năng mạnh mẽ. Tuy nhiên, để khai thác tốt những khả năng đó, chúng ta cần hiểu rõ kiến trúc và cơ chế vận hành của nó. Bài viết này sẽ đi sâu vào Airflow, giúp bạn sử dụng công cụ một cách chủ động thay vì chỉ vận hành nó một cách mơ hồ."
+            },
+            {
+              "rank": 7,
+              "chunk_id": "bcf910e42ca4-25",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database",
+              "url": "airflow/architecture/#metadata-database",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+            },
+            {
+              "rank": 8,
+              "chunk_id": "bcf910e42ca4-20",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor > Luồng xử lý file DAG",
+              "url": "airflow/architecture/#luong-xu-ly-file-dag",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Luồng xử lý file DAG\n\nNguồn: Airflow documentation."
+            },
+            {
+              "rank": 9,
+              "chunk_id": "bcf910e42ca4-21",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan_1",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Câu hỏi liên quan\n\nMINH HỌA / 03 DAG Processor và Scheduler"
+            },
+            {
+              "rank": 10,
+              "chunk_id": "bcf910e42ca4-2",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow? > Vì sao không chỉ dùng Bash?",
+              "url": "airflow/architecture/#vi-sao-khong-chi-dung-bash",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow? > Vì sao không chỉ dùng Bash?\n\nLiệu chúng ta có thể thay Airflow bằng các file Bash như trên để tiết kiệm tài nguyên không? Câu trả lời là không .\n\nBash phù hợp khi hệ thống chỉ có một vài luồng xử lý cơ bản và dependency chưa quá phức tạp. Tuy nhiên, khi workflow phát triển lên hàng trăm task, các dependency cũng trở nên khó quản lý hơn. Giả sử pipeline đã hoàn thành 99% nhưng task cuối cùng bị lỗi: với Bash, bạn phải tự viết checkpoint, tách task thành những script riêng hoặc bổ sung cơ chế retry cho task đó.\n\nBash không cung cấp sẵn cơ chế retry/rerun theo từng task, khả năng lưu trạng thái hay giao diện vận hành. Nếu phải tự xây dựng tất cả những khả năng này, hệ thống sẽ nhanh chóng trở nên phức tạp."
+            },
+            {
+              "rank": 11,
+              "chunk_id": "bcf910e42ca4-23",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nBạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm."
+            },
+            {
+              "rank": 12,
+              "chunk_id": "bcf910e42ca4-5",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Scheduler > Quá trình phân tích DAG",
+              "url": "airflow/architecture/#qua-trinh-phan-tich-dag",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Scheduler > Quá trình phân tích DAG\n\nTrong Airflow 2.x, Scheduler có một tiến trình con nội bộ tên là DagFileProcessorManager , được dùng để phân tích cú pháp các file trong DAG folder. Những tiến trình này ghi nhận trạng thái của file DAG vào metadata database; nếu quá trình phân tích gặp lỗi, thông tin lỗi sẽ được hiển thị trên UI.\n\nTừ phiên bản 2.3, DagFileProcessorManager đã có thể được cấu hình để chạy độc lập. Từ Airflow 3, tiến trình này trở thành một component bắt buộc và luôn chạy tách biệt với Scheduler. Việc phân tách giúp tăng cường bảo mật, đồng thời hạn chế tình trạng quá trình parse các file DAG nặng làm nghẽn Scheduler.\n\nLưu ý về lịch @daily Với lịch @daily , Dag Run xử lý data interval của ngày 1/1 thường được tạo sau khi khoảng dữ liệu đó kết thúc, tức là vào hoặc ngay sau 00:00 ngày 2/1 theo múi giờ của DAG. Cách vận hành này giúp khoảng dữ liệu cần xử lý được thu thập đầy đủ."
+            }
+          ]
+        },
+        "bm25": {
+          "seconds": 0.0005976530001134961,
+          "results": [
+            {
+              "rank": 1,
+              "score": 9.130470221984396,
+              "chunk_id": "bcf910e42ca4-17",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor",
+              "url": "airflow/architecture/#dag-processor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+            },
+            {
+              "rank": 2,
+              "score": 7.700948420448515,
+              "chunk_id": "bcf910e42ca4-25",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database",
+              "url": "airflow/architecture/#metadata-database",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+            },
+            {
+              "rank": 3,
+              "score": 7.625573632976293,
+              "chunk_id": "bcf910e42ca4-46",
+              "source": "architecture/shared-disk-vs-shared-nothing.md",
+              "title": "Shared-disk & shared-nothing",
+              "heading": "Shared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng",
+              "url": "architecture/shared-disk-vs-shared-nothing/#them-node-khong-co-nghia-data-tu-can-bang",
+              "text": "Shared-disk & shared-nothing\nShared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng\n\nNode mới cung cấp CPU, RAM và disk trống. Các shard hiện hữu vẫn nằm trên owner cũ cho tới khi hệ thống rebalance chúng.\n\nData movement này dùng network và I/O, có thể tranh tài nguyên với backfill hoặc daily batch. Citus cũng lưu ý rằng sau khi thêm node, node mới chưa chứa shard hiện hữu; muốn dùng capacity mới cho data cũ phải chạy shard rebalancer ( Citus cluster management ). Vì vậy một kế hoạch scale-out cần trả lời cả khi nào rebalance và giới hạn băng thông bao nhiêu , không chỉ khi nào provision node."
+            },
+            {
+              "rank": 4,
+              "score": 7.237421988104397,
+              "chunk_id": "bcf910e42ca4-0",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow?",
+              "url": "airflow/architecture/#tai-sao-can-airflow",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow?\n\nBạn đã bao giờ tự hỏi tại sao chúng ta cần Airflow chưa? Nếu mục tiêu chỉ là điều phối các chương trình chạy tuần tự, một file Bash ( .sh ) hoàn toàn có thể đáp ứng. Khi cần chạy theo lịch, ta còn có thể kết hợp Bash với Cron."
+            },
+            {
+              "rank": 5,
+              "score": 6.769724871030956,
+              "chunk_id": "bcf910e42ca4-57",
+              "source": "architecture/shared-disk-vs-shared-nothing.md",
+              "title": "Shared-disk & shared-nothing",
+              "heading": "Checklist cho Data Engineer",
+              "url": "architecture/shared-disk-vs-shared-nothing/#checklist-cho-data-engineer",
+              "text": "Shared-disk & shared-nothing\nChecklist cho Data Engineer\n\nTrước khi đưa một workload lên production, hãy trả lời được:\n\nRow của mỗi bảng được đặt ở đâu, theo key nào và có replica ở đâu? Table partition, distribution key và sort/clustering key đang phục vụ ba mục tiêu khác nhau nào? Ba join tốn kém nhất là local, broadcast hay repartition? Max worker runtime/bytes lệch bao nhiêu so với median? Thêm node có kích hoạt rebalance không, và rebalance cạnh tranh với batch window thế nào? Node hoặc network partition xảy ra thì ai được quyền tiếp tục ghi? Pipeline retry dựa vào checkpoint/idempotency nào khi kết quả commit không rõ ràng? Dashboard có scan, shuffle/network, spill, skew, replication lag và recovery event chưa?\n\nNếu chưa trả lời được những câu này, vấn đề không nằm ở việc bạn chưa nhớ định nghĩa shared-disk hay shared-nothing. Vấn đề là physical data path của hệ thống vẫn còn là một chiếc hộp đen."
+            },
+            {
+              "rank": 6,
+              "score": 6.746694806034747,
+              "chunk_id": "bcf910e42ca4-11",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nRemote Executor có thể được chia thành hai loại:"
+            },
+            {
+              "rank": 7,
+              "score": 6.648498938165061,
+              "chunk_id": "bcf910e42ca4-14",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+            },
+            {
+              "rank": 8,
+              "score": 6.520202041616814,
+              "chunk_id": "bcf910e42ca4-76",
+              "source": "postgres/postgres.md",
+              "title": "PostgreSQL Phân cấp & lưu trữ",
+              "heading": "2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL",
+              "url": "postgres/postgres/#cac-loai-khoa-bang-trong-postgresql",
+              "text": "PostgreSQL Phân cấp & lưu trữ\n2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL\n\nĐể tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.\n\nĐối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation ."
+            },
+            {
+              "rank": 9,
+              "score": 6.513329436953347,
+              "chunk_id": "bcf910e42ca4-6",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Scheduler > HA Scheduler",
+              "url": "airflow/architecture/#ha-scheduler",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Scheduler > HA Scheduler\n\nKhi hệ thống có quá nhiều DAG, với số lượng lên đến hàng trăm hoặc hàng nghìn task, một Scheduler có thể mất nhiều thời gian để hoàn thành một scheduling loop. Đây là lúc HA Scheduler trở nên hữu ích.\n\nHA Scheduler cho phép chạy nhiều Scheduler cùng lúc. Tất cả Scheduler đều ở trạng thái active, thay vì một Scheduler active và một Scheduler pending. Mô hình này giúp chia tải điều phối; nếu một Scheduler gặp sự cố, những Scheduler còn lại có thể tiếp tục xử lý công việc.\n\nTuy nhiên, việc nhiều Scheduler chạy song song có thể dẫn tới xử lý trùng lặp. Chẳng hạn, Scheduler 1 và Scheduler 2 có thể cùng chọn một Dag Run để xử lý. Vì vậy, Airflow cần sử dụng cơ chế row-level lock của database.\n\nMột scheduling loop gồm ba bước chính:\n\nKiểm tra DAG nào cần tạo Dag Run mới và tạo Dag Run tương ứng. Kiểm tra các Dag Run hiện có để tìm Task Instance có thể bắt đầu được lập lịch, hoặc đánh dấu Dag Run đã hoàn tất. Chọn các Task Instance đủ điều kiện để đưa vào lịch thực thi, đồng thời bảo đảm tuân theo giới hạn của Pool."
+            },
+            {
+              "rank": 10,
+              "score": 6.457410916573366,
+              "chunk_id": "bcf910e42ca4-160",
+              "source": "index/index.md",
+              "title": "Index trong cơ sở dữ liệu",
+              "heading": "9. Partial Index > Khi nào nên dùng?",
+              "url": "index/#khi-nao-nen-dung",
+              "text": "Index trong cơ sở dữ liệu\n9. Partial Index > Khi nào nên dùng?\n\nBảng có một tập con nhỏ nhưng được truy vấn thường xuyên, chẳng hạn bản ghi active , pending hoặc chưa bị xóa. Điều kiện lọc ổn định và xuất hiện rõ trong các truy vấn chính. Chi phí của index đầy đủ lớn hơn lợi ích mà nó mang lại cho các dòng ít khi được đọc.\n\nOptimizer chỉ dùng Partial Index khi có thể chứng minh điều kiện của truy vấn bao hàm predicate của index. Vì vậy, WHERE status = 'active' có thể dùng index ở trên, còn một điều kiện không liên quan đến status thì không."
+            },
+            {
+              "rank": 11,
+              "score": 6.446134780181522,
+              "chunk_id": "bcf910e42ca4-37",
+              "source": "architecture/shared-disk-vs-shared-nothing.md",
+              "title": "Shared-disk & shared-nothing",
+              "heading": "Bắt đầu từ câu hỏi: ai sở hữu dữ liệu?",
+              "url": "architecture/shared-disk-vs-shared-nothing/#bat-au-tu-cau-hoi-ai-so-huu-du-lieu",
+              "text": "Shared-disk & shared-nothing\nBắt đầu từ câu hỏi: ai sở hữu dữ liệu?\n\nTrong paper năm 1986, Michael Stonebraker định nghĩa shared-disk là nhiều processor có private memory nhưng dùng chung một tập disk; còn shared-nothing không chia sẻ memory lẫn persistent storage giữa các processor. Survey của DeWitt và Gray năm 1992 dùng cùng taxonomy và nhấn mạnh các node shared-nothing giao tiếp qua interconnect bằng message. Hai tài liệu này là nguồn gốc phù hợp để hiểu thuật ngữ, nhưng các kết luận hiệu năng lịch sử không nên được coi là benchmark cho phần cứng hiện tại ( Stonebraker, 1986 ; DeWitt & Gray, 1992 ).\n\nHai lưu ý giúp tránh phần lớn nhầm lẫn:\n\n“Nothing” không có nghĩa là không chia sẻ bất kỳ trạng thái logic nào. Một shared-nothing cluster vẫn có network, metadata, coordinator, consensus hoặc catalog. Điều không được truy cập trực tiếp qua các node là RAM và local storage. “Có shared storage” chưa đủ để kết luận một database là shared-disk multi-active. Một active-passive cluster hoặc một hệ thống chỉ có một writer vẫn có thể đặt file trên storage chung. Cần hỏi có bao nhiêu DBMS instance đồng thời đọc/ghi cùng logical database và chúng phối hợp cache/lock thế nào."
+            },
+            {
+              "rank": 12,
+              "score": 6.378425003682996,
+              "chunk_id": "bcf910e42ca4-9",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor",
+              "url": "airflow/architecture/#executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor\n\nExecutor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.\n\nExecutor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor."
+            }
+          ]
+        },
+        "rrf": {
+          "constant": 60,
+          "ranking": [
+            {
+              "rank": 1,
+              "score": 0.03278688524590164,
+              "branch_ranks": {
+                "vector": 1,
+                "bm25": 1
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-17",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor",
+              "url": "airflow/architecture/#dag-processor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+            },
+            {
+              "rank": 2,
+              "score": 0.031054405392392875,
+              "branch_ranks": {
+                "vector": 2,
+                "bm25": 7
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-14",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+            },
+            {
+              "rank": 3,
+              "score": 0.031054405392392875,
+              "branch_ranks": {
+                "vector": 7,
+                "bm25": 2
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-25",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database",
+              "url": "airflow/architecture/#metadata-database",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+            },
+            {
+              "rank": 4,
+              "score": 0.015873015873015872,
+              "branch_ranks": {
+                "vector": 3
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-22",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nComponent tiếp theo là DAG Bundles .\n\nTrong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua dags_folder , mặc định thường là $AIRFLOW_HOME/dags . DagFileProcessorManager quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.\n\nỞ Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do dags_folder cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống dags_folder ; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.\n\nTừ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn."
+            },
+            {
+              "rank": 5,
+              "score": 0.015873015873015872,
+              "branch_ranks": {
+                "bm25": 3
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-46",
+              "source": "architecture/shared-disk-vs-shared-nothing.md",
+              "title": "Shared-disk & shared-nothing",
+              "heading": "Shared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng",
+              "url": "architecture/shared-disk-vs-shared-nothing/#them-node-khong-co-nghia-data-tu-can-bang",
+              "text": "Shared-disk & shared-nothing\nShared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng\n\nNode mới cung cấp CPU, RAM và disk trống. Các shard hiện hữu vẫn nằm trên owner cũ cho tới khi hệ thống rebalance chúng.\n\nData movement này dùng network và I/O, có thể tranh tài nguyên với backfill hoặc daily batch. Citus cũng lưu ý rằng sau khi thêm node, node mới chưa chứa shard hiện hữu; muốn dùng capacity mới cho data cũ phải chạy shard rebalancer ( Citus cluster management ). Vì vậy một kế hoạch scale-out cần trả lời cả khi nào rebalance và giới hạn băng thông bao nhiêu , không chỉ khi nào provision node."
+            },
+            {
+              "rank": 6,
+              "score": 0.015625,
+              "branch_ranks": {
+                "bm25": 4
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-0",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow?",
+              "url": "airflow/architecture/#tai-sao-can-airflow",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow?\n\nBạn đã bao giờ tự hỏi tại sao chúng ta cần Airflow chưa? Nếu mục tiêu chỉ là điều phối các chương trình chạy tuần tự, một file Bash ( .sh ) hoàn toàn có thể đáp ứng. Khi cần chạy theo lịch, ta còn có thể kết hợp Bash với Cron."
+            },
+            {
+              "rank": 7,
+              "score": 0.015625,
+              "branch_ranks": {
+                "vector": 4
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-24",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > API Server",
+              "url": "airflow/architecture/#api-server",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > API Server\n\nTrước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.\n\nWeb UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà không phải thực hiện phần lớn thao tác qua CLI. Khi task chạy, worker hoặc task gửi heartbeat, trạng thái thực thi, XCom và các tương tác runtime đến API Server. Sau đó, API Server cập nhật các thông tin này vào Metadata Database.\n\nScheduler đọc Metadata Database để tạo DagRun , kiểm tra điều kiện thực thi rồi chuyển các TaskInstance đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng."
+            },
+            {
+              "rank": 8,
+              "score": 0.015384615384615385,
+              "branch_ranks": {
+                "vector": 5
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-26",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Metadata Database > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan_2",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database > Câu hỏi liên quan\n\nMINH HỌA / 04 Metadata Database trong Airflow"
+            },
+            {
+              "rank": 9,
+              "score": 0.015384615384615385,
+              "branch_ranks": {
+                "bm25": 5
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-57",
+              "source": "architecture/shared-disk-vs-shared-nothing.md",
+              "title": "Shared-disk & shared-nothing",
+              "heading": "Checklist cho Data Engineer",
+              "url": "architecture/shared-disk-vs-shared-nothing/#checklist-cho-data-engineer",
+              "text": "Shared-disk & shared-nothing\nChecklist cho Data Engineer\n\nTrước khi đưa một workload lên production, hãy trả lời được:\n\nRow của mỗi bảng được đặt ở đâu, theo key nào và có replica ở đâu? Table partition, distribution key và sort/clustering key đang phục vụ ba mục tiêu khác nhau nào? Ba join tốn kém nhất là local, broadcast hay repartition? Max worker runtime/bytes lệch bao nhiêu so với median? Thêm node có kích hoạt rebalance không, và rebalance cạnh tranh với batch window thế nào? Node hoặc network partition xảy ra thì ai được quyền tiếp tục ghi? Pipeline retry dựa vào checkpoint/idempotency nào khi kết quả commit không rõ ràng? Dashboard có scan, shuffle/network, spill, skew, replication lag và recovery event chưa?\n\nNếu chưa trả lời được những câu này, vấn đề không nằm ở việc bạn chưa nhớ định nghĩa shared-disk hay shared-nothing. Vấn đề là physical data path của hệ thống vẫn còn là một chiếc hộp đen."
+            },
+            {
+              "rank": 10,
+              "score": 0.015151515151515152,
+              "branch_ranks": {
+                "bm25": 6
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-11",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor > Remote Executor",
+              "url": "airflow/architecture/#remote-executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nRemote Executor có thể được chia thành hai loại:"
+            },
+            {
+              "rank": 11,
+              "score": 0.015151515151515152,
+              "branch_ranks": {
+                "vector": 6
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-3",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow? > Airflow giải quyết điều gì?",
+              "url": "airflow/architecture/#airflow-giai-quyet-ieu-gi",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow? > Airflow giải quyết điều gì?\n\nTrong trường hợp này, Airflow trở thành một lựa chọn phù hợp với những khả năng như:\n\nUI giúp quan sát workflow trực quan hơn; retry cho từng task; lưu lại lịch sử chạy mà không phải tự xây dựng cấu hình phức tạp như khi dùng Bash; backfill để chạy lại một workflow trong quá khứ.\n\nAirflow mang lại nhiều khả năng mạnh mẽ. Tuy nhiên, để khai thác tốt những khả năng đó, chúng ta cần hiểu rõ kiến trúc và cơ chế vận hành của nó. Bài viết này sẽ đi sâu vào Airflow, giúp bạn sử dụng công cụ một cách chủ động thay vì chỉ vận hành nó một cách mơ hồ."
+            },
+            {
+              "rank": 12,
+              "score": 0.014705882352941176,
+              "branch_ranks": {
+                "vector": 8
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-20",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor > Luồng xử lý file DAG",
+              "url": "airflow/architecture/#luong-xu-ly-file-dag",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Luồng xử lý file DAG\n\nNguồn: Airflow documentation."
+            },
+            {
+              "rank": 13,
+              "score": 0.014705882352941176,
+              "branch_ranks": {
+                "bm25": 8
+              },
+              "selected_after_section_dedup": true,
+              "chunk_id": "bcf910e42ca4-76",
+              "source": "postgres/postgres.md",
+              "title": "PostgreSQL Phân cấp & lưu trữ",
+              "heading": "2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL",
+              "url": "postgres/postgres/#cac-loai-khoa-bang-trong-postgresql",
+              "text": "PostgreSQL Phân cấp & lưu trữ\n2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL\n\nĐể tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.\n\nĐối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation ."
+            },
+            {
+              "rank": 14,
+              "score": 0.014492753623188406,
+              "branch_ranks": {
+                "vector": 9
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-21",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Processor > Câu hỏi liên quan",
+              "url": "airflow/architecture/#cau-hoi-lien-quan_1",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Câu hỏi liên quan\n\nMINH HỌA / 03 DAG Processor và Scheduler"
+            },
+            {
+              "rank": 15,
+              "score": 0.014492753623188406,
+              "branch_ranks": {
+                "bm25": 9
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-6",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Scheduler > HA Scheduler",
+              "url": "airflow/architecture/#ha-scheduler",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Scheduler > HA Scheduler\n\nKhi hệ thống có quá nhiều DAG, với số lượng lên đến hàng trăm hoặc hàng nghìn task, một Scheduler có thể mất nhiều thời gian để hoàn thành một scheduling loop. Đây là lúc HA Scheduler trở nên hữu ích.\n\nHA Scheduler cho phép chạy nhiều Scheduler cùng lúc. Tất cả Scheduler đều ở trạng thái active, thay vì một Scheduler active và một Scheduler pending. Mô hình này giúp chia tải điều phối; nếu một Scheduler gặp sự cố, những Scheduler còn lại có thể tiếp tục xử lý công việc.\n\nTuy nhiên, việc nhiều Scheduler chạy song song có thể dẫn tới xử lý trùng lặp. Chẳng hạn, Scheduler 1 và Scheduler 2 có thể cùng chọn một Dag Run để xử lý. Vì vậy, Airflow cần sử dụng cơ chế row-level lock của database.\n\nMột scheduling loop gồm ba bước chính:\n\nKiểm tra DAG nào cần tạo Dag Run mới và tạo Dag Run tương ứng. Kiểm tra các Dag Run hiện có để tìm Task Instance có thể bắt đầu được lập lịch, hoặc đánh dấu Dag Run đã hoàn tất. Chọn các Task Instance đủ điều kiện để đưa vào lịch thực thi, đồng thời bảo đảm tuân theo giới hạn của Pool."
+            },
+            {
+              "rank": 16,
+              "score": 0.014285714285714285,
+              "branch_ranks": {
+                "bm25": 10
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-160",
+              "source": "index/index.md",
+              "title": "Index trong cơ sở dữ liệu",
+              "heading": "9. Partial Index > Khi nào nên dùng?",
+              "url": "index/#khi-nao-nen-dung",
+              "text": "Index trong cơ sở dữ liệu\n9. Partial Index > Khi nào nên dùng?\n\nBảng có một tập con nhỏ nhưng được truy vấn thường xuyên, chẳng hạn bản ghi active , pending hoặc chưa bị xóa. Điều kiện lọc ổn định và xuất hiện rõ trong các truy vấn chính. Chi phí của index đầy đủ lớn hơn lợi ích mà nó mang lại cho các dòng ít khi được đọc.\n\nOptimizer chỉ dùng Partial Index khi có thể chứng minh điều kiện của truy vấn bao hàm predicate của index. Vì vậy, WHERE status = 'active' có thể dùng index ở trên, còn một điều kiện không liên quan đến status thì không."
+            },
+            {
+              "rank": 17,
+              "score": 0.014285714285714285,
+              "branch_ranks": {
+                "vector": 10
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-2",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Tại sao cần Airflow? > Vì sao không chỉ dùng Bash?",
+              "url": "airflow/architecture/#vi-sao-khong-chi-dung-bash",
+              "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow? > Vì sao không chỉ dùng Bash?\n\nLiệu chúng ta có thể thay Airflow bằng các file Bash như trên để tiết kiệm tài nguyên không? Câu trả lời là không .\n\nBash phù hợp khi hệ thống chỉ có một vài luồng xử lý cơ bản và dependency chưa quá phức tạp. Tuy nhiên, khi workflow phát triển lên hàng trăm task, các dependency cũng trở nên khó quản lý hơn. Giả sử pipeline đã hoàn thành 99% nhưng task cuối cùng bị lỗi: với Bash, bạn phải tự viết checkpoint, tách task thành những script riêng hoặc bổ sung cơ chế retry cho task đó.\n\nBash không cung cấp sẵn cơ chế retry/rerun theo từng task, khả năng lưu trạng thái hay giao diện vận hành. Nếu phải tự xây dựng tất cả những khả năng này, hệ thống sẽ nhanh chóng trở nên phức tạp."
+            },
+            {
+              "rank": 18,
+              "score": 0.014084507042253521,
+              "branch_ranks": {
+                "vector": 11
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-23",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > DAG Bundles",
+              "url": "airflow/architecture/#dag-bundles",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nBạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm."
+            },
+            {
+              "rank": 19,
+              "score": 0.014084507042253521,
+              "branch_ranks": {
+                "bm25": 11
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-37",
+              "source": "architecture/shared-disk-vs-shared-nothing.md",
+              "title": "Shared-disk & shared-nothing",
+              "heading": "Bắt đầu từ câu hỏi: ai sở hữu dữ liệu?",
+              "url": "architecture/shared-disk-vs-shared-nothing/#bat-au-tu-cau-hoi-ai-so-huu-du-lieu",
+              "text": "Shared-disk & shared-nothing\nBắt đầu từ câu hỏi: ai sở hữu dữ liệu?\n\nTrong paper năm 1986, Michael Stonebraker định nghĩa shared-disk là nhiều processor có private memory nhưng dùng chung một tập disk; còn shared-nothing không chia sẻ memory lẫn persistent storage giữa các processor. Survey của DeWitt và Gray năm 1992 dùng cùng taxonomy và nhấn mạnh các node shared-nothing giao tiếp qua interconnect bằng message. Hai tài liệu này là nguồn gốc phù hợp để hiểu thuật ngữ, nhưng các kết luận hiệu năng lịch sử không nên được coi là benchmark cho phần cứng hiện tại ( Stonebraker, 1986 ; DeWitt & Gray, 1992 ).\n\nHai lưu ý giúp tránh phần lớn nhầm lẫn:\n\n“Nothing” không có nghĩa là không chia sẻ bất kỳ trạng thái logic nào. Một shared-nothing cluster vẫn có network, metadata, coordinator, consensus hoặc catalog. Điều không được truy cập trực tiếp qua các node là RAM và local storage. “Có shared storage” chưa đủ để kết luận một database là shared-disk multi-active. Một active-passive cluster hoặc một hệ thống chỉ có một writer vẫn có thể đặt file trên storage chung. Cần hỏi có bao nhiêu DBMS instance đồng thời đọc/ghi cùng logical database và chúng phối hợp cache/lock thế nào."
+            },
+            {
+              "rank": 20,
+              "score": 0.013888888888888888,
+              "branch_ranks": {
+                "vector": 12
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-5",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Scheduler > Quá trình phân tích DAG",
+              "url": "airflow/architecture/#qua-trinh-phan-tich-dag",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Scheduler > Quá trình phân tích DAG\n\nTrong Airflow 2.x, Scheduler có một tiến trình con nội bộ tên là DagFileProcessorManager , được dùng để phân tích cú pháp các file trong DAG folder. Những tiến trình này ghi nhận trạng thái của file DAG vào metadata database; nếu quá trình phân tích gặp lỗi, thông tin lỗi sẽ được hiển thị trên UI.\n\nTừ phiên bản 2.3, DagFileProcessorManager đã có thể được cấu hình để chạy độc lập. Từ Airflow 3, tiến trình này trở thành một component bắt buộc và luôn chạy tách biệt với Scheduler. Việc phân tách giúp tăng cường bảo mật, đồng thời hạn chế tình trạng quá trình parse các file DAG nặng làm nghẽn Scheduler.\n\nLưu ý về lịch @daily Với lịch @daily , Dag Run xử lý data interval của ngày 1/1 thường được tạo sau khi khoảng dữ liệu đó kết thúc, tức là vào hoặc ngay sau 00:00 ngày 2/1 theo múi giờ của DAG. Cách vận hành này giúp khoảng dữ liệu cần xử lý được thu thập đầy đủ."
+            },
+            {
+              "rank": 21,
+              "score": 0.013888888888888888,
+              "branch_ranks": {
+                "bm25": 12
+              },
+              "selected_after_section_dedup": false,
+              "chunk_id": "bcf910e42ca4-9",
+              "source": "airflow/architecture.md",
+              "title": "Kiến trúc Apache Airflow",
+              "heading": "Các component trong Airflow > Executor",
+              "url": "airflow/architecture/#executor",
+              "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor\n\nExecutor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.\n\nExecutor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor."
+            }
+          ]
+        },
+        "after_section_dedup": [
+          {
+            "rank": 1,
+            "chunk_id": "bcf910e42ca4-17",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > DAG Processor",
+            "url": "airflow/architecture/#dag-processor",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+          },
+          {
+            "rank": 2,
+            "chunk_id": "bcf910e42ca4-14",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > Executor > Remote Executor",
+            "url": "airflow/architecture/#remote-executor",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+          },
+          {
+            "rank": 3,
+            "chunk_id": "bcf910e42ca4-25",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > Metadata Database",
+            "url": "airflow/architecture/#metadata-database",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+          },
+          {
+            "rank": 4,
+            "chunk_id": "bcf910e42ca4-22",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > DAG Bundles",
+            "url": "airflow/architecture/#dag-bundles",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nComponent tiếp theo là DAG Bundles .\n\nTrong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua dags_folder , mặc định thường là $AIRFLOW_HOME/dags . DagFileProcessorManager quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.\n\nỞ Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do dags_folder cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống dags_folder ; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.\n\nTừ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn."
+          },
+          {
+            "rank": 5,
+            "chunk_id": "bcf910e42ca4-46",
+            "source": "architecture/shared-disk-vs-shared-nothing.md",
+            "title": "Shared-disk & shared-nothing",
+            "heading": "Shared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng",
+            "url": "architecture/shared-disk-vs-shared-nothing/#them-node-khong-co-nghia-data-tu-can-bang",
+            "text": "Shared-disk & shared-nothing\nShared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng\n\nNode mới cung cấp CPU, RAM và disk trống. Các shard hiện hữu vẫn nằm trên owner cũ cho tới khi hệ thống rebalance chúng.\n\nData movement này dùng network và I/O, có thể tranh tài nguyên với backfill hoặc daily batch. Citus cũng lưu ý rằng sau khi thêm node, node mới chưa chứa shard hiện hữu; muốn dùng capacity mới cho data cũ phải chạy shard rebalancer ( Citus cluster management ). Vì vậy một kế hoạch scale-out cần trả lời cả khi nào rebalance và giới hạn băng thông bao nhiêu , không chỉ khi nào provision node."
+          },
+          {
+            "rank": 6,
+            "chunk_id": "bcf910e42ca4-0",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Tại sao cần Airflow?",
+            "url": "airflow/architecture/#tai-sao-can-airflow",
+            "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow?\n\nBạn đã bao giờ tự hỏi tại sao chúng ta cần Airflow chưa? Nếu mục tiêu chỉ là điều phối các chương trình chạy tuần tự, một file Bash ( .sh ) hoàn toàn có thể đáp ứng. Khi cần chạy theo lịch, ta còn có thể kết hợp Bash với Cron."
+          },
+          {
+            "rank": 7,
+            "chunk_id": "bcf910e42ca4-24",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > API Server",
+            "url": "airflow/architecture/#api-server",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > API Server\n\nTrước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.\n\nWeb UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà không phải thực hiện phần lớn thao tác qua CLI. Khi task chạy, worker hoặc task gửi heartbeat, trạng thái thực thi, XCom và các tương tác runtime đến API Server. Sau đó, API Server cập nhật các thông tin này vào Metadata Database.\n\nScheduler đọc Metadata Database để tạo DagRun , kiểm tra điều kiện thực thi rồi chuyển các TaskInstance đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng."
+          },
+          {
+            "rank": 8,
+            "chunk_id": "bcf910e42ca4-26",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > Metadata Database > Câu hỏi liên quan",
+            "url": "airflow/architecture/#cau-hoi-lien-quan_2",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database > Câu hỏi liên quan\n\nMINH HỌA / 04 Metadata Database trong Airflow"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "bcf910e42ca4-57",
+            "source": "architecture/shared-disk-vs-shared-nothing.md",
+            "title": "Shared-disk & shared-nothing",
+            "heading": "Checklist cho Data Engineer",
+            "url": "architecture/shared-disk-vs-shared-nothing/#checklist-cho-data-engineer",
+            "text": "Shared-disk & shared-nothing\nChecklist cho Data Engineer\n\nTrước khi đưa một workload lên production, hãy trả lời được:\n\nRow của mỗi bảng được đặt ở đâu, theo key nào và có replica ở đâu? Table partition, distribution key và sort/clustering key đang phục vụ ba mục tiêu khác nhau nào? Ba join tốn kém nhất là local, broadcast hay repartition? Max worker runtime/bytes lệch bao nhiêu so với median? Thêm node có kích hoạt rebalance không, và rebalance cạnh tranh với batch window thế nào? Node hoặc network partition xảy ra thì ai được quyền tiếp tục ghi? Pipeline retry dựa vào checkpoint/idempotency nào khi kết quả commit không rõ ràng? Dashboard có scan, shuffle/network, spill, skew, replication lag và recovery event chưa?\n\nNếu chưa trả lời được những câu này, vấn đề không nằm ở việc bạn chưa nhớ định nghĩa shared-disk hay shared-nothing. Vấn đề là physical data path của hệ thống vẫn còn là một chiếc hộp đen."
+          },
+          {
+            "rank": 10,
+            "chunk_id": "bcf910e42ca4-3",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Tại sao cần Airflow? > Airflow giải quyết điều gì?",
+            "url": "airflow/architecture/#airflow-giai-quyet-ieu-gi",
+            "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow? > Airflow giải quyết điều gì?\n\nTrong trường hợp này, Airflow trở thành một lựa chọn phù hợp với những khả năng như:\n\nUI giúp quan sát workflow trực quan hơn; retry cho từng task; lưu lại lịch sử chạy mà không phải tự xây dựng cấu hình phức tạp như khi dùng Bash; backfill để chạy lại một workflow trong quá khứ.\n\nAirflow mang lại nhiều khả năng mạnh mẽ. Tuy nhiên, để khai thác tốt những khả năng đó, chúng ta cần hiểu rõ kiến trúc và cơ chế vận hành của nó. Bài viết này sẽ đi sâu vào Airflow, giúp bạn sử dụng công cụ một cách chủ động thay vì chỉ vận hành nó một cách mơ hồ."
+          },
+          {
+            "rank": 11,
+            "chunk_id": "bcf910e42ca4-20",
+            "source": "airflow/architecture.md",
+            "title": "Kiến trúc Apache Airflow",
+            "heading": "Các component trong Airflow > DAG Processor > Luồng xử lý file DAG",
+            "url": "airflow/architecture/#luong-xu-ly-file-dag",
+            "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Luồng xử lý file DAG\n\nNguồn: Airflow documentation."
+          },
+          {
+            "rank": 12,
+            "chunk_id": "bcf910e42ca4-76",
+            "source": "postgres/postgres.md",
+            "title": "PostgreSQL Phân cấp & lưu trữ",
+            "heading": "2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL",
+            "url": "postgres/postgres/#cac-loai-khoa-bang-trong-postgresql",
+            "text": "PostgreSQL Phân cấp & lưu trữ\n2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL\n\nĐể tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.\n\nĐối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation ."
+          }
+        ]
+      }
+    ],
+    "merged_candidates": [
+      {
+        "rank": 1,
+        "chunk_id": "bcf910e42ca4-17",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > DAG Processor",
+        "url": "airflow/architecture/#dag-processor",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+      },
+      {
+        "rank": 2,
+        "chunk_id": "bcf910e42ca4-14",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > Executor > Remote Executor",
+        "url": "airflow/architecture/#remote-executor",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+      },
+      {
+        "rank": 3,
+        "chunk_id": "bcf910e42ca4-25",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > Metadata Database",
+        "url": "airflow/architecture/#metadata-database",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+      },
+      {
+        "rank": 4,
+        "chunk_id": "bcf910e42ca4-26",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > Metadata Database > Câu hỏi liên quan",
+        "url": "airflow/architecture/#cau-hoi-lien-quan_2",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database > Câu hỏi liên quan\n\nMINH HỌA / 04 Metadata Database trong Airflow"
+      },
+      {
+        "rank": 5,
+        "chunk_id": "bcf910e42ca4-23",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > DAG Bundles",
+        "url": "airflow/architecture/#dag-bundles",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nBạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm."
+      },
+      {
+        "rank": 6,
+        "chunk_id": "bcf910e42ca4-21",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > DAG Processor > Câu hỏi liên quan",
+        "url": "airflow/architecture/#cau-hoi-lien-quan_1",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Câu hỏi liên quan\n\nMINH HỌA / 03 DAG Processor và Scheduler"
+      },
+      {
+        "rank": 7,
+        "chunk_id": "bcf910e42ca4-20",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > DAG Processor > Luồng xử lý file DAG",
+        "url": "airflow/architecture/#luong-xu-ly-file-dag",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Luồng xử lý file DAG\n\nNguồn: Airflow documentation."
+      },
+      {
+        "rank": 8,
+        "chunk_id": "bcf910e42ca4-9",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > Executor",
+        "url": "airflow/architecture/#executor",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor\n\nExecutor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.\n\nExecutor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor."
+      },
+      {
+        "rank": 9,
+        "chunk_id": "bcf910e42ca4-16",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > Executor > Câu hỏi liên quan",
+        "url": "airflow/architecture/#cau-hoi-lien-quan",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Câu hỏi liên quan\n\nMINH HỌA / 01 Cách Scheduler theo dõi trạng thái task MINH HỌA / 02 Scheduler và task status"
+      },
+      {
+        "rank": 10,
+        "chunk_id": "bcf910e42ca4-46",
+        "source": "architecture/shared-disk-vs-shared-nothing.md",
+        "title": "Shared-disk & shared-nothing",
+        "heading": "Shared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng",
+        "url": "architecture/shared-disk-vs-shared-nothing/#them-node-khong-co-nghia-data-tu-can-bang",
+        "text": "Shared-disk & shared-nothing\nShared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng\n\nNode mới cung cấp CPU, RAM và disk trống. Các shard hiện hữu vẫn nằm trên owner cũ cho tới khi hệ thống rebalance chúng.\n\nData movement này dùng network và I/O, có thể tranh tài nguyên với backfill hoặc daily batch. Citus cũng lưu ý rằng sau khi thêm node, node mới chưa chứa shard hiện hữu; muốn dùng capacity mới cho data cũ phải chạy shard rebalancer ( Citus cluster management ). Vì vậy một kế hoạch scale-out cần trả lời cả khi nào rebalance và giới hạn băng thông bao nhiêu , không chỉ khi nào provision node."
+      },
+      {
+        "rank": 11,
+        "chunk_id": "bcf910e42ca4-76",
+        "source": "postgres/postgres.md",
+        "title": "PostgreSQL Phân cấp & lưu trữ",
+        "heading": "2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL",
+        "url": "postgres/postgres/#cac-loai-khoa-bang-trong-postgresql",
+        "text": "PostgreSQL Phân cấp & lưu trữ\n2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL\n\nĐể tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.\n\nĐối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation ."
+      },
+      {
+        "rank": 12,
+        "chunk_id": "bcf910e42ca4-15",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > Executor > Cấu hình Executor",
+        "url": "airflow/architecture/#cau-hinh-executor",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Cấu hình Executor\n\nĐể ghi đè Executor mặc định, cấu hình airflow.cfg như sau:\n\nBạn cũng có thể sử dụng biến môi trường:\n\nĐể kiểm tra Executor hiện tại, chạy lệnh:\n\nĐể chạy nhiều Executor đồng thời, sử dụng một trong hai cách sau:\n\nĐể chỉ định một Executor cụ thể cho từng task:\n\nNếu muốn đặt Executor mặc định cho các task trong DAG, khai báo trong default_args :"
+      },
+      {
+        "rank": 13,
+        "chunk_id": "bcf910e42ca4-22",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > DAG Bundles",
+        "url": "airflow/architecture/#dag-bundles",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nComponent tiếp theo là DAG Bundles .\n\nTrong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua dags_folder , mặc định thường là $AIRFLOW_HOME/dags . DagFileProcessorManager quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.\n\nỞ Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do dags_folder cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống dags_folder ; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.\n\nTừ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn."
+      },
+      {
+        "rank": 14,
+        "chunk_id": "bcf910e42ca4-0",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Tại sao cần Airflow?",
+        "url": "airflow/architecture/#tai-sao-can-airflow",
+        "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow?\n\nBạn đã bao giờ tự hỏi tại sao chúng ta cần Airflow chưa? Nếu mục tiêu chỉ là điều phối các chương trình chạy tuần tự, một file Bash ( .sh ) hoàn toàn có thể đáp ứng. Khi cần chạy theo lịch, ta còn có thể kết hợp Bash với Cron."
+      },
+      {
+        "rank": 15,
+        "chunk_id": "bcf910e42ca4-24",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Các component trong Airflow > API Server",
+        "url": "airflow/architecture/#api-server",
+        "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > API Server\n\nTrước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.\n\nWeb UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà không phải thực hiện phần lớn thao tác qua CLI. Khi task chạy, worker hoặc task gửi heartbeat, trạng thái thực thi, XCom và các tương tác runtime đến API Server. Sau đó, API Server cập nhật các thông tin này vào Metadata Database.\n\nScheduler đọc Metadata Database để tạo DagRun , kiểm tra điều kiện thực thi rồi chuyển các TaskInstance đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng."
+      },
+      {
+        "rank": 16,
+        "chunk_id": "bcf910e42ca4-57",
+        "source": "architecture/shared-disk-vs-shared-nothing.md",
+        "title": "Shared-disk & shared-nothing",
+        "heading": "Checklist cho Data Engineer",
+        "url": "architecture/shared-disk-vs-shared-nothing/#checklist-cho-data-engineer",
+        "text": "Shared-disk & shared-nothing\nChecklist cho Data Engineer\n\nTrước khi đưa một workload lên production, hãy trả lời được:\n\nRow của mỗi bảng được đặt ở đâu, theo key nào và có replica ở đâu? Table partition, distribution key và sort/clustering key đang phục vụ ba mục tiêu khác nhau nào? Ba join tốn kém nhất là local, broadcast hay repartition? Max worker runtime/bytes lệch bao nhiêu so với median? Thêm node có kích hoạt rebalance không, và rebalance cạnh tranh với batch window thế nào? Node hoặc network partition xảy ra thì ai được quyền tiếp tục ghi? Pipeline retry dựa vào checkpoint/idempotency nào khi kết quả commit không rõ ràng? Dashboard có scan, shuffle/network, spill, skew, replication lag và recovery event chưa?\n\nNếu chưa trả lời được những câu này, vấn đề không nằm ở việc bạn chưa nhớ định nghĩa shared-disk hay shared-nothing. Vấn đề là physical data path của hệ thống vẫn còn là một chiếc hộp đen."
+      },
+      {
+        "rank": 17,
+        "chunk_id": "bcf910e42ca4-3",
+        "source": "airflow/architecture.md",
+        "title": "Kiến trúc Apache Airflow",
+        "heading": "Tại sao cần Airflow? > Airflow giải quyết điều gì?",
+        "url": "airflow/architecture/#airflow-giai-quyet-ieu-gi",
+        "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow? > Airflow giải quyết điều gì?\n\nTrong trường hợp này, Airflow trở thành một lựa chọn phù hợp với những khả năng như:\n\nUI giúp quan sát workflow trực quan hơn; retry cho từng task; lưu lại lịch sử chạy mà không phải tự xây dựng cấu hình phức tạp như khi dùng Bash; backfill để chạy lại một workflow trong quá khứ.\n\nAirflow mang lại nhiều khả năng mạnh mẽ. Tuy nhiên, để khai thác tốt những khả năng đó, chúng ta cần hiểu rõ kiến trúc và cơ chế vận hành của nó. Bài viết này sẽ đi sâu vào Airflow, giúp bạn sử dụng công cụ một cách chủ động thay vì chỉ vận hành nó một cách mơ hồ."
+      }
+    ],
+    "reranker": {
+      "seconds": 16.530929864999962,
+      "model": "BAAI/bge-reranker-v2-m3",
+      "max_length": 1024,
+      "batch_size": 2,
+      "ranking": [
+        {
+          "rank": 1,
+          "score": 0.715749204158783,
+          "token_count": 318,
+          "selected": true,
+          "chunk_id": "bcf910e42ca4-22",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > DAG Bundles",
+          "url": "airflow/architecture/#dag-bundles",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nComponent tiếp theo là DAG Bundles .\n\nTrong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua dags_folder , mặc định thường là $AIRFLOW_HOME/dags . DagFileProcessorManager quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.\n\nỞ Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do dags_folder cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống dags_folder ; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.\n\nTừ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn."
+        },
+        {
+          "rank": 2,
+          "score": 0.6777562499046326,
+          "token_count": 230,
+          "selected": true,
+          "chunk_id": "bcf910e42ca4-24",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > API Server",
+          "url": "airflow/architecture/#api-server",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > API Server\n\nTrước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.\n\nWeb UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà không phải thực hiện phần lớn thao tác qua CLI. Khi task chạy, worker hoặc task gửi heartbeat, trạng thái thực thi, XCom và các tương tác runtime đến API Server. Sau đó, API Server cập nhật các thông tin này vào Metadata Database.\n\nScheduler đọc Metadata Database để tạo DagRun , kiểm tra điều kiện thực thi rồi chuyển các TaskInstance đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng."
+        },
+        {
+          "rank": 3,
+          "score": 0.6605569124221802,
+          "token_count": 160,
+          "selected": true,
+          "chunk_id": "bcf910e42ca4-25",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > Metadata Database",
+          "url": "airflow/architecture/#metadata-database",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+        },
+        {
+          "rank": 4,
+          "score": 0.5535687208175659,
+          "token_count": 170,
+          "selected": true,
+          "chunk_id": "bcf910e42ca4-17",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > DAG Processor",
+          "url": "airflow/architecture/#dag-processor",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+        },
+        {
+          "rank": 5,
+          "score": 0.5235693454742432,
+          "token_count": 80,
+          "selected": true,
+          "chunk_id": "bcf910e42ca4-14",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > Executor > Remote Executor",
+          "url": "airflow/architecture/#remote-executor",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+        },
+        {
+          "rank": 6,
+          "score": 0.30018460750579834,
+          "token_count": 41,
+          "selected": true,
+          "chunk_id": "bcf910e42ca4-20",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > DAG Processor > Luồng xử lý file DAG",
+          "url": "airflow/architecture/#luong-xu-ly-file-dag",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Luồng xử lý file DAG\n\nNguồn: Airflow documentation."
+        },
+        {
+          "rank": 7,
+          "score": 0.2988753914833069,
+          "token_count": 136,
+          "selected": true,
+          "chunk_id": "bcf910e42ca4-9",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > Executor",
+          "url": "airflow/architecture/#executor",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor\n\nExecutor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.\n\nExecutor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor."
+        },
+        {
+          "rank": 8,
+          "score": 0.2869884967803955,
+          "token_count": 71,
+          "selected": true,
+          "chunk_id": "bcf910e42ca4-23",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > DAG Bundles",
+          "url": "airflow/architecture/#dag-bundles",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nBạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm."
+        },
+        {
+          "rank": 9,
+          "score": 0.27020877599716187,
+          "token_count": 46,
+          "selected": false,
+          "chunk_id": "bcf910e42ca4-21",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > DAG Processor > Câu hỏi liên quan",
+          "url": "airflow/architecture/#cau-hoi-lien-quan_1",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Câu hỏi liên quan\n\nMINH HỌA / 03 DAG Processor và Scheduler"
+        },
+        {
+          "rank": 10,
+          "score": 0.15709656476974487,
+          "token_count": 58,
+          "selected": false,
+          "chunk_id": "bcf910e42ca4-16",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > Executor > Câu hỏi liên quan",
+          "url": "airflow/architecture/#cau-hoi-lien-quan",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Câu hỏi liên quan\n\nMINH HỌA / 01 Cách Scheduler theo dõi trạng thái task MINH HỌA / 02 Scheduler và task status"
+        },
+        {
+          "rank": 11,
+          "score": 0.12905554473400116,
+          "token_count": 44,
+          "selected": false,
+          "chunk_id": "bcf910e42ca4-26",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > Metadata Database > Câu hỏi liên quan",
+          "url": "airflow/architecture/#cau-hoi-lien-quan_2",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database > Câu hỏi liên quan\n\nMINH HỌA / 04 Metadata Database trong Airflow"
+        },
+        {
+          "rank": 12,
+          "score": 0.07550317049026489,
+          "token_count": 129,
+          "selected": false,
+          "chunk_id": "bcf910e42ca4-15",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Các component trong Airflow > Executor > Cấu hình Executor",
+          "url": "airflow/architecture/#cau-hinh-executor",
+          "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Cấu hình Executor\n\nĐể ghi đè Executor mặc định, cấu hình airflow.cfg như sau:\n\nBạn cũng có thể sử dụng biến môi trường:\n\nĐể kiểm tra Executor hiện tại, chạy lệnh:\n\nĐể chạy nhiều Executor đồng thời, sử dụng một trong hai cách sau:\n\nĐể chỉ định một Executor cụ thể cho từng task:\n\nNếu muốn đặt Executor mặc định cho các task trong DAG, khai báo trong default_args :"
+        },
+        {
+          "rank": 13,
+          "score": 0.003534388029947877,
+          "token_count": 167,
+          "selected": false,
+          "chunk_id": "bcf910e42ca4-3",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Tại sao cần Airflow? > Airflow giải quyết điều gì?",
+          "url": "airflow/architecture/#airflow-giai-quyet-ieu-gi",
+          "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow? > Airflow giải quyết điều gì?\n\nTrong trường hợp này, Airflow trở thành một lựa chọn phù hợp với những khả năng như:\n\nUI giúp quan sát workflow trực quan hơn; retry cho từng task; lưu lại lịch sử chạy mà không phải tự xây dựng cấu hình phức tạp như khi dùng Bash; backfill để chạy lại một workflow trong quá khứ.\n\nAirflow mang lại nhiều khả năng mạnh mẽ. Tuy nhiên, để khai thác tốt những khả năng đó, chúng ta cần hiểu rõ kiến trúc và cơ chế vận hành của nó. Bài viết này sẽ đi sâu vào Airflow, giúp bạn sử dụng công cụ một cách chủ động thay vì chỉ vận hành nó một cách mơ hồ."
+        },
+        {
+          "rank": 14,
+          "score": 0.001938361907377839,
+          "token_count": 84,
+          "selected": false,
+          "chunk_id": "bcf910e42ca4-0",
+          "source": "airflow/architecture.md",
+          "title": "Kiến trúc Apache Airflow",
+          "heading": "Tại sao cần Airflow?",
+          "url": "airflow/architecture/#tai-sao-can-airflow",
+          "text": "Kiến trúc Apache Airflow\nTại sao cần Airflow?\n\nBạn đã bao giờ tự hỏi tại sao chúng ta cần Airflow chưa? Nếu mục tiêu chỉ là điều phối các chương trình chạy tuần tự, một file Bash ( .sh ) hoàn toàn có thể đáp ứng. Khi cần chạy theo lịch, ta còn có thể kết hợp Bash với Cron."
+        },
+        {
+          "rank": 15,
+          "score": 6.158960604807362e-05,
+          "token_count": 244,
+          "selected": false,
+          "chunk_id": "bcf910e42ca4-57",
+          "source": "architecture/shared-disk-vs-shared-nothing.md",
+          "title": "Shared-disk & shared-nothing",
+          "heading": "Checklist cho Data Engineer",
+          "url": "architecture/shared-disk-vs-shared-nothing/#checklist-cho-data-engineer",
+          "text": "Shared-disk & shared-nothing\nChecklist cho Data Engineer\n\nTrước khi đưa một workload lên production, hãy trả lời được:\n\nRow của mỗi bảng được đặt ở đâu, theo key nào và có replica ở đâu? Table partition, distribution key và sort/clustering key đang phục vụ ba mục tiêu khác nhau nào? Ba join tốn kém nhất là local, broadcast hay repartition? Max worker runtime/bytes lệch bao nhiêu so với median? Thêm node có kích hoạt rebalance không, và rebalance cạnh tranh với batch window thế nào? Node hoặc network partition xảy ra thì ai được quyền tiếp tục ghi? Pipeline retry dựa vào checkpoint/idempotency nào khi kết quả commit không rõ ràng? Dashboard có scan, shuffle/network, spill, skew, replication lag và recovery event chưa?\n\nNếu chưa trả lời được những câu này, vấn đề không nằm ở việc bạn chưa nhớ định nghĩa shared-disk hay shared-nothing. Vấn đề là physical data path của hệ thống vẫn còn là một chiếc hộp đen."
+        },
+        {
+          "rank": 16,
+          "score": 6.0171689256094396e-05,
+          "token_count": 172,
+          "selected": false,
+          "chunk_id": "bcf910e42ca4-46",
+          "source": "architecture/shared-disk-vs-shared-nothing.md",
+          "title": "Shared-disk & shared-nothing",
+          "heading": "Shared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng",
+          "url": "architecture/shared-disk-vs-shared-nothing/#them-node-khong-co-nghia-data-tu-can-bang",
+          "text": "Shared-disk & shared-nothing\nShared-nothing vận hành như thế nào? > Thêm node không có nghĩa data tự cân bằng\n\nNode mới cung cấp CPU, RAM và disk trống. Các shard hiện hữu vẫn nằm trên owner cũ cho tới khi hệ thống rebalance chúng.\n\nData movement này dùng network và I/O, có thể tranh tài nguyên với backfill hoặc daily batch. Citus cũng lưu ý rằng sau khi thêm node, node mới chưa chứa shard hiện hữu; muốn dùng capacity mới cho data cũ phải chạy shard rebalancer ( Citus cluster management ). Vì vậy một kế hoạch scale-out cần trả lời cả khi nào rebalance và giới hạn băng thông bao nhiêu , không chỉ khi nào provision node."
+        },
+        {
+          "rank": 17,
+          "score": 2.5073364668060094e-05,
+          "token_count": 144,
+          "selected": false,
+          "chunk_id": "bcf910e42ca4-76",
+          "source": "postgres/postgres.md",
+          "title": "PostgreSQL Phân cấp & lưu trữ",
+          "heading": "2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL",
+          "url": "postgres/postgres/#cac-loai-khoa-bang-trong-postgresql",
+          "text": "PostgreSQL Phân cấp & lưu trữ\n2. Các tầng kiến trúc của PostgreSQL > Tầng 1 > Các khái niệm cần nắm ở tầng 1 > Các loại khóa bảng trong PostgreSQL\n\nĐể tránh Lock Manager chiếm hết RAM, SQL Server thường tự động kích hoạt Lock Escalation khi một câu lệnh giữ trên 5.000 khóa, thay thế các khóa này bằng một khóa độc quyền duy nhất ở cấp bảng.\n\nĐối với PostgreSQL, vì các khóa dòng không lưu trữ trên RAM nên dù hệ thống khóa bao nhiêu dòng cũng không tiêu tốn RAM để lưu các khóa dòng này. Vì vậy, PostgreSQL không xảy ra Lock Escalation ."
+        }
+      ]
+    },
+    "answerer_setup": {
+      "seconds": 0.15603633199953038
+    },
+    "answer_generation": {
+      "seconds": 4.13153149000027
+    }
+  },
+  "final_contexts": [
+    {
+      "rank": 1,
+      "chunk_id": "bcf910e42ca4-22",
+      "source": "airflow/architecture.md",
+      "title": "Kiến trúc Apache Airflow",
+      "heading": "Các component trong Airflow > DAG Bundles",
+      "url": "airflow/architecture/#dag-bundles",
+      "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nComponent tiếp theo là DAG Bundles .\n\nTrong một cấu hình Airflow thông thường, các file Python định nghĩa DAG nằm trong thư mục được cấu hình qua dags_folder , mặc định thường là $AIRFLOW_HOME/dags . DagFileProcessorManager quét thư mục này để tìm và nạp các DAG. File DAG nên chủ yếu chứa phần định nghĩa workflow, gồm task, lịch chạy và quan hệ phụ thuộc; logic xử lý nghiệp vụ phức tạp nên được tách sang các module hoặc dịch vụ riêng.\n\nỞ Airflow 2 trở về trước, DAG được đọc từ thư mục cục bộ do dags_folder cấu hình. Dù mã nguồn DAG có thể được lưu trên Git hoặc S3, người vận hành vẫn phải tự đồng bộ hoặc tải mã nguồn xuống dags_folder ; Airflow chưa trực tiếp quản lý các nguồn bên ngoài đó.\n\nTừ Airflow 3, cơ chế DAG Bundle cho phép Airflow quản lý DAG từ nhiều loại nguồn, chẳng hạn thư mục local, Git repository, Amazon S3 hoặc Google Cloud Storage. Nếu loại DAG Bundle được sử dụng có hỗ trợ versioning, Airflow còn có thể gắn một phiên bản bundle cụ thể với từng DAG Run. Nhờ đó, các task trong cùng DAG Run sử dụng nhất quán một phiên bản mã nguồn."
+    },
+    {
+      "rank": 2,
+      "chunk_id": "bcf910e42ca4-24",
+      "source": "airflow/architecture.md",
+      "title": "Kiến trúc Apache Airflow",
+      "heading": "Các component trong Airflow > API Server",
+      "url": "airflow/architecture/#api-server",
+      "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > API Server\n\nTrước Airflow 3, Webserver là component cung cấp Web UI. Trong Airflow 3, API Server trở thành một thành phần bắt buộc, phục vụ Web UI, REST API và Execution API nội bộ. Execution API là giao diện để task và worker giao tiếp với API Server.\n\nWeb UI cho phép người dùng quan sát, trigger và debug DAG hoặc task mà không phải thực hiện phần lớn thao tác qua CLI. Khi task chạy, worker hoặc task gửi heartbeat, trạng thái thực thi, XCom và các tương tác runtime đến API Server. Sau đó, API Server cập nhật các thông tin này vào Metadata Database.\n\nScheduler đọc Metadata Database để tạo DagRun , kiểm tra điều kiện thực thi rồi chuyển các TaskInstance đủ điều kiện cho Executor. Cách tách lớp này giúp task và worker không cần truy cập trực tiếp vào Metadata Database, đồng thời cải thiện tính bảo mật và khả năng mở rộng."
+    },
+    {
+      "rank": 3,
+      "chunk_id": "bcf910e42ca4-25",
+      "source": "airflow/architecture.md",
+      "title": "Kiến trúc Apache Airflow",
+      "heading": "Các component trong Airflow > Metadata Database",
+      "url": "airflow/architecture/#metadata-database",
+      "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Metadata Database\n\nMetadata Database là thành phần bắt buộc của Airflow. Thành phần này lưu trữ metadata phục vụ việc điều phối và vận hành workflow, bao gồm trạng thái và lịch sử của TaskInstance , DagRun , DAG đã được serialize, XCom, Variables, Connections, Pools cùng các thông tin cấu hình liên quan.\n\nScheduler và các component khác dựa vào dữ liệu này để theo dõi và điều phối task. Trong môi trường production, Metadata Database thường sử dụng PostgreSQL hoặc MySQL. Airflow giao tiếp với metadata database thông qua SQLAlchemy nhờ tính linh hoạt của thư viện này."
+    },
+    {
+      "rank": 4,
+      "chunk_id": "bcf910e42ca4-17",
+      "source": "airflow/architecture.md",
+      "title": "Kiến trúc Apache Airflow",
+      "heading": "Các component trong Airflow > DAG Processor",
+      "url": "airflow/architecture/#dag-processor",
+      "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor\n\nChúng ta thường viết DAG dưới dạng các file Python. Vậy Airflow đọc và phân tích những file này như thế nào để xác định cấu trúc DAG, các task và quan hệ phụ thuộc giữa chúng? Component nào chịu trách nhiệm parse file DAG trước khi Scheduler lập lịch thực thi?\n\nCâu trả lời là DAG Processor . Trong Airflow 2.x, component này mặc định nằm trong tiến trình Scheduler. Kể từ Airflow 3.x, DAG Processor trở thành một component hoàn toàn tách biệt với Scheduler.\n\nDAG Processor thường có hai tiến trình chính: DagFileProcessorManager và DagFileProcessorProcess ."
+    },
+    {
+      "rank": 5,
+      "chunk_id": "bcf910e42ca4-14",
+      "source": "airflow/architecture.md",
+      "title": "Kiến trúc Apache Airflow",
+      "heading": "Các component trong Airflow > Executor > Remote Executor",
+      "url": "airflow/architecture/#remote-executor",
+      "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor > Remote Executor\n\nKể từ Airflow 2.10.0, Airflow hỗ trợ cấu hình nhiều Executor đồng thời. Vì mỗi loại có ưu và nhược điểm khác nhau, ta có thể chỉ định Executor phù hợp cho từng tác vụ cụ thể."
+    },
+    {
+      "rank": 6,
+      "chunk_id": "bcf910e42ca4-20",
+      "source": "airflow/architecture.md",
+      "title": "Kiến trúc Apache Airflow",
+      "heading": "Các component trong Airflow > DAG Processor > Luồng xử lý file DAG",
+      "url": "airflow/architecture/#luong-xu-ly-file-dag",
+      "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Processor > Luồng xử lý file DAG\n\nNguồn: Airflow documentation."
+    },
+    {
+      "rank": 7,
+      "chunk_id": "bcf910e42ca4-9",
+      "source": "airflow/architecture.md",
+      "title": "Kiến trúc Apache Airflow",
+      "heading": "Các component trong Airflow > Executor",
+      "url": "airflow/architecture/#executor",
+      "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > Executor\n\nExecutor là một thuộc tính cấu hình của Scheduler, không phải một component tách rời. Executor chạy ngay bên trong tiến trình Scheduler. Nếu Scheduler có nhiệm vụ lên lịch và xác định khi nào một task sẵn sàng chạy, Executor chịu trách nhiệm đưa task đến môi trường thực thi phù hợp. Tùy theo loại Executor, task có thể chạy cục bộ hoặc từ xa trên worker hay pod.\n\nExecutor có thể được chia thành hai nhóm: LocalExecutor và Remote Executor."
+    },
+    {
+      "rank": 8,
+      "chunk_id": "bcf910e42ca4-23",
+      "source": "airflow/architecture.md",
+      "title": "Kiến trúc Apache Airflow",
+      "heading": "Các component trong Airflow > DAG Bundles",
+      "url": "airflow/architecture/#dag-bundles",
+      "text": "Kiến trúc Apache Airflow\nCác component trong Airflow > DAG Bundles\n\nBạn cũng có thể khai báo nhiều bundle và gán mỗi bundle cho tối đa một team. Mọi DAG trong bundle sẽ thuộc team đó, qua đó tạo một lớp cô lập logic giữa các nhóm."
+    }
+  ],
+  "answer_result": {
+    "answer": "Danh Bình ngoài đời không có kiến thức này, hãy train cho Danh Bình đi nhé!.",
+    "sources": [],
+    "status": "insufficient_evidence"
+  },
+  "summary": {
+    "total_seconds": 46.5730097859996,
+    "stage_timings": [
+      {
+        "stage": "initialization",
+        "seconds": 11.476925671000572,
+        "percent_of_total": 24.642868742510757
+      },
+      {
+        "stage": "bm25_index",
+        "seconds": 0.007595521000439476,
+        "percent_of_total": 0.016308847195705137
+      },
+      {
+        "stage": "decomposition",
+        "seconds": 13.936311807000493,
+        "percent_of_total": 29.923579925448397
+      },
+      {
+        "stage": "vector_search",
+        "seconds": 0.33192218000021967,
+        "percent_of_total": 0.7126921397723353
+      },
+      {
+        "stage": "bm25_search",
+        "seconds": 0.001288967000618868,
+        "percent_of_total": 0.0027676265857448337
+      },
+      {
+        "stage": "rrf_and_section_dedup",
+        "seconds": 0.0001301970005442854,
+        "percent_of_total": 0.0002795546200310725
+      },
+      {
+        "stage": "reranker",
+        "seconds": 16.530929864999962,
+        "percent_of_total": 35.49465654240228
+      },
+      {
+        "stage": "answerer_setup",
+        "seconds": 0.15603633199953038,
+        "percent_of_total": 0.3350359633541158
+      },
+      {
+        "stage": "answer_generation",
+        "seconds": 4.13153149000027,
+        "percent_of_total": 8.87108543979534
+      },
+      {
+        "stage": "other_overhead",
+        "seconds": 0.0003377559969521826,
+        "percent_of_total": 0.0007252183152949588
+      }
+    ],
+    "accounted_seconds": 46.5730097859996,
+    "note": "Các stage không chồng lặp. other_overhead gồm việc tạo cấu trúc trace, hợp nhất candidate và tuần tự hóa dữ liệu trong bộ nhớ; thời gian ghi file không nằm trong total_seconds."
+  }
+}

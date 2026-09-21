@@ -4,57 +4,66 @@ import uuid
 
 from langchain_chroma import Chroma
 
+from outline import OutlineCatalog, make_outlines
 from rag import INDEX_SPEC, load_documents, make_embeddings, split_documents
 from storage import CHROMA_DIR, DATA_DIR, MANIFEST_PATH
 
 
-def main():
-    chunks = split_documents(load_documents())
-    if not chunks:
-        raise RuntimeError("Không có chunk để index.")
+def json_bytes(value):
+    return json.dumps(value, ensure_ascii=False, sort_keys=True).encode("utf-8")
 
-    records = [
-        {"content": chunk.page_content, "metadata": chunk.metadata}
-        for chunk in chunks
-    ]
-    corpus_hash = hashlib.sha256(
-        json.dumps(records, ensure_ascii=False, sort_keys=True).encode("utf-8")
-    ).hexdigest()
+
+def record(doc):
+    return {"content": doc.page_content, "metadata": doc.metadata}
+
+
+def main():
+    sections = load_documents()
+    outlines = make_outlines(sections)
+    chunks = split_documents(sections)
+    if not chunks:
+        raise RuntimeError("Không có body chunk để index.")
+    OutlineCatalog(outlines, chunks)  # Kiểm tra quan hệ trước khi publish.
+    corpus_hash = hashlib.sha256(json_bytes({
+        "chunks": [record(d) for d in chunks],
+        "outlines": [record(d) for d in outlines],
+    })).hexdigest()
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     collection_name = f"handbook_{uuid.uuid4().hex}"
     store = Chroma(
         collection_name=collection_name,
-        persist_directory=str(CHROMA_DIR),
-        embedding_function=make_embeddings(),
+        persist_directory=str(CHROMA_DIR), embedding_function=make_embeddings(),
     )
-    ids = []
-    for index, chunk in enumerate(chunks):
-        chunk_id = f"{corpus_hash[:12]}-{index}"
-        chunk.metadata["chunk_id"] = chunk_id
-        ids.append(chunk_id)
-
-    # Batch nhỏ, không giả định backend Chroma nhận được mọi corpus một lần.
+    ids = [d.metadata["chunk_id"] for d in chunks]
+    if len(set(ids)) != len(ids):
+        raise ValueError("chunk_id trùng")
     for start in range(0, len(chunks), 64):
         store.add_documents(chunks[start:start + 64], ids=ids[start:start + 64])
+    if len(store.get(include=["metadatas"])["ids"]) != len(chunks):
+        raise RuntimeError("Số chunk không khớp; chưa đổi manifest.")
 
-    actual_count = len(store.get(include=["metadatas"])["ids"])
-    if actual_count != len(chunks):
-        raise RuntimeError("Số chunk đã lưu không khớp; không đổi manifest.")
+    payload = json_bytes({
+        "schema_version": 1, "collection": collection_name,
+        "corpus_hash": corpus_hash, "outlines": [record(d) for d in outlines],
+    })
+    outline_path = DATA_DIR / f"{collection_name}.outlines.json"
+    pending_outline = outline_path.with_suffix(".tmp")
+    pending_outline.write_bytes(payload)
+    pending_outline.replace(outline_path)
 
     manifest = {
-        "collection": collection_name,
-        "spec": INDEX_SPEC,
-        "corpus_hash": corpus_hash,
-        "chunk_count": len(chunks),
+        "collection": collection_name, "spec": INDEX_SPEC,
+        "corpus_hash": corpus_hash, "chunk_count": len(chunks),
+        "outline_file": outline_path.name, "outline_count": len(outlines),
+        "outline_sha256": hashlib.sha256(payload).hexdigest(),
     }
-    pending = MANIFEST_PATH.with_suffix(".tmp")
-    pending.write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    pending.replace(MANIFEST_PATH)
+    # Tên tạm riêng cho mỗi writer; manifest được thay sau cùng.
+    pending_manifest = DATA_DIR / f"{collection_name}.manifest.tmp"
+    pending_manifest.write_bytes(json_bytes(manifest))
+    pending_manifest.replace(MANIFEST_PATH)
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
-    main()                  
+    main()

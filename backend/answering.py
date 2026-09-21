@@ -6,8 +6,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, ConfigDict
 
 from rag import make_llm
+from context_budget import NUM_PREDICT
 
-ABSTAIN = "Chưa đủ thông tin trong tài liệu để trả lời câu hỏi này."
+ABSTAIN = "Danh Bình ngoài đời không có kiến thức này, hãy train cho Danh Bình đi nhé!."
 logger = logging.getLogger(__name__)
 
 
@@ -19,8 +20,8 @@ class AnswerResult(BaseModel):
     citations: list[str]
 
 
-def build_answerer():
-    prompt = ChatPromptTemplate.from_messages([
+def build_prompt():
+    return ChatPromptTemplate.from_messages([
         (
             "system",
             "Bạn giúp đọc tài liệu Behind the Pipeline. "
@@ -37,11 +38,19 @@ def build_answerer():
             "Nếu thiếu bằng chứng để trả lời: status='insufficient_evidence', "
             "answer là chuỗi rỗng và citations là danh sách rỗng. "
             "Không vừa trả lời vừa từ chối. "
+            "Outline chỉ chứng minh cách bài viết chia mục và tên các mục con. "
+            "Không suy ra mọi mục đó là tiến trình hoặc component độc lập. "
+            "Không khái quát số mục thành danh sách chuẩn cho mọi phiên bản. "
+            "Chỉ mô tả vai trò/hoạt động khi body context có bằng chứng. "
+            "Nếu chỉ đủ ý chính, nói rõ phạm vi tóm tắt; không tự bù nội dung nhánh thiếu. "
             "Yêu cầu sửa định dạng từ bộ kiểm tra: {feedback}",
         ),
         ("human", "Câu hỏi: {question}\n\nContext:\n{context}"),
     ])
-    return prompt | make_llm().with_structured_output(
+
+
+def build_answerer():
+    return build_prompt() | make_llm(num_predict=NUM_PREDICT).with_structured_output(
         AnswerResult, method="json_schema", include_raw=True,
     )
 
@@ -69,7 +78,6 @@ def answer_question(question, retriever, answerer):
         return {"answer": ABSTAIN, "sources": [], "status": "insufficient_evidence"}
 
     source_map = {}
-    context_parts = []
     for index, passage in enumerate(passages, start=1):
         source_id = f"S{index}"
         source_map[source_id] = {
@@ -79,14 +87,26 @@ def answer_question(question, retriever, answerer):
             "url": passage.metadata["url"],
             "chunk_id": passage.metadata["chunk_id"],
         }
-        context_parts.append(f"[{source_id}]\n{passage.page_content}")
+
+    first = passages[0]
+    if (first.metadata.get("selected_outline")
+            and first.metadata.get("outline_complete")
+            and first.metadata.get("retrieval_intent") in {"count", "list"}):
+        return {
+            "answer": first.metadata["structural_answer"] + " [S1]",
+            "sources": [source_map["S1"]], "status": "answered",
+        }
+
+    from context_budget import get_budget, render_context
 
     feedback = "Không có."
     for attempt in range(2):
+        if not get_budget().fits(question, passages, feedback):
+            return {"answer": ABSTAIN, "sources": [], "status": "insufficient_evidence"}
         # Transport errors propagate to the API; only invalid outputs are retried.
         output = answerer.invoke({
             "question": question,
-            "context": "\n\n".join(context_parts),
+            "context": render_context(passages),
             "feedback": feedback,
         })
         if output.get("parsing_error") or output.get("parsed") is None:

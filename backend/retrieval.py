@@ -11,7 +11,7 @@ def tokenize(text):
     return re.findall(r"\w+(?:[+_-]\w+)*\+*", text.casefold())
 
 
-def make_retriever(store, mode="hybrid", k=4, candidate_k=22):
+def make_base_retriever(store, mode="hybrid", k=4, candidate_k=8):
     if not 1 <= k <= candidate_k:
         raise ValueError("Cần 1 <= k <= candidate_k")
     if mode == "vector":
@@ -67,3 +67,27 @@ def make_retriever(store, mode="hybrid", k=4, candidate_k=22):
         return selected
 
     return RunnableLambda(search)
+
+
+CANDIDATE_K = 12
+
+
+def make_retriever(store, mode="vector", k=4):
+    if mode in {"vector", "hybrid"}:
+        return make_base_retriever(store, mode, k=k, candidate_k=CANDIDATE_K)
+    if mode not in {"hybrid_rerank", "hybrid_decompose_rerank"}:
+        raise ValueError("RETRIEVAL_MODE không hợp lệ")
+    from reranking import Reranker
+
+    candidates = make_base_retriever(
+        store, "hybrid", k=CANDIDATE_K, candidate_k=CANDIDATE_K
+    )
+    reranker = Reranker()
+    if mode == "hybrid_decompose_rerank":
+        from decomposition import build_decomposer, make_decomposed_retriever
+
+        return make_decomposed_retriever(candidates, reranker, build_decomposer(), k=k)
+    return RunnableLambda(
+        lambda question: reranker.select(question, candidates.invoke(question), k=k)
+    )
+

@@ -19,7 +19,7 @@ def matches(document, expected):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["vector", "hybrid"], default="vector")
+    parser.add_argument("--mode", choices=["vector", "hybrid","hybrid_rerank","hybrid_decompose_rerank"], default="vector")
     parser.add_argument("--dataset", type=Path, default=Path(__file__).resolve().parent / "evals" / "dev.jsonl")
     parser.add_argument("--run-id", required=True)
     args = parser.parse_args()
