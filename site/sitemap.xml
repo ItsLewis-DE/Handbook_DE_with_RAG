@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://itslewis-de.github.io/pipeline-rag/</loc>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/</loc>
          <lastmod>2026-09-21</lastmod>
     </url>
     <url>
-         <loc>https://itslewis-de.github.io/pipeline-rag/airflow/architecture/</loc>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/</loc>
          <lastmod>2026-09-21</lastmod>
     </url>
     <url>
-         <loc>https://itslewis-de.github.io/pipeline-rag/architecture/shared-disk-vs-shared-nothing/</loc>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/architecture/shared-disk-vs-shared-nothing/</loc>
          <lastmod>2026-09-21</lastmod>
     </url>
     <url>
-         <loc>https://itslewis-de.github.io/pipeline-rag/assets/images/pip/ANIMATION/</loc>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/assets/images/pip/ANIMATION/</loc>
          <lastmod>2026-09-21</lastmod>
     </url>
     <url>
-         <loc>https://itslewis-de.github.io/pipeline-rag/index/</loc>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/index/</loc>
          <lastmod>2026-09-21</lastmod>
     </url>
     <url>
-         <loc>https://itslewis-de.github.io/pipeline-rag/postgres/postgres/</loc>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/</loc>
          <lastmod>2026-09-21</lastmod>
     </url>
 </urlset>

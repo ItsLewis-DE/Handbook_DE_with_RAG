@@ -12,7 +12,7 @@
 
     if (!shell || cards.length < 2) return;
 
-    const readingOrder = ["article-sheet--spark", "article-sheet--postgres", "article-sheet--index", "article-sheet--storage", "article-sheet--airflow"];
+    const readingOrder = ["article-sheet--postgres", "article-sheet--index", "article-sheet--storage", "article-sheet--airflow"];
     let order = cards.slice().sort((left, right) => {
       const leftPriority = readingOrder.findIndex((name) => left.classList.contains(name));
       const rightPriority = readingOrder.findIndex((name) => right.classList.contains(name));
