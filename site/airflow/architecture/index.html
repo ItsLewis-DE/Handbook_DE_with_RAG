@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Đi vào phía sau những hệ thống và pipeline dữ liệu">
+        <meta name="description" content="Pipeline RAG — chatbot hỏi đáp tài liệu Data Engineering bằng tiếng Việt, kết hợp tìm kiếm hybrid, mô hình ngôn ngữ local và trích dẫn nguồn.">
       
       
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/pipeline-rag/airflow/architecture/">
       
       
         <link rel="prev" href="../../index/">
@@ -138,19 +140,19 @@
 
       <!-- Retro Nav Pills -->
       <nav class="custom-header__nav" aria-label="Điều hướng chính">
-        <a href="../.." class="custom-nav-pill ">
+        <a href="../.." class="custom-nav-pill " >
           <span>HOME</span>
         </a>
-        <a href="../../postgres/postgres/" class="custom-nav-pill ">
+        <a href="../../postgres/postgres/" class="custom-nav-pill " >
           <span>POSTGRESQL</span>
         </a>
-        <a href="./" class="custom-nav-pill is-active">
+        <a href="./" class="custom-nav-pill is-active" aria-current="page">
           <span>AIRFLOW</span>
         </a>
-        <a href="../../architecture/shared-disk-vs-shared-nothing/" class="custom-nav-pill ">
+        <a href="../../architecture/shared-disk-vs-shared-nothing/" class="custom-nav-pill " >
           <span>SHARED-DISK</span>
         </a>
-        <a href="../../index/" class="custom-nav-pill ">
+        <a href="../../index/" class="custom-nav-pill " >
           <span>INDEXING</span>
         </a>
       </nav>
@@ -195,6 +197,18 @@
     </a>
     Behind the Pipeline
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/pipeline-rag" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/pipeline-rag
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -1376,10 +1390,179 @@
               
               <article class="md-content__inner md-typeset">
                 
+  
+    <details class="mobile-toc">
+      <summary>Mục lục bài viết</summary>
+      <nav aria-label="Mục lục bài viết">
+        <ul>
+          
+            <li>
+              <a href="#tai-sao-can-airflow">Tại sao cần Airflow?</a>
+              <ul>
+            <li>
+              <a href="#ieu-phoi-tuan-tu-bang-bash">Điều phối tuần tự bằng Bash</a>
+              
+            </li>
+          
+            <li>
+              <a href="#vi-sao-khong-chi-dung-bash">Vì sao không chỉ dùng Bash?</a>
+              
+            </li>
+          
+            <li>
+              <a href="#airflow-giai-quyet-ieu-gi">Airflow giải quyết điều gì?</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#nhung-khai-niem-nen-tang">Những khái niệm nền tảng</a>
+              
+            </li>
+          
+            <li>
+              <a href="#cac-component-trong-airflow">Các component trong Airflow</a>
+              <ul>
+            <li>
+              <a href="#scheduler">Scheduler</a>
+              <ul>
+            <li>
+              <a href="#qua-trinh-phan-tich-dag">Quá trình phân tích DAG</a>
+              
+            </li>
+          
+            <li>
+              <a href="#ha-scheduler">HA Scheduler</a>
+              
+            </li>
+          
+            <li>
+              <a href="#critical-section">Critical Section</a>
+              
+            </li>
+          
+            <li>
+              <a href="#kha-nang-mo-rong-va-nut-that">Khả năng mở rộng và nút thắt</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#executor">Executor</a>
+              <ul>
+            <li>
+              <a href="#localexecutor">LocalExecutor</a>
+              
+            </li>
+          
+            <li>
+              <a href="#remote-executor">Remote Executor</a>
+              
+            </li>
+          
+            <li>
+              <a href="#cau-hinh-executor">Cấu hình Executor</a>
+              
+            </li>
+          
+            <li>
+              <a href="#cau-hoi-lien-quan">Câu hỏi liên quan</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#dag-processor">DAG Processor</a>
+              <ul>
+            <li>
+              <a href="#dagfileprocessormanager">DagFileProcessorManager</a>
+              
+            </li>
+          
+            <li>
+              <a href="#dagfileprocessorprocess">DagFileProcessorProcess</a>
+              
+            </li>
+          
+            <li>
+              <a href="#luong-xu-ly-file-dag">Luồng xử lý file DAG</a>
+              
+            </li>
+          
+            <li>
+              <a href="#cau-hoi-lien-quan_1">Câu hỏi liên quan</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#dag-bundles">DAG Bundles</a>
+              
+            </li>
+          
+            <li>
+              <a href="#api-server">API Server</a>
+              
+            </li>
+          
+            <li>
+              <a href="#metadata-database">Metadata Database</a>
+              <ul>
+            <li>
+              <a href="#cau-hoi-lien-quan_2">Câu hỏi liên quan</a>
+              
+            </li>
+          </ul>
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#trien-khai-airflow-theo-mo-hinh-phan-tan">Triển khai Airflow theo mô hình phân tán</a>
+              <ul>
+            <li>
+              <a href="#tong-quan-luong-xu-ly">Tổng quan luồng xử lý</a>
+              
+            </li>
+          
+            <li>
+              <a href="#bieu-o-airflow-theo-mo-hinh-phan-tan">Biểu đồ Airflow theo mô hình phân tán</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#cach-mot-worker-thuc-thi-task">Cách một worker thực thi task</a>
+              <ul>
+            <li>
+              <a href="#cau-hoi-lien-quan_3">Câu hỏi liên quan</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#loi-ket">Lời kết</a>
+              
+            </li>
+          
+        </ul>
+      </nav>
+    </details>
+  
+  
                   
   
 
 
+
+  
+  
 
 
 <header class="airflow-article-hero">
@@ -1878,6 +2061,7 @@ Quy trình cũng sẽ tương tự như khi chạy trên local, nhưng sẽ đư
 
 
                 
+
               </article>
             </div>
           
@@ -1924,6 +2108,8 @@ Quy trình cũng sẽ tương tự như khi chạy trên local, nhưng sẽ đư
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
       
         <script src="../../javascripts/lottie.min.js"></script>
       

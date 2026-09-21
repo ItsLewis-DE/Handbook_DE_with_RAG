@@ -1,11 +1,12 @@
 (() => {
-  const lottieUrl = new URL("../assets/images/pip/pip.json", document.currentScript.src).href;
+  const siteRootUrl = new URL("../", document.currentScript.src);
   const endpoint = document.querySelector('meta[name="pip-chat-endpoint"]')?.content
     || "http://127.0.0.1:8001/chat";
 
   function robotMarkup(type = "full") {
     const isAvatar = type === "avatar";
-    const viewBox = isAvatar ? "12 -2 108 108" : "0 0 120 150";
+    const isReading = type === "reading";
+    const viewBox = isAvatar ? "12 -2 108 108" : isReading ? "7 0 106 150" : "0 0 120 150";
 
     return `<span class="pip-mascot pip-mascot--${type}" aria-hidden="true">
       <svg class="pip-svg" viewBox="${viewBox}" xmlns="http://www.w3.org/2000/svg">
@@ -28,11 +29,23 @@
           </filter>
         </defs>
 
-        ${!isAvatar ? '<ellipse class="pip-shadow" cx="60" cy="142" rx="28" ry="6" fill="#17302d" opacity="0.25" />' : ''}
+        ${!isAvatar ? `<ellipse class="pip-shadow" cx="60" cy="${isReading ? 114 : 139}" rx="25" ry="3.2" fill="#17302d" opacity="0.16" />` : ''}
 
         <!-- Floating Puppet Rig -->
         <g class="pip-float-wrapper">
-          ${!isAvatar ? `
+          ${isReading ? `
+          <!-- Each leg swings from its knee while Pip sits on the bubble edge. -->
+          <g class="pip-legs">
+            <g class="pip-reading-leg pip-reading-leg--left">
+              <path d="M 47 110 Q 43 121 45 136" fill="none" stroke="#22423d" stroke-width="8" stroke-linecap="round" />
+              <ellipse cx="43" cy="138" rx="10" ry="6" fill="url(#pipBody3D_${type})" stroke="#52706a" stroke-width="1" />
+            </g>
+            <g class="pip-reading-leg pip-reading-leg--right">
+              <path d="M 73 110 Q 77 121 75 136" fill="none" stroke="#22423d" stroke-width="8" stroke-linecap="round" />
+              <ellipse cx="77" cy="138" rx="10" ry="6" fill="url(#pipBody3D_${type})" stroke="#52706a" stroke-width="1" />
+            </g>
+          </g>
+          ` : !isAvatar ? `
           <!-- Legs & Feet -->
           <g class="pip-legs">
             <rect x="42" y="112" width="10" height="18" rx="5" fill="#22423d" />
@@ -44,6 +57,7 @@
           </g>
           ` : ''}
 
+          <g class="pip-upper-body">
           <!-- Torso Body (Crisp silhouette border) -->
           <g class="pip-torso">
             <rect x="52" y="62" width="16" height="8" rx="4" fill="#22423d" />
@@ -62,15 +76,18 @@
           </g>
 
           <!-- Book (Open State - Reading) -->
-          <g class="pip-book-open" style="opacity: 0; transform-origin: 60px 96px;">
-            <path d="M 36 86 C 48 84, 58 88, 59 98 L 59 108 C 48 100, 36 98, 36 86 Z" fill="url(#pipBook3D_${type})" stroke="#b53e1b" stroke-width="0.8" />
-            <path d="M 38 87 C 48 85, 57 89, 58 97 L 58 106 C 48 99, 38 97, 38 87 Z" fill="#fffaf0" />
-            <path d="M 84 86 C 72 84, 62 88, 61 98 L 61 108 C 72 100, 84 98, 84 86 Z" fill="url(#pipBook3D_${type})" stroke="#b53e1b" stroke-width="0.8" />
-            <path d="M 82 87 C 72 85, 63 89, 62 97 L 62 106 C 72 99, 82 97, 82 87 Z" fill="#fffaf0" />
-            <line x1="42" y1="91" x2="52" y2="92" stroke="#22423d" stroke-width="0.8" stroke-linecap="round" opacity="0.6" />
-            <line x1="42" y1="95" x2="50" y2="96" stroke="#22423d" stroke-width="0.8" stroke-linecap="round" opacity="0.6" />
-            <line x1="68" y1="92" x2="78" y2="91" stroke="#22423d" stroke-width="0.8" stroke-linecap="round" opacity="0.6" />
-            <line x1="70" y1="96" x2="78" y2="95" stroke="#22423d" stroke-width="0.8" stroke-linecap="round" opacity="0.6" />
+          <g class="pip-book-open" style="transform-origin: 60px 96px;">
+            <!-- One continuous cover and a shared spine keep the spread joined. -->
+            <path d="M 34 80 Q 48 77 60 85 Q 72 77 86 80 L 86 103 Q 72 101 60 112 Q 48 101 34 103 Z" fill="url(#pipBook3D_${type})" stroke="#b53e1b" stroke-width="1" stroke-linejoin="round" />
+            <path d="M 36 82 Q 49 80 60 87 L 60 109 Q 49 101 36 101 Z" fill="#fffaf0" />
+            <path d="M 60 87 Q 71 80 84 82 L 84 101 Q 71 101 60 109 Z" fill="#f3ead8" />
+            <path d="M 60 87 L 60 109" stroke="#c6ad89" stroke-width="1" />
+            <path d="M 41 87 Q 48 87 54 90 M 41 92 Q 48 92 54 95 M 43 97 L 52 100 M 66 90 Q 72 87 79 87 M 66 95 Q 72 92 79 92 M 68 100 L 77 97" fill="none" stroke="#52706a" stroke-width="1" stroke-linecap="round" opacity="0.65" />
+            ${isReading ? `
+            <g class="pip-reading-page">
+              <path d="M 60 87 Q 71 79 83 82 L 83 101 Q 71 101 60 109 Z" fill="#fffaf0" stroke="#c6ad89" stroke-width=".8" />
+              <path d="M 65 90 Q 73 86 79 87 M 65 95 Q 73 91 79 92 M 66 100 L 76 97" fill="none" stroke="#52706a" stroke-width="1" opacity=".55" />
+            </g>` : ''}
           </g>
           ` : ''}
 
@@ -89,6 +106,7 @@
 
           <!-- Head Group (High Contrast & TV Screen) -->
           <g class="pip-head-group" style="transform-origin: 60px 65px;">
+            <g class="pip-head-look">
             <!-- Antenna -->
             <g class="pip-antenna">
               <path d="M 60 24 L 60 13" stroke="#22423d" stroke-width="4.5" stroke-linecap="round" />
@@ -123,6 +141,7 @@
             <!-- Coral Cheeks -->
             <circle class="pip-cheeks" cx="39" cy="50" r="3.6" fill="#ed6840" opacity="0.9" />
             <circle class="pip-cheeks" cx="81" cy="50" r="3.6" fill="#ed6840" opacity="0.9" />
+            </g>
           </g>
 
           <!-- Right Arm (Articulated Natural Waving Arm - Angled Outward, completely clear of head) -->
@@ -139,13 +158,16 @@
             <g class="pip-forearm" style="transform-origin: 99px 68px;">
               <path d="M 99 68 L 107 50" stroke="url(#pipBody3D_${type})" stroke-width="8" stroke-linecap="round" fill="none" />
               <path d="M 99 68 L 107 50" stroke="rgba(23,48,45,0.18)" stroke-width="1.2" fill="none" />
+              <g class="pip-hand">
               <circle cx="107" cy="48" r="6" fill="#22423d" />
               <!-- Open waving fingers -->
               <circle cx="104" cy="41" r="2.2" fill="#2a4e48" />
               <circle cx="108" cy="40" r="2.2" fill="#2a4e48" />
               <circle cx="112" cy="42" r="2.2" fill="#2a4e48" />
               <circle cx="114" cy="46" r="2.2" fill="#2a4e48" />
+              </g>
             </g>
+          </g>
           </g>
         </g>
       </svg>
@@ -176,7 +198,7 @@
     for (const source of sources) {
       const item = createElement("li", "pip-source");
       const link = createElement("a", "pip-source__link");
-      link.href = source.url;
+      link.href = new URL(source.url, siteRootUrl).href;
       link.textContent = `[${source.id}] ${source.title}${source.heading ? ` · ${source.heading}` : ""}`;
       item.append(link);
       sourceList.append(item);
@@ -194,6 +216,149 @@
       && typeof source.heading === "string"
       && typeof source.url === "string"
     ));
+  }
+
+  // One bounded gesture at a time; all timers stop while the mascot is hidden.
+  function animateMascot(chat, launcher) {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const timers = new Map();
+    const readingDuration = 3500;
+    const readingRest = 5000;
+    const bookTransition = 650;
+    chat.style.setProperty("--pip-book-transition", `${bookTransition}ms`);
+    const stage = launcher.querySelector(".pip-mascot-wrapper");
+    let active = true;
+    let nearby = false;
+    let focused = false;
+    let lastGreeting = -Infinity;
+    let pointerFrame = 0;
+    let pointer = null;
+    const random = (min, max) => min + Math.random() * (max - min);
+    const canAnimate = () => active && !document.hidden && !reducedMotion.matches && chat.isConnected;
+    const pose = (name) => { chat.dataset.pose = name; };
+
+    function cancel(key) {
+      window.clearTimeout(timers.get(key));
+      timers.delete(key);
+    }
+
+    function after(key, callback, delay) {
+      cancel(key);
+      if (!canAnimate()) return;
+      timers.set(key, window.setTimeout(() => {
+        timers.delete(key);
+        if (canAnimate()) callback();
+      }, delay));
+    }
+
+    function blink() {
+      chat.classList.toggle("is-double-blink", Math.random() < 0.22);
+      chat.classList.add("is-blinking");
+      after("blink-end", () => chat.classList.remove("is-blinking", "is-double-blink"), 460);
+      after("blink", blink, random(2800, 6200));
+    }
+
+    function read() {
+      cancel("pose");
+      resetGaze();
+      pose("reading");
+      after("pose", () => {
+        rest();
+        // Start the full rest period after the closing transition finishes.
+        after("reading-cycle", read, bookTransition + readingRest);
+      }, readingDuration);
+    }
+
+    function rest() {
+      pose("idle");
+    }
+
+    function greet() {
+      if (!canAnimate()) return;
+      cancel("entrance");
+      if (["greeting", "reading"].includes(chat.dataset.pose)) return;
+      cancel("pose");
+      // Passing over the hit area repeatedly should not restart the wave.
+      if (performance.now() - lastGreeting < 5000) return rest();
+      lastGreeting = performance.now();
+      pose("greeting");
+      after("pose", rest, 2300);
+    }
+
+    function resetGaze() {
+      chat.style.removeProperty("--pip-look-x");
+      chat.style.removeProperty("--pip-look-y");
+      chat.style.removeProperty("--pip-look-tilt");
+    }
+
+    function updatePointer() {
+      pointerFrame = 0;
+      if (!pointer || !canAnimate()) return;
+      const rect = stage.getBoundingClientRect();
+      const dx = pointer.x - (rect.left + rect.width / 2);
+      const dy = pointer.y - (rect.top + rect.height * 0.3);
+      const wasNearby = nearby;
+      nearby = Math.hypot(dx, dy) < 200;
+      if (chat.dataset.pose === "reading") return;
+      if (nearby) {
+        chat.style.setProperty("--pip-look-x", `${Math.max(-3, Math.min(3, dx / 45))}px`);
+        chat.style.setProperty("--pip-look-y", `${Math.max(-2, Math.min(2, dy / 65))}px`);
+        chat.style.setProperty("--pip-look-tilt", `${Math.max(-4, Math.min(4, dx / 40))}deg`);
+        if (!wasNearby) greet();
+      } else if (wasNearby) {
+        resetGaze();
+        if (!focused && !["greeting", "reading"].includes(chat.dataset.pose)) rest();
+      }
+    }
+
+    function leave() {
+      const wasNearby = nearby;
+      pointer = null;
+      nearby = false;
+      window.cancelAnimationFrame(pointerFrame);
+      pointerFrame = 0;
+      resetGaze();
+      if (wasNearby && canAnimate() && !focused && !["greeting", "reading"].includes(chat.dataset.pose)) rest();
+    }
+
+    document.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse" || !canAnimate()) return;
+      pointer = { x: event.clientX, y: event.clientY };
+      if (!pointerFrame) pointerFrame = window.requestAnimationFrame(updatePointer);
+    }, { passive: true });
+    document.documentElement.addEventListener("pointerleave", leave);
+    window.addEventListener("blur", leave);
+    window.addEventListener("scroll", leave, { passive: true });
+    launcher.addEventListener("focus", () => { focused = true; greet(); });
+    launcher.addEventListener("blur", () => {
+      focused = false;
+      if (canAnimate() && !nearby && !["greeting", "reading"].includes(chat.dataset.pose)) rest();
+    });
+
+    function refresh() {
+      for (const timer of timers.values()) window.clearTimeout(timer);
+      timers.clear();
+      window.cancelAnimationFrame(pointerFrame);
+      pointerFrame = 0;
+      pointer = null;
+      nearby = false;
+      focused = document.activeElement === launcher;
+      resetGaze();
+      chat.classList.remove("is-blinking", "is-double-blink");
+      chat.classList.toggle("is-paused", !canAnimate());
+      pose("idle");
+      if (canAnimate()) {
+        after("blink", blink, random(1800, 3500));
+        // This deadline is independent of hover, focus, and greeting timers.
+        after("reading-cycle", read, readingRest);
+      }
+    }
+
+    document.addEventListener("visibilitychange", refresh);
+    reducedMotion.addEventListener("change", refresh);
+    refresh();
+    after("entrance", greet, 650);
+    return { setActive(value) { active = value; refresh(); } };
   }
 
   function mountChat() {
@@ -249,53 +414,9 @@
     const messages = panel.querySelector(".pip-messages");
     const suggestions = panel.querySelector(".pip-suggestions");
     const status = panel.querySelector(".pip-panel__status");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let idleTimer;
     let focusTimer;
-    let busy = false;
-    let interacting = false;
+    const mascot = animateMascot(chat, launcher);
 
-    function pose(name) {
-      chat.dataset.pose = name;
-    }
-
-    function scheduleReading() {
-      window.clearTimeout(idleTimer);
-      if (reducedMotion.matches || document.hidden || interacting || chat.classList.contains("is-open")) return;
-      idleTimer = window.setTimeout(() => pose("reading"), 8000);
-    }
-
-    function greet() {
-      interacting = true;
-      window.clearTimeout(idleTimer);
-      pose("greeting");
-    }
-
-    function rest() {
-      interacting = launcher.matches(":hover") || document.activeElement === launcher;
-      if (interacting) return;
-      pose("idle");
-      scheduleReading();
-    }
-
-    launcher.addEventListener("pointerenter", greet);
-    launcher.addEventListener("focus", greet);
-    launcher.addEventListener("pointerleave", rest);
-    launcher.addEventListener("blur", rest);
-
-    document.addEventListener("visibilitychange", () => {
-      window.clearTimeout(idleTimer);
-      chat.classList.toggle("is-paused", document.hidden);
-      if (!document.hidden) scheduleReading();
-    });
-
-    reducedMotion.addEventListener("change", () => {
-      pose("idle");
-      scheduleReading();
-    });
-
-    pose("idle");
-    scheduleReading();
     panel.querySelector(".pip-context strong").textContent = articleTitle;
     messages.append(createMessage("bot", "Mình cùng đọc bài này nhé. Bạn muốn Pip làm rõ phần nào?"));
 
@@ -311,15 +432,13 @@
 
     function setOpen(open) {
       window.clearTimeout(focusTimer);
-      window.clearTimeout(idleTimer);
       chat.classList.toggle("is-open", open);
       launcher.setAttribute("aria-expanded", String(open));
-      pose(open && busy ? "reading" : (open ? "reading" : "idle"));
+      mascot.setActive(!open);
       if (open) {
         focusTimer = window.setTimeout(() => { if (chat.classList.contains("is-open")) input.focus(); }, 220);
       } else {
         launcher.focus();
-        scheduleReading();
       }
     }
 
@@ -336,13 +455,16 @@
       messages.append(createMessage("user", question));
       input.value = "";
       send.disabled = true;
-      busy = true;
-      pose("reading");
       suggestions.hidden = true;
       status.textContent = "Đang tìm trong tài liệu";
 
       const typing = createMessage("bot", "");
+      typing.classList.add("pip-message--waiting");
       typing.querySelector(".pip-message__bubble").innerHTML = '<span class="pip-typing" aria-label="Pip đang suy nghĩ"><i></i><i></i><i></i></span>';
+      const waitingRow = createElement("div", "pip-waiting-row");
+      waitingRow.append(typing.querySelector(".pip-message__bubble"));
+      waitingRow.insertAdjacentHTML("beforeend", robotMarkup("reading"));
+      typing.append(waitingRow);
       messages.append(typing);
       messages.scrollTop = messages.scrollHeight;
 
@@ -382,8 +504,6 @@
       } finally {
         window.clearTimeout(timeout);
         send.disabled = false;
-        busy = false;
-        pose("greeting");
         messages.scrollTop = messages.scrollHeight;
         if (chat.classList.contains("is-open")) input.focus();
       }

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Behind the Pipeline — Flow Stack</title>
+  <desc id="desc">Một luồng dữ liệu đi vào ba lớp lưu trữ hình thoi, gợi cấu trúc lakehouse.</desc>
+  <g stroke="#F3F0E8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48 30L82 46L48 62L14 46L48 30ZM14 59L48 75L82 59M14 72L48 88L82 72"/>
+  </g>
+  <path d="M20 10H37Q48 10 48 21V42" stroke="#C5A477" stroke-width="5" stroke-linecap="round"/>
+  <rect x="8" y="4" width="12" height="12" rx="2" fill="#C5A477"/>
+</svg>

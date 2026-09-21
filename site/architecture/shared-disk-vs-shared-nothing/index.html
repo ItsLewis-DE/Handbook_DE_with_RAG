@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Đi vào phía sau những hệ thống và pipeline dữ liệu">
+        <meta name="description" content="Pipeline RAG — chatbot hỏi đáp tài liệu Data Engineering bằng tiếng Việt, kết hợp tìm kiếm hybrid, mô hình ngôn ngữ local và trích dẫn nguồn.">
       
       
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/pipeline-rag/architecture/shared-disk-vs-shared-nothing/">
       
       
         <link rel="prev" href="../..">
@@ -140,19 +142,19 @@
 
       <!-- Retro Nav Pills -->
       <nav class="custom-header__nav" aria-label="Điều hướng chính">
-        <a href="../.." class="custom-nav-pill ">
+        <a href="../.." class="custom-nav-pill " >
           <span>HOME</span>
         </a>
-        <a href="../../postgres/postgres/" class="custom-nav-pill ">
+        <a href="../../postgres/postgres/" class="custom-nav-pill " >
           <span>POSTGRESQL</span>
         </a>
-        <a href="../../airflow/architecture/" class="custom-nav-pill ">
+        <a href="../../airflow/architecture/" class="custom-nav-pill " >
           <span>AIRFLOW</span>
         </a>
-        <a href="./" class="custom-nav-pill is-active">
+        <a href="./" class="custom-nav-pill is-active" aria-current="page">
           <span>SHARED-DISK</span>
         </a>
-        <a href="../../index/" class="custom-nav-pill ">
+        <a href="../../index/" class="custom-nav-pill " >
           <span>INDEXING</span>
         </a>
       </nav>
@@ -197,6 +199,18 @@
     </a>
     Behind the Pipeline
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/pipeline-rag" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/pipeline-rag
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -1178,10 +1192,139 @@
               
               <article class="md-content__inner md-typeset">
                 
+  
+    <details class="mobile-toc">
+      <summary>Mục lục bài viết</summary>
+      <nav aria-label="Mục lục bài viết">
+        <ul>
+          
+            <li>
+              <a href="#tai-sao-data-engineer-can-quan-tam">Tại sao Data Engineer cần quan tâm?</a>
+              
+            </li>
+          
+            <li>
+              <a href="#bat-au-tu-cau-hoi-ai-so-huu-du-lieu">Bắt đầu từ câu hỏi: ai sở hữu dữ liệu?</a>
+              <ul>
+            <li>
+              <a href="#bon-khai-niem-data-engineer-thuong-tron-lan">Bốn khái niệm Data Engineer thường trộn lẫn</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#shared-disk-van-hanh-nhu-the-nao">Shared-disk vận hành như thế nào?</a>
+              <ul>
+            <li>
+              <a href="#ieu-data-engineer-nhan-uoc">Điều Data Engineer nhận được</a>
+              
+            </li>
+          
+            <li>
+              <a href="#chi-phi-bi-ay-xuong-tang-cluster">Chi phí bị đẩy xuống tầng cluster</a>
+              
+            </li>
+          
+            <li>
+              <a href="#khi-mot-node-hong">Khi một node hỏng</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#shared-nothing-van-hanh-nhu-the-nao">Shared-nothing vận hành như thế nào?</a>
+              <ul>
+            <li>
+              <a href="#vi-sao-mpp-analytics-thich-locality">Vì sao MPP analytics thích locality?</a>
+              
+            </li>
+          
+            <li>
+              <a href="#distribution-key-tot-khong-chi-la-key-uoc-filter-nhieu">Distribution key tốt không chỉ là key “được filter nhiều”</a>
+              
+            </li>
+          
+            <li>
+              <a href="#them-node-khong-co-nghia-data-tu-can-bang">Thêm node không có nghĩa data tự cân bằng</a>
+              
+            </li>
+          
+            <li>
+              <a href="#replication-la-mot-truc-rieng">Replication là một trục riêng</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#cung-mot-workload-bottleneck-nam-o-au">Cùng một workload, bottleneck nằm ở đâu?</a>
+              <ul>
+            <li>
+              <a href="#mot-failure-flow-data-engineer-nen-hinh-dung">Một failure flow Data Engineer nên hình dung</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#cac-he-thong-va-cong-cu-data-engineer-thuong-gap">Các hệ thống và công cụ Data Engineer thường gặp</a>
+              <ul>
+            <li>
+              <a href="#bo-metric-thuc-dung">Bộ metric thực dụng</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#chon-kien-truc-nao-cho-data-platform">Chọn kiến trúc nào cho data platform?</a>
+              <ul>
+            <li>
+              <a href="#shared-disk-ang-can-nhac-khi">Shared-disk đáng cân nhắc khi</a>
+              
+            </li>
+          
+            <li>
+              <a href="#shared-nothing-ang-can-nhac-khi">Shared-nothing đáng cân nhắc khi</a>
+              
+            </li>
+          
+            <li>
+              <a href="#hybrid-ang-can-nhac-khi">Hybrid đáng cân nhắc khi</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#checklist-cho-data-engineer">Checklist cho Data Engineer</a>
+              
+            </li>
+          
+            <li>
+              <a href="#ket-luan">Kết luận</a>
+              
+            </li>
+          
+            <li>
+              <a href="#tai-lieu-tham-khao">Tài liệu tham khảo</a>
+              
+            </li>
+          
+        </ul>
+      </nav>
+    </details>
+  
+  
                   
   
 
 
+
+  
+  
 
 
 <header class="airflow-article-hero storage-article-hero">
@@ -1647,6 +1790,7 @@
 
 
                 
+
               </article>
             </div>
           
@@ -1693,6 +1837,8 @@
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
       
         <script src="../../javascripts/lottie.min.js"></script>
       
