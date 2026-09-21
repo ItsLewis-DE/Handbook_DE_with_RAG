@@ -363,6 +363,8 @@ html {
     gap: 0.4rem;
     padding-block: 0.2rem;
     scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 12px;
   }
 
   .custom-header__nav::-webkit-scrollbar {
@@ -394,6 +396,26 @@ html {
   .custom-header__logo-wrap {
     width: 28px;
     flex-shrink: 0;
+  }
+}
+
+/* Keep more of the article visible on phones, including in landscape. */
+@media screen and (max-width: 45rem), screen and (pointer: coarse) and (max-height: 30rem) {
+  .top-marquee {
+    display: none;
+  }
+
+  .custom-header__inner {
+    gap: 0;
+    padding-block: 0.2rem;
+  }
+
+  .custom-header__nav {
+    padding-block: 0.1rem;
+  }
+
+  .custom-header__status {
+    display: none;
   }
 }
 

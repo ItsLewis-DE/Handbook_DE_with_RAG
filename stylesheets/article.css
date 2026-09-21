@@ -9,6 +9,13 @@ body:has(.airflow-article-hero) {
   --airflow-diagram-bg: #ebe7dc;
   --airflow-diagram-node: #fffaf0;
   --airflow-line: rgba(23, 48, 45, 0.16);
+  /* Muted ink, terracotta, teal, sage and earth tones from the site palette. */
+  --article-heading-1: var(--airflow-ink);
+  --article-heading-2: #a63f23;
+  --article-heading-3: #24685f;
+  --article-heading-4: #5e6b42;
+  --article-heading-5: #865b34;
+  --article-heading-6: #596973;
   --md-code-fg-color: #f3f0e8;
   --md-code-bg-color: #17302d;
   --md-code-hl-color: rgba(237, 104, 64, 0.18);
@@ -113,43 +120,67 @@ body:has(.airflow-article-hero) .md-sidebar--secondary .md-nav--secondary .md-na
   text-transform: uppercase;
 }
 
-body:has(.airflow-article-hero) .md-sidebar--secondary .md-nav--secondary>.md-nav__list>.md-nav__item>.md-nav__link {
-  color: var(--airflow-ink);
-  font-weight: 700;
+/* The same hierarchy is used in the desktop TOC and the mobile drawer. */
+body:has(.airflow-article-hero) .md-nav--secondary .md-nav__list {
+  padding: 0;
 }
 
-body:has(.airflow-article-hero) .md-sidebar--secondary .md-nav--secondary .md-nav__link {
-  color: var(--airflow-muted);
-  font-size: 0.67rem;
+body:has(.airflow-article-hero) .md-nav--secondary .md-nav__link {
+  --toc-heading-color: var(--article-heading-3);
+  border-radius: 0.15rem;
+  color: var(--toc-heading-color);
+  font-size: 0.7rem;
+  font-weight: 600;
   line-height: 1.5;
   margin: 0;
-  padding: 0.46rem 0;
+  padding: 0.32rem 0.4rem;
   position: relative;
-  transition: color 160ms ease;
+  transition: color 160ms ease, background-color 160ms ease;
 }
 
-body:has(.airflow-article-hero) .md-sidebar--secondary .md-nav--secondary .md-nav__list .md-nav__list {
-  margin-left: 0.85rem;
+body:has(.airflow-article-hero) .md-nav--secondary .md-ellipsis {
+  overflow: visible;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
-body:has(.airflow-article-hero) .md-sidebar--secondary .md-nav--secondary .md-nav__link:hover,
-body:has(.airflow-article-hero) .md-sidebar--secondary .md-nav--secondary .md-nav__link--active {
-  color: var(--airflow-accent);
+body:has(.airflow-article-hero) .md-nav--secondary>.md-nav__list>.md-nav__item+.md-nav__item {
+  margin-top: 0.65rem;
 }
 
-body:has(.airflow-article-hero) .md-sidebar--secondary .md-nav--secondary .md-nav__link--active::before {
-  background: var(--airflow-accent);
-  content: "";
-  height: calc(100% - 0.34rem);
-  left: -1.35rem;
-  position: absolute;
-  top: 0.17rem;
-  width: 0.14rem;
+body:has(.airflow-article-hero) .md-nav--secondary>.md-nav__list>.md-nav__item>.md-nav__link {
+  --toc-heading-color: var(--article-heading-2);
+  font-size: 0.77rem;
+  font-weight: 750;
+}
+
+body:has(.airflow-article-hero) .md-nav--secondary .md-nav__list .md-nav__list {
+  border-left: 1px solid var(--airflow-line);
+  margin: 0.15rem 0 0.25rem 0.4rem;
+  padding-left: 0.55rem;
+}
+
+body:has(.airflow-article-hero) .md-nav--secondary .md-nav .md-nav .md-nav__link {
+  --toc-heading-color: var(--article-heading-4);
+  font-size: 0.65rem;
+  font-weight: 400;
+}
+
+body:has(.airflow-article-hero) .md-nav--secondary .md-nav__item>a.md-nav__link:is(:hover, .md-nav__link--active) {
+  background: color-mix(in srgb, var(--toc-heading-color) 8%, transparent);
+}
+
+body:has(.airflow-article-hero) .md-nav--secondary .md-nav__link--active {
+  box-shadow: inset 2px 0 var(--toc-heading-color);
+}
+
+body:has(.airflow-article-hero) .md-nav--secondary .md-nav__link:focus-visible {
+  outline: 2px solid var(--toc-heading-color);
+  outline-offset: 2px;
 }
 
 body:has(.airflow-article-hero) .md-typeset {
   color: var(--airflow-ink);
-  counter-reset: airflow-section;
   font-size: 0.82rem;
 }
 
@@ -166,7 +197,7 @@ body:has(.airflow-article-hero) .md-typeset {
 
 .airflow-opening-comic {
   border-top: 1px solid var(--airflow-line);
-  margin: 0 auto clamp(3.5rem, 6vw, 5rem);
+  margin: 0 auto 2rem;
   max-width: 28rem;
   padding-top: 0.65rem;
   position: relative;
@@ -298,7 +329,7 @@ body:has(.airflow-article-hero) .md-typeset {
 }
 
 .md-typeset .airflow-article-hero h1 {
-  color: var(--airflow-ink);
+  color: var(--article-heading-1);
   font-family: var(--landing-display-font);
   font-size: clamp(3.2rem, 7vw, 5.9rem);
   font-weight: 500;
@@ -337,89 +368,75 @@ body:has(.airflow-article-hero) .md-typeset {
   padding: 0.32rem 0.45rem;
 }
 
+/* Large sections use the display face; subsections use the reading face. */
 body:has(.airflow-article-hero) .md-typeset>h2 {
-  color: var(--airflow-ink);
-  counter-increment: airflow-section;
-  font-family: var(--landing-display-font);
-  font-size: clamp(2rem, 4.5vw, 3.3rem);
-  font-weight: 500;
-  letter-spacing: -0.05em;
-  line-height: 1.04;
-  margin: clamp(5rem, 10vw, 7.5rem) 0 1.5rem;
-  padding-top: 1.25rem;
-  position: relative;
-}
-
-body:has(.airflow-article-hero) .md-typeset>h2::before {
   border-top: 1px solid var(--airflow-line);
-  color: var(--airflow-accent);
-  content: "0" counter(airflow-section) " / CHAPTER";
-  display: block;
-  font-family: var(--md-code-font-family);
-  font-size: 0.46rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  margin-bottom: 1rem;
-  padding-top: 0.75rem;
+  color: var(--article-heading-2);
+  font-family: var(--landing-display-font);
+  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  margin: 2.8rem 0 0.9rem;
+  padding-top: 1rem;
 }
 
-body:has(.airflow-article-hero) .airflow-article-hero+h2 {
-  margin-top: 0;
-}
-
+body:has(.airflow-article-hero) .airflow-article-hero+h2,
 body:has(.airflow-article-hero) .airflow-opening-comic+h2 {
+  border-top: 0;
   margin-top: 0;
+  padding-top: 0;
+}
+
+body:has(.airflow-article-hero) .md-typeset :is(h3, h4, h5, h6) {
+  font-family: var(--md-text-font-family);
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+  text-transform: none;
 }
 
 body:has(.airflow-article-hero) .md-typeset h3 {
-  color: var(--airflow-ink);
-  font-family: var(--landing-display-font);
-  font-size: clamp(1.45rem, 3vw, 2rem);
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.16;
-  margin: 3.2rem 0 1rem;
-  padding-left: 1rem;
-  position: relative;
-}
-
-body:has(.airflow-article-hero) .md-typeset h3::before {
-  background: var(--airflow-accent);
-  content: "";
-  height: 0.14rem;
-  left: 0;
-  position: absolute;
-  top: 0.63em;
-  width: 0.5rem;
+  color: var(--article-heading-3);
+  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+  font-weight: 750;
+  margin: 1.9rem 0 0.65rem;
 }
 
 body:has(.airflow-article-hero) .md-typeset h4 {
-  border-bottom: 1px solid var(--airflow-line);
-  color: var(--airflow-ink);
-  font-family: var(--landing-display-font);
-  font-size: 1.35rem;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  margin: 3.2rem 0 1rem;
-  padding-bottom: 0.5rem;
+  color: var(--article-heading-4);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 1.4rem 0 0.5rem;
 }
 
 body:has(.airflow-article-hero) .md-typeset h5 {
-  border-left: 0.14rem solid var(--airflow-accent);
-  color: var(--airflow-ink);
-  font-family: var(--md-code-font-family);
-  font-size: 0.72rem;
-  font-weight: 750;
-  letter-spacing: 0.035em;
-  margin: 2.7rem 0 1rem;
-  padding: 0.25rem 0 0.25rem 0.8rem;
+  color: var(--article-heading-5);
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin: 1.2rem 0 0.45rem;
 }
 
-body:has(.airflow-article-hero) .md-typeset h2,
-body:has(.airflow-article-hero) .md-typeset h3,
-body:has(.airflow-article-hero) .md-typeset h4,
-body:has(.airflow-article-hero) .md-typeset h5 {
-  scroll-margin-top: 3.8rem;
+body:has(.airflow-article-hero) .md-typeset h6 {
+  color: var(--article-heading-6);
+  font-size: 0.84rem;
+  font-weight: 650;
+  margin: 1rem 0 0.4rem;
+}
+
+body:has(.airflow-article-hero) .md-typeset :is(h2, h3, h4, h5, h6) {
+  /* The document's scroll-padding already accounts for the fixed header. */
+  scroll-margin-top: 0.8rem;
+  text-wrap: pretty;
+}
+
+/* An introductory heading stays attached to the subsection immediately below. */
+body:has(.airflow-article-hero) .md-typeset :is(h2, h3, h4, h5)+:is(h3, h4, h5, h6) {
+  margin-top: 0.6rem;
+}
+
+/* H2 already provides the section divider; avoid two lines and stacked gaps. */
+body:has(.airflow-article-hero) .md-typeset>hr:has(+h2) {
+  display: none;
 }
 
 body:has(.airflow-article-hero) .md-typeset p:not(.airflow-article-hero__dek) {
@@ -463,7 +480,7 @@ body:has(.airflow-article-hero) .md-typeset li::marker {
 body:has(.airflow-article-hero) .md-typeset hr {
   border-bottom: 0;
   border-top: 1px solid var(--airflow-line);
-  margin: 4.5rem 0;
+  margin: 1.8rem 0;
 }
 
 body:has(.airflow-article-hero) .md-typeset :not(pre)>code {
@@ -628,7 +645,7 @@ body:has(.airflow-article-hero) .md-footer a {
   display: grid;
   gap: clamp(1.25rem, 3vw, 1.85rem);
   grid-template-columns: 1fr;
-  margin: clamp(1.5rem, 3vw, 2.2rem) 0 clamp(3.5rem, 6vw, 5rem);
+  margin: clamp(1.5rem, 3vw, 2.2rem) 0 2rem;
   width: 100%;
 }
 
@@ -982,19 +999,6 @@ body:has(.airflow-article-hero) .postgres-article-end::after {
     font-size: clamp(2.8rem, 14vw, 4.2rem);
   }
 
-  body:has(.airflow-article-hero) .md-typeset>h2 {
-    font-size: clamp(2rem, 10vw, 2.7rem);
-    margin-top: 4.5rem;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset h3 {
-    font-size: 1.5rem;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset h4 {
-    font-size: 1.2rem;
-  }
-
   body:has(.airflow-article-hero) .md-typeset p,
   body:has(.airflow-article-hero) .md-typeset ul,
   body:has(.airflow-article-hero) .md-typeset ol {
@@ -1062,6 +1066,101 @@ body:has(.storage-article-hero) .md-typeset blockquote {
 }
 
 /* Phone layout: comfortable reading, safe wrapping and intentional overflow. */
+.mobile-toc {
+  display: none;
+}
+
+/* Material hides its side TOC below 60em; retain access to long articles. */
+@media screen and (max-width: 59.984375em) {
+  .md-typeset .mobile-toc {
+    background: var(--airflow-canvas, var(--landing-paper));
+    border: 1px solid var(--airflow-line, var(--landing-line));
+    border-radius: 0.6rem;
+    box-shadow: none;
+    color: var(--airflow-ink, var(--landing-ink));
+    display: block;
+    font-size: 0.8rem;
+    margin: 0.8rem 0 1rem;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .md-typeset .mobile-toc summary {
+    align-items: center;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    font-weight: 700;
+    gap: 0.75rem;
+    list-style: none;
+    margin: 0;
+    min-height: 48px;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .md-typeset .mobile-toc summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .md-typeset .mobile-toc summary::before {
+    display: none;
+  }
+
+  .md-typeset .mobile-toc summary::after {
+    background: none;
+    border-bottom: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+    content: "";
+    height: 8px;
+    margin-left: auto;
+    position: static;
+    transform: rotate(45deg);
+    width: 8px;
+  }
+
+  .md-typeset .mobile-toc[open] summary::after {
+    transform: rotate(225deg);
+  }
+
+  .mobile-toc nav {
+    border-top: 1px solid var(--airflow-line, var(--landing-line));
+    max-height: 50svh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .md-typeset .mobile-toc ul {
+    font-size: inherit;
+    list-style: none;
+    margin: 0;
+  }
+
+  .md-typeset .mobile-toc ul ul {
+    border-left: 1px solid var(--airflow-line, var(--landing-line));
+    padding-left: 0.7rem;
+  }
+
+  .md-typeset .mobile-toc li {
+    margin: 0;
+  }
+
+  .md-typeset .mobile-toc a {
+    align-items: center;
+    display: flex;
+    line-height: 1.5;
+    min-height: 44px;
+    overflow-wrap: anywhere;
+    padding-block: 0.45rem;
+    text-decoration: none;
+  }
+
+  .mobile-toc :is(summary, a):focus-visible {
+    outline: 2px solid var(--airflow-accent, var(--landing-accent));
+    outline-offset: -2px;
+  }
+}
+
 @media screen and (max-width: 45rem) {
 
   body:has(.airflow-article-hero) .md-main__inner,
@@ -1073,15 +1172,24 @@ body:has(.storage-article-hero) .md-typeset blockquote {
   }
 
   body:has(.airflow-article-hero) .md-content__inner {
+    box-sizing: border-box;
     margin: 0;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
   }
 
   .airflow-article-hero {
-    padding: 1.35rem 1rem 1.65rem;
+    padding: 1rem 0.6rem 1.35rem;
   }
 
   .airflow-article-hero__eyebrow {
-    margin-bottom: 2rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .airflow-article-hero__eyebrow a {
+    align-items: center;
+    display: inline-flex;
+    min-height: 44px;
   }
 
   .airflow-article-hero__eyebrow a,
@@ -1116,7 +1224,7 @@ body:has(.storage-article-hero) .md-typeset blockquote {
   }
 
   .airflow-opening-comic {
-    margin-bottom: 3.5rem;
+    margin-bottom: 2rem;
   }
 
   .airflow-opening-comic figcaption span,
@@ -1127,32 +1235,13 @@ body:has(.storage-article-hero) .md-typeset blockquote {
   }
 
   body:has(.airflow-article-hero) .md-typeset>h2 {
-    font-size: clamp(1.9rem, 9vw, 2.45rem);
-    letter-spacing: -0.04em;
-    margin-top: 4rem;
+    font-size: 1.6rem;
+    margin-top: 2rem;
   }
 
   body:has(.airflow-article-hero) .airflow-article-hero+h2,
   body:has(.airflow-article-hero) .airflow-opening-comic+h2 {
     margin-top: 0;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset>h2::before {
-    font-size: 0.52rem;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset h3 {
-    font-size: 1.4rem;
-    margin-top: 2.8rem;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset h4 {
-    font-size: 1.18rem;
-    margin-top: 2.7rem;
-  }
-
-  body:has(.airflow-article-hero) .md-typeset h5 {
-    font-size: 0.76rem;
   }
 
   body:has(.airflow-article-hero) .md-typeset p,
@@ -1181,6 +1270,23 @@ body:has(.storage-article-hero) .md-typeset blockquote {
     font-size: 0.68rem;
     overflow-x: auto;
     padding: 0.9rem;
+  }
+
+  body:has(.airflow-article-hero) .md-typeset .highlight code {
+    padding-right: 44px;
+  }
+
+  .md-typeset .md-code__button {
+    height: 44px;
+    width: 44px;
+  }
+
+  .md-typeset .md-code__button::after {
+    margin: auto;
+  }
+
+  .md-top {
+    min-height: 44px;
   }
 
   body:has(.airflow-article-hero) .md-typeset .mermaid {

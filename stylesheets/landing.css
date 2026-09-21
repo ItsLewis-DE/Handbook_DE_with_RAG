@@ -4041,7 +4041,13 @@ body:has(.landing-page) .md-content__inner::before {
   }
 
   .published-article__meta {
-    font-size: 0.5rem;
+    font-size: 0.55rem;
+    flex-shrink: 1;
+  }
+
+  .published-article>p:not(.published-article__meta) {
+    font-size: 0.8rem;
+    line-height: 1.65;
   }
 
   .article-deck__controls p {
@@ -4750,6 +4756,16 @@ html.author-dialog-open {
 
 /* Final phone overrides for the refined cards and touch controls. */
 @media screen and (max-width: 45rem) {
+  .landing-hero {
+    padding-top: 1.5rem;
+  }
+
+  .library-section,
+  .writing-section,
+  .author-section {
+    padding-block: 3rem;
+  }
+
   .stack-card {
     transform: none;
   }
@@ -4758,6 +4774,28 @@ html.author-dialog-open {
     flex-shrink: 0;
     min-width: 44px;
     min-height: 44px;
+  }
+
+  .article-deck-shell {
+    min-height: 0;
+  }
+
+  .article-deck {
+    height: 19rem;
+  }
+
+  .article-sheet {
+    height: 17.8rem;
+  }
+
+  .article-sheet:has(.article-sheet__art) .article-sheet__body p {
+    font-size: 0.7rem;
+  }
+
+  .article-sheet__meta,
+  .article-sheet__foot,
+  .article-deck__controls p {
+    font-size: 0.55rem;
   }
 
   .article-sheet__foot a {
@@ -4782,6 +4820,53 @@ html.author-dialog-open {
   .author-dialog__close {
     min-width: 44px;
     min-height: 44px;
+    position: fixed;
+    right: max(12px, env(safe-area-inset-right));
+    top: max(12px, env(safe-area-inset-top));
+    z-index: 1;
+  }
+
+  .author-dialog {
+    padding-top: max(56px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .author-dialog__message {
+    font-size: 0.85rem;
+  }
+
+  .landing-footer a {
+    align-items: center;
+    display: inline-flex;
+    min-height: 44px;
+  }
+}
+
+@media screen and (max-width: 30rem) {
+  .published-article,
+  .published-article--latest {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(5, auto);
+  }
+
+  .published-article h3 {
+    font-size: 1.35rem;
+  }
+
+  .published-article__illustration {
+    grid-column: 1;
+    grid-row: 3;
+    max-height: 6.5rem;
+  }
+
+  .published-article>p:not(.published-article__meta) {
+    grid-row: 4;
+  }
+
+  .published-article a {
+    grid-row: 5;
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
