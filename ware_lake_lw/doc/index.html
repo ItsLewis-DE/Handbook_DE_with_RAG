@@ -1,0 +1,2266 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Pipeline RAG — chatbot hỏi đáp tài liệu Data Engineering bằng tiếng Việt, kết hợp tìm kiếm hybrid, mô hình ngôn ngữ local và trích dẫn nguồn.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/">
+      
+      
+        <link rel="prev" href="../../architecture/shared-disk-vs-shared-nothing/">
+      
+      
+        <link rel="next" href="../../postgres/postgres/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Data Lake, Data Warehouse và Data Mart - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/reading-language.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand and navigation -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
+        </span>
+      </a>
+
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
+        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </nav>
+
+      
+        <label class="custom-header__search" for="__search" role="button" tabindex="0" aria-label="Tìm bài viết">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.6 4.6"/></svg>
+          <span>Tìm bài viết</span>
+        </label>
+      
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../architecture/shared-disk-vs-shared-nothing/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Shared-disk vs shared-nothing</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="./" aria-current="page">
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/postgres/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Phân cấp & Lưu trữ PostgreSQL</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+  
+    <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Tìm kiếm">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/Handbook_DE_with_RAG" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/Handbook_DE_with_RAG
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/shared-disk-vs-shared-nothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared-disk vs shared-nothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao cần phân biệt các mô hình lưu trữ dữ liệu?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-at-van-e-va-inh-nghia-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Đặt vấn đề và định nghĩa Big Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Đặt vấn đề và định nghĩa Big Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-boi-canh-bung-no-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1. Bối cảnh bùng nổ dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-big-data-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2. Big Data là gì?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2. Big Data là gì?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phan-loai-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phân loại dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ac-trung-cua-big-data-mo-hinh-5v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đặc trưng của Big Data: mô hình 5V
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vai-tro-cua-big-data-trong-doanh-nghiep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vai trò của Big Data trong doanh nghiệp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thach-thuc-khi-xu-ly-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thách thức khi xử lý Big Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cac-nen-tang-luu-tru-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Các nền tảng lưu trữ dữ liệu
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Các nền tảng lưu trữ dữ liệu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cong-cu-thuong-dung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Công cụ thường dùng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đặc điểm cốt lõi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oi-tuong-su-dung-chinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đối tượng sử dụng chính
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hạn chế
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đặc điểm cốt lõi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hạn chế
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oi-tuong-su-dung-chinh_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đối tượng sử dụng chính
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-data-mart-cho-du-lieu-cua-hang-tien-loi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Data Mart (chợ dữ liệu) — “Cửa hàng tiện lợi”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3. Data Mart (chợ dữ liệu) — “Cửa hàng tiện lợi”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đặc điểm cốt lõi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-ve-nguoi-dung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ về người dùng
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-so-sanh-data-lake-data-warehouse-va-data-mart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. So sánh Data Lake, Data Warehouse và Data Mart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-xu-huong-tuong-lai-va-ket-luan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Xu hướng tương lai và kết luận
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Xu hướng tương lai và kết luận">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Lakehouse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Lakehouse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tep-parquet-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tệp Parquet là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giao-dich-acid-trong-data-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giao dịch ACID trong Data Lakehouse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tom-tat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tóm tắt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lời kết
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phân cấp & Lưu trữ PostgreSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL Hierarchy & Storage (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes in Databases (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Orchestration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao cần phân biệt các mô hình lưu trữ dữ liệu?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-at-van-e-va-inh-nghia-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Đặt vấn đề và định nghĩa Big Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Đặt vấn đề và định nghĩa Big Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-boi-canh-bung-no-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1. Bối cảnh bùng nổ dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-big-data-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2. Big Data là gì?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2. Big Data là gì?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phan-loai-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phân loại dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ac-trung-cua-big-data-mo-hinh-5v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đặc trưng của Big Data: mô hình 5V
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vai-tro-cua-big-data-trong-doanh-nghiep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vai trò của Big Data trong doanh nghiệp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thach-thuc-khi-xu-ly-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thách thức khi xử lý Big Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cac-nen-tang-luu-tru-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Các nền tảng lưu trữ dữ liệu
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Các nền tảng lưu trữ dữ liệu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cong-cu-thuong-dung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Công cụ thường dùng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đặc điểm cốt lõi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oi-tuong-su-dung-chinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đối tượng sử dụng chính
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hạn chế
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đặc điểm cốt lõi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hạn chế
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oi-tuong-su-dung-chinh_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đối tượng sử dụng chính
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-data-mart-cho-du-lieu-cua-hang-tien-loi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Data Mart (chợ dữ liệu) — “Cửa hàng tiện lợi”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3. Data Mart (chợ dữ liệu) — “Cửa hàng tiện lợi”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đặc điểm cốt lõi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-ve-nguoi-dung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ về người dùng
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-so-sanh-data-lake-data-warehouse-va-data-mart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. So sánh Data Lake, Data Warehouse và Data Mart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-xu-huong-tuong-lai-va-ket-luan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Xu hướng tương lai và kết luận
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Xu hướng tương lai và kết luận">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Lakehouse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Lakehouse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tep-parquet-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tệp Parquet là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giao-dich-acid-trong-data-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giao dịch ACID trong Data Lakehouse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tom-tat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tóm tắt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lời kết
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+<nav class="reading-language" aria-label="Ngôn ngữ đọc">
+  <div class="reading-language__options">
+  
+    <span class="reading-language__unavailable" lang="vi">Tiếng Việt · Chưa có bản tiếng Anh</span>
+  
+  </div>
+</nav>
+
+  
+  
+    <details class="mobile-toc">
+      <summary>
+        <span class="mobile-toc__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h7M4 6h.01M4 12h.01M4 18h.01"/></svg></span>
+        <span class="mobile-toc__heading"><strong>Mục lục bài viết</strong><span>Khám phá từng phần của bài viết</span></span>
+        <span class="mobile-toc__count">6 phần</span>
+      </summary>
+      <nav aria-label="Mục lục bài viết">
+        <ul>
+          
+            <li>
+              <a href="#vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu">Vì sao cần phân biệt các mô hình lưu trữ dữ liệu?</a>
+              
+            </li>
+          
+            <li>
+              <a href="#1-at-van-e-va-inh-nghia-big-data">1. Đặt vấn đề và định nghĩa Big Data</a>
+              <ul>
+            <li>
+              <a href="#11-boi-canh-bung-no-du-lieu">1.1. Bối cảnh bùng nổ dữ liệu</a>
+              
+            </li>
+          
+            <li>
+              <a href="#12-big-data-la-gi">1.2. Big Data là gì?</a>
+              <ul>
+            <li>
+              <a href="#phan-loai-du-lieu">Phân loại dữ liệu</a>
+              
+            </li>
+          
+            <li>
+              <a href="#ac-trung-cua-big-data-mo-hinh-5v">Đặc trưng của Big Data: mô hình 5V</a>
+              
+            </li>
+          
+            <li>
+              <a href="#vai-tro-cua-big-data-trong-doanh-nghiep">Vai trò của Big Data trong doanh nghiệp</a>
+              
+            </li>
+          
+            <li>
+              <a href="#thach-thuc-khi-xu-ly-big-data">Thách thức khi xử lý Big Data</a>
+              
+            </li>
+          </ul>
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#2-cac-nen-tang-luu-tru-du-lieu">2. Các nền tảng lưu trữ dữ liệu</a>
+              <ul>
+            <li>
+              <a href="#21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu">2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”</a>
+              <ul>
+            <li>
+              <a href="#cong-cu-thuong-dung">Công cụ thường dùng</a>
+              
+            </li>
+          
+            <li>
+              <a href="#ac-iem-cot-loi">Đặc điểm cốt lõi</a>
+              
+            </li>
+          
+            <li>
+              <a href="#oi-tuong-su-dung-chinh">Đối tượng sử dụng chính</a>
+              
+            </li>
+          
+            <li>
+              <a href="#han-che">Hạn chế</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai">2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”</a>
+              <ul>
+            <li>
+              <a href="#ac-iem-cot-loi_1">Đặc điểm cốt lõi</a>
+              
+            </li>
+          
+            <li>
+              <a href="#han-che_1">Hạn chế</a>
+              
+            </li>
+          
+            <li>
+              <a href="#oi-tuong-su-dung-chinh_1">Đối tượng sử dụng chính</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#23-data-mart-cho-du-lieu-cua-hang-tien-loi">2.3. Data Mart (chợ dữ liệu) — “Cửa hàng tiện lợi”</a>
+              <ul>
+            <li>
+              <a href="#ac-iem-cot-loi_2">Đặc điểm cốt lõi</a>
+              
+            </li>
+          
+            <li>
+              <a href="#vi-du-ve-nguoi-dung">Ví dụ về người dùng</a>
+              
+            </li>
+          </ul>
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#3-so-sanh-data-lake-data-warehouse-va-data-mart">3. So sánh Data Lake, Data Warehouse và Data Mart</a>
+              
+            </li>
+          
+            <li>
+              <a href="#4-xu-huong-tuong-lai-va-ket-luan">4. Xu hướng tương lai và kết luận</a>
+              <ul>
+            <li>
+              <a href="#data-lakehouse">Data Lakehouse</a>
+              <ul>
+            <li>
+              <a href="#tep-parquet-la-gi">Tệp Parquet là gì?</a>
+              
+            </li>
+          
+            <li>
+              <a href="#giao-dich-acid-trong-data-lakehouse">Giao dịch ACID trong Data Lakehouse</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#tom-tat">Tóm tắt</a>
+              
+            </li>
+          </ul>
+            </li>
+          
+            <li>
+              <a href="#loi-ket">Lời kết</a>
+              
+            </li>
+          
+        </ul>
+      </nav>
+    </details>
+  
+  
+                  
+  
+
+
+
+  
+  
+
+
+<header class="airflow-article-hero storage-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 006</span>
+  </div>
+  <h1>Data Lake, Data Warehouse<br><em>&amp; Data Mart</em></h1>
+  <p class="airflow-article-hero__dek">
+    Từ đặc trưng của Big Data đến cách các nền tảng lưu trữ dữ liệu vận hành,
+    khác biệt và hội tụ trong kiến trúc Data Lakehouse.
+  </p>
+  <div class="airflow-article-hero__meta" aria-label="Thông tin bài viết">
+    <span>DATA ARCHITECTURE</span>
+    <span>EDITION 06 · 2026</span>
+  </div>
+</header>
+
+<figure class="airflow-opening-comic">
+  <img
+    src="../../assets/images/ware_lake_lw/opening.png"
+    alt="Truyện tranh vui nhắc người đọc chuẩn bị cho một bài viết dài về các mô hình lưu trữ dữ liệu"
+    loading="eager"
+  >
+  <figcaption>
+    <span>LƯU Ý TRƯỚC KHI ĐỌC</span>
+    <strong>Một bài viết khá dài</strong>
+  </figcaption>
+</figure>
+
+<h2 id="vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu">Vì sao cần phân biệt các mô hình lưu trữ dữ liệu?</h2>
+<p>Một doanh nghiệp có thể cùng lúc thu thập đơn hàng, lượt nhấp trên website, log ứng dụng và hình ảnh. Tất cả đều là dữ liệu, nhưng không phải loại nào cũng nên được lưu và khai thác theo cùng một cách. Khi lượng dữ liệu tăng lên, câu hỏi không chỉ là <strong>lưu ở đâu</strong>, mà còn là <strong>ai sẽ dùng dữ liệu và dùng để làm gì</strong>.</p>
+<p>Bài viết bắt đầu từ các đặc trưng của Big Data, sau đó đi qua Data Lake, Data Warehouse và Data Mart để làm rõ vai trò, điểm mạnh và giới hạn của từng mô hình. Cuối cùng, chúng ta sẽ xem Data Lakehouse kết hợp những khả năng đó như thế nào.</p>
+<h2 id="1-at-van-e-va-inh-nghia-big-data">1. Đặt vấn đề và định nghĩa Big Data</h2>
+<h3 id="11-boi-canh-bung-no-du-lieu">1.1. Bối cảnh bùng nổ dữ liệu</h3>
+<p>Trong kỷ nguyên số, lượng dữ liệu được tạo ra mỗi ngày trên thế giới tăng với tốc độ rất nhanh. Internet, mạng xã hội, thiết bị di động, hệ thống cảm biến và các dịch vụ trực tuyến liên tục tạo ra lượng dữ liệu khổng lồ.</p>
+<p>Ví dụ, trong một phút có 12 triệu người gửi iMessage, 6 triệu người mua sắm trực tuyến; người dùng YouTube phát trực tuyến 694.000 video và người dùng TikTok xem 167 triệu video.</p>
+<p>Doanh nghiệp thu thập dữ liệu từ nhiều nguồn khác nhau:</p>
+<ul>
+<li>Hành vi người dùng trên website, như lượt nhấp chuột và thời gian xem trang.</li>
+<li>Dữ liệu GPS từ điện thoại.</li>
+<li>Lịch sử mua hàng.</li>
+<li>Bình luận trên mạng xã hội.</li>
+</ul>
+<p>Sự phát triển của các lĩnh vực sau góp phần khiến dữ liệu bùng nổ:</p>
+<ul>
+<li>Internet và mạng xã hội.</li>
+<li>Thiết bị di động.</li>
+<li>IoT.</li>
+<li>Các nền tảng thương mại điện tử.</li>
+</ul>
+<h3 id="12-big-data-la-gi">1.2. Big Data là gì?</h3>
+<p><strong>Big Data (dữ liệu lớn)</strong> là thuật ngữ chỉ những tập dữ liệu có kích thước rất lớn và phức tạp, khó quản lý hoặc phân tích bằng các công cụ xử lý dữ liệu truyền thống, đặc biệt là bảng tính và hệ thống xử lý dữ liệu thông thường.</p>
+<h4 id="phan-loai-du-lieu">Phân loại dữ liệu</h4>
+<ul>
+<li><strong>Dữ liệu có cấu trúc:</strong> Có thể lưu trữ theo lược đồ xác định rõ, chẳng hạn trong cơ sở dữ liệu; nhiều trường hợp có thể biểu diễn thành bảng gồm hàng và cột. Ví dụ: bảng tính Excel và cơ sở dữ liệu SQL.</li>
+<li><strong>Dữ liệu phi cấu trúc:</strong> Không có cấu trúc dễ nhận dạng nên không thể tổ chức theo cách thông thường trong cơ sở dữ liệu quan hệ dưới dạng hàng và cột. Dữ liệu không tuân theo một định dạng, trình tự, ngữ nghĩa hoặc quy tắc cụ thể. Ví dụ: hình ảnh và video.</li>
+<li><strong>Dữ liệu bán cấu trúc:</strong> Không được lưu trữ đơn thuần dưới dạng hàng và cột như trong cơ sở dữ liệu quan hệ. Dữ liệu chứa thẻ, phần tử hoặc siêu dữ liệu để nhóm và sắp xếp theo hệ thống phân cấp. Ví dụ: tệp XML và JSON.</li>
+</ul>
+<h4 id="ac-trung-cua-big-data-mo-hinh-5v">Đặc trưng của Big Data: mô hình 5V</h4>
+<ul>
+<li><strong>Volume (khối lượng):</strong> Lượng dữ liệu cần xử lý rất lớn, có thể từ hàng chục terabyte (TB) đến hàng trăm petabyte (PB).</li>
+<li><strong>Velocity (tốc độ):</strong> Dữ liệu được tạo ra và truyền đến hệ thống rất nhanh, thậm chí trong thời gian thực.</li>
+<li><strong>Variety (đa dạng):</strong> Dữ liệu có nhiều dạng, từ dữ liệu có cấu trúc đến phi cấu trúc, như văn bản, âm thanh và video. Một số dạng cần xử lý bổ sung để rút ra ý nghĩa và hỗ trợ siêu dữ liệu.</li>
+<li><strong>Veracity (độ tin cậy):</strong> Mức độ chính xác, đáng tin cậy, chất lượng và tính toàn vẹn của dữ liệu.</li>
+<li><strong>Value (giá trị):</strong> Giá trị doanh nghiệp có thể khai thác khi chuyển dữ liệu thành thông tin hữu ích.</li>
+</ul>
+<h4 id="vai-tro-cua-big-data-trong-doanh-nghiep">Vai trò của Big Data trong doanh nghiệp</h4>
+<ul>
+<li><strong>Hiểu biết sâu hơn (better insights):</strong> Khi có nhiều dữ liệu hơn, tổ chức có thể phân tích sâu và khám phá những thông tin giá trị trước đây khó nhận thấy.</li>
+<li><strong>Ra quyết định (decision-making):</strong> Những hiểu biết này giúp doanh nghiệp đưa ra quyết định dựa trên dữ liệu, từ đó dự đoán xu hướng và kết quả chính xác hơn.</li>
+<li><strong>Cá nhân hóa trải nghiệm khách hàng (personalized customer experiences):</strong> Big Data giúp xây dựng hồ sơ khách hàng chi tiết bằng cách kết hợp dữ liệu mua hàng, dữ liệu nhân khẩu học, hành vi trên mạng xã hội và tương tác với các chiến dịch marketing. Từ đó, doanh nghiệp có thể cá nhân hóa trải nghiệm khách hàng.</li>
+<li><strong>Tăng hiệu quả vận hành (improved operational efficiency):</strong> Phân tích dữ liệu từ nhiều bộ phận giúp phát hiện điểm nghẽn, tối ưu quy trình, giảm lỗi và tiết kiệm chi phí.</li>
+</ul>
+<h4 id="thach-thuc-khi-xu-ly-big-data">Thách thức khi xử lý Big Data</h4>
+<ul>
+<li><strong>Khối lượng dữ liệu lớn:</strong> Dữ liệu tăng rất nhanh, gần như gấp đôi sau mỗi vài năm, gây khó khăn cho việc lưu trữ và quản lý.</li>
+<li><strong>Xử lý và làm sạch dữ liệu (data curation):</strong> Dữ liệu chỉ có giá trị khi được xử lý và tổ chức hợp lý. Data Scientist thường dành 50–80% thời gian để chuẩn bị dữ liệu.</li>
+<li><strong>Bảo mật và quyền riêng tư:</strong> Cần mã hóa dữ liệu, phân quyền truy cập và tuân thủ các quy định như GDPR.</li>
+<li><strong>Văn hóa dữ liệu (data-driven culture):</strong> Có dữ liệu nhưng không sử dụng thì dữ liệu không tạo ra giá trị. Doanh nghiệp cần thay đổi tư duy, đào tạo nhân sự và áp dụng công cụ phân tích.</li>
+<li><strong>Công nghệ thay đổi nhanh:</strong> Từ Apache Hadoop đến Apache Spark và các hệ thống kết hợp nhiều công nghệ, việc theo kịp thay đổi đòi hỏi cập nhật liên tục.</li>
+</ul>
+<h2 id="2-cac-nen-tang-luu-tru-du-lieu">2. Các nền tảng lưu trữ dữ liệu</h2>
+<h3 id="21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu">2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”</h3>
+<p><strong>Khái niệm:</strong> Data Lake là kho lưu trữ tập trung, cho phép lưu dữ liệu ở mọi quy mô: dữ liệu có cấu trúc như bảng SQL, bán cấu trúc như JSON và XML, cũng như phi cấu trúc như hình ảnh, video, tệp âm thanh và PDF.</p>
+<h4 id="cong-cu-thuong-dung">Công cụ thường dùng</h4>
+<ul>
+<li><strong>Lớp lưu trữ (storage):</strong><ul>
+<li><strong>Amazon S3:</strong> Dịch vụ lưu trữ đối tượng phổ biến trên đám mây.</li>
+<li><strong>Azure Data Lake Storage (ADLS Gen2):</strong> Dịch vụ trong hệ sinh thái Microsoft, có không gian tên phân cấp (<em>hierarchical namespace</em>) hỗ trợ các tác vụ Big Data.</li>
+<li><strong>Google Cloud Storage (GCS):</strong> Dịch vụ lưu trữ của Google Cloud.</li>
+</ul>
+</li>
+<li><strong>Lớp xử lý dữ liệu:</strong><ul>
+<li><strong>Apache Spark:</strong> Công cụ xử lý dữ liệu phân tán phổ biến.</li>
+<li><strong>Databricks:</strong> Nền tảng phân tích hợp nhất dựa trên Spark.</li>
+<li><strong>AWS Glue:</strong> Dịch vụ ETL không cần quản lý máy chủ của Amazon.</li>
+</ul>
+</li>
+</ul>
+<h4 id="ac-iem-cot-loi">Đặc điểm cốt lõi</h4>
+<ul>
+<li><strong>Lưu trữ dữ liệu thô:</strong> Dữ liệu được giữ nguyên từ nguồn. Nếu sau này cần thông tin từng định loại bỏ trong quá trình ETL, bạn vẫn có thể quay lại Data Lake để lấy.</li>
+<li><strong>Khả năng mở rộng lớn:</strong> Data Lake thường được xây dựng trên các hệ thống lưu trữ đám mây như Amazon S3, Google Cloud Storage và Azure Data Lake Storage. Chi phí lưu trữ thấp cho phép lưu lượng dữ liệu ở quy mô petabyte.</li>
+<li><strong>Đa dạng kiểu dữ liệu:</strong> Có thể tiếp nhận log hệ thống, dữ liệu cảm biến IoT và tệp tài liệu nghiệp vụ.</li>
+<li><strong>Tách biệt lưu trữ và tính toán:</strong> Dữ liệu được lưu ở một nơi; khi cần xử lý mới sử dụng cụm máy tính toán như Spark hoặc Presto. Sau khi xử lý, có thể dừng cụm máy mà vẫn giữ dữ liệu, qua đó tối ưu chi phí.</li>
+</ul>
+<h4 id="oi-tuong-su-dung-chinh">Đối tượng sử dụng chính</h4>
+<ul>
+<li><strong>Data Scientist:</strong> Sử dụng dữ liệu thô để xây dựng mô hình học máy (Machine Learning) hoặc tìm mối tương quan ẩn mà dữ liệu đã xử lý trong Data Warehouse có thể không còn giữ lại.</li>
+<li><strong>Data Engineer:</strong> Dùng Data Lake làm vùng đệm (<em>staging area</em>) cho quy trình ELT: lấy dữ liệu từ hồ, làm sạch rồi đưa vào Data Warehouse cho người dùng cuối.</li>
+<li><strong>Data Analyst:</strong> Sử dụng SQL hoặc công cụ như Spark để khám phá dữ liệu trước khi lập báo cáo chính thức.</li>
+</ul>
+<h4 id="han-che">Hạn chế</h4>
+<ul>
+<li><strong>Nguy cơ thành “Data Swamp” (đầm lầy dữ liệu):</strong> Nếu không kiểm soát chặt lược đồ, phân loại dữ liệu, gắn siêu dữ liệu (<em>metadata</em>), xác định quyền sở hữu và kiểm soát chất lượng đầu vào, dữ liệu sẽ khó quản lý.</li>
+<li><strong>Thiếu giao dịch ACID:</strong> Data Lake truyền thống không tự cung cấp đầy đủ Atomicity, Consistency, Isolation và Durability.</li>
+<li><strong>Thiếu phiên bản dữ liệu:</strong> Không có sẵn cơ chế truy vấn các phiên bản dữ liệu trong quá khứ.</li>
+<li><strong>Truy vấn chậm hơn Data Warehouse:</strong> Hệ thống chủ yếu phục vụ lưu trữ, chưa tối ưu truy vấn như cơ sở dữ liệu.</li>
+</ul>
+<h3 id="22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai">2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”</h3>
+<p><strong>Khái niệm:</strong> Data Warehouse là hệ thống lưu trữ dữ liệu trung tâm, tích hợp dữ liệu từ nhiều nguồn như cơ sở dữ liệu giao dịch, ứng dụng CRM và ERP để phục vụ phân tích, báo cáo.</p>
+<p><strong>Công cụ thường dùng:</strong> Snowflake, Google BigQuery và Amazon Redshift.</p>
+<h4 id="ac-iem-cot-loi_1">Đặc điểm cốt lõi</h4>
+<ul>
+<li><strong>Hướng chủ đề (subject-oriented):</strong> Dữ liệu được tổ chức quanh các chủ đề chính của doanh nghiệp như khách hàng, bán hàng và sản phẩm.</li>
+<li><strong>Tích hợp (integrated):</strong> Dữ liệu từ nhiều nguồn được làm sạch và chuẩn hóa về định dạng thống nhất trước khi nạp vào kho. Ví dụ, có thể chuyển mọi đơn vị tiền tệ về USD, hoặc thống nhất hai tên cột <code>cust_id</code> và <code>customer_id</code>.</li>
+<li><strong>Biến đổi theo thời gian (time-variant):</strong> Kho thường lưu lịch sử lâu dài, khoảng 5–10 năm, để so sánh và phân tích xu hướng. Đây là một điểm khác biệt với hệ thống xử lý giao dịch OLTP như MySQL.</li>
+<li><strong>Không biến động (non-volatile):</strong> Dữ liệu đã nạp thường ít bị người dùng cuối thay đổi hoặc xóa; khi có thay đổi, dữ liệu mới thường được thêm bên cạnh dữ liệu cũ. Dữ liệu chủ yếu được đọc để phân tích.</li>
+</ul>
+<h4 id="han-che_1">Hạn chế</h4>
+<ul>
+<li>Xử lý tốt dữ liệu có cấu trúc nhưng không phù hợp với các tệp JSON, video hoặc hình ảnh.</li>
+<li>Vì chủ yếu chứa dữ liệu có cấu trúc, Data Warehouse hạn chế với những bài toán AI/ML cần nhiều loại dữ liệu; hệ thống phù hợp với công việc của Data Analyst.</li>
+<li>Tối ưu truy vấn tốt nhưng chi phí thường cao hơn Data Lake.</li>
+</ul>
+<h4 id="oi-tuong-su-dung-chinh_1">Đối tượng sử dụng chính</h4>
+<ul>
+<li><strong>Data Analyst:</strong> Dùng SQL để truy vấn dữ liệu, tạo báo cáo và bảng điều khiển (<em>dashboard</em>) theo dõi hiệu suất kinh doanh.</li>
+<li><strong>Kỹ sư BI:</strong> Thiết kế, duy trì hệ thống báo cáo tự động và bảo đảm dữ liệu hiển thị chính xác cho lãnh đạo.</li>
+<li><strong>Data Scientist:</strong> Sử dụng dữ liệu đã làm sạch để huấn luyện mô hình học máy và dự báo xu hướng.</li>
+<li><strong>Lãnh đạo doanh nghiệp:</strong> Dựa vào báo cáo từ Data Warehouse để đưa ra chiến lược kinh doanh dựa trên dữ liệu.</li>
+</ul>
+<h3 id="23-data-mart-cho-du-lieu-cua-hang-tien-loi">2.3. Data Mart (chợ dữ liệu) — “Cửa hàng tiện lợi”</h3>
+<p><strong>Khái niệm:</strong> Trong kiến trúc kho dữ liệu truyền thống, Data Mart là kho dữ liệu tập trung vào một chủ đề hoặc một đơn vị kinh doanh cụ thể trong tổ chức.</p>
+<h4 id="ac-iem-cot-loi_2">Đặc điểm cốt lõi</h4>
+<ul>
+<li><strong>Phạm vi tập trung:</strong> Khác với Data Warehouse bao phủ toàn doanh nghiệp, Data Mart chỉ chứa dữ liệu của một lĩnh vực như bán hàng, tài chính hoặc marketing.</li>
+<li><strong>Kích thước nhỏ gọn:</strong> Vì chỉ chứa dữ liệu chuyên biệt, Data Mart thường nhỏ hơn kho dữ liệu tổng, giúp truy vấn nhanh hơn.</li>
+<li><strong>Cấu trúc dữ liệu tối ưu:</strong> Dữ liệu thường được mô hình hóa theo dạng dễ hiểu với người dùng cuối, chẳng hạn mô hình ngôi sao (<em>Star Schema</em>), để phục vụ trực tiếp công cụ BI (<em>Business Intelligence</em>).</li>
+</ul>
+<h4 id="vi-du-ve-nguoi-dung">Ví dụ về người dùng</h4>
+<ul>
+<li><strong>Data Analyst:</strong> Truy cập nhanh dữ liệu sạch, đã chuyển đổi để tạo báo cáo và biểu đồ phục vụ kinh doanh.</li>
+<li><strong>Các phòng ban:</strong> Bộ phận Marketing theo dõi chiến dịch; bộ phận Tài chính đối soát doanh thu mà không phải lọc hàng tỷ bản ghi không liên quan từ phòng ban khác.</li>
+<li><strong>Nhà quản lý và lãnh đạo:</strong> Theo dõi nhanh các chỉ số KPI để ra quyết định kịp thời mà không cần chờ truy vấn phức tạp trên kho dữ liệu tổng.</li>
+</ul>
+<p>Có thể hình dung <strong>Data Lake</strong> là một hồ lớn chứa nhiều nguồn nước, thậm chí cả cá; <strong>Data Warehouse</strong> là nhà máy xử lý và bể chứa nước trung tâm. Hệ thống ống dẫn từ hồ đến nhà máy là <strong>Data Pipeline</strong> với quy trình ETL/ELT. Nước trong bể được chia theo từng mục đích sử dụng, tương tự các <strong>Data Mart</strong> phục vụ những nhu cầu riêng.</p>
+<h2 id="3-so-sanh-data-lake-data-warehouse-va-data-mart">3. So sánh Data Lake, Data Warehouse và Data Mart</h2>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí</th>
+<th>Data Lake</th>
+<th>Data Warehouse</th>
+<th>Data Mart</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Định nghĩa</strong></td>
+<td>Nơi lưu trữ dữ liệu thô.</td>
+<td>Kho dữ liệu tập trung, đã xử lý và có cấu trúc.</td>
+<td>Một phần của Data Warehouse phục vụ bộ phận cụ thể.</td>
+</tr>
+<tr>
+<td><strong>Loại dữ liệu</strong></td>
+<td>Có cấu trúc, phi cấu trúc và bán cấu trúc.</td>
+<td>Có cấu trúc (bảng).</td>
+<td>Có cấu trúc.</td>
+</tr>
+<tr>
+<td><strong>Xử lý lược đồ</strong></td>
+<td><em>Schema-on-read</em>: xử lý sau khi lưu.</td>
+<td><em>Schema-on-write</em>: xử lý trước khi lưu.</td>
+<td><em>Schema-on-write</em>.</td>
+</tr>
+<tr>
+<td><strong>Chi phí lưu trữ</strong></td>
+<td>Thấp nhờ dịch vụ lưu trữ đối tượng như S3.</td>
+<td>Cao hơn do tối ưu truy vấn.</td>
+<td>Trung bình.</td>
+</tr>
+<tr>
+<td><strong>Hiệu năng</strong></td>
+<td>Truy vấn chậm hơn.</td>
+<td>Truy vấn nhanh.</td>
+<td>Truy vấn rất nhanh.</td>
+</tr>
+<tr>
+<td><strong>Ứng dụng</strong></td>
+<td>Log hệ thống, IoT, video.</td>
+<td>Báo cáo tài chính, dashboard.</td>
+<td>Báo cáo bán hàng cho một phòng ban.</td>
+</tr>
+<tr>
+<td><strong>Trường hợp sử dụng tiêu biểu</strong></td>
+<td>Phân tích dữ liệu lớn, ML/NLP, khám phá dữ liệu linh hoạt, streaming (IoT, log).</td>
+<td>Báo cáo doanh nghiệp, BI, dashboard, phân tích dữ liệu lịch sử.</td>
+<td>Người dùng nghiệp vụ và các phòng ban.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-xu-huong-tuong-lai-va-ket-luan">4. Xu hướng tương lai và kết luận</h2>
+<h3 id="data-lakehouse">Data Lakehouse</h3>
+<p>Một xu hướng trong kiến trúc dữ liệu là <strong>Data Lakehouse</strong>. Mô hình này được Databricks giới thiệu như sự kết hợp giữa Data Warehouse và Data Lake, xuất phát từ ưu điểm và hạn chế của từng mô hình:</p>
+<ul>
+<li>Data Warehouse lưu dữ liệu theo cấu trúc rõ ràng, nhưng dữ liệu thường tập trung vào một số dạng như số liệu và bảng biểu.</li>
+<li>Trong bối cảnh LLM và AI phát triển, việc huấn luyện mô hình đòi hỏi nhiều loại dữ liệu, không thể chỉ dựa vào một dạng duy nhất.</li>
+<li>Data Lake lưu được nhiều loại dữ liệu như một chiếc phễu, nhưng dữ liệu thiếu cấu trúc sẽ khó quản lý. Data Lake truyền thống cũng thiếu độ tin cậy khi chưa có cơ chế kiểm soát ghi và đọc đồng thời (<em>concurrency control</em>).</li>
+</ul>
+<p>Data Lakehouse tận dụng tính linh hoạt của Data Lake, đồng thời bổ sung cấu trúc và độ tin cậy như Data Warehouse. Các công nghệ tiêu biểu gồm <strong>Delta Lake</strong> và <strong>Apache Iceberg</strong>. Delta Lake dùng tệp <code>.parquet</code> để lưu dữ liệu của bảng Delta. Một bảng Delta có hai thành phần chính:</p>
+<ul>
+<li><strong>Tệp Parquet:</strong> Chứa dữ liệu dưới định dạng <code>.parquet</code>.</li>
+<li><strong>Transaction log:</strong> Lưu lại các thay đổi.</li>
+</ul>
+<h4 id="tep-parquet-la-gi">Tệp Parquet là gì?</h4>
+<p><strong>Apache Parquet</strong> là định dạng tệp lưu dữ liệu dạng bảng, thường dùng trong hệ thống Big Data. Parquet lưu dữ liệu theo cột (<em>columnar storage</em>) thay vì theo hàng. Đây là tệp nhị phân, không thể đọc trực tiếp bằng mắt thường; cần dùng công cụ, chẳng hạn Python, để đọc.</p>
+<p>Khi cập nhật dữ liệu, không thể sửa trực tiếp nội dung một tệp Parquet. Delta Lake tạo tệp Parquet mới và đánh dấu trong log rằng tệp cũ không còn được sử dụng. Nhờ đó, hệ thống quản lý được các phiên bản dữ liệu.</p>
+<p>Data Lakehouse cũng giúp mô hình AI/LLM truy cập dữ liệu trực tiếp mà không bị khóa vào một nền tảng. Với Data Warehouse, dữ liệu nằm trong cơ sở dữ liệu; để dùng bằng Python, người dùng thường phải truy vấn, xuất ra tệp rồi nạp lại, gây chậm và tốn chi phí. Với dữ liệu lưu trong tệp Parquet, có thể đọc bằng Python, Spark hoặc công cụ phù hợp khác.</p>
+<h4 id="giao-dich-acid-trong-data-lakehouse">Giao dịch ACID trong Data Lakehouse</h4>
+<p>Data Lakehouse còn hỗ trợ các tính chất ACID:</p>
+<ul>
+<li><strong>A — Atomicity (tính nguyên tử):</strong> Giao dịch hoặc thành công toàn bộ hoặc không có hiệu lực. Ví dụ, nếu quá trình ghi thất bại giữa chừng và log cuối cùng chưa được ghi, lần ghi đó được xem như chưa từng xảy ra.</li>
+<li><strong>C — Consistency (tính nhất quán):</strong> Dữ liệu tuân theo quy tắc và lược đồ. Ví dụ, cột <code>age</code> yêu cầu số thì không thể chèn chuỗi vào cột này.</li>
+<li><strong>I — Isolation (tính cô lập):</strong> Nhiều người ghi cùng lúc không làm các giao dịch ảnh hưởng lẫn nhau. Ví dụ, bạn đang ghi dựa trên phiên bản 10, nhưng một người khác đã ghi và tạo phiên bản 11; lần ghi dựa trên phiên bản 10 sẽ thất bại và cần thử lại.</li>
+<li><strong>D — Durability (tính bền vững):</strong> Dữ liệu đã ghi thành công sẽ không bị mất.</li>
+</ul>
+<h3 id="tom-tat">Tóm tắt</h3>
+<ul>
+<li><strong>Data Lake (hồ dữ liệu):</strong> Lưu dữ liệu thô, phục vụ lưu trữ chi phí thấp và các mô hình AI/Machine Learning phức tạp. Đặc điểm cốt lõi là khả năng mở rộng lớn và tách biệt lưu trữ với tính toán.</li>
+<li><strong>Data Warehouse (kho dữ liệu):</strong> Lưu dữ liệu đã làm sạch, chuẩn hóa; có các đặc điểm hướng chủ đề (<em>subject-oriented</em>), tích hợp (<em>integrated</em>), biến đổi theo thời gian (<em>time-variant</em>) và không biến động (<em>non-volatile</em>).</li>
+<li><strong>Data Mart (chợ dữ liệu):</strong> Phần dữ liệu nhỏ trích từ Data Warehouse hoặc trực tiếp từ hệ thống nguồn, phục vụ phân tích nhanh cho từng phòng ban như Marketing, Tài chính. Nhờ kích thước nhỏ, cấu trúc dữ liệu có thể được tối ưu theo nhu cầu sử dụng.</li>
+<li><strong>Data Lakehouse:</strong> Kết hợp ưu điểm của Data Lake và Data Warehouse, cho phép lưu dữ liệu linh hoạt trong định dạng tệp mở như Parquet, đồng thời hỗ trợ quản lý và truy vấn như một hệ cơ sở dữ liệu.</li>
+</ul>
+<hr />
+<h2 id="loi-ket">Lời kết</h2>
+<p>Không có một nơi lưu trữ phù hợp cho mọi loại dữ liệu và mọi người dùng. Khi thiết kế nền tảng dữ liệu, hãy bắt đầu từ dạng dữ liệu cần lưu, cách dữ liệu được xử lý và nhu cầu truy vấn của từng nhóm: khám phá dữ liệu thô, lập báo cáo chung hay phân tích cho một phòng ban. Từ đó, bạn sẽ thấy Data Lake, Data Warehouse, Data Mart và Data Lakehouse có thể đảm nhận những vai trò khác nhau trong cùng một kiến trúc.</p>
+<figure class="airflow-closing-comic">
+  <img
+    src="../../assets/images/ware_lake_lw/ending.png"
+    alt="Truyện tranh Shin giới thiệu các mô hình lưu trữ dữ liệu, cảm ơn người đọc và hẹn gặp ở bài viết sau"
+    loading="lazy"
+  >
+  <figcaption>
+    <span>LỜI KẾT</span>
+    <div>
+      <strong>Cảm ơn bạn đã đọc đến cuối!</strong>
+      <p>Hẹn gặp lại ở những bài viết tiếp theo.</p>
+    </div>
+  </figcaption>
+</figure>
+
+<footer class="airflow-article-end ware-lake-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 006</span>
+    <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
+  </div>
+  <a href="../../">Trở về thư viện <span aria-hidden="true">→</span></a>
+</footer>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/reading-language.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>
