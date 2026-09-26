@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Behind the Pipeline — Ba hướng nền chồng card</title>
+  <style>
+    @font-face { font-family: Manrope; src: url('../../../docs/assets/fonts/manrope-normal-200-800.woff2') format('woff2'); font-weight: 200 800; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f3f0e8; color: #17302d; font-family: Manrope, sans-serif; }
+    main { max-width: 1600px; margin: auto; padding: 44px 28px; }
+    .eyebrow { color: #9b5035; font-size: 11px; letter-spacing: .14em; font-weight: 800; }
+    h1 { font-size: clamp(28px, 3vw, 42px); line-height: 1.2; letter-spacing: -.04em; margin: 16px 0; }
+    .intro { color: #516b5d; font-size: 15px; margin-bottom: 32px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+    article { background: #faf8f1; border: 1px solid #d6ded0; border-radius: 22px; overflow: hidden; }
+    article:first-child { border-color: #819d89; }
+    .image { display: block; padding: 16px 16px 0; }
+    img { width: 100%; display: block; border-radius: 15px; }
+    .body { padding: 20px 24px 24px; }
+    h2 { font-size: 22px; letter-spacing: -.04em; margin: 0 0 10px; }
+    p { font-size: 13px; line-height: 1.7; color: #516b5d; }
+    .tag { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .08em; color: #446b50; margin-bottom: 12px; }
+    .zoom { color: #9b5035; text-decoration: none; font-size: 12px; font-weight: 800; }
+    .note { padding: 20px 24px; margin-top: 24px; border-radius: 14px; background: #e4e9dc; }
+    .note p { margin: 0; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } main { max-width: 700px; padding: 28px 18px; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">BEHIND THE PIPELINE / THIẾT KẾ NỀN</div>
+  <h1>Để chồng bài viết nổi lên, nhẹ và có chiều sâu.</h1>
+  <p class="intro">Ba bản xem thử trên cùng một card. Nhấn vào ảnh để xem lớn.</p>
+  <div class="grid">
+    <article>
+      <a class="image" href="sage-glass.png"><img src="sage-glass.png" alt="Nền sage sáng với ánh cam dịu và card xanh đậm"></a>
+      <div class="body"><span class="tag">01 / ĐỀ XUẤT CHỌN</span><h2>Sage Glass</h2><p>Nền xanh sage sáng, dải màu mờ và ánh cam đất ở góc. Card xanh đậm tách lớp rõ, nối tiếp chất liệu ở phần thư viện.</p><a class="zoom" href="sage-glass.png">Xem lớn ↗</a></div>
+    </article>
+    <article>
+      <a class="image" href="pipeline-map.png"><img src="pipeline-map.png" alt="Nền kem có hai tuyến pipeline mảnh và các điểm dữ liệu màu cam"></a>
+      <div class="body"><span class="tag">02 / TINH THẦN DATA ENGINEERING</span><h2>Pipeline Map</h2><p>Nền kem với các tuyến dữ liệu mảnh chạy quanh card. Gần ngôn ngữ logo mới, rõ chất sổ tay kiến trúc hệ thống.</p><a class="zoom" href="pipeline-map.png">Xem lớn ↗</a></div>
+    </article>
+    <article>
+      <a class="image" href="deep-aurora.png"><img src="deep-aurora.png" alt="Nền xanh petrol với vùng sáng mint bên trái và ánh cam bên phải"></a>
+      <div class="body"><span class="tag">03 / TRẦM VÀ CÓ ÁNH SÁNG</span><h2>Deep Aurora</h2><p>Nền xanh petrol, ánh mint và cam khuếch tán quanh mép. Giữ sắc thái tối, với độ sáng và chiều sâu rõ hơn nền hiện tại.</p><a class="zoom" href="deep-aurora.png">Xem lớn ↗</a></div>
+    </article>
+  </div>
+  <div class="note"><p><strong>Đi cùng nền mới:</strong> khung bo nhẹ, thanh đầu/chân cùng bảng màu, bóng đổ mềm và nút điều hướng tròn. Nếu thêm chuyển động, chỉ cho ánh nền trôi chậm, biên độ nhỏ. Các ảnh trên là bản xem thử tĩnh.</p></div>
+</main>
+</body>
+</html>

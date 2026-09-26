@@ -1,7 +1,4 @@
-{#-
-  Custom Header with CatalystPack-inspired Infinite Top Marquee Ticker
-  Replaces default MkDocs menu & search with custom retro-tech brand navbar
--#}
+{#- Site header and expandable library navigation. Article groups follow mkdocs.yml. -#}
 {% set class = "md-header custom-theme-header" %}
 <header class="{{ class }}" data-md-component="header">
   <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
@@ -32,45 +29,94 @@
     </div>
   </div>
 
-  <!-- 2. Custom Brand & Retro Navigation Bar -->
+  <!-- Brand and navigation -->
   <div class="custom-header">
     <div class="custom-header__inner">
-      <!-- Brand & Logo -->
-      <a href="{{ '' | url }}" class="custom-header__brand" title="{{ config.site_name }}">
-        <span class="custom-header__logo-wrap">
+      <a href="{{ '' | url }}" class="custom-header__brand" title="{{ config.site_name }}" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
           {% include "partials/logo.html" %}
         </span>
-        <span class="custom-header__wordmark">
-          BEHIND THE <em>PIPELINE</em>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
         </span>
-        <span class="custom-header__badge">ARCH.DOCS</span>
       </a>
 
-      <!-- Retro Nav Pills -->
       <nav class="custom-header__nav" aria-label="Điều hướng chính">
-        <a href="{{ '' | url }}" class="custom-nav-pill {% if page.url == '' or page.url == 'index.html' %}is-active{% endif %}" {% if page.url == '' or page.url == 'index.html' %}aria-current="page"{% endif %}>
-          <span>HOME</span>
+        <a href="{{ '' | url }}" class="custom-header__home {% if page.url == '' or page.url == 'index.html' %}is-active{% endif %}" {% if page.url == '' or page.url == 'index.html' %}aria-current="page"{% endif %}>
+          Trang chủ
         </a>
-        <a href="{{ 'postgres/postgres/' | url }}" class="custom-nav-pill {% if 'postgres' in page.url %}is-active{% endif %}" {% if 'postgres' in page.url %}aria-current="page"{% endif %}>
-          <span>POSTGRESQL</span>
-        </a>
-        <a href="{{ 'airflow/architecture/' | url }}" class="custom-nav-pill {% if 'airflow' in page.url %}is-active{% endif %}" {% if 'airflow' in page.url %}aria-current="page"{% endif %}>
-          <span>AIRFLOW</span>
-        </a>
-        <a href="{{ 'architecture/shared-disk-vs-shared-nothing/' | url }}" class="custom-nav-pill {% if page and page.url.startswith('architecture/') %}is-active{% endif %}" {% if page and page.url.startswith('architecture/') %}aria-current="page"{% endif %}>
-          <span>SHARED-DISK</span>
-        </a>
-        <a href="{{ 'index/' | url }}" class="custom-nav-pill {% if 'index' in page.url and page.url != '' and page.url != 'index.html' %}is-active{% endif %}" {% if 'index' in page.url and page.url != '' and page.url != 'index.html' %}aria-current="page"{% endif %}>
-          <span>INDEXING</span>
-        </a>
+        <button class="custom-header__library-toggle {% if page.url != '' and page.url != 'index.html' %}is-active{% endif %}" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
       </nav>
 
-      <!-- System Status / Meta Indicator -->
-      <div class="custom-header__status" aria-label="Trạng thái hệ thống">
-        <span class="custom-header__status-dot" aria-hidden="true"></span>
-        <span class="custom-header__status-text">EDITION 2026</span>
-        <span class="custom-header__status-tag">SYS.ONLINE</span>
+      {% if "material/search" in config.plugins and config.plugins["material/search"].config.enabled %}
+        <label class="custom-header__search" for="__search" role="button" tabindex="0" aria-label="Tìm bài viết">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.6 4.6"/></svg>
+          <span>Tìm bài viết</span>
+        </label>
+      {% endif %}
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
       </div>
+
+      <a class="library-panel__mobile-home" href="{{ '' | url }}">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        {% for section in nav.items if section.children %}
+          {% set section_id = section.title | lower | replace(' ', '-') %}
+          {% set shown = namespace(count=0) %}
+          <details class="library-panel__group" open>
+            <summary>
+              {% if section.title == 'Database Internals' %}
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              {% elif section.title == 'Data Architecture' %}
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              {% elif section.title == 'Orchestration' %}
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              {% elif section.title == 'Distributed Computing' %}
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              {% endif %}
+              <span class="library-panel__group-title">{{ section.title }}</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              {% for article in section.children %}
+                {% if article.is_page and not article.file.src_uri.endswith('.en.md') %}
+                  {% set shown.count = shown.count + 1 %}
+                  {% if shown.count <= 4 %}
+                    <li>
+                      <a href="{{ article.url | url }}" {% if article.url == page.url %}aria-current="page"{% endif %}>
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>{{ article.title }}</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </ul>
+            {% if shown.count > 4 %}
+              <a class="library-panel__group-more" href="{{ 'library/' | url }}#{{ section_id }}">Xem thêm trong nhóm <span aria-hidden="true">↗</span></a>
+            {% endif %}
+          </details>
+        {% endfor %}
+      </div>
+      <a class="library-panel__all" href="{{ 'library/' | url }}">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
     </div>
   </div>
+
+  {% if "material/search" in config.plugins and config.plugins["material/search"].config.enabled %}
+    {% include "partials/search.html" %}
+  {% endif %}
 </header>

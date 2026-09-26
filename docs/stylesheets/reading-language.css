@@ -1,0 +1,64 @@
+/* Reading controls share the article's warm paper and evergreen palette. */
+.md-typeset .reading-language {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 0 .65rem;
+  color: var(--airflow-muted, #3f625c);
+  font-family: var(--md-text-font-family);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.reading-language__options {
+  display: flex;
+  gap: 3px;
+  max-width: 100%;
+  padding: 3px;
+  background: rgba(23, 48, 45, .035);
+  border: 1px solid var(--airflow-line, #d7ded9);
+  border-radius: 999px;
+}
+
+.md-typeset .reading-language a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 8px 18px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--airflow-muted, #3f625c);
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.reading-language__unavailable {
+  padding: 10px 16px;
+  text-align: center;
+}
+
+.md-typeset .reading-language a:hover {
+  background: rgba(255, 255, 255, .7);
+  color: var(--airflow-ink, #17302d);
+}
+
+.md-typeset .reading-language a[aria-current="page"] {
+  background: var(--airflow-ink, #17302d);
+  color: #fffaf0;
+  box-shadow: 0 2px 5px rgba(23, 48, 45, .12);
+}
+
+.md-typeset .reading-language a:focus-visible {
+  outline: 2px solid var(--airflow-accent, #a63f23);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .reading-language a {
+    transition: none;
+  }
+}

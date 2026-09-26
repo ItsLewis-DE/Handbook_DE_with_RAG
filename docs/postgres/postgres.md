@@ -1,5 +1,7 @@
 ---
 title: Phân cấp & Lưu trữ PostgreSQL
+lang: vi
+translation_key: postgres-storage
 hide:
   - navigation
 ---

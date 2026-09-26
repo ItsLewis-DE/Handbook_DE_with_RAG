@@ -1,0 +1,67 @@
+{% extends "main.html" %}
+
+{% block content %}
+{% set catalog = namespace(items=[]) %}
+{% for section in nav.items if section.children %}
+  {% for article in section.children if article.is_page and not article.file.src_uri.endswith('.en.md') %}
+    {% set card = page.meta.cards.get(article.file.src_uri, {'order': 99}) %}
+    {% set catalog.items = catalog.items + [{'article': article, 'card': card, 'topic': section.title, 'topic_id': section.title | lower | replace(' ', '-')}] %}
+  {% endfor %}
+{% endfor %}
+<div class="library-page" data-library>
+  <header class="library-page__intro">
+    <p class="library-page__eyebrow">THE KNOWLEDGE SHELF / ALL ARTICLES</p>
+    <h1>Thư viện bài viết<span>.</span></h1>
+    <p>Hiểu hệ thống từ bên trong. Chọn một bài để bắt đầu khám phá.</p>
+  </header>
+
+  <div class="library-page__toolbar" data-library-controls hidden>
+    <div class="library-page__filters" role="group" aria-label="Lọc bài viết theo chủ đề">
+      <button type="button" data-topic="all" aria-pressed="true">Tất cả <span>{{ catalog.items | length }}</span></button>
+      {% for section in nav.items if section.children %}
+        {% set topic_id = section.title | lower | replace(' ', '-') %}
+        <button type="button" id="{{ topic_id }}" data-topic="{{ topic_id }}" aria-pressed="false">{{ section.title }}</button>
+      {% endfor %}
+    </div>
+    <label class="library-page__search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+      <span class="library-page__sr-only">Tìm trong thư viện</span>
+      <input type="search" placeholder="Tìm trong thư viện…" autocomplete="off" data-library-search>
+    </label>
+  </div>
+  <p class="library-page__count" role="status" aria-live="polite" aria-atomic="true" data-library-count>{{ catalog.items | length }} bài viết</p>
+
+  <div class="library-page__grid">
+    {% for item in catalog.items | sort(attribute='card.order') %}
+      {% set card = item.card %}
+      <article class="article-sheet article-sheet--{{ card.variant | default('postgres') }} library-page__card" data-library-card data-topic="{{ item.topic_id }}" aria-labelledby="library-article-{{ loop.index }}">
+        {% if card.art %}
+          <div class="article-sheet__art" aria-hidden="true">
+            <img src="{{ card.art | url }}" alt="" loading="{{ 'eager' if loop.index <= 3 else 'lazy' }}" decoding="async">
+          </div>
+        {% endif %}
+        <div class="article-sheet__meta"><span>{{ item.topic }}</span><b>{{ '%02d' | format(loop.index) }} / {{ '%02d' | format(catalog.items | length) }}</b></div>
+        <div class="article-sheet__body">
+          <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+          <h2 id="library-article-{{ loop.index }}">{{ card.heading | default(item.article.title) }}</h2>
+          {% if card.summary %}<p>{{ card.summary }}</p>{% endif %}
+        </div>
+        <div class="article-sheet__foot">
+          <span>{{ card.footer | default(item.topic) }}</span>
+          <a href="{{ item.article.url | url }}" aria-label="Mở bài viết: {{ item.article.title }}">Mở bài viết <b aria-hidden="true">↗</b></a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  <div class="library-page__empty" data-library-empty hidden>
+    <h2>Chưa tìm thấy bài phù hợp.</h2>
+    <p>Thử từ khóa khác hoặc xem lại tất cả chủ đề.</p>
+    <button type="button" data-library-reset>Xem tất cả bài viết <span aria-hidden="true">↗</span></button>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ 'javascripts/library-catalog.js' | url }}"></script>
+{% endblock %}

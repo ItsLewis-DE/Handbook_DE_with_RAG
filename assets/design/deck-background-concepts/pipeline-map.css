@@ -1,0 +1,18 @@
+
+html { scroll-behavior: auto !important; }
+.stack-card { transform: none; border-radius: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,.7); box-shadow: 0 20px 50px -24px rgba(23,48,45,.28); }
+.article-deck-shell { border-radius: 0; box-shadow: none; isolation: isolate; }
+.article-deck-shell::before { content: ''; position:absolute; inset:0; z-index:-1; pointer-events:none; }
+.article-sheet { border-radius: 10px; }
+.article-sheet:has(.article-sheet__art)[data-deck-position="current"] { box-shadow: 0 22px 36px -14px rgba(23,48,45,.4), 0 2px 8px rgba(23,48,45,.14) !important; }
+.article-sheet:has(.article-sheet__art)[data-deck-position="next"], .article-sheet:has(.article-sheet__art)[data-deck-position="back"] { box-shadow: 0 8px 20px -8px rgba(23,48,45,.32) !important; }
+.article-deck__control { border-radius:50%; background:rgba(255,255,255,.4); border-color:rgba(23,48,45,.16); color:#17302d; }
+.stack-card__topbar, .stack-card__footer { background:transparent; color:#536b60; }
+.stack-card__topbar { border-bottom:1px solid rgba(23,48,45,.1); }
+.stack-card__footer { border-top:1px solid rgba(23,48,45,.1); }
+.stack-card__footer b, .article-deck__controls p b { color:#17302d; }
+.article-deck__controls p { color:#476358; }
+
+.stack-card { background:#ebe7dc; }
+.article-deck-shell { background:radial-gradient(ellipse at 75% 85%,rgba(224,184,147,.38),transparent 63%),radial-gradient(ellipse at 12% 10%,rgba(144,178,153,.32),transparent 63%),#f0ede3; }
+.article-deck-shell::before { background:url('/assets/design/deck-background-concepts/pipeline-map.svg') center/100% 100% no-repeat; }

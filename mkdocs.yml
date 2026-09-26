@@ -8,7 +8,7 @@ theme:
   name: material
   custom_dir: overrides
   language: vi
-  logo: assets/images/brand/behind-the-pipeline-logo.svg
+  logo: assets/images/brand/behind-the-pipeline-logo-inverse.svg
   favicon: assets/images/brand/behind-the-pipeline-favicon.svg
   font: false
   palette:
@@ -22,15 +22,38 @@ theme:
 
 nav:
   - Home: index.md
+  - Thư viện: library.md
   - Data Architecture:
       - Shared-disk vs shared-nothing: architecture/shared-disk-vs-shared-nothing.md
+      - Data Lake, Data Warehouse và Data Mart: ware_lake_lw/doc.md
   - Database Internals:
       - Phân cấp & Lưu trữ PostgreSQL: postgres/postgres.md
+      - PostgreSQL Hierarchy & Storage (English): postgres/postgres.en.md
       - Index trong cơ sở dữ liệu: index/index.md
-  - Apache Airflow:
-      - Architecture: airflow/architecture.md
+      - Indexes in Databases (English): index/index.en.md
+  - Orchestration:
+      - Apache Airflow: airflow/architecture.md
+      - Apache Airflow (English): airflow/architecture.en.md
+  - Distributed Computing:
+      - Apache Spark: spark/archi.md
+
+hooks:
+  - hooks/reading_languages.py
+
+extra:
+  article_translations:
+    airflow-architecture:
+      vi: airflow/architecture.md
+      en: airflow/architecture.en.md
+    postgres-storage:
+      vi: postgres/postgres.md
+      en: postgres/postgres.en.md
+    database-index:
+      vi: index/index.md
+      en: index/index.en.md
 
 markdown_extensions:
+  - attr_list
   - toc:
       toc_depth: 2-4
   - tables
@@ -41,15 +64,18 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 extra_css:
+  - stylesheets/reading-language.css
   - stylesheets/fonts.css
   - stylesheets/brand.css
   - stylesheets/landing.css
   - stylesheets/article.css
   - stylesheets/technology-background.css
   - stylesheets/marquee.css
+  - stylesheets/library.css
   - stylesheets/chat.css
 
 extra_javascript:
+  - javascripts/reading-language.js
   - javascripts/mobile-navigation.js
   - javascripts/lottie.min.js
   - javascripts/article-deck.js

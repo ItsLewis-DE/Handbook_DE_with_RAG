@@ -1,10 +1,23 @@
 {% extends "base.html" %}
 
+{% block extrahead %}
+  {{ super() }}
+  {% for edition in (page.meta.get('reading_languages', []) if page else []) %}
+    <link rel="alternate" hreflang="{{ edition.lang }}" href="{{ config.site_url }}{{ edition.url }}">
+  {% endfor %}
+{% endblock %}
+
 {% block content %}
+  {% if page %}{% include "partials/reading-language.html" %}{% endif %}
+  {% set toc_label = 'Article contents' if page and page.meta.get('lang') == 'en' else 'Mục lục bài viết' %}
   {% if page and page.toc and "toc" not in page.meta.get("hide", []) %}
     <details class="mobile-toc">
-      <summary>Mục lục bài viết</summary>
-      <nav aria-label="Mục lục bài viết">
+      <summary>
+        <span class="mobile-toc__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h7M4 6h.01M4 12h.01M4 18h.01"/></svg></span>
+        <span class="mobile-toc__heading"><strong>{{ toc_label }}</strong><span>{{ 'Explore the article, section by section' if page.meta.get('lang') == 'en' else 'Khám phá từng phần của bài viết' }}</span></span>
+        <span class="mobile-toc__count">{{ page.toc | length }} {{ 'sections' if page.meta.get('lang') == 'en' else 'phần' }}</span>
+      </summary>
+      <nav aria-label="{{ toc_label }}">
         <ul>
           {% for item in page.toc recursive %}
             <li>

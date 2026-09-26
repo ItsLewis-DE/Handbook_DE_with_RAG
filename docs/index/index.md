@@ -1,4 +1,7 @@
 ---
+title: Index trong cơ sở dữ liệu
+lang: vi
+translation_key: database-index
 hide:
   - navigation
 ---

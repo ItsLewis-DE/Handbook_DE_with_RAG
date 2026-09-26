@@ -1,4 +1,7 @@
 ---
+title: Kiến trúc Apache Airflow
+lang: vi
+translation_key: airflow-architecture
 hide:
   - navigation
 ---
@@ -513,6 +516,7 @@ flowchart LR
     API -->|metadata| DB
     Scheduler -->|Executor| Workers
 ```
+
 Quy trình cũng sẽ tương tự như khi chạy trên local, nhưng sẽ được chia thành các role tách biệt hơn, đồng thời thì worker cũng được tách ra khỏi scheduler.
 
 ---
@@ -560,7 +564,7 @@ Cụ thể, luồng này gồm các bước sau:
 
 ## Lời kết
 
-<figure class="airflow-closing-comic" id="loi-ket">
+<figure class="airflow-closing-comic">
   <img
     src="../../assets/images/airflow/end.png"
     alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Airflow và cảm ơn người đọc"

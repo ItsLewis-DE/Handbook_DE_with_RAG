@@ -2,26 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/</loc>
-         <lastmod>2026-09-21</lastmod>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture.en/</loc>
+         <lastmod>2026-09-24</lastmod>
     </url>
     <url>
          <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/</loc>
-         <lastmod>2026-09-21</lastmod>
+         <lastmod>2026-09-24</lastmod>
     </url>
     <url>
          <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/architecture/shared-disk-vs-shared-nothing/</loc>
-         <lastmod>2026-09-21</lastmod>
+         <lastmod>2026-09-24</lastmod>
     </url>
     <url>
          <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/assets/images/pip/ANIMATION/</loc>
-         <lastmod>2026-09-21</lastmod>
+         <lastmod>2026-09-24</lastmod>
     </url>
     <url>
          <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/index/</loc>
-         <lastmod>2026-09-21</lastmod>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/index/index.en/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres.en/</loc>
+         <lastmod>2026-09-24</lastmod>
     </url>
     <url>
          <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/</loc>
-         <lastmod>2026-09-21</lastmod>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/</loc>
+         <lastmod>2026-09-24</lastmod>
     </url>
 </urlset>

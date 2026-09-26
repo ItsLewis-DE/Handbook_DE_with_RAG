@@ -112,5 +112,39 @@
         "subset": "U+0000-036F,U+1E00-1EFF,U+2000-27FF"
       }
     ]
+  },
+  {
+    "family": "spectral",
+    "license_url": "https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl/spectral/OFL.txt",
+    "files": [
+      {
+        "file": "spectral-normal-400.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl/spectral/Spectral-Regular.ttf",
+        "source_sha256": "c89021dc20720c8d0dcf40b0b2f6e00c13665fa8041717f581396f51b8c78f5d",
+        "sha256": "7cc2c7f297c1ec6f5ef3e524c399417526ccc71d330af63203e00938e5c773cc",
+        "subset": null
+      },
+      {
+        "file": "spectral-normal-600.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl/spectral/Spectral-SemiBold.ttf",
+        "source_sha256": "5f86915a744832ecf6e4a17ab04bea091b9fa992ef5164ff65ae34c1da2fe94b",
+        "sha256": "73f4a3be1f0c5f73c8d9f241d20f8fc97ef87ba6ba3184bb51ad1c242a09efef",
+        "subset": null
+      },
+      {
+        "file": "spectral-italic-400.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl/spectral/Spectral-Italic.ttf",
+        "source_sha256": "7ec97244259db4008c4b1224c7914e5371c797c0044af9d85c2d761ba0e5f787",
+        "sha256": "a3e2a2dc45ce3f07d5552d97dcf42c61f10e3668afac7d35e8c52a0b68174c43",
+        "subset": null
+      },
+      {
+        "file": "spectral-italic-600.woff2",
+        "url": "https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl/spectral/Spectral-SemiBoldItalic.ttf",
+        "source_sha256": "46ad3a9f93b98dc2dbdeee265e76eb846c5be912aa8f09f42e3692706c6f563b",
+        "sha256": "a4b23b8c59aefa839440ef6953fac8632f1dce88a905d5b6bb5746aba5e94836",
+        "subset": null
+      }
+    ]
   }
 ]

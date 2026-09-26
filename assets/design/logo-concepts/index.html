@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Behind the Pipeline — Đề xuất logo</title>
+  <style>
+    @font-face { font-family: Manrope; src: url("../../../docs/assets/fonts/manrope-normal-200-800.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f3f0e8; color: #17302d; font-family: Manrope, sans-serif; }
+    main { max-width: 1380px; margin: auto; padding: 52px 56px 36px; }
+    .eyebrow { margin: 0 0 12px; color: #8b4a32; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: 38px; font-weight: 700; letter-spacing: -.045em; }
+    .intro { margin: 12px 0 30px; color: #516960; font-size: 15px; }
+    .concepts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .concept { overflow: hidden; border: 1px solid #d7dcd1; border-radius: 18px; background: #faf8f2; }
+    .concept.recommended { border-color: #8eaa98; }
+    .stage { position: relative; height: 244px; display: grid; place-items: center; background: #eeeee4; }
+    .concept:nth-child(2) .stage { background: #f0e8dc; }
+    .concept:nth-child(3) .stage { background: #e6ebe2; }
+    .stage > img { width: 164px; height: 164px; }
+    .number { position: absolute; top: 18px; left: 20px; color: #607568; font-size: 12px; font-weight: 700; }
+    .badge { position: absolute; top: 15px; right: 16px; border: 1px solid #c2cdbb; padding: 5px 10px; border-radius: 20px; color: #335643; font-size: 10px; font-weight: 800; }
+    .details { padding: 22px 24px 18px; }
+    h2 { margin: 0 0 8px; font-size: 21px; letter-spacing: -.035em; }
+    .description { min-height: 62px; margin: 0; font-size: 13px; line-height: 1.65; color: #516960; }
+    .sizes { display: flex; align-items: center; gap: 15px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #e1e3d9; }
+    .sizes span { margin-right: auto; font-size: 10px; color: #63766b; }
+    .size32 { width: 32px; height: 32px; }
+    .size24 { width: 24px; height: 24px; }
+    .size16 { width: 16px; height: 16px; }
+    .application { display: grid; grid-template-columns: 1.2fr 1fr; margin-top: 24px; border-radius: 18px; overflow: hidden; background: #17302d; color: #f3f0e8; }
+    .lockup { display: flex; align-items: center; gap: 18px; padding: 32px; }
+    .lockup svg { flex: 0 0 92px; width: 92px; height: 92px; }
+    .wordmark { font-size: 30px; font-weight: 700; letter-spacing: -.055em; line-height: 1.15; }
+    .wordmark span { display: block; }
+    .descriptor { margin-top: 13px; font-size: 9px; font-weight: 700; letter-spacing: .17em; color: #c4d1bc; }
+    .rationale { align-self: center; padding: 28px 36px; border-left: 1px solid #36504a; }
+    .rationale h3 { margin: 0 0 10px; font-size: 15px; font-weight: 700; }
+    .rationale p { margin: 0; color: #c4d1bc; font-size: 12px; line-height: 1.75; }
+    footer { display: flex; justify-content: space-between; gap: 24px; margin-top: 22px; font-size: 11px; color: #63766b; }
+    footer p { margin: 0; }
+    @media (max-width: 800px) {
+      main { padding: 28px 20px; }
+      h1 { font-size: 30px; }
+      .concepts, .application { grid-template-columns: 1fr; }
+      .description { min-height: 0; }
+      .rationale { border-left: 0; border-top: 1px solid #36504a; }
+      .wordmark { font-size: 25px; }
+      .lockup { padding: 24px; gap: 12px; }
+      footer { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Behind the Pipeline / Logo explorations</p>
+  <h1>Một cuốn handbook. Những luồng dữ liệu.</h1>
+  <p class="intro">Ba hướng nhận diện: hình sách dễ nhận ra, ngôn ngữ dữ liệu rõ ràng, đường nét mềm nối tiếp giao diện.</p>
+  <div class="concepts">
+    <article class="concept recommended">
+      <div class="stage"><span class="number">01</span><span class="badge">ĐỀ XUẤT CHỌN</span><img src="pipeline-folio.svg" alt="Hai trang sách xanh với tuyến pipeline cam chạy xuyên qua"></div>
+      <div class="details">
+        <h2>Pipeline Folio</h2>
+        <p class="description">Sách mở bằng hai mảng đặc. Tuyến cam nối ba điểm dữ liệu, với góc bo mềm gợi nhịp uốn của dải lụa.</p>
+        <div class="sizes"><span>32 / 24 / 16 px</span><img class="size32" src="pipeline-folio.svg" alt="Bản 32 pixel"><img class="size24" src="pipeline-folio.svg" alt="Bản 24 pixel"><img class="size16" src="pipeline-folio.svg" alt="Bản 16 pixel"></div>
+      </div>
+    </article>
+    <article class="concept">
+      <div class="stage"><span class="number">02</span><img src="flow-pages.svg" alt="Hai dải xanh và cam gập thành hai trang sách"></div>
+      <div class="details">
+        <h2>Flow Pages</h2>
+        <p class="description">Hai dải uốn thành trang sách. Tối giản và gần với nền mới nhất; cần dòng mô tả để làm rõ chủ đề dữ liệu.</p>
+        <div class="sizes"><span>32 / 24 / 16 px</span><img class="size32" src="flow-pages.svg" alt="Bản 32 pixel"><img class="size24" src="flow-pages.svg" alt="Bản 24 pixel"><img class="size16" src="flow-pages.svg" alt="Bản 16 pixel"></div>
+      </div>
+    </article>
+    <article class="concept">
+      <div class="stage"><span class="number">03</span><img src="schema-notebook.svg" alt="Sổ tay xanh đậm với sơ đồ phân nhánh màu cam trên bìa"></div>
+      <div class="details">
+        <h2>Schema Notebook</h2>
+        <p class="description">Cuốn sổ tay có gáy, bìa là sơ đồ xử lý dữ liệu. Cảm giác công cụ tra cứu kỹ thuật, gọn và chắc hơn.</p>
+        <div class="sizes"><span>32 / 24 / 16 px</span><img class="size32" src="schema-notebook.svg" alt="Bản 32 pixel"><img class="size24" src="schema-notebook.svg" alt="Bản 24 pixel"><img class="size16" src="schema-notebook.svg" alt="Bản 16 pixel"></div>
+      </div>
+    </article>
+  </div>
+  <section class="application" aria-label="Phối biểu tượng đề xuất với tên dự án">
+    <div class="lockup">
+      <svg viewBox="0 0 128 128" role="img" aria-label="Pipeline Folio phiên bản nền tối">
+        <path d="M17 26C34 22 48 27 60 37V106C46 95 32 91 17 94Z" fill="#f3f0e8"/>
+        <path d="M68 37C80 27 94 22 111 26V94C96 91 82 95 68 106Z" fill="#b4c5af"/>
+        <path d="M31 52H43Q49 52 49 58V66Q49 72 55 72H78Q84 72 84 66V60Q84 54 90 54H98" fill="none" stroke="#c24b29" stroke-width="5.5" stroke-linecap="round"/>
+        <g fill="#c24b29"><circle cx="31" cy="52" r="5"/><circle cx="64" cy="72" r="5"/><circle cx="98" cy="54" r="5"/></g>
+      </svg>
+      <div><div class="wordmark"><span>Behind the</span><span>Pipeline</span></div><div class="descriptor">DATA ENGINEERING HANDBOOK</div></div>
+    </div>
+    <div class="rationale">
+      <h3>Hướng 01: rõ nghĩa và nối tiếp thương hiệu.</h3>
+      <p>Hình sách nói về kiến thức. Pipeline nói về cách dữ liệu di chuyển và được xử lý. Chữ Manrope gọn, hiện đại; dòng mô tả xác định rõ đây là handbook cho Data Engineer.</p>
+    </div>
+  </section>
+  <footer><p>Bản phác thảo ý tưởng · Chưa thay logo trên website.</p><p>Kế thừa độ cong và bảng màu của dải lụa; giữ biểu tượng phẳng để dùng ở kích thước nhỏ.</p></footer>
+</main>
+</body>
+</html>

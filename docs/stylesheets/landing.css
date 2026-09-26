@@ -549,7 +549,7 @@ body:has(.landing-page) .md-content__inner::before {
 }
 
 .article-sheet--airflow,
-.article-sheet--storage,
+.article-sheet--spark,
 .article-sheet--index,
 .article-sheet--planned,
 .article-sheet--clay,
@@ -3536,17 +3536,30 @@ body:has(.landing-page) .md-content__inner::before {
   margin-top: 1.2rem;
 }
 
-/* Overlapping washes have no circular silhouette or enclosing panel. */
+/* A quiet color wash supports the ribbons without obscuring their edges. */
 .published-articles::before {
   background:
-    radial-gradient(ellipse at 18% 37%, rgba(76, 150, 113, 0.55), transparent 43%),
-    radial-gradient(ellipse at 37% 71%, rgba(135, 184, 149, 0.4), transparent 38%),
-    radial-gradient(ellipse at 81% 45%, rgba(240, 155, 96, 0.58), transparent 40%),
-    radial-gradient(ellipse at 65% 69%, rgba(245, 193, 142, 0.35), transparent 39%);
+    radial-gradient(ellipse at 18% 37%, rgba(76, 150, 113, 0.3), transparent 43%),
+    radial-gradient(ellipse at 37% 71%, rgba(135, 184, 149, 0.22), transparent 38%),
+    radial-gradient(ellipse at 81% 45%, rgba(240, 155, 96, 0.32), transparent 40%),
+    radial-gradient(ellipse at 65% 69%, rgba(245, 193, 142, 0.2), transparent 39%);
   content: "";
   inset: -8rem -10vw;
   -webkit-mask-image: radial-gradient(ellipse, #000 30%, transparent 72%);
   mask-image: radial-gradient(ellipse, #000 30%, transparent 72%);
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+/* Soft ribbon edges blend into the wash, with extra blur beneath the glass. */
+.published-articles::after {
+  background: url("../assets/images/home/shelf-ribbons.svg") center / 100% 100% no-repeat;
+  content: "";
+  filter: blur(14px);
+  inset: -2.5rem -6vw;
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 84%, transparent);
+  mask-image: linear-gradient(transparent, #000 12%, #000 84%, transparent);
   pointer-events: none;
   position: absolute;
   z-index: -1;
@@ -3921,6 +3934,12 @@ body:has(.landing-page) .md-content__inner::before {
   width: fit-content;
 }
 
+/* Stretch the native link over its card, including the title and illustration. */
+.published-article > a[href] {
+  position: static;
+  z-index: auto;
+}
+
 .published-article a::after {
   content: "";
   cursor: pointer;
@@ -4010,6 +4029,13 @@ body:has(.landing-page) .md-content__inner::before {
   .published-articles {
     gap: 0.75rem;
     margin-top: 1rem;
+  }
+
+  .published-articles::after {
+    background-size: 190% 100%;
+    background-position: 58% center;
+    inset: -1.5rem -2rem;
+    opacity: 0.72;
   }
 
   .published-article,

@@ -1,0 +1,12 @@
+{% set reading_lang = page.meta.get('lang', 'vi') %}
+{% if not page.is_homepage %}
+<nav class="reading-language" aria-label="{{ 'Reading language' if reading_lang == 'en' else 'Ngôn ngữ đọc' }}">
+  <div class="reading-language__options">
+  {% for edition in page.meta.get('reading_languages', []) %}
+    <a href="{{ edition.url | url }}" lang="{{ edition.lang }}" hreflang="{{ edition.lang }}" data-reading-language="{{ edition.lang }}" {% if edition.lang == reading_lang %}aria-current="page"{% endif %}>{{ edition.label }}</a>
+  {% else %}
+    <span class="reading-language__unavailable" lang="vi">Tiếng Việt · Chưa có bản tiếng Anh</span>
+  {% endfor %}
+  </div>
+</nav>
+{% endif %}

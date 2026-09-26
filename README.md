@@ -1,5 +1,8 @@
 <div align="center">
-  <img src="docs/assets/images/brand/behind-the-pipeline-logo.svg" alt="Behind the Pipeline" width="88">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/images/brand/behind-the-pipeline-logo-inverse.svg">
+    <img src="docs/assets/images/brand/behind-the-pipeline-logo.svg" alt="Behind the Pipeline — Data Engineering Handbook" width="88">
+  </picture>
   <h1>Data Engineering Handbook with RAG</h1>
   <p><strong>Retrieval-Augmented Generation for Data Engineering.</strong></p>
   <p>Hệ thống hỏi đáp tài liệu tiếng Việt với hybrid retrieval, câu trả lời có dẫn nguồn<br>và chatbot tích hợp trong website kiến thức Behind the Pipeline.</p>
@@ -192,3 +195,29 @@ Bạn có thể [mở issue](https://github.com/ItsLewis-DE/Handbook_DE_with_RAG
   <strong>Pipeline RAG — hỏi từ tài liệu, trả lời có nguồn.</strong><br>
   <a href="https://itslewis-de.github.io/Handbook_DE_with_RAG/">Khám phá thư viện →</a>
 </p>
+
+
+### Ngôn ngữ đọc bài viết
+
+Bài Airflow có hai bản dịch tương ứng: `docs/airflow/architecture.md` (Việt)
+và `docs/airflow/architecture.en.md` (English). Bộ chọn **Tiếng Việt / English**
+ở đầu bài chuyển giữa hai bản và giữ mục đang đọc theo URL fragment. Liên kết
+chuyển ngôn ngữ vẫn hoạt động khi tắt JavaScript. Các bài chưa dịch có thông báo
+“Chưa có bản tiếng Anh”. Giao diện chung và chatbot vẫn dùng tiếng Việt.
+
+Bản tiếng Anh giữ thứ tự các mục, ví dụ mã, bảng và sơ đồ của bản tiếng Việt.
+Ảnh minh họa gốc được giữ nguyên (bao gồm chữ trong ảnh); caption và alt text
+được dịch sang tiếng Anh.
+
+Để thêm cặp bản dịch, đặt `lang` và cùng một `translation_key` trong front matter,
+khai báo các đường dẫn trong `extra.article_translations` của `mkdocs.yml`, rồi
+thêm trang mới vào `nav`. Giữ các heading tương ứng theo đúng thứ tự; hook dùng
+anchor của bản Việt cho cả hai ngôn ngữ và báo lỗi khi số heading khác nhau.
+Khi sửa bài gốc, cập nhật bản dịch cùng lúc.
+
+Kiểm tra sau khi build:
+
+```bash
+uv run mkdocs build --strict
+uv run scripts/check_reading_languages.py
+```

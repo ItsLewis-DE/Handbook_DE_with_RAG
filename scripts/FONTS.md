@@ -6,6 +6,8 @@ so both precomposed (NFC) and decomposed (NFD) Vietnamese stay in the same font.
 The browser downloads only the faces used on the page.
 
 - **Manrope** retains the existing body typography (variable weights 200–800).
+- **Spectral** provides serif body text for the long-form article style
+  (400 and 600, normal and italic), matching the Substack reference's body family.
 - **Inter** retains the UI typography (variable weights 100–900, normal and italic).
 - **Lora** provides a consistent, softly curved serif for headings and editorial
   accents (variable weights 400–700, normal and italic). It replaces the previous

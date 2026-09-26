@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Schema Notebook — sổ tay với sơ đồ dữ liệu</title>
+  <rect x="23" y="17" width="84" height="96" rx="12" fill="#17302d"/>
+  <path d="M37 23V94M39 101H99" fill="none" stroke="#f3f0e8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M53 43H70V79M70 61H92" fill="none" stroke="#ed6840" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#ed6840">
+    <rect x="48" y="38" width="10" height="10" rx="3"/>
+    <rect x="87" y="56" width="10" height="10" rx="3"/>
+    <rect x="65" y="74" width="10" height="10" rx="3"/>
+  </g>
+</svg>

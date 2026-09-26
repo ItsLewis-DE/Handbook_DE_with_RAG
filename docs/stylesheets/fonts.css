@@ -96,6 +96,38 @@
   src: url("../assets/fonts/delagothicone-normal-400.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "Spectral";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/spectral-normal-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Spectral";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/spectral-normal-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Spectral";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/spectral-italic-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Spectral";
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/spectral-italic-600.woff2") format("woff2");
+}
+
 :root {
   --md-text-font: "Manrope";
   --md-code-font: "IBM Plex Mono";

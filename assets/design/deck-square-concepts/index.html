@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Behind the Pipeline — Đề xuất khung góc vuông</title>
+  <style>
+    @font-face { font-family: Manrope; src: url('../../../docs/assets/fonts/manrope-normal-200-800.woff2') format('woff2'); font-weight: 200 800; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f3f0e8; color: #17302d; font-family: Manrope, sans-serif; }
+    main { max-width: 1440px; margin: auto; padding: 36px 28px; }
+    .eyebrow { margin: 0; color: #a25032; font-size: 11px; letter-spacing: .13em; font-weight: 800; }
+    h1 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -.045em; margin: 12px 0; }
+    .intro { color: #52675b; line-height: 1.7; font-size: 14px; margin-bottom: 24px; }
+    .choices { display: flex; gap: 10px; flex-wrap: wrap; }
+    button { border: 1px solid #9ba99a; border-radius: 0; background: #f8f5ed; color: #17302d; padding: 13px 18px; font: 700 13px Manrope, sans-serif; cursor: pointer; }
+    button[aria-pressed="true"] { background: #17302d; color: #f3f0e8; border-color: #17302d; box-shadow: 3px 3px 0 #d99774; }
+    button:hover { border-color: #bc6847; }
+    button:focus-visible, a:focus-visible { outline: 2px solid #bd6241; outline-offset: 5px; }
+    .summary { display: flex; gap: 24px; align-items: center; justify-content: space-between; border-top: 1px solid #b9c4b6; margin-top: 24px; padding: 18px 0; }
+    .summary p { margin: 0; font-size: 14px; color: #4d6557; line-height: 1.7; max-width: 750px; }
+    .view { display: flex; gap: 8px; flex-shrink: 0; }
+    .view button { padding: 9px 12px; font-size: 11px; }
+    figure { margin: 0; border: 1px solid #c3cdbd; background: #eeece3; }
+    figure a { display: block; }
+    #preview { display: block; width: 100%; height: auto; }
+    figure.detail { max-width: 760px; margin-inline: auto; }
+    figcaption { padding: 14px 18px; color: #59705e; border-top: 1px solid #c3cdbd; font-size: 12px; }
+    footer { margin-top: 22px; color: #617362; font-size: 12px; line-height: 1.7; }
+    @media(max-width: 760px) { main { padding: 24px 16px; } .summary { flex-direction: column; align-items: flex-start; gap: 15px; } .choices { gap: 8px; } .choices button { flex: 1 1 100%; text-align: left; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">BEHIND THE PIPELINE / KHUNG GÓC VUÔNG</p>
+  <h1>Cùng ngôn ngữ thiết kế với homepage.</h1>
+  <p class="intro">Giữ tỷ lệ chồng card hiện tại. Khung, card và nút đều có góc vuông; chọn từng phương án để xem trong bố cục trang chủ.</p>
+  <div class="choices" aria-label="Chọn phương án nền">
+    <button type="button" data-concept="paper-index" aria-pressed="true">01 · Paper Index — đề xuất chọn</button>
+    <button type="button" data-concept="tracing-layers" aria-pressed="false">02 · Tracing Layers</button>
+    <button type="button" data-concept="sage-workbench" aria-pressed="false">03 · Sage Workbench</button>
+  </div>
+  <div class="summary">
+    <p id="description" aria-live="polite">Giấy kem, lưới kỹ thuật rất nhạt, viền mảnh và tấm cam lệch phía sau. Gần nhất với nền giấy, chữ serif và điểm nhấn cam của homepage.</p>
+    <div class="view" aria-label="Chọn góc xem">
+      <button type="button" data-view="home" aria-pressed="true">Trong homepage</button>
+      <button type="button" data-view="detail" aria-pressed="false">Cận cảnh</button>
+    </div>
+  </div>
+  <figure id="figure">
+    <a id="fullsize" href="paper-index-home.png" target="_blank" rel="noopener"><img id="preview" src="paper-index-home.png" alt="Phương án Paper Index trong trang chủ"></a>
+    <figcaption>Nhấn ảnh để mở bản lớn. Đây là ảnh xem thử trên giao diện hiện tại.</figcaption>
+  </figure>
+  <footer>01 ăn nhập tổng thể nhất · 02 gợi chất giấy can và độ trong của phần thư viện · 03 tạo cảm giác bàn làm việc kỹ thuật.</footer>
+</main>
+<script>
+  const concepts = {
+    'paper-index': {name:'Paper Index',description:'Giấy kem, lưới kỹ thuật rất nhạt, viền mảnh và tấm cam lệch phía sau. Gần nhất với nền giấy, chữ serif và điểm nhấn cam của homepage.'},
+    'tracing-layers': {name:'Tracing Layers',description:'Hai tấm chữ nhật sage–cam bán trong đặt lệch dưới card, gợi chất giấy can. Kế thừa màu sắc và độ trong của phần thư viện bằng hình học góc vuông.'},
+    'sage-workbench': {name:'Sage Workbench',description:'Sage phẳng, các ô lớn chia bằng đường kỹ thuật và một tuyến cam gấp vuông ở rìa. Gọn, rõ cấu trúc và có chất công cụ dành cho Data Engineer.'}
+  };
+  let selected = 'paper-index';
+  let view = 'home';
+  function render() {
+    const src = `${selected}-${view}.png`;
+    document.getElementById('preview').src = src;
+    document.getElementById('preview').alt = `${concepts[selected].name} — ${view === 'home' ? 'trong homepage' : 'cận cảnh'}`;
+    document.getElementById('fullsize').href = src;
+    document.getElementById('description').textContent = concepts[selected].description;
+    document.getElementById('figure').classList.toggle('detail', view === 'detail');
+    document.querySelectorAll('[data-concept]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.concept === selected)));
+    document.querySelectorAll('[data-view]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
+  }
+  document.querySelectorAll('[data-concept]').forEach(button => button.addEventListener('click', () => { selected = button.dataset.concept; render(); }));
+  document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => { view = button.dataset.view; render(); }));
+</script>
+</body>
+</html>

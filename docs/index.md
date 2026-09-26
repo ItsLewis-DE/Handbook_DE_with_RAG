@@ -66,19 +66,19 @@ hide:
               </div>
             </article>
 
-            <article class="article-sheet article-sheet--storage" data-article-title="Shared-disk vs shared-nothing" data-deck-position="next">
+            <article class="article-sheet article-sheet--spark" data-article-title="Kiến trúc Apache Spark" data-deck-position="next">
               <div class="article-sheet__art" aria-hidden="true">
-                <img src="assets/images/disk/card-art.jpg" alt="" loading="lazy">
+                <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>02 / 07</b></div>
+              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>02 / 07</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-                <h2>Shared-disk vs<br>shared-nothing</h2>
-                <p>Chọn topology dữ liệu từ góc nhìn Data Engineer: query, shuffle và failure.</p>
+                <h2>Kiến trúc<br>Apache Spark</h2>
+                <p>Từ Driver và Executor đến luồng thực thi Job, Stage, Task và cơ chế shuffle.</p>
               </div>
               <div class="article-sheet__foot">
-                <span>Tác giả · AI Research</span>
-                <a href="architecture/shared-disk-vs-shared-nothing/">Mở bài viết <b aria-hidden="true">↗</b></a>
+                <span>DISTRIBUTED COMPUTING</span>
+                <a href="spark/archi/">Mở bài viết <b aria-hidden="true">↗</b></a>
               </div>
             </article>
 
@@ -191,7 +191,7 @@ hide:
         <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 45V64M70 82V64H290V82M180 64V82M70 112V137M180 112V137M290 112V137"/><g class="diagram-node diagram-node--accent"><rect x="128" y="15" width="104" height="30" rx="6"/><text x="180.0" y="34">CLUSTER</text></g><g class="diagram-node"><rect x="28" y="82" width="84" height="30" rx="6"/><text x="70.0" y="101">database</text></g><g class="diagram-node"><rect x="138" y="82" width="84" height="30" rx="6"/><text x="180.0" y="101">database</text></g><g class="diagram-node"><rect x="248" y="82" width="84" height="30" rx="6"/><text x="290.0" y="101">database</text></g><g class="diagram-node"><path d="M46 146v16c0 10 48 10 48 0v-16"/><ellipse cx="70" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M156 146v16c0 10 48 10 48 0v-16"/><ellipse cx="180" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M266 146v16c0 10 48 10 48 0v-16"/><ellipse cx="290" cy="146" rx="24" ry="8"/></g><circle class="diagram-signal" cx="180" cy="64" r="4"/></svg>
         <h3>PostgreSQL<br>Phân cấp &amp; lưu trữ</h3>
         <p>Database cluster, bộ đệm shared_buffers, database, schema và cấu trúc thư mục PGDATA.</p>
-        <a href="postgres/postgres/">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+        <a href="postgres/postgres/" aria-label="Đọc bài viết: PostgreSQL: Phân cấp &amp; lưu trữ">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
       </article>
 
       <article class="published-article published-article--index">
@@ -202,7 +202,7 @@ hide:
         <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 43V63H80V82M180 63H280V82M80 112V134H38V148M80 134H125V148M280 112V134H235V148M280 134H322V148"/><path class="diagram-route diagram-route--accent" d="M180 43V63H280V82M280 112V134H235V148"/><g class="diagram-node diagram-node--accent"><rect x="149" y="13" width="62" height="30" rx="6"/><text x="180.0" y="32">42</text></g><g class="diagram-node"><rect x="49" y="82" width="62" height="30" rx="6"/><text x="80.0" y="101">18</text></g><g class="diagram-node diagram-node--accent"><rect x="249" y="82" width="62" height="30" rx="6"/><text x="280.0" y="101">67</text></g><g class="diagram-node"><rect x="8" y="148" width="60" height="30" rx="6"/><text x="38.0" y="167">08 · 12</text></g><g class="diagram-node"><rect x="95" y="148" width="60" height="30" rx="6"/><text x="125.0" y="167">24 · 36</text></g><g class="diagram-node diagram-node--accent"><rect x="205" y="148" width="60" height="30" rx="6"/><text x="235.0" y="167">51 · 58</text></g><g class="diagram-node"><rect x="292" y="148" width="60" height="30" rx="6"/><text x="322.0" y="167">73 · 91</text></g><circle class="diagram-signal" cx="235" cy="134" r="4"/></svg>
         <h3>Index trong<br>cơ sở dữ liệu</h3>
         <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
-        <a href="index/">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+        <a href="index/" aria-label="Đọc bài viết: Index trong cơ sở dữ liệu">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
       </article>
 
       <article class="published-article published-article--airflow">
@@ -213,18 +213,28 @@ hide:
         <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M69 94H110V40H145M110 94V148H145M215 40H249V94H289M215 148H249V94M215 94H289M110 94H145"/><g class="diagram-node diagram-node--accent"><rect x="7" y="79" width="62" height="30" rx="6"/><text x="38.0" y="98">DAG</text></g><g class="diagram-node"><rect x="145" y="25" width="70" height="30" rx="6"/><text x="180.0" y="44">extract</text></g><g class="diagram-node"><rect x="145" y="79" width="70" height="30" rx="6"/><text x="180.0" y="98">check</text></g><g class="diagram-node"><rect x="145" y="133" width="70" height="30" rx="6"/><text x="180.0" y="152">load</text></g><g class="diagram-node diagram-node--accent"><rect x="289" y="79" width="64" height="30" rx="6"/><text x="321.0" y="98">ready</text></g><circle class="diagram-signal" cx="110" cy="94" r="4"/><circle class="diagram-signal diagram-signal--late" cx="249" cy="94" r="4"/></svg>
         <h3>Hiểu kiến trúc<br>Apache Airflow</h3>
         <p>Từ nhu cầu điều phối đến Scheduler, Executor và High Availability.</p>
-        <a href="airflow/architecture/">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+        <a href="airflow/architecture/" aria-label="Đọc bài viết: Kiến trúc Apache Airflow">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
       </article>
 
-      <article class="published-article published-article--storage">
-        <span class="published-article__number" aria-hidden="true">02</span>
+      <article class="published-article published-article--spark">
+        <span class="published-article__number" aria-hidden="true">05</span>
         <div class="published-article__header">
-          <p class="published-article__meta">DATA ARCHITECTURE · ED. 02</p>
+          <p class="published-article__meta">DISTRIBUTED COMPUTING · ED. 05</p>
         </div>
-        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-divider" d="M180 15V176"/><path class="diagram-route" d="M45 58V90H135V58M90 90V116M225 58V116M315 58V116"/><g class="diagram-node"><rect x="18" y="28" width="54" height="30" rx="6"/><text x="45.0" y="47">CPU</text></g><g class="diagram-node"><rect x="108" y="28" width="54" height="30" rx="6"/><text x="135.0" y="47">CPU</text></g><g class="diagram-node"><rect x="198" y="28" width="54" height="30" rx="6"/><text x="225.0" y="47">CPU</text></g><g class="diagram-node"><rect x="288" y="28" width="54" height="30" rx="6"/><text x="315.0" y="47">CPU</text></g><g class="diagram-node diagram-node--accent"><path d="M63 125v23c0 12 54 12 54 0v-23"/><ellipse cx="90" cy="125" rx="27" ry="9"/></g><g class="diagram-node diagram-node--accent"><path d="M198 125v23c0 12 54 12 54 0v-23"/><ellipse cx="225" cy="125" rx="27" ry="9"/></g><g class="diagram-node diagram-node--accent"><path d="M288 125v23c0 12 54 12 54 0v-23"/><ellipse cx="315" cy="125" rx="27" ry="9"/></g><text class="diagram-caption" x="90" y="181">SHARED DISK</text><text class="diagram-caption" x="270" y="181">SHARED NOTHING</text><circle class="diagram-signal" cx="90" cy="90" r="4"/></svg>
-        <h3>Shared-disk vs<br>shared-nothing</h3>
-        <p>Chọn topology dữ liệu từ góc nhìn Data Engineer: query, shuffle và failure.</p>
-        <a href="architecture/shared-disk-vs-shared-nothing/">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false">
+          <path class="diagram-route" d="M180 45V70M60 95V70H300V95M180 70V95M60 125V149M180 125V149M300 125V149"/>
+          <g class="diagram-node diagram-node--accent"><rect x="132" y="15" width="96" height="30" rx="6"/><text x="180" y="34">DRIVER</text></g>
+          <g class="diagram-node"><rect x="12" y="95" width="96" height="30" rx="6"/><text x="60" y="114">Executor</text></g>
+          <g class="diagram-node"><rect x="132" y="95" width="96" height="30" rx="6"/><text x="180" y="114">Executor</text></g>
+          <g class="diagram-node"><rect x="252" y="95" width="96" height="30" rx="6"/><text x="300" y="114">Executor</text></g>
+          <g class="diagram-node diagram-node--accent"><rect x="24" y="149" width="72" height="28" rx="6"/><text x="60" y="167">TASKS</text></g>
+          <g class="diagram-node diagram-node--accent"><rect x="144" y="149" width="72" height="28" rx="6"/><text x="180" y="167">TASKS</text></g>
+          <g class="diagram-node diagram-node--accent"><rect x="264" y="149" width="72" height="28" rx="6"/><text x="300" y="167">TASKS</text></g>
+          <circle class="diagram-signal" cx="180" cy="70" r="4"/>
+        </svg>
+        <h3>Kiến trúc<br>Apache Spark</h3>
+        <p>Từ Driver và Executor đến luồng thực thi Job, Stage, Task và cơ chế shuffle.</p>
+        <a href="spark/archi/" aria-label="Đọc bài viết: Kiến trúc Apache Spark">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
       </article>
     </div>
 

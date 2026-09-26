@@ -23,6 +23,7 @@ from fontTools.ttLib import TTFont
 ROOT = Path(__file__).resolve().parents[1]
 DEST = ROOT / "docs/assets/fonts"
 FAMILIES = {
+    "spectral": ("Spectral", ["Spectral-Regular.ttf", "Spectral-SemiBold.ttf", "Spectral-Italic.ttf", "Spectral-SemiBoldItalic.ttf"]),
     "manrope": ("Manrope", ["Manrope[wght].ttf"]),
     "inter": ("Inter", ["Inter[opsz,wght].ttf", "Inter-Italic[opsz,wght].ttf"]),
     "lora": ("Lora", ["Lora[wght].ttf", "Lora-Italic[wght].ttf"]),

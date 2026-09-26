@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3 mẫu thiết kế thư viện — Behind the Pipeline</title>
+<style>
+:root{color-scheme:light;--paper:#f3f0e8;--ink:#17302d;--accent:#ed6840}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,sans-serif;line-height:1.6}
+header{background:var(--ink);color:var(--paper);padding:48px max(24px,calc((100% - 1200px)/2))}
+header small{color:#ff926e;letter-spacing:.14em}
+h1{font-family:Georgia,serif;font-size:clamp(32px,5vw,56px);line-height:1.15;margin:14px 0}
+header p{max-width:780px;color:#d2dbd2}
+nav{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+nav a{border:1px solid #738881;border-radius:9px;color:inherit;padding:10px 16px;text-decoration:none}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);background:#29433e}
+main{max-width:1256px;margin:auto;padding:24px}
+section{padding:32px 0 44px;border-bottom:1px solid #d2d6cc;scroll-margin-top:20px}
+h2{font-size:26px;line-height:1.3;margin:0 0 10px}
+section p{max-width:850px;color:#42645b}
+.badge{display:inline-block;margin-bottom:12px;font-size:12px;font-weight:750;letter-spacing:.05em;background:#f7ddce;color:#9f3d21;border-radius:5px;padding:4px 9px}
+img{display:block;width:100%;height:auto;border:1px solid #cfd4c8;border-radius:12px;box-shadow:0 12px 28px #17302d14}
+.links{display:flex;gap:24px;flex-wrap:wrap;margin-top:14px}
+.links a{color:#a64123;text-underline-offset:4px}
+footer{padding:28px 0 42px;color:#557068;font-size:14px}
+a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+</style>
+</head>
+<body>
+<header>
+<small>BEHIND THE PIPELINE / LIBRARY DESIGN STUDY</small>
+<h1>Chọn cách kể chuyện<br>cho thư viện bài viết.</h1>
+<p>Ba bản mẫu dùng cùng 6 bài hiện có, giữ nền kem, xanh đậm và điểm nhấn cam. Mục tiêu: giúp từng bài dễ nhận diện và đáng mở đọc hơn.</p>
+<nav aria-label="Chọn mẫu">
+<a href="#mau-01">01 · Tạp chí kỹ thuật</a>
+<a href="#mau-02">02 · Lưới thẻ có bìa</a>
+<a href="#mau-03">03 · Thư viện tra cứu</a>
+</nav>
+</header>
+<main>
+<section id="mau-01">
+<h2>01 — Tạp chí kỹ thuật</h2>
+<p>Một bài nổi bật tạo điểm nhìn bằng nền xanh đậm và hình minh họa lớn. Các bài còn lại nằm trong thẻ nhỏ, có mô tả ngắn. Hợp khi muốn giới thiệu một bài nên đọc trước; cần chọn bài nổi bật theo chủ đích biên tập.</p>
+<a href="01-editorial-feature.png"><img src="01-editorial-feature.png" alt="Mẫu 1: bài PostgreSQL nổi bật phía trên, bên dưới là bộ lọc và năm thẻ bài nhỏ."></a>
+<div class="links"><a href="01-editorial-feature.png" download>Tải hình 01 ↗</a><a href="01-editorial-feature.prompt.txt">Xem prompt</a></div>
+</section>
+<section id="mau-02">
+<span class="badge">ĐỀ XUẤT CHỌN</span>
+<h2>02 — Lưới thẻ có bìa</h2>
+<p>Sáu bài tạo thành lưới 3 × 2. Mỗi thẻ có hình bìa kỹ thuật riêng, nhãn chủ đề, tiêu đề rõ và mô tả ngắn. Đây là lựa chọn cân bằng nhất cho thư viện hiện tại: cả sáu bài đều nổi bật, dễ nhìn lướt; cần duy trì bộ bìa đồng nhất khi thêm bài.</p>
+<a href="02-visual-card-grid.png"><img src="02-visual-card-grid.png" alt="Mẫu 2: sáu bài viết trong lưới ba cột, mỗi bài có hình bìa kỹ thuật riêng." loading="lazy"></a>
+<div class="links"><a href="02-visual-card-grid.png" download>Tải hình 02 ↗</a><a href="02-visual-card-grid.prompt.txt">Xem prompt</a></div>
+</section>
+<section id="mau-03">
+<h2>03 — Thư viện tra cứu</h2>
+<p>Chủ đề và số bài nằm bên trái; bên phải là tìm kiếm và danh sách bài có hình nhỏ. Gọn, dễ quét và thích hợp khi thư viện có nhiều bài hơn. Hình ảnh chiếm ít diện tích hơn hai mẫu trên.</p>
+<a href="03-filtered-catalog.png"><img src="03-filtered-catalog.png" alt="Mẫu 3: bộ lọc chủ đề bên trái và sáu hàng bài viết có ảnh minh họa nhỏ bên phải." loading="lazy"></a>
+<div class="links"><a href="03-filtered-catalog.png" download>Tải hình 03 ↗</a><a href="03-filtered-catalog.prompt.txt">Xem prompt</a></div>
+</section>
+<footer>Hình mẫu được tạo bằng công cụ imagegen tích hợp, dựa trên giao diện và nội dung hiện có. Các sơ đồ trên bìa là minh họa ý tưởng thiết kế. <a href="current-library-reference.png">Xem giao diện ban đầu</a> · <a href="README.md">Ghi chú thiết kế</a></footer>
+</main>
+</body>
+</html>
+

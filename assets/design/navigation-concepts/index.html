@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đề xuất điều hướng — Behind the Pipeline</title>
+<style>
+:root{color-scheme:light;--ink:#17302d;--paper:#f3f0e8;--orange:#ed6840}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,sans-serif;line-height:1.65}
+header{background:var(--ink);color:var(--paper);padding:48px max(24px,calc((100vw - 1180px)/2));border-top:8px solid var(--orange)}
+header small{color:#ffc3ae;letter-spacing:.14em;font-weight:650}h1{font:clamp(30px,5vw,54px)/1.15 Georgia,serif;margin:14px 0}header p{max-width:740px;color:#d5dfd3}
+nav{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}nav a{color:var(--paper);border:1px solid #69807c;padding:8px 16px;border-radius:30px;text-decoration:none}
+a:focus-visible{outline:3px solid var(--orange);outline-offset:4px}main{max-width:1244px;margin:auto;padding:24px}section{margin:32px 0 72px;scroll-margin-top:24px}
+.meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.meta b{font-family:monospace;color:var(--orange);font-size:20px}.tag{background:var(--orange);padding:3px 12px;border-radius:30px;font-size:12px;font-weight:750}
+h2{font:clamp(24px,4vw,36px)/1.2 Georgia,serif;margin:12px 0}section p{max-width:860px}.image{display:block;border:1px solid #b9c4bc;border-radius:10px;overflow:hidden;background:#e5e6dc}img{display:block;width:100%;height:auto}
+.download{display:inline-block;color:var(--ink);margin-top:10px;text-underline-offset:4px}footer{border-top:1px solid #bcc7bd;padding:24px 0;font-size:14px;color:#48665f}.small{font-size:14px;color:#48665f}
+</style></head>
+<body>
+<header><small>BEHIND THE PIPELINE / NAVIGATION STUDY</small><h1>Thêm bài viết.<br>Header vẫn gọn.</h1><p>Ba hướng thiết kế giữ tông xanh trầm, nền giấy và điểm nhấn cam. Mẫu 01 cân bằng nhất cho bố cục hiện tại.</p><nav aria-label="Chọn mẫu"><a href="#mau-01">01 · Thư viện mở rộng</a><a href="#mau-02">02 · Menu theo chủ đề</a><a href="#mau-03">03 · Ngăn danh mục</a></nav></header>
+<main>
+<section id="mau-01"><div class="meta"><b>01</b><span class="tag">ĐỀ XUẤT</span></div><h2>Thư viện mở rộng</h2><p>Header giữ ba mục cố định. Bấm <strong>Thư viện</strong> để mở bảng bài viết theo nhóm. Khi có nhiều bài hơn, mỗi nhóm dẫn tới danh sách đầy đủ trong thư viện.</p><a class="image" href="01-library-panel.png"><img src="01-library-panel.png" alt="Mẫu 01: header có Trang chủ, Thư viện, tìm kiếm; bảng thư viện chia nhóm và bản mobile." width="1536" height="1024"></a><a class="download" href="01-library-panel.png" download>Tải hình mẫu 01 ↗</a></section>
+<section id="mau-02"><div class="meta"><b>02</b></div><h2>Menu theo chủ đề</h2><p>Hiển thị ba nhóm lớn: <strong>Database · Data Pipeline · Architecture</strong>. Dễ thấy ngay website viết về gì; số nhóm cấp cao cần được giữ ổn định khi thư viện tăng.</p><a class="image" href="02-topic-menus.png"><img src="02-topic-menus.png" alt="Mẫu 02: ba menu chủ đề với dropdown Data Pipeline và accordion trên điện thoại." width="1536" height="1024" loading="lazy"></a><a class="download" href="02-topic-menus.png" download>Tải hình mẫu 02 ↗</a></section>
+<section id="mau-03"><div class="meta"><b>03</b></div><h2>Ngăn danh mục</h2><p>Một nút <strong>Danh mục</strong> mở ngăn bên cạnh, có tìm kiếm và danh sách nhóm bài. Hợp nếu bạn ưu tiên header thật thoáng; ngăn chiếm một phần màn hình khi mở.</p><a class="image" href="03-catalog-drawer.png"><img src="03-catalog-drawer.png" alt="Mẫu 03: ngăn điều hướng bên trái có tìm kiếm và bài viết chia nhóm, kèm bản mobile." width="1536" height="1024" loading="lazy"></a><a class="download" href="03-catalog-drawer.png" download>Tải hình mẫu 03 ↗</a></section>
+<footer>Hình ý tưởng được tạo bằng image_gen tích hợp; không phải tính năng đã triển khai. <a href="README.md">Xem ghi chú thiết kế</a>.</footer>
+</main></body></html>
+
