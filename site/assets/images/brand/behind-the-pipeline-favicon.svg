@@ -1,10 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title id="title">Behind the Pipeline</title>
-  <rect width="64" height="64" rx="14" fill="#17302D"/>
-  <path d="M10 20h14l8 10h10l8 10h4" fill="none" stroke="#F3F0E8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-  <g fill="#ED6840" stroke="#17302D" stroke-width="3">
-    <circle cx="10" cy="20" r="6"/>
-    <circle cx="32" cy="30" r="6"/>
-    <circle cx="50" cy="40" r="6"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 8 112 112" role="img" aria-labelledby="title">
+  <title id="title">Behind the Pipeline — Data Engineering Handbook</title>
+  <rect x="8" y="8" width="112" height="112" rx="24" fill="#17302d"/>
+  <path d="M17 26C34 22 48 27 60 37V106C46 95 32 91 17 94Z" fill="#f3f0e8"/>
+  <path d="M68 37C80 27 94 22 111 26V94C96 91 82 95 68 106Z" fill="#b4c5af"/>
+  <path d="M31 52H43Q49 52 49 58V66Q49 72 55 72H78Q84 72 84 66V60Q84 54 90 54H98" fill="none" stroke="#c24b29" stroke-width="8" stroke-linecap="round"/>
+  <g fill="#c24b29">
+    <circle cx="31" cy="52" r="6"/>
+    <circle cx="98" cy="54" r="6"/>
   </g>
 </svg>

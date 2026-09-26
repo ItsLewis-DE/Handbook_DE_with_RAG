@@ -10,7 +10,7 @@
     <img src="https://img.shields.io/badge/🌐_KHÁM_PHÁ_WEBSITE-GitHub_Pages-ed6840?style=for-the-badge&amp;labelColor=17302d" alt="Khám phá website trên GitHub Pages">
   </a>
   <p>
-    <a href="https://itslewis-de.github.io/Handbook_DE_with_RAG/#thu-vien">Thư viện bài viết</a> ·
+    <a href="https://itslewis-de.github.io/Handbook_DE_with_RAG/library/">Thư viện bài viết</a> ·
     <a href="#chatbot-đọc-cùng-bạn">Chatbot</a> ·
     <a href="#chạy-trên-máy-cá-nhân">Chạy tại local</a>
   </p>
@@ -61,7 +61,7 @@ flowchart LR
 ## Chatbot đọc cùng bạn
 
 <p align="center">
-  <img src="assets/readme/chatbot-panel.png" alt="Khung chat Pip với ngữ cảnh bài Airflow, lời chào và câu hỏi gợi ý" width="460">
+  <img src="assets/readme/chatbot.webp" alt="Khung chat Pip đang mở trên trang Airflow, có ngữ cảnh bài và câu hỏi gợi ý" width="960">
 </p>
 
 **Pip** là trợ lý đọc tài liệu, được mở qua biểu tượng robot ở góc trang bài viết. Khung chat hiển thị tên bài đang đọc, các gợi ý câu hỏi và ô nhập để trao đổi với backend RAG.
@@ -79,26 +79,78 @@ Ví dụ câu hỏi: “Executor trong Airflow làm gì?”, “Shared-disk khá
 
 ## Nội dung trong thư viện
 
-Hiện có **4 bài viết đã xuất bản**, cũng là nguồn tài liệu cho chatbot.
+Thư viện hiện có **6 bài viết tiếng Việt** trong bốn chủ đề. Ba bài Airflow, PostgreSQL và Index còn có bản tiếng Anh. Backend RAG hiện lập chỉ mục **4 bài**: Airflow, Shared-disk vs. shared-nothing, PostgreSQL và Index.
 
-| Chủ đề | Nội dung chính | Đọc trên website |
-| --- | --- | --- |
-| Data Architecture | Shared-disk, shared-nothing, data locality, shuffle, skew và mở rộng hệ thống | [Shared-disk vs. shared-nothing](https://itslewis-de.github.io/Handbook_DE_with_RAG/architecture/shared-disk-vs-shared-nothing/) |
-| Apache Airflow | DAG, Scheduler, DAG File Processor, Executor và High Availability | [Kiến trúc Airflow](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/) |
-| PostgreSQL | Database cluster, schema, `shared_buffers` và cấu trúc lưu trữ | [Phân cấp & lưu trữ](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/) |
-| Database Index | Full table scan, cấu trúc index và cách database tìm bản ghi | [Index trong cơ sở dữ liệu](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/) |
+| Chủ đề | Bài viết |
+| --- | --- |
+| Data Architecture | [Shared-disk vs shared-nothing](https://itslewis-de.github.io/Handbook_DE_with_RAG/architecture/shared-disk-vs-shared-nothing/) · [Data Lake, Data Warehouse và Data Mart](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/) |
+| Database Internals | [Phân cấp & lưu trữ PostgreSQL](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/) · [Index trong cơ sở dữ liệu](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/) |
+| Orchestration | [Kiến trúc Apache Airflow](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/) |
+| Distributed Computing | [Kiến trúc Apache Spark](https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/) |
 
 **Trong lộ trình:** Apache Kafka, dbt, Docker và Kubernetes cho Data Engineer.
 
-## Thiết kế website
+## Hình ảnh demo
 
-[![Giao diện trang chủ Behind the Pipeline](assets/readme/website-desktop.png)](https://itslewis-de.github.io/Handbook_DE_with_RAG/)
+Ảnh chụp từ **bản build hiện tại của dự án**. Nhấn vào ảnh để xem lớn hoặc mở trang tương ứng. Các ảnh chatbot chỉ thể hiện giao diện chào; câu trả lời RAG cần backend local.
 
-Giao diện sử dụng nền giấy sáng, màu xanh trầm và điểm nhấn cam; kết hợp họa tiết bản vẽ kỹ thuật với thẻ bài viết dạng chồng giấy. Trang bài viết dành nhiều không gian cho nội dung, mục lục và hình minh họa. Bố cục thích ứng với desktop và điện thoại, cùng font được lưu trong dự án.
+### Trang chủ và thư viện
 
-![Trang bài viết Airflow với mục lục và robot mở chatbot](assets/readme/article-and-mascot.png)
+[![Trang chủ Behind the Pipeline với bộ bài viết dạng chồng giấy](assets/readme/home.webp)](https://itslewis-de.github.io/Handbook_DE_with_RAG/)
 
-*Ảnh chụp giao diện thật từ bản build của dự án: trang chủ ở phía trên và trang đọc bài Airflow cùng robot Pip.*
+*Trang chủ: bài viết dạng chồng giấy, có thể lật và mở bài.*
+
+[![Thư viện gồm sáu card bài viết, bộ lọc chủ đề và ô tìm kiếm](assets/readme/library.webp)](https://itslewis-de.github.io/Handbook_DE_with_RAG/library/)
+
+*Thư viện: cả card dẫn đến bài viết; có lọc theo chủ đề và tìm theo tiêu đề hoặc nội dung card.*
+
+### Điều hướng và các tính năng
+
+| Chọn bài trên trang chủ | Mở menu Thư viện |
+| --- | --- |
+| [<img src="assets/readme/home-article-cards.webp" alt="Bốn card bài viết đã xuất bản trên trang chủ" width="680">](assets/readme/home-article-cards.webp) | [<img src="assets/readme/navigation-library.webp" alt="Menu Thư viện chia bài theo bốn chủ đề" width="680">](assets/readme/navigation-library.webp) |
+| **Lật bộ bài viết trên trang chủ** | **Tìm bài trong Thư viện** |
+| [<img src="assets/readme/home-deck-next.webp" alt="Bộ bài viết trên trang chủ sau khi lật sang bài tiếp theo" width="680">](assets/readme/home-deck-next.webp) | [<img src="assets/readme/library-search.webp" alt="Tìm Spark trong Thư viện và nhận một card kết quả" width="680">](assets/readme/library-search.webp) |
+| **Lọc bài trong thư viện** | **Mở tìm kiếm của website** |
+| [<img src="assets/readme/library-filter.webp" alt="Thư viện lọc còn hai bài Database Internals" width="680">](assets/readme/library-filter.webp) | [<img src="assets/readme/site-search.webp" alt="Giao diện tìm kiếm toàn website đang mở" width="680">](assets/readme/site-search.webp) |
+| **Chatbot Pip trên trang bài viết** | **Đọc bài với mục lục và lựa chọn ngôn ngữ** |
+| [<img src="assets/readme/chatbot.webp" alt="Khung chat Pip mở trên trang Airflow, hiển thị ngữ cảnh bài và câu hỏi gợi ý" width="680">](assets/readme/chatbot.webp) | [<img src="assets/readme/article-airflow.webp" alt="Trang Airflow có mục lục và bộ chọn Tiếng Việt hoặc English" width="680">](assets/readme/article-airflow.webp) |
+
+### Sáu trang bài viết
+
+| Data Architecture | Database Internals |
+| --- | --- |
+| [<img src="assets/readme/article-shared-disk.webp" alt="Trang bài viết Shared-disk vs shared-nothing" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/architecture/shared-disk-vs-shared-nothing/)<br>[Shared-disk vs shared-nothing](https://itslewis-de.github.io/Handbook_DE_with_RAG/architecture/shared-disk-vs-shared-nothing/) | [<img src="assets/readme/article-postgres.webp" alt="Trang bài viết Phân cấp và lưu trữ PostgreSQL" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/)<br>[Phân cấp & lưu trữ PostgreSQL](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/) |
+| [<img src="assets/readme/article-data-lake.webp" alt="Trang bài viết Data Lake, Data Warehouse và Data Mart" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/)<br>[Data Lake, Data Warehouse và Data Mart](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/) | [<img src="assets/readme/article-index.webp" alt="Trang bài viết Index trong cơ sở dữ liệu" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/)<br>[Index trong cơ sở dữ liệu](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/) |
+| **Orchestration** | **Distributed Computing** |
+| [<img src="assets/readme/article-airflow.webp" alt="Trang bài viết Kiến trúc Apache Airflow" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/)<br>[Kiến trúc Apache Airflow](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/) | [<img src="assets/readme/article-spark.webp" alt="Trang bài viết Kiến trúc Apache Spark" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/)<br>[Kiến trúc Apache Spark](https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/) |
+
+### Ba bản tiếng Anh
+
+| PostgreSQL | Index | Airflow |
+| --- | --- | --- |
+| [<img src="assets/readme/article-postgres-en.webp" alt="PostgreSQL Hierarchy and Storage in English" width="450">](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres.en/) | [<img src="assets/readme/article-index-en.webp" alt="Indexes in Databases in English" width="450">](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/index.en/) | [<img src="assets/readme/article-airflow-en.webp" alt="Apache Airflow Architecture in English" width="450">](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture.en/) |
+
+### Giao diện điện thoại
+
+| Trang chủ | Menu Thư viện | Trang Thư viện | Trang đọc bài |
+| --- | --- | --- | --- |
+| [<img src="assets/readme/mobile-home.webp" alt="Trang chủ trên điện thoại" width="270">](assets/readme/mobile-home.webp) | [<img src="assets/readme/mobile-navigation.webp" alt="Menu Thư viện trên điện thoại" width="270">](assets/readme/mobile-navigation.webp) | [<img src="assets/readme/mobile-library.webp" alt="Trang Thư viện trên điện thoại" width="270">](assets/readme/mobile-library.webp) | [<img src="assets/readme/mobile-article.webp" alt="Trang đọc bài Airflow trên điện thoại" width="270">](assets/readme/mobile-article.webp) |
+
+### Ngôn ngữ đọc bài viết
+
+Bài Airflow, PostgreSQL và Index có bản **Tiếng Việt / English**. Bộ chọn ở đầu bài chuyển giữa hai bản và giữ mục đang đọc theo URL fragment; liên kết vẫn hoạt động khi tắt JavaScript. Các bài chưa dịch có thông báo “Chưa có bản tiếng Anh”. Giao diện chung và chatbot vẫn dùng tiếng Việt.
+
+Bản tiếng Anh giữ thứ tự các mục, ví dụ mã, bảng và sơ đồ của bản tiếng Việt. Ảnh minh họa gốc được giữ nguyên (bao gồm chữ trong ảnh); caption và alt text được dịch sang tiếng Anh.
+
+Để thêm cặp bản dịch, đặt `lang` và cùng một `translation_key` trong front matter, khai báo các đường dẫn trong `extra.article_translations` của `mkdocs.yml`, rồi thêm trang mới vào `nav`. Giữ các heading tương ứng theo đúng thứ tự; hook dùng anchor của bản Việt cho cả hai ngôn ngữ và báo lỗi khi số heading khác nhau. Khi sửa bài gốc, cập nhật bản dịch cùng lúc.
+
+Kiểm tra sau khi build:
+
+```bash
+uv run mkdocs build --strict
+uv run scripts/check_reading_languages.py
+```
 
 ## Công nghệ
 
@@ -178,7 +230,7 @@ Lệnh này build website và push nội dung tĩnh lên `gh-pages`. Thay đổi
 ├── docs/                 # Bài viết, landing page, hình ảnh, CSS và JavaScript
 ├── backend/              # API chatbot, ingestion, retrieval và đánh giá RAG
 ├── overrides/            # Tùy biến template MkDocs Material
-├── assets/readme/        # Ảnh chụp website và chatbot cho README
+├── assets/readme/        # Ảnh demo các trang, tính năng và giao diện mobile
 ├── scripts/              # Công cụ hỗ trợ phát triển
 ├── mkdocs.yml            # Điều hướng và cấu hình website
 ├── pyproject.toml        # Dependency cho website
@@ -195,29 +247,3 @@ Bạn có thể [mở issue](https://github.com/ItsLewis-DE/Handbook_DE_with_RAG
   <strong>Pipeline RAG — hỏi từ tài liệu, trả lời có nguồn.</strong><br>
   <a href="https://itslewis-de.github.io/Handbook_DE_with_RAG/">Khám phá thư viện →</a>
 </p>
-
-
-### Ngôn ngữ đọc bài viết
-
-Bài Airflow có hai bản dịch tương ứng: `docs/airflow/architecture.md` (Việt)
-và `docs/airflow/architecture.en.md` (English). Bộ chọn **Tiếng Việt / English**
-ở đầu bài chuyển giữa hai bản và giữ mục đang đọc theo URL fragment. Liên kết
-chuyển ngôn ngữ vẫn hoạt động khi tắt JavaScript. Các bài chưa dịch có thông báo
-“Chưa có bản tiếng Anh”. Giao diện chung và chatbot vẫn dùng tiếng Việt.
-
-Bản tiếng Anh giữ thứ tự các mục, ví dụ mã, bảng và sơ đồ của bản tiếng Việt.
-Ảnh minh họa gốc được giữ nguyên (bao gồm chữ trong ảnh); caption và alt text
-được dịch sang tiếng Anh.
-
-Để thêm cặp bản dịch, đặt `lang` và cùng một `translation_key` trong front matter,
-khai báo các đường dẫn trong `extra.article_translations` của `mkdocs.yml`, rồi
-thêm trang mới vào `nav`. Giữ các heading tương ứng theo đúng thứ tự; hook dùng
-anchor của bản Việt cho cả hai ngôn ngữ và báo lỗi khi số heading khác nhau.
-Khi sửa bài gốc, cập nhật bản dịch cùng lúc.
-
-Kiểm tra sau khi build:
-
-```bash
-uv run mkdocs build --strict
-uv run scripts/check_reading_languages.py
-```

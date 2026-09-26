@@ -899,6 +899,10 @@ body:has(.airflow-article-hero) .postgres-article-end::after {
   content: "04";
 }
 
+body:has(.airflow-article-hero) .spark-article-end::after {
+  content: "05";
+}
+
 .airflow-article-end {
   align-items: end;
   background: transparent;
@@ -1050,6 +1054,11 @@ body:has(.storage-article-hero) {
 .storage-article-end::after {
   color: rgba(20, 37, 32, 0.035);
   content: "02";
+}
+
+.ware-lake-article-end::after {
+  color: rgba(20, 37, 32, 0.035);
+  content: "06";
 }
 
 body:has(.storage-article-hero) .md-typeset a:not(.airflow-article-hero a):not(.airflow-article-end a):not(.reading-language a):not(.mobile-toc a) {

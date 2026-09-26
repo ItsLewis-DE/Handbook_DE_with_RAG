@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 720" fill="none" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="sage" x1="80" y1="680" x2="1340" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9bb49b" stop-opacity="0"/>
+      <stop offset=".19" stop-color="#94b29a" stop-opacity=".65"/>
+      <stop offset=".45" stop-color="#6f9987" stop-opacity=".8"/>
+      <stop offset=".7" stop-color="#91ac93" stop-opacity=".65"/>
+      <stop offset="1" stop-color="#b8c9ad" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="terracotta" x1="830" y1="680" x2="1350" y2="220" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dfb08c" stop-opacity="0"/>
+      <stop offset=".3" stop-color="#d99b76" stop-opacity=".55"/>
+      <stop offset=".65" stop-color="#d99471" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#eac5a1" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="selvedge" x1="220" y1="620" x2="1250" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f8f5e9" stop-opacity="0"/>
+      <stop offset=".45" stop-color="#f8f5e9" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#f8f5e9" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Broad, open curves leave the headings and article diagrams in charge. -->
+  <path d="M-120 647C127 751 571 690 604 456C630 275 448 303 530 198C634 66 817 299 1036 171C1213 68 1344 38 1550 115"
+        stroke="url(#sage)" stroke-width="106"/>
+  <path d="M-120 603C124 707 528 658 558 450C581 291 414 295 495 171C620 10 811 246 1013 133C1195 25 1340-5 1550 72"
+        stroke="url(#selvedge)" stroke-width="2"/>
+  <path d="M820 782C859 618 1234 647 1246 451C1253 339 1090 365 1126 262C1154 183 1306 192 1512 260"
+        stroke="url(#terracotta)" stroke-width="78"/>
+</svg>

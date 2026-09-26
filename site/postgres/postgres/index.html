@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/">
       
       
-        <link rel="prev" href="../../architecture/shared-disk-vs-shared-nothing/">
+        <link rel="prev" href="../../ware_lake_lw/doc/">
       
       
         <link rel="next" href="../postgres.en/">
@@ -60,6 +60,8 @@
       <link rel="stylesheet" href="../../stylesheets/technology-background.css">
     
       <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
     
       <link rel="stylesheet" href="../../stylesheets/chat.css">
     
@@ -133,49 +135,230 @@
     </div>
   </div>
 
-  <!-- 2. Custom Brand & Retro Navigation Bar -->
+  <!-- Brand and navigation -->
   <div class="custom-header">
     <div class="custom-header__inner">
-      <!-- Brand & Logo -->
-      <a href="../.." class="custom-header__brand" title="Behind the Pipeline">
-        <span class="custom-header__logo-wrap">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
           
-  <img src="../../assets/images/brand/behind-the-pipeline-logo.svg" alt="logo">
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
 
         </span>
-        <span class="custom-header__wordmark">
-          BEHIND THE <em>PIPELINE</em>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
         </span>
-        <span class="custom-header__badge">ARCH.DOCS</span>
       </a>
 
-      <!-- Retro Nav Pills -->
       <nav class="custom-header__nav" aria-label="Điều hướng chính">
-        <a href="../.." class="custom-nav-pill " >
-          <span>HOME</span>
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
         </a>
-        <a href="./" class="custom-nav-pill is-active" aria-current="page">
-          <span>POSTGRESQL</span>
-        </a>
-        <a href="../../airflow/architecture/" class="custom-nav-pill " >
-          <span>AIRFLOW</span>
-        </a>
-        <a href="../../architecture/shared-disk-vs-shared-nothing/" class="custom-nav-pill " >
-          <span>SHARED-DISK</span>
-        </a>
-        <a href="../../index/" class="custom-nav-pill " >
-          <span>INDEXING</span>
-        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
       </nav>
 
-      <!-- System Status / Meta Indicator -->
-      <div class="custom-header__status" aria-label="Trạng thái hệ thống">
-        <span class="custom-header__status-dot" aria-hidden="true"></span>
-        <span class="custom-header__status-text">EDITION 2026</span>
-        <span class="custom-header__status-tag">SYS.ONLINE</span>
+      
+        <label class="custom-header__search" for="__search" role="button" tabindex="0" aria-label="Tìm bài viết">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.6 4.6"/></svg>
+          <span>Tìm bài viết</span>
+        </label>
+      
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../architecture/shared-disk-vs-shared-nothing/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Shared-disk vs shared-nothing</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../ware_lake_lw/doc/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="./" aria-current="page">
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Phân cấp & Lưu trữ PostgreSQL</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+  
+    <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Tìm kiếm">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
       </div>
     </div>
   </div>
+</div>
+  
 </header>
     
     <div class="md-container" data-md-component="container">
@@ -203,7 +386,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
       
-  <img src="../../assets/images/brand/behind-the-pipeline-logo.svg" alt="logo">
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
 
     </a>
     Behind the Pipeline
@@ -256,6 +439,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -270,10 +480,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -291,8 +501,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -317,6 +527,34 @@
     
   
     Shared-disk vs shared-nothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
   
 
     
@@ -359,10 +597,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -380,8 +618,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -934,17 +1172,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    Apache Airflow
+    Orchestration
   
 
     
@@ -955,12 +1193,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Apache Airflow
+    Orchestration
   
 
           </label>
@@ -980,7 +1218,7 @@
   <span class="md-ellipsis">
     
   
-    Architecture
+    Apache Airflow
   
 
     
@@ -1008,7 +1246,94 @@
   <span class="md-ellipsis">
     
   
-    Architecture (English)
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark
   
 
     

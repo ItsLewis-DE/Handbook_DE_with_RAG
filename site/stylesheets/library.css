@@ -68,7 +68,6 @@ body:has(.library-page) .md-content__inner::before { display: none; }
   min-height: 352px;
   min-width: 0;
   padding: 22px;
-  cursor: pointer;
   position: relative;
   inset: auto;
   transition: transform 180ms ease, box-shadow 180ms ease;
@@ -85,22 +84,8 @@ body:has(.library-page) .md-content__inner::before { display: none; }
 .library-page__card .article-sheet__status { font-size: 9px; padding: 5px 8px; margin-bottom: 14px; }
 .library-page .library-page__card h2 { font-size: clamp(26px, 2.35vw, 36px); line-height: 1.12; margin: 0; overflow-wrap: anywhere; }
 .library-page .library-page__card .article-sheet__body p { font-size: 13px; line-height: 1.65; margin: 14px 0 0; max-width: 92%; }
-.library-page__card .article-sheet__foot { padding-top: 14px; margin-top: auto; position: static; }
-.library-page .library-page__card .article-sheet__foot a {
-  font-size: 9px;
-  flex: none;
-  text-decoration: none;
-  padding: 9px 10px;
-  position: static;
-  backdrop-filter: none;
-}
-.library-page__card .article-sheet__foot a::after {
-  content: "";
-  cursor: pointer;
-  inset: 0;
-  position: absolute;
-  z-index: 2;
-}
+.library-page__card .article-sheet__foot { padding-top: 14px; margin-top: auto; }
+.library-page__card .article-sheet__foot a { font-size: 9px; flex: none; text-decoration: none; padding: 9px 10px; }
 .library-page__card .article-sheet__art { border-radius: inherit; }
 .library-page button:focus-visible, .library-page a:focus-visible { outline: 2px solid var(--landing-orange); outline-offset: 4px; }
 .library-page__empty { border: 1px dashed #bac6bb; border-radius: 12px; padding: 48px 24px; text-align: center; }
