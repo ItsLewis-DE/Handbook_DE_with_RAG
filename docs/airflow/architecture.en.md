@@ -7,7 +7,7 @@ hide:
   - navigation
 ---
 
-<header class="airflow-article-hero">
+<header class="airflow-article-hero airflow-architecture-hero">
   <div class="airflow-article-hero__eyebrow">
     <a href="../../">BEHIND THE PIPELINE</a>
     <span>ARTICLE / 001</span>
@@ -24,10 +24,7 @@ hide:
   </div>
 </header>
 
-<figure class="airflow-opening-comic">
-  <img src="../../assets/images/airflow/image4.png" alt="A playful comic reminding readers to prepare for a long article about Apache Airflow architecture" loading="eager">
-  <figcaption><span>BEFORE YOU READ</span><strong>A rather long article</strong></figcaption>
-</figure>
+> **Before you read:** This is a long article that takes more than a few minutes to skim. Set aside some time, grab a glass of water, and give it your full attention.
 
 ## Why do we need Airflow?
 
@@ -80,12 +77,12 @@ Bash does not provide built-in per-task retry/rerun mechanisms, state persistenc
 
 In this situation, Airflow becomes a suitable choice, offering capabilities such as:
 
-- a UI that makes workflows easier to observe;
+- a UI for monitoring workflows;
 - retries for individual tasks;
-- execution history without having to build complex configuration yourself as you would with Bash;
+- execution history without the custom setup that Bash would require;
 - backfill to rerun a workflow for a past period.
 
-Airflow offers many powerful capabilities. To make good use of them, however, we need to understand its architecture and operating mechanisms. This article takes a deep dive into Airflow to help you use the tool deliberately, rather than operate it with only a vague understanding.
+To use Airflow effectively, we need to understand its architecture and how its components work. This article explores those mechanisms so you can use Airflow with a clear understanding of what happens behind the scenes.
 
 ---
 
@@ -103,22 +100,55 @@ Before exploring Airflow's architecture, you need to understand these five conce
 
 A simple dependency between two tasks:
 
-```mermaid
-flowchart LR
-    A[Task A] --> B[Task B]
-```
+[![Dependency between Task A and Task B](../assets/images/airflow/depend.png){ loading=lazy .article-diagram--compact }](../assets/images/airflow/depend.png){ title="View full-size image" }
+
+## Overall architecture flow
+
+[![Overview of the components in Apache Airflow architecture](../assets/images/airflow/flow.png){ loading=lazy }](../assets/images/airflow/flow.png){ title="View full-size image" }
 
 ---
 
 ## Components in Airflow
 
+### DAG Bundles
+
+**DAG Bundles** manage DAG source code.
+
+In a typical Airflow configuration, the Python files defining DAGs reside in the directory configured through `dags_folder`, usually `$AIRFLOW_HOME/dags` by default. `DagFileProcessorManager` scans this directory to find and load DAGs. A DAG file should primarily contain the workflow definition, including tasks, schedules, and dependencies; complex business logic should be separated into dedicated modules or services.
+
+In Airflow 2 and earlier, DAGs are read from the local directory configured by `dags_folder`. Although DAG source code may be stored in Git or S3, operators still have to synchronize or download that code into `dags_folder` themselves; Airflow does not directly manage those external sources.
+
+Starting with Airflow 3, the DAG Bundle mechanism allows Airflow to manage DAGs from various sources, such as local directories, Git repositories, Amazon S3, or Google Cloud Storage. If the chosen DAG Bundle type supports versioning, Airflow can also associate a specific bundle version with each DAG Run. This ensures that tasks within the same DAG Run consistently use one version of the source code.
+
+You can also declare multiple bundles and assign each bundle to at most one team. Every DAG in the bundle belongs to that team, creating a layer of logical isolation between teams.
+
+### DAG Processor
+
+The DAG files are now stored in DAG Bundles. How does Airflow read and analyze these files to identify the DAG structure, tasks, and dependencies between them? Which component parses DAG files before the Scheduler schedules execution?
+
+The answer is the **DAG Processor**. In Airflow 2.x, this component runs inside the Scheduler process by default. Since Airflow 3.x, the DAG Processor is a completely separate component from the Scheduler.
+
+The DAG Processor typically has two main processes: `DagFileProcessorManager` and `DagFileProcessorProcess`.
+
+#### DagFileProcessorManager
+
+`DagFileProcessorManager` maintains an infinite loop to check for new or modified files while skipping unchanged files. It does not directly parse individual files or check their syntax. Instead, it creates child processes called `DagFileProcessorProcess`. The Manager receives serialized DAGs from the child processes and synchronizes them to the Metadata Database. The Scheduler then reads serialized DAGs and the required metadata from the Metadata Database to create Dag Runs, identify eligible Task Instances, and queue them for the Executor.
+
+#### DagFileProcessorProcess
+
+`DagFileProcessorProcess` loads the DAG file directly as a module, creates DAG objects, serializes the DAGs, and returns them to `DagFileProcessorManager`.
+
+Because DAG files are loaded as modules and `DagFileProcessorManager` periodically starts child processes to handle files that need parsing, DAG authors should not place database connections outside functions. Likewise, avoid database access, external API calls, or heavy processing at this level. These operations can exhaust CPU and RAM, slow file parsing, or exhaust the connection pool.
+
+Instead, operations that connect to databases or APIs should be placed inside task callables so they run only when the task executes. Libraries with expensive imports should also be imported locally inside the callable; lightweight imports can remain at the top of the DAG file.
+
+#### How are serialized DAGs used?
+
+After a DAG file is parsed, its structure is serialized to JSON and stored in the Metadata Database through `DagFileProcessorManager`. This representation provides the workflow structure to the Scheduler, API Server, and workers without rerunning the Python file just to read the DAG structure.
+
 ### Scheduler
 
-#### DAG parsing
-
-In Airflow 2.x, the Scheduler has an internal subprocess called `DagFileProcessorManager`, which parses files in the DAG folder. These processes record the state of DAG files in the metadata database; if parsing fails, the error information appears in the UI.
-
-Since version 2.3, `DagFileProcessorManager` can be configured to run independently. Starting with Airflow 3, it becomes a required component that always runs separately from the Scheduler. This separation improves security and prevents the parsing of heavy DAG files from blocking the Scheduler.
+The Scheduler creates `DagRun` objects according to the schedule, checks the state and dependencies of `TaskInstance` objects, applies limits such as Pools and concurrency, and queues eligible tasks for the Executor. This separation means tasks and workers do not need direct access to the Metadata Database, improving security and scalability.
 
 > **A note on the `@daily` schedule**
 >
@@ -128,7 +158,7 @@ Since version 2.3, `DagFileProcessorManager` can be configured to run independen
 
 When a system has too many DAGs, with hundreds or thousands of tasks, a single Scheduler may take a long time to finish a scheduling loop. This is where the **HA Scheduler** becomes useful.
 
-HA Scheduler allows multiple Schedulers to run simultaneously. All Schedulers are active, rather than having one active Scheduler and another pending. This model shares the scheduling load; if one Scheduler fails, the others can continue processing work.
+HA Scheduler allows multiple Schedulers to run simultaneously. All Schedulers are active, rather than having one active Scheduler and another on standby. This model shares the scheduling load; if one Scheduler fails, the others can continue processing work.
 
 However, running multiple Schedulers in parallel can lead to duplicate processing. For example, Scheduler 1 and Scheduler 2 may select the same Dag Run to process. Airflow therefore needs database row-level locking.
 
@@ -138,32 +168,21 @@ A scheduling loop consists of three main steps:
 2. Check existing Dag Runs to find Task Instances that can begin to be scheduled, or mark a Dag Run as complete.
 3. Select eligible Task Instances for execution while respecting Pool limits.
 
-```mermaid
-flowchart TD
-    A[Check DAGs needing a new Dag Run] --> B[Create Dag Run]
-    B --> C[Check existing Dag Runs]
-    C --> D[Select eligible Task Instances]
-    D --> E[Check Pool and concurrency]
-    E --> F[Queue Task Instances]
-```
+[![Three steps in the Scheduler's scheduling loop](../assets/images/airflow/sche_loop.png){ loading=lazy }](../assets/images/airflow/sche_loop.png){ title="View full-size image" }
 
 #### Critical Section
 
 One step in the scheduling loop is called the **Critical Section**. Only one Scheduler may enter this section at a time. Other Schedulers remain active and can continue performing other parts of the scheduling loop.
 
-The Critical Section checks Pools, identifies tasks that can execute, and queues them. This mechanism prevents the following situation:
+Inside the Critical Section, the Scheduler locks Pool rows so that only one Scheduler can calculate resource availability at a time. It reads Pool capacity, selects eligible `TaskInstance` objects in the `SCHEDULED` state, transitions the selected tasks to `QUEUED`, places them in the Executor queue, then commits the transaction and releases the lock.
+
+[![Processing flow inside the Scheduler's Critical Section](../assets/images/airflow/critical.png){ loading=lazy }](../assets/images/airflow/critical.png){ title="View full-size image" }
+
+This mechanism prevents the following situation:
 
 1. Scheduler A sees two available Pool slots and queues two tasks.
 2. Scheduler B also sees two available Pool slots and queues two more tasks.
 3. Four tasks end up queued, exceeding the Pool's two-slot limit.
-
-```mermaid
-flowchart LR
-    A[Scheduler A] --> C{Critical Section}
-    B[Scheduler B] --> C
-    C --> D[Check Pool]
-    D --> E[Queue tasks]
-```
 
 #### Scalability and bottlenecks
 
@@ -183,7 +202,7 @@ LocalExecutor is Airflow's default configuration. When the Scheduler assigns wor
 
 For example, consider a task that needs to process a 5 GB file. Because LocalExecutor resides in the Scheduler process, the task uses the computing resources of the host running the Scheduler. The task may consume the host's CPU and RAM, leaving the Scheduler short of resources to scan DAGs or schedule other tasks.
 
-In return, LocalExecutor is relatively simple to configure and has low latency because tasks run on the same node as the Scheduler.
+The trade-off is that LocalExecutor is relatively simple to configure and has low latency because tasks run on the same node as the Scheduler.
 
 #### Remote Executor
 
@@ -302,88 +321,19 @@ with DAG(
     )
 ```
 
-#### Related questions
+#### How does the Scheduler determine Executor capacity?
 
-<div class="airflow-comic-gallery" aria-label="Two illustrations of how the Scheduler tracks task state">
-  <figure>
-    <img src="../../assets/images/airflow/image.png" alt="Comic showing workers sending Task Instance state through the API Server to the Metadata Database so the Scheduler can decide which task runs next" loading="lazy">
-    <figcaption><span>ILLUSTRATION / 01</span><strong>How the Scheduler tracks task state</strong></figcaption>
-  </figure>
-  <figure>
-    <img src="../../assets/images/airflow/image1.png" alt="Comic showing the Airflow API Server and Metadata Database passing task state to the Scheduler" loading="lazy">
-    <figcaption><span>ILLUSTRATION / 02</span><strong>The Scheduler and task status</strong></figcaption>
-  </figure>
-</div>
+Before sending tasks to the Executor, the Scheduler calls a `BaseExecutor` method to determine how many additional tasks the Executor can accept. Based on its current capacity, the Scheduler selects an appropriate number of tasks and passes them to the Executor for distribution to the execution infrastructure.
 
-### DAG Processor
+#### How does the Scheduler track task state?
 
-We usually write DAGs as Python files. How does Airflow read and analyze these files to identify the DAG structure, tasks, and dependencies between them? Which component parses DAG files before the Scheduler schedules execution?
-
-The answer is the **DAG Processor**. In Airflow 2.x, this component runs inside the Scheduler process by default. Since Airflow 3.x, the DAG Processor is a completely separate component from the Scheduler.
-
-The DAG Processor typically has two main processes: `DagFileProcessorManager` and `DagFileProcessorProcess`.
-
-#### DagFileProcessorManager
-
-`DagFileProcessorManager` maintains an infinite loop to check for new or modified files while skipping unchanged files. It does not directly parse individual files or check their syntax. Instead, it creates child processes called `DagFileProcessorProcess`.
-
-#### DagFileProcessorProcess
-
-`DagFileProcessorProcess` loads the DAG file directly as a module, creates DAG objects, and returns them to `DagFileProcessorManager`.
-
-Because DAG files are loaded as modules and `DagFileProcessorManager` periodically starts child processes to handle files that need parsing, DAG authors should not place database connections outside functions. Likewise, avoid database access, external API calls, or heavy processing at this level. These operations can exhaust CPU and RAM, slow file parsing, or exhaust the connection pool.
-
-Instead, operations that connect to databases or APIs should be placed inside task callables so they run only when the task executes. Libraries with expensive imports should also be imported locally inside the callable; lightweight imports can remain at the top of the DAG file.
-
-#### DAG file processing flow
-
-```mermaid
-flowchart TD
-    A["DagFileProcessorManager"] --> B["Check for new files"]
-    B --> C["Exclude recently processed files"]
-    C --> D["Queue file paths"]
-    D --> E["Process files"]
-    E --> F["Collect results"]
-    F --> G["Log statistics"]
-    G --> B
-
-    E --> H["DagFileProcessorProcess"]
-    H --> I["Process file"]
-    I --> J["Load modules from file"]
-    J --> K["Process modules"]
-    K --> L["Return DagBag"]
-```
-
-*Source: Airflow documentation.*
-
-#### Related questions
-
-<div class="airflow-comic-gallery" aria-label="Illustration of the DAG Processor sending DAG objects for storage in the Metadata Database">
-  <figure>
-    <img src="../../assets/images/airflow/image3.png" alt="Comic showing DagFileProcessor sending DAG objects to DagFileProcessorManager for JSON serialization, storage in the Metadata Database, and use by the Scheduler" loading="lazy">
-    <figcaption><span>ILLUSTRATION / 03</span><strong>The DAG Processor and Scheduler</strong></figcaption>
-  </figure>
-</div>
-
-### DAG Bundles
-
-The next component is **DAG Bundles**.
-
-In a typical Airflow configuration, the Python files defining DAGs reside in the directory configured through `dags_folder`, usually `$AIRFLOW_HOME/dags` by default. `DagFileProcessorManager` scans this directory to find and load DAGs. A DAG file should primarily contain the workflow definition, including tasks, schedules, and dependencies; complex business logic should be separated into dedicated modules or services.
-
-In Airflow 2 and earlier, DAGs are read from the local directory configured by `dags_folder`. Although DAG source code may be stored in Git or S3, operators still have to synchronize or download that code into `dags_folder` themselves; Airflow does not directly manage those external sources.
-
-Starting with Airflow 3, the DAG Bundle mechanism allows Airflow to manage DAGs from various sources, such as local directories, Git repositories, Amazon S3, or Google Cloud Storage. If the chosen DAG Bundle type supports versioning, Airflow can also associate a specific bundle version with each DAG Run. This ensures that tasks within the same DAG Run consistently use one version of the source code.
-
-You can also declare multiple bundles and assign each bundle to at most one team. Every DAG in the bundle belongs to that team, creating a layer of logical isolation between teams.
+Tasks or workers send Task Instance state to Airflow through the API Server. The API Server stores that state in the Metadata Database. The Scheduler reads states such as `running`, `success`, `failed`, or `queued` from the database to determine which tasks can run next.
 
 ### API Server
 
-Before Airflow 3, the Webserver was the component that provided the Web UI. In Airflow 3, the API Server becomes a required component serving the Web UI, REST API, and internal Execution API. The Execution API is the interface through which tasks and workers communicate with the API Server.
+Before Airflow 3, the Webserver was the component that provided the Web UI. In Airflow 3, the API Server becomes a required component serving the Web UI, REST API, and internal Execution API. This arrangement means workers or nodes do not need direct access to the Metadata Database, improving security.
 
 The Web UI lets users observe, trigger, and debug DAGs or tasks without performing most operations through the CLI. When tasks run, workers or tasks send heartbeats, execution state, XCom, and runtime interactions to the API Server. The API Server then updates this information in the Metadata Database.
-
-The Scheduler reads the Metadata Database to create `DagRun` objects, check execution conditions, and pass eligible `TaskInstance` objects to the Executor. This separation means tasks and workers do not need direct access to the Metadata Database, improving security and scalability.
 
 ### Metadata Database
 
@@ -391,18 +341,13 @@ The Metadata Database is a required Airflow component. It stores metadata used t
 
 The Scheduler and other components rely on this data to track and orchestrate tasks. In production, the Metadata Database typically uses PostgreSQL or MySQL. Airflow communicates with the metadata database through SQLAlchemy because of the library's flexibility.
 
-#### Related questions
+#### Why does the Metadata Database commonly use PostgreSQL or MySQL?
 
-<div class="airflow-comic-gallery" aria-label="Illustration of why Airflow commonly uses PostgreSQL or MySQL as its Metadata Database">
-  <figure>
-    <img src="../../assets/images/airflow/SQL_alchemy.png" alt="Comic illustrating how PostgreSQL and MySQL support transactions, concurrent access, locking, and data consistency for the Airflow Metadata Database" loading="lazy">
-    <figcaption><span>ILLUSTRATION / 04</span><strong>The Metadata Database in Airflow</strong></figcaption>
-  </figure>
-</div>
+PostgreSQL and MySQL are stable relational database management systems that support transactions, concurrent access, locking, and data consistency. These capabilities suit Airflow’s need to coordinate reads and writes of workflow state across components. The Scheduler and API Server work with the Metadata Database; tasks or workers send updates through the API Server as described above.
 
 ---
 
-## Deploying Airflow in a distributed model
+## Distributed Airflow Deployment
 
 When first learning Airflow, you typically use it only on your personal computer. However, Airflow's power also lies in its ability to distribute components across multiple hosts. For example, with `CeleryExecutor` or `KubernetesExecutor`, the Scheduler can run on a dedicated host or pod while tasks execute on other workers or pods.
 
@@ -418,134 +363,13 @@ The distributed model offers the following benefits:
     - **DAG Author:** writes and adds DAG files to DAG bundles.
     - **Operations User:** triggers, monitors, and debugs DAGs or tasks through the UI or API.
 
-### Processing flow overview
-
-1. **The user adds a DAG file to a DAG bundle**
-
-    The user writes a DAG file and adds it to a DAG bundle, which defaults to the local `dags` directory.
-
-    The DAG Processor periodically scans DAG files, serializes the DAG structure, and stores metadata in the Metadata Database. The Scheduler uses serialized DAGs for scheduling without having to parse DAG files directly.
-
-2. **Create a DAG Run and identify runnable tasks**
-
-    The Scheduler reads the Metadata Database and checks conditions to identify tasks that are eligible to run.
-
-3. **The Executor sends tasks to the execution environment**
-
-    The Scheduler calls the Executor; the Executor spawns child processes, or workers, to execute tasks.
-
-4. **Tasks execute and write logs**
-
-    Tasks begin executing, and logs are written to the `logs/` directory.
-
-5. **Update state and finish**
-
-    When a worker finishes, its state is sent to the API Server. The API Server then updates the state in the Metadata Database.
-
-### Distributed Airflow diagram
-
-You can refer to the following diagram:
-
-```mermaid
-flowchart LR
-    Author["DAG Author"] -->|author| Dags
-    Deploy["Deployment Manager"] -->|install| Plugins
-    Ops["Operations User"] -->|operate| API
-
-    subgraph DagZone["Security perimeter with DAG code execution"]
-        direction TB
-        Dags["DAG files"]
-        subgraph Execution["Execution"]
-            direction LR
-            Workers["Workers"]
-            Triggerers["Triggerers"]
-            Processors["DAG Processors"]
-        end
-        Dags -->|sync| Workers
-        Dags -->|sync| Triggerers
-        Dags -->|sync| Processors
-    end
-
-    Plugins["Plugin folder and installed packages"]
-    DB[(Metadata DB)]
-
-    subgraph ControlZone["Security perimeter with no DAG code execution"]
-        direction TB
-        subgraph Scheduling["Scheduling"]
-            Scheduler["Schedulers"]
-        end
-        subgraph UI["UI"]
-            API["API Servers"]
-        end
-    end
-
-    Plugins -->|install| Workers
-    Plugins -->|install| Triggerers
-    Plugins -->|install| Processors
-    Plugins -->|install| Scheduler
-    Plugins -->|install| API
-
-    Processors -->|serialized DAG| DB
-    Workers -->|task state| DB
-    Triggerers -->|trigger state| DB
-    Scheduler -->|scheduling state| DB
-    API -->|metadata| DB
-    Scheduler -->|Executor| Workers
-```
-
-The process is similar to running locally, but roles are separated more clearly, and workers are also separated from the Scheduler.
-
----
-
-## How a worker executes a task
-
-Now that we understand Airflow's overall flow and what happens when it actually runs, let us take a closer look at how a worker executes a task.
-
-Previously, in Airflow 2, workers held database information when executing a task. This created a vulnerability that allowed DAG code (or its author) to access, exploit, and expose all the sensitive connection information stored in the database.
-
-Since Airflow 3, workers no longer hold Metadata Database information. A worker creates two processes: the Supervisor and the task execution process (`task_runner`). The `task_runner` has no JWT and does not directly access the Metadata Database. If it needs a Connection, Variable, XCom, or state update, it sends an internal request to the Supervisor over a socket. The Supervisor calls the API Server; the API Server queries the Metadata Database and returns the result to the Supervisor, which passes it back to the task over the socket.
-
-Specifically, this flow consists of the following steps:
-
-1. **Send a request over an internal socket**
-
-    The `task_runner` process sends an internal request to the Supervisor over a socket.
-
-2. **The Supervisor validates the request**
-
-    The Supervisor receives the message and checks: Is this task in a valid state to request a Connection? Does the request format comply with the Task SDK?
-
-3. **Attach the Task JWT Token to the header**
-
-    The Supervisor creates an HTTP REST request, attaches the security JWT to the header, and sends it to the API Server.
-
-4. **The API Server authenticates and returns the result**
-
-    The API Server decodes the JWT token to verify: Is this token valid? Does it belong to the running task? Is the task's request consistent with the JWT token? If valid, the API Server queries the Metadata Database, retrieves the connection information, and returns it to the Supervisor over HTTPS. The Supervisor passes the data back to `task_runner` over the socket.
-
-### Related questions
-
-<div class="airflow-comic-gallery" aria-label="Illustration of how the worker and task runner authenticate with the API Server using a JWT token">
-  <figure>
-    <img src="../../assets/images/airflow/JWT.png" alt="Comic showing the Supervisor sending a request with a JWT token to the API Server to securely retrieve connection information" loading="lazy">
-    <figcaption><span>ILLUSTRATION / 05</span><strong>Task Runner, Supervisor, and JWT Token</strong></figcaption>
-  </figure>
-</div>
-
----
+Airflow’s distributed architecture is fundamentally similar to its local architecture, but roles and components are separated more clearly and can be deployed on different hosts or nodes.
 
 ## Closing thoughts
 
-<figure class="airflow-closing-comic">
-  <img src="../../assets/images/airflow/end.png" alt="Comic featuring Shin sharing the journey of learning Airflow and thanking the reader" loading="lazy">
-  <figcaption>
-    <span>CLOSING THOUGHTS / 06</span>
-    <div>
-      <strong>Thank you for reading to the end!</strong>
-      <p>I hope this article helps you understand Airflow more clearly. See you in the next articles.</p>
-    </div>
-  </figcaption>
-</figure>
+This article on Airflow draws on my own reading, notes, and learning, so it may still contain inaccuracies or omissions. I welcome your feedback and corrections.
+
+Thank you for reading to the end! I hope this article helps you understand Airflow more clearly. See you in future articles.
 
 <footer class="airflow-article-end">
   <div>

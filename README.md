@@ -72,19 +72,19 @@ flowchart LR
 - Có xử lý trường hợp thiếu bằng chứng, lỗi kết nối và thời gian chờ.
 - Hỗ trợ `Enter` để gửi, `Shift + Enter` để xuống dòng và `Escape` để thu nhỏ.
 
-Ví dụ câu hỏi: “Executor trong Airflow làm gì?”, “Shared-disk khác shared-nothing thế nào?” hoặc “shared_buffers có vai trò gì trong PostgreSQL?”.
+Ví dụ câu hỏi: “Executor trong Airflow làm gì?” hoặc “shared_buffers có vai trò gì trong PostgreSQL?”.
 
 > [!NOTE]
-> GitHub Pages phục vụ website tĩnh. Chatbot hiện mặc định gọi `http://127.0.0.1:8001/chat` và cần backend chạy riêng; chưa có API công khai được cấu hình sẵn. Ảnh trên là giao diện chào của chatbot, không phải một phiên trả lời trực tuyến. Chỉ mục hiện bao gồm bài Airflow, Shared-disk vs. shared-nothing, PostgreSQL và Index.
+> GitHub Pages phục vụ website tĩnh. Chatbot hiện mặc định gọi `http://127.0.0.1:8001/chat` và cần backend chạy riêng; chưa có API công khai được cấu hình sẵn. Ảnh trên là giao diện chào của chatbot, không phải một phiên trả lời trực tuyến. Chỉ mục hiện bao gồm bài Airflow, PostgreSQL và Index.
 
 ## Nội dung trong thư viện
 
-Thư viện hiện có **6 bài viết tiếng Việt** trong bốn chủ đề. Ba bài Airflow, PostgreSQL và Index còn có bản tiếng Anh. Backend RAG hiện lập chỉ mục **4 bài**: Airflow, Shared-disk vs. shared-nothing, PostgreSQL và Index.
+Thư viện hiện có **7 bài viết tiếng Việt** trong bốn chủ đề, và toàn bộ 7 bài đều có bản tiếng Anh song ngữ. Danh sách nguồn RAG gồm **4 bài**: Airflow, hai phần PostgreSQL và Index. Sau khi cập nhật tài liệu, cần chạy lại bước ingest để làm mới chỉ mục cục bộ.
 
 | Chủ đề | Bài viết |
 | --- | --- |
-| Data Architecture | [Shared-disk vs shared-nothing](https://itslewis-de.github.io/Handbook_DE_with_RAG/architecture/shared-disk-vs-shared-nothing/) · [Data Lake, Data Warehouse và Data Mart](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/) |
-| Database Internals | [Phân cấp & lưu trữ PostgreSQL](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/) · [Index trong cơ sở dữ liệu](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/) |
+| Data Architecture | [Data Lake, Data Warehouse và Data Mart](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/) |
+| Database Internals | [PostgreSQL phần 1 — Phân cấp, tiến trình và bộ nhớ](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/) · [PostgreSQL phần 2 — Truy vấn, lưu trữ và phục hồi](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/p2/) · [Index trong cơ sở dữ liệu](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/) |
 | Orchestration | [Kiến trúc Apache Airflow](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/) |
 | Distributed Computing | [Kiến trúc Apache Spark](https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/) |
 
@@ -116,12 +116,12 @@ Thư viện hiện có **6 bài viết tiếng Việt** trong bốn chủ đề.
 | **Chatbot Pip trên trang bài viết** | **Đọc bài với mục lục và lựa chọn ngôn ngữ** |
 | [<img src="assets/readme/chatbot.webp" alt="Khung chat Pip mở trên trang Airflow, hiển thị ngữ cảnh bài và câu hỏi gợi ý" width="680">](assets/readme/chatbot.webp) | [<img src="assets/readme/article-airflow.webp" alt="Trang Airflow có mục lục và bộ chọn Tiếng Việt hoặc English" width="680">](assets/readme/article-airflow.webp) |
 
-### Sáu trang bài viết
+### Các trang bài viết
 
 | Data Architecture | Database Internals |
 | --- | --- |
-| [<img src="assets/readme/article-shared-disk.webp" alt="Trang bài viết Shared-disk vs shared-nothing" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/architecture/shared-disk-vs-shared-nothing/)<br>[Shared-disk vs shared-nothing](https://itslewis-de.github.io/Handbook_DE_with_RAG/architecture/shared-disk-vs-shared-nothing/) | [<img src="assets/readme/article-postgres.webp" alt="Trang bài viết Phân cấp và lưu trữ PostgreSQL" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/)<br>[Phân cấp & lưu trữ PostgreSQL](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/) |
-| [<img src="assets/readme/article-data-lake.webp" alt="Trang bài viết Data Lake, Data Warehouse và Data Mart" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/)<br>[Data Lake, Data Warehouse và Data Mart](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/) | [<img src="assets/readme/article-index.webp" alt="Trang bài viết Index trong cơ sở dữ liệu" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/)<br>[Index trong cơ sở dữ liệu](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/) |
+| [<img src="assets/readme/article-data-lake.webp" alt="Trang bài viết Data Lake, Data Warehouse và Data Mart" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/)<br>[Data Lake, Data Warehouse và Data Mart](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/) | [<img src="assets/readme/article-postgres.webp" alt="Trang bài viết Phân cấp và lưu trữ PostgreSQL" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/)<br>[Phân cấp & lưu trữ PostgreSQL](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/) |
+| | [<img src="assets/readme/article-index.webp" alt="Trang bài viết Index trong cơ sở dữ liệu" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/)<br>[Index trong cơ sở dữ liệu](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/) |
 | **Orchestration** | **Distributed Computing** |
 | [<img src="assets/readme/article-airflow.webp" alt="Trang bài viết Kiến trúc Apache Airflow" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/)<br>[Kiến trúc Apache Airflow](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/) | [<img src="assets/readme/article-spark.webp" alt="Trang bài viết Kiến trúc Apache Spark" width="680">](https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/)<br>[Kiến trúc Apache Spark](https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/) |
 

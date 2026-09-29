@@ -35,8 +35,9 @@ def check_pair(article_name, vi_path, en_path):
             if vc != ec:
                 print(f"  [{i:2d}] VI: '{vc}' vs EN: '{ec}'")
 
-    vi_img = re.findall(r'src="([^"]+)"', vi)
-    en_img = re.findall(r'src="([^"]+)"', en)
+    image_pattern = r'(?:src="|!\[[^\]]*\]\()([^"\)]+)'
+    vi_img = re.findall(image_pattern, vi)
+    en_img = re.findall(image_pattern, en)
 
     if vi_img == en_img:
         print(f"✓ Image paths MATCH ({len(vi_img)} images)")
@@ -46,4 +47,8 @@ def check_pair(article_name, vi_path, en_path):
 if __name__ == "__main__":
     check_pair("Airflow", "docs/airflow/architecture.md", "docs/airflow/architecture.en.md")
     check_pair("PostgreSQL", "docs/postgres/postgres.md", "docs/postgres/postgres.en.md")
+    check_pair("PostgreSQL Part 2", "docs/postgres/p2.md", "docs/postgres/p2.en.md")
     check_pair("Database Index", "docs/index/index.md", "docs/index/index.en.md")
+    check_pair("Data Lakehouse", "docs/ware_lake_lw/doc.md", "docs/ware_lake_lw/doc.en.md")
+    check_pair("Spark Part 1", "docs/spark/archi.md", "docs/spark/archi.en.md")
+    check_pair("Spark Part 2", "docs/spark/p2.md", "docs/spark/p2.en.md")

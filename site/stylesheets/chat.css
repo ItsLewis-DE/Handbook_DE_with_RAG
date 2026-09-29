@@ -174,7 +174,25 @@
   overflow: visible;
 }
 
-/* Feet stay planted; only the upper body breathes. */
+/* Separate balance and breathing so the feet stay planted. */
+.pip-balance {
+  transform-origin: 60px 114px;
+}
+
+.pip-head-balance {
+  transform-origin: 60px 65px;
+}
+
+.pip-mascot--full .pip-balance {
+  transform: rotate(var(--pip-balance-tilt, 0deg));
+  transition: transform 1400ms cubic-bezier(.37, 0, .3, 1);
+}
+
+.pip-mascot--full .pip-head-balance {
+  transform: rotate(var(--pip-head-balance, 0deg));
+  transition: transform 1600ms 100ms cubic-bezier(.37, 0, .3, 1);
+}
+
 .pip-upper-body {
   transform-origin: 60px 114px;
   animation: pip-breathe 4.8s ease-in-out infinite;
@@ -183,12 +201,14 @@
 @keyframes pip-breathe {
 
   0%,
+  18%,
   100% {
     transform: translateY(0);
   }
 
-  50% {
-    transform: translateY(-1px) rotate(.45deg);
+  55%,
+  65% {
+    transform: translateY(-.8px) rotate(.25deg);
   }
 }
 
@@ -211,10 +231,12 @@
 .pip-head-look {
   transform-origin: 60px 65px;
   transform: rotate(var(--pip-look-tilt, 0deg));
+  transition-duration: 420ms;
 }
 
 .pip-eyes {
   transform: translate(var(--pip-look-x, 0px), var(--pip-look-y, 0px));
+  transition-duration: 160ms;
 }
 
 .pip-antenna {
@@ -251,17 +273,17 @@
 }
 
 .pip-chat[data-pose="greeting"] .pip-forearm {
-  animation: pip-wave 480ms 380ms ease-in-out 3;
+  animation: pip-wave 1200ms 750ms ease-in-out forwards;
   transform: rotate(0deg);
   transition-delay: 90ms;
 }
 
 .pip-chat[data-pose="greeting"] .pip-hand {
-  animation: pip-wrist 480ms 440ms ease-in-out 3;
+  animation: pip-wrist 1250ms 810ms ease-in-out both;
 }
 
 .pip-chat[data-pose="greeting"] .pip-antenna {
-  animation: pip-antenna-settle 1100ms 240ms ease-out both;
+  animation: pip-antenna-settle 1400ms 320ms ease-out both;
 }
 
 @keyframes pip-wave {
@@ -271,8 +293,20 @@
     transform: rotate(0deg);
   }
 
-  45% {
+  20% {
     transform: rotate(23deg);
+  }
+
+  40% {
+    transform: rotate(-7deg);
+  }
+
+  62% {
+    transform: rotate(14deg);
+  }
+
+  82% {
+    transform: rotate(-3deg);
   }
 }
 
@@ -283,8 +317,20 @@
     transform: rotate(0deg);
   }
 
-  50% {
+  23% {
     transform: rotate(12deg);
+  }
+
+  43% {
+    transform: rotate(-5deg);
+  }
+
+  65% {
+    transform: rotate(7deg);
+  }
+
+  85% {
+    transform: rotate(-2deg);
   }
 }
 
@@ -329,51 +375,98 @@
   }
 }
 
-/* Open a joined spread, with each hand supporting its outside edge. */
-.pip-chat[data-pose="reading"] .pip-book-closed {
+/* Lift first, then open; keep both hands on the spread while looking up. */
+.pip-chat[data-pose="opening"] .pip-book-closed {
+  transform: translateY(-1px) rotate(-3deg);
+  transition-duration: 350ms;
+}
+
+.pip-chat[data-pose="opening"] .pip-arm-left {
+  transform: rotate(4deg);
+  transition-duration: 350ms;
+}
+
+.pip-chat:is([data-pose="reading"], [data-pose="looking-up"]) .pip-book-closed {
   opacity: 0;
   transform: scaleX(.4);
   transition-delay: 160ms;
 }
 
-.pip-chat[data-pose="reading"] .pip-book-open {
+.pip-chat:is([data-pose="reading"], [data-pose="looking-up"]) .pip-book-open {
   opacity: 1;
   transform: scale(1.04) translateY(-1px);
   transition-delay: 200ms;
 }
 
-.pip-chat[data-pose="reading"] .pip-arm-right {
+.pip-chat:is([data-pose="opening"], [data-pose="reading"], [data-pose="looking-up"]) .pip-arm-right {
   transform: rotate(70deg);
 }
 
-.pip-chat[data-pose="reading"] .pip-forearm {
+.pip-chat:is([data-pose="opening"], [data-pose="reading"], [data-pose="looking-up"]) .pip-forearm {
   transform: rotate(140deg);
 }
 
-.pip-chat[data-pose="reading"] .pip-arm-left {
+.pip-chat:is([data-pose="reading"], [data-pose="looking-up"]) .pip-arm-left {
   transform: rotate(8deg);
 }
 
 .pip-chat[data-pose="reading"] .pip-head-group {
   transform: translateY(3px) rotate(5deg);
-  transition-delay: 380ms;
+  transition-delay: 500ms;
 }
 
 .pip-chat[data-pose="reading"] .pip-eyes {
-  animation: pip-read 3.8s 800ms ease-in-out infinite;
+  transform: translate(0, 2px);
+  transition-delay: 800ms;
+}
+
+.pip-chat[data-pose="reading"] .pip-eye-scan {
+  animation: pip-read 4.6s 1000ms ease-in-out forwards;
+}
+
+.pip-chat[data-pose="looking-up"] .pip-head-group {
+  transform: translateY(0) rotate(-1deg);
+  transition-duration: 550ms;
+}
+
+.pip-chat[data-pose="closing"] .pip-arm-left,
+.pip-chat[data-pose="closing"] .pip-arm-right {
+  transition-delay: 220ms;
+}
+
+.pip-chat[data-pose="closing"] .pip-forearm {
+  transition-delay: 300ms;
+}
+
+.pip-chat[data-pose="closing"] .pip-book-closed {
+  transition-delay: 120ms;
 }
 
 @keyframes pip-read {
 
   0%,
-  15%,
   100% {
-    transform: translate(-2px, 2px);
+    transform: translate(0, 0);
   }
 
-  65%,
-  80% {
-    transform: translate(2px, 2px);
+  10%,
+  20% {
+    transform: translate(-2px, 0);
+  }
+
+  42%,
+  52% {
+    transform: translate(2px, 0);
+  }
+
+  60%,
+  68% {
+    transform: translate(-2px, 1px);
+  }
+
+  85%,
+  92% {
+    transform: translate(2px, 1px);
   }
 }
 
@@ -421,13 +514,13 @@
 @supports ((backdrop-filter: blur(3px)) or (-webkit-backdrop-filter: blur(3px))) {
   .pip-panel {
     --pip-glass-header: rgba(23, 48, 45, .94);
-    --pip-glass-context: rgba(243, 240, 232, .68);
+    --pip-glass-context: rgba(243, 240, 232, .48);
     --pip-glass-bubble: rgba(255, 250, 240, .97);
-    --pip-glass-footer: rgba(255, 250, 240, .7);
+    --pip-glass-footer: rgba(255, 250, 240, .5);
     --pip-glass-input: rgba(255, 250, 240, .98);
     --pip-glass-chip: rgba(255, 250, 240, .94);
-    /* Keep article text visible between the more opaque reading surfaces. */
-    background: linear-gradient(135deg, rgba(255, 250, 240, .62), rgba(243, 240, 232, .44));
+    /* A light tint lets the blurred article show through the conversation area. */
+    background: linear-gradient(135deg, rgba(255, 250, 240, .28), rgba(243, 240, 232, .14));
     -webkit-backdrop-filter: blur(3px) saturate(115%);
     backdrop-filter: blur(3px) saturate(115%);
   }
@@ -843,6 +936,10 @@
 }
 
 .pip-chat .pip-mascot--reading .pip-eyes {
+  transform: translate(0, 2px);
+}
+
+.pip-chat .pip-mascot--reading .pip-eye-scan {
   animation: pip-read 3.8s ease-in-out infinite;
 }
 

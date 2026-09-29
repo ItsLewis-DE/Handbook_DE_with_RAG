@@ -22,11 +22,16 @@ class QuietHandler(SimpleHTTPRequestHandler):
 def main():
     for pair in [('airflow/architecture', 'airflow/architecture.en'),
                  ('postgres/postgres', 'postgres/postgres.en'),
-                 ('index/index', 'index/index.en')]:
+                 ('postgres/p2', 'postgres/p2.en'),
+                 ('index/index', 'index/index.en'),
+                 ('ware_lake_lw/doc', 'ware_lake_lw/doc.en'),
+                 ('spark/archi', 'spark/archi.en'),
+                 ('spark/p2', 'spark/p2.en')]:
         vi, en = [(ROOT / f'docs/{name}.md').read_text() for name in pair]
         assert re.findall(r'^(#{2,6}) ', vi, re.M) == re.findall(r'^(#{2,6}) ', en, re.M)
         assert re.findall(r'^```(\w*)', vi, re.M) == re.findall(r'^```(\w*)', en, re.M)
-        assert re.findall(r'src="([^"]+)"', vi) == re.findall(r'src="([^"]+)"', en)
+        image_pattern = r'(?:src="|!\[[^\]]*\]\()([^"\)]+)'
+        assert re.findall(image_pattern, vi) == re.findall(image_pattern, en), pair
 
     handler = partial(QuietHandler, directory=ROOT)
     server = ThreadingHTTPServer(('127.0.0.1', 0), handler)
@@ -34,7 +39,7 @@ def main():
     base = f'http://127.0.0.1:{server.server_port}/site'
     try:
         with sync_playwright() as playwright:
-            browser = playwright.chromium.launch()
+            browser = playwright.chromium.launch(args=['--no-sandbox'])
             for viewport in ({'width': 1440, 'height': 900}, {'width': 390, 'height': 844}):
                 page = browser.new_page(viewport=viewport)
 
@@ -50,6 +55,15 @@ def main():
                 page.locator('[data-reading-language="vi"]').click()
                 page.wait_for_url('**/architecture/#critical-section')
                 assert page.locator('html').get_attribute('lang') == 'vi'
+
+                # PostgreSQL Part 2 keeps the layer anchor in both editions.
+                page.goto(f'{base}/postgres/p2/#tang-3-bo-nho-em-va-giao-dich', wait_until='domcontentloaded')
+                page.locator('[data-reading-language="en"]').click()
+                page.wait_for_url('**/p2.en/#tang-3-bo-nho-em-va-giao-dich')
+                assert page.locator('html').get_attribute('lang') == 'en'
+                assert page.locator('#tang-3-bo-nho-em-va-giao-dich').count() == 1
+                page.locator('[data-reading-language="vi"]').click()
+                page.wait_for_url('**/p2/#tang-3-bo-nho-em-va-giao-dich')
 
                 # PostgreSQL switching and anchor preservation
                 page.goto(f'{base}/postgres/postgres/#1-phan-cap-logic-trong-postgresql', wait_until='domcontentloaded')
@@ -76,7 +90,7 @@ def main():
                 assert page.locator('html').get_attribute('lang') == 'vi'
 
                 # Fallback on untranslated article
-                page.goto(f'{base}/architecture/shared-disk-vs-shared-nothing/', wait_until='domcontentloaded')
+                page.goto(f'{base}/assets/images/pip/ANIMATION/', wait_until='domcontentloaded')
                 assert 'Chưa có bản tiếng Anh' in page.locator('.reading-language').inner_text()
                 page.close()
 

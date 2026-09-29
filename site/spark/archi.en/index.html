@@ -1,0 +1,1996 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="From Spark's inception to query execution on clusters: Driver, Executors, Partition, Shuffle, and the Catalyst Optimizer.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi.en/">
+      
+      
+        <link rel="prev" href="../p2/">
+      
+      
+        <link rel="next" href="../p2.en/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Apache Spark Architecture (Part 1) - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/reading-language.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+    <link rel="alternate" hreflang="vi" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/">
+  
+    <link rel="alternate" hreflang="en" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi.en/">
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tai-sao-can-hieu-kien-truc-spark" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand and navigation -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
+        </span>
+      </a>
+
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
+        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </nav>
+
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../ware_lake_lw/doc/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/postgres/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/Handbook_DE_with_RAG" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/Handbook_DE_with_RAG
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse, and Data Mart (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes in Databases (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Orchestration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tai-sao-can-hieu-kien-truc-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Understand Spark Architecture?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-spark-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What Is Spark?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-spark-ra-oi-nhu-the-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. How Did Spark Begin?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-iem-truy-cap-vao-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The Entry Point to Spark
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kien-truc-apache-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Apache Spark Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Apache Spark Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#driver-program-tien-trinh-ieu-khien" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Driver Program — Application Coordinator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worker-node-va-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worker Nodes and Executors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-manager-bo-quan-ly-tai-nguyen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster Manager — Resource Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-partition-dependency-va-shuffle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Partitions, Dependencies, and Shuffle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Partitions, Dependencies, and Shuffle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#partition-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is a Partition?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#narrow-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Narrow Dependency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wide-dependency-va-shuffle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wide Dependency and Shuffle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-trinh-shuffle-dien-ra-nhu-the-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Does a Shuffle Work?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-du-lieu-shuffle-can-uoc-ghi-xuong-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Write Shuffle Data to Disk?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-luong-xu-ly-truy-van-voi-dataframe-api-va-spark-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Query Execution with the DataFrame API and Spark SQL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Query Execution with the DataFrame API and Spark SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-1-khai-bao-truy-van-va-anh-gia-luoi-bieng" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1: Declaring a Query and Lazy Evaluation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 1: Declaring a Query and Lazy Evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cay-cu-phap-truu-tuong-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is an Abstract Syntax Tree?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataframe-va-unresolved-logical-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DataFrames and the Unresolved Logical Plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-2-toi-uu-hoa-bang-catalyst-optimizer-va-project-tungsten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2: Optimization with Catalyst and Project Tungsten
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-3-kich-hoat-action-va-lap-lich-thuc-thi-tren-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3: Triggering an Action and Scheduling on the Driver
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 3: Triggering an Action and Scheduling on the Driver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-uoc-chia-tai-ranh-gioi-shuffle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stages Are Divided at Shuffle Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cac-cau-hoi-can-tim-hieu-tiep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Questions to Explore Next
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closing Thoughts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tai-sao-can-hieu-kien-truc-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Understand Spark Architecture?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-spark-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What Is Spark?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-spark-ra-oi-nhu-the-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. How Did Spark Begin?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-iem-truy-cap-vao-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The Entry Point to Spark
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kien-truc-apache-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Apache Spark Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Apache Spark Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#driver-program-tien-trinh-ieu-khien" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Driver Program — Application Coordinator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worker-node-va-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worker Nodes and Executors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-manager-bo-quan-ly-tai-nguyen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster Manager — Resource Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-partition-dependency-va-shuffle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Partitions, Dependencies, and Shuffle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Partitions, Dependencies, and Shuffle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#partition-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is a Partition?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#narrow-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Narrow Dependency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wide-dependency-va-shuffle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wide Dependency and Shuffle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qua-trinh-shuffle-dien-ra-nhu-the-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Does a Shuffle Work?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-du-lieu-shuffle-can-uoc-ghi-xuong-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Write Shuffle Data to Disk?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-luong-xu-ly-truy-van-voi-dataframe-api-va-spark-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Query Execution with the DataFrame API and Spark SQL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Query Execution with the DataFrame API and Spark SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-1-khai-bao-truy-van-va-anh-gia-luoi-bieng" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1: Declaring a Query and Lazy Evaluation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 1: Declaring a Query and Lazy Evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cay-cu-phap-truu-tuong-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is an Abstract Syntax Tree?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataframe-va-unresolved-logical-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DataFrames and the Unresolved Logical Plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-2-toi-uu-hoa-bang-catalyst-optimizer-va-project-tungsten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2: Optimization with Catalyst and Project Tungsten
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-3-kich-hoat-action-va-lap-lich-thuc-thi-tren-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3: Triggering an Action and Scheduling on the Driver
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 3: Triggering an Action and Scheduling on the Driver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-uoc-chia-tai-ranh-gioi-shuffle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stages Are Divided at Shuffle Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cac-cau-hoi-can-tim-hieu-tiep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Questions to Explore Next
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closing Thoughts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+<nav class="reading-language" aria-label="Reading language">
+  <div class="reading-language__options">
+  
+    <a href="../archi/" lang="vi" hreflang="vi" data-reading-language="vi" >Tiếng Việt</a>
+  
+    <a href="./" lang="en" hreflang="en" data-reading-language="en" aria-current="page">English</a>
+  
+  </div>
+</nav>
+
+  
+                  
+  
+
+
+
+  
+  
+
+
+<header class="airflow-article-hero spark-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 005</span>
+  </div>
+  <h1>Apache Spark<br><em>Architecture (Part 1)</em></h1>
+  <p class="airflow-article-hero__dek">
+    From why Spark was created to how a query runs across a cluster:
+    understand the architecture to see what happens when a program runs or fails.
+  </p>
+  <div class="airflow-article-hero__meta" aria-label="Article information">
+    <span>DISTRIBUTED COMPUTING</span>
+    <span>DEEP DIVE</span>
+    <span>EDITION 05 · 2026</span>
+  </div>
+</header>
+
+<h2 id="tai-sao-can-hieu-kien-truc-spark">Why Understand Spark Architecture?</h2>
+<p>You may already know Spark or have used it in a project. But when a program fails, finding a fix on ChatGPT and applying it successfully does not necessarily mean you understand <strong>why it works</strong>. Understanding how Spark works internally helps you identify the cause yourself. This article introduces Spark's architecture and explains how it executes a query.</p>
+<h2 id="1-spark-la-gi">1. What Is Spark?</h2>
+<p><strong>Apache Spark</strong> is a distributed computing engine for processing large datasets across multiple machines. With suitable infrastructure, it can process data at petabyte scale.</p>
+<p>Instead of keeping all data and computation on one machine, Spark divides data into <strong>partitions</strong> and work into <strong>tasks</strong>. Executors on multiple machines run these tasks in parallel.</p>
+<h2 id="2-spark-ra-oi-nhu-the-nao">2. How Did Spark Begin?</h2>
+<p>Spark began as a research project at <strong>UC Berkeley</strong> in 2009 and was open-sourced in early 2010. It moved to the <strong>Apache Software Foundation</strong> in 2013.</p>
+<p>At the time, <strong>MapReduce</strong> already supported processing across multiple machines, but had limitations for workloads that reused the same data over several rounds of computation. Reading the data from disk again after each round increased latency. Spark was designed to support these workloads by allowing data to be <strong>kept and reused in RAM</strong> between computations while preserving fault tolerance.</p>
+<p>Spark has several key features:</p>
+<ul>
+<li><strong>In-memory processing:</strong> Cached data is kept in RAM, allowing iterative workloads to run much faster than with MapReduce.</li>
+<li><strong>Fault tolerance:</strong> Supported by RDDs and the Lineage Graph.</li>
+<li><strong>Lazy evaluation:</strong> Spark does not execute transformations when they are declared; execution begins when an Action is called.</li>
+<li><strong>Multiple language APIs:</strong> Java, Scala, and Python.</li>
+</ul>
+<p>We will explore these features in more detail below.</p>
+<h2 id="3-iem-truy-cap-vao-spark">3. The Entry Point to Spark</h2>
+<p><strong>SparkSession</strong> (or <strong>SparkContext</strong>) is the entry point that connects your code to Spark. It is the first object you need to initialize when using Spark.</p>
+<p>For example, to initialize a <code>SparkSession</code> in Python:</p>
+<div class="highlight"><pre><span></span><code><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"MyFirstSparkApp"</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">"local[*]"</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.executor.memory"</span><span class="p">,</span> <span class="s2">"2g"</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="4-kien-truc-apache-spark">4. Apache Spark Architecture</h2>
+<p>Spark's architecture is usually described in terms of its execution components and their roles in the distributed system, rather than as a set of layers.</p>
+<h3 id="driver-program-tien-trinh-ieu-khien">Driver Program — Application Coordinator</h3>
+<p>Spark follows a <strong>Master–Worker</strong> model, also known as Master–Slave. In the application coordination model described here, the <strong>Driver Program</strong> acts as the master: the central process responsible for <strong>coordinating the entire application</strong>.</p>
+<p>The Driver includes the following components:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SparkSession</strong></td>
+<td>The entry point connecting your code to Spark; the first object to initialize when using Spark.</td>
+</tr>
+<tr>
+<td><strong>SparkContext</strong></td>
+<td>The component underlying SparkSession since Spark 2.0. It connects the Driver to the Spark cluster and lets it send work to Executors.</td>
+</tr>
+<tr>
+<td><strong>DAGScheduler</strong></td>
+<td>Takes the computation plan, builds a DAG, and divides the work into Stages.</td>
+</tr>
+<tr>
+<td><strong>TaskScheduler</strong></td>
+<td>Receives tasks from the DAGScheduler and sends them to Executors.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="worker-node-va-executor">Worker Nodes and Executors</h3>
+<p>The worker side consists of <strong>worker nodes</strong> and <strong>Executors</strong>:</p>
+<ul>
+<li><strong>Worker node:</strong> A physical or virtual machine in the distributed cluster.</li>
+<li><strong>Executor:</strong> A child process launched on a worker node that runs tasks on parallel threads.</li>
+</ul>
+<h3 id="cluster-manager-bo-quan-ly-tai-nguyen">Cluster Manager — Resource Management</h3>
+<p>The <strong>Cluster Manager</strong> manages and allocates resources to Spark applications. An application requests resources from the Cluster Manager, which allocates CPU and RAM on worker nodes and launches Executors to run tasks.</p>
+<p>These components work together as follows:</p>
+<ol>
+<li>When you run <code>spark-submit</code>, the Driver process starts and initializes <code>SparkContext</code>. The Driver contacts the Cluster Manager to request resources.</li>
+<li>The Cluster Manager checks the worker nodes and instructs those with sufficient resources to launch Executors.</li>
+<li>Once started, Executors connect directly to the Driver to receive work.</li>
+<li>When an Action is called, the Driver assigns work to the Executors. They return results to the Driver when they finish.</li>
+</ol>
+<p><a href="../../assets/images/spark/flow.png" title="View full-size image"><img alt="How the Driver, Cluster Manager, and Executors work together in Spark" class="article-diagram--wide" loading="lazy" src="../../assets/images/spark/flow.png" /></a></p>
+<h2 id="6-partition-dependency-va-shuffle">6. Partitions, Dependencies, and Shuffle</h2>
+<h3 id="partition-la-gi">What Is a Partition?</h3>
+<p>To understand shuffle, we first need to understand <strong>partitions</strong> in Spark.</p>
+<p>A <strong>partition</strong> is the basic unit of data storage and parallelism. Spark uses a divide-and-conquer approach to large datasets, splitting them into smaller pieces called partitions. Each partition is processed by a task on an Executor.</p>
+<h3 id="narrow-dependency">Narrow Dependency</h3>
+<p>With a <strong>Narrow Dependency</strong>, each partition of the child dataset depends on a single partition of the parent dataset.</p>
+<p>Transformations such as <code>map()</code>, <code>filter()</code>, and <code>flatMap()</code> are examples of Narrow Dependencies.</p>
+<h3 id="wide-dependency-va-shuffle">Wide Dependency and Shuffle</h3>
+<p>With a <strong>Wide Dependency</strong>, computing a child partition requires data from multiple or all parent partitions spread across different machines. Examples discussed here include <code>groupByKey()</code>, <code>reduceByKey()</code>, <code>join()</code>, and <code>distinct()</code>.</p>
+<p>To bring data from multiple partitions together into a new partition, Spark transfers it across the network. This process is called a <strong>shuffle</strong>.</p>
+<h3 id="qua-trinh-shuffle-dien-ra-nhu-the-nao">How Does a Shuffle Work?</h3>
+<p>After the preceding Stages finish their Narrow Dependency operations, the data is represented as <code>(key, value)</code> pairs. The shuffle then proceeds as follows:</p>
+<ol>
+<li><strong>Determine the target partition:</strong> Spark uses <code>HashPartitioner</code> to calculate each row's Partition ID as <code>Partition ID = |hash(Key)| mod N</code>, where <code>N</code> is the number of partitions in the next Stage.</li>
+<li><strong>Buffer and sort:</strong> Data is buffered in the Executor's RAM, then sorted by Partition ID.</li>
+<li><strong>Write to disk:</strong> Once computation finishes, Spark writes the data to the worker node's disk.</li>
+<li><strong>Read in the next Stage:</strong> Subsequent Stages read the preceding Stage's output from disk.</li>
+</ol>
+<p><a href="../../assets/images/spark/shuffle.png" title="View full-size image"><img alt="The shuffle process" loading="lazy" src="../../assets/images/spark/shuffle.png" /></a></p>
+<h3 id="vi-sao-du-lieu-shuffle-can-uoc-ghi-xuong-ia">Why Write Shuffle Data to Disk?</h3>
+<p>Why does an Executor write its output to disk instead of passing it directly to Executors in the next Stage? There are several reasons:</p>
+<ul>
+<li><strong>Avoiding memory exhaustion:</strong> A shuffle can produce a large amount of data. Keeping all of it in RAM could fill the Executor's memory, forcing Spark to spill data to disk.</li>
+<li><strong>Avoiding deadlock:</strong> A cluster has a fixed number of CPU cores and a fixed amount of RAM shared across Stages. Suppose it has 100 task cores, and both the preceding and following Stages have 200 tasks each. If 100 completed tasks hold on to their cores and RAM while waiting for downstream tasks to fetch their data, all 100 cores remain occupied. The downstream tasks cannot start, causing deadlock.</li>
+<li><strong>Limiting simultaneous network connections:</strong> Now suppose the cluster has 200 cores. If 100 completed upstream tasks remain active while 100 downstream tasks start fetching data, the system must maintain <code>100 × 100</code> simultaneous network connections. Too many connections can overwhelm network bandwidth.</li>
+<li><strong>Supporting fault tolerance:</strong> If a downstream task fails, it can reread the data from disk instead of restarting upstream tasks.</li>
+</ul>
+<h2 id="7-luong-xu-ly-truy-van-voi-dataframe-api-va-spark-sql">7. Query Execution with the DataFrame API and Spark SQL</h2>
+<p>This section follows a query through <strong>Apache Spark</strong>, from the DataFrame API or Spark SQL through optimization and distributed scheduling to task assignment on Executors.</p>
+<h3 id="giai-oan-1-khai-bao-truy-van-va-anh-gia-luoi-bieng">Stage 1: Declaring a Query and Lazy Evaluation</h3>
+<p>When you declare a DataFrame transformation such as <code>df.filter()</code>, Spark does not execute it immediately. Instead, it creates a new node and adds it to an <strong>Abstract Syntax Tree (AST)</strong>. This is lazy evaluation.</p>
+<h4 id="cay-cu-phap-truu-tuong-la-gi">What Is an Abstract Syntax Tree?</h4>
+<p>An <strong>AST</strong> is a hierarchical tree representing the syntax of code. It consists of a root node, branches or intermediate nodes, and leaf nodes.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"age"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">18</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
+</code></pre></div>
+<p>This expression is represented by the following AST:</p>
+<div class="highlight"><pre><span></span><code>[ Project / Select ]                    ← Root: select the 'name' column
+          │
+          ▼
+[ Filter / Where ]                      ← Branch: filter the data
+     /          \
+(Condition)   (Data source)
+    │               │
+  [ &gt; ]     [ Relation: users.csv ]      ← Leaf: source file
+  /   \
+['age'] [18]                            ← Leaves: operands (column and constant)
+</code></pre></div>
+<h4 id="dataframe-va-unresolved-logical-plan">DataFrames and the Unresolved Logical Plan</h4>
+<p>A Spark <strong>DataFrame</strong> is essentially a wrapper holding a reference to an AST, rather than the data itself. Declaring a transformation adds a new branch to this tree. At this point, it is called an <strong>Unresolved Logical Plan</strong> because Spark has not yet checked whether the referenced columns and tables exist.</p>
+<h3 id="giai-oan-2-toi-uu-hoa-bang-catalyst-optimizer-va-project-tungsten">Stage 2: Optimization with Catalyst and Project Tungsten</h3>
+<p>The <strong>Catalyst Optimizer</strong> processes the <code>Unresolved Logical Plan</code> in four steps:</p>
+<ol>
+<li><strong>Analysis:</strong> Catalyst checks table names, column names, and data types against the <strong>Catalog</strong>, the metadata repository initialized with <code>SparkSession</code>. Invalid column names or data types cause an error. Once validated, the <code>Unresolved Logical Plan</code> becomes an <strong>Analyzed Logical Plan</strong>.</li>
+<li><strong>Logical Optimization:</strong> Spark applies optimization rules to the <code>Analyzed Logical Plan</code>. For example, <strong>Predicate Pushdown</strong> moves filters closer to the <code>LogicalRelation</code> (the data source) to avoid reading unnecessary data. Spark can also combine filter nodes. These rule-based tree transformations are called <strong>Rule-Based Optimization</strong> or <strong>Tree Rewriting</strong>. The result is an <strong>Optimized Logical Plan</strong>.</li>
+<li><strong>Physical Planning:</strong> Spark turns the logical plan into one or more <strong>Physical Plans</strong>, each describing execution algorithms for the cluster. This moves from what to compute to how to compute it. When Catalog statistics are available, <strong>Cost-Based Optimization (CBO)</strong> can help choose the <strong>Selected Physical Plan</strong>. CPU use, disk I/O, and network shuffle traffic are useful ways to think about execution cost; they are considerations, not a fixed Spark cost formula.</li>
+<li><strong>Preparing for scheduling:</strong> The physical plan is implemented as a sequence or tree of RDDs (Resilient Distributed Datasets) and their dependencies. The <code>DAGScheduler</code> follows those dependencies backward from the target RDD to the source RDDs to identify Stage boundaries.</li>
+</ol>
+<h3 id="giai-oan-3-kich-hoat-action-va-lap-lich-thuc-thi-tren-driver">Stage 3: Triggering an Action and Scheduling on the Driver</h3>
+<p>When the program calls an <strong>Action</strong>, the prepared plan begins execution and <code>SparkContext</code> creates a <strong>Job</strong>. The <code>DAGScheduler</code> follows dependencies from the target RDD back to the source RDDs and divides the Job into <strong>Stages</strong> at shuffle boundaries. For each Stage, it creates <strong>Tasks</strong>, usually one per <strong>partition</strong>, and bundles them into a <strong>TaskSet</strong>. The <code>TaskScheduler</code> receives the TaskSet and assigns Tasks to suitable <strong>Executors</strong>.</p>
+<p><a href="../../assets/images/spark/Planing.png" title="View full-size image"><img alt="Query planning and execution in Apache Spark" class="article-diagram--wide" loading="lazy" src="../../assets/images/spark/Planing.png" /></a></p>
+<h4 id="stage-uoc-chia-tai-ranh-gioi-shuffle">Stages Are Divided at Shuffle Boundaries</h4>
+<p>Stages are not simply divided into one group of narrow transformations and another group of wide transformations. A <strong>shuffle dependency</strong> creates the boundary: the preceding Stage produces shuffle data, and the following Stage reads it to continue processing. Transformations connected by narrow dependencies can belong to the same Stage.</p>
+<p>Consider this sequence:</p>
+<div class="highlight"><pre><span></span><code>A (narrow) → B (narrow) → C (wide, requires shuffle) → D (narrow) → E (narrow)
+</code></pre></div>
+<p>Tasks in the first Stage perform A and B, then produce shuffle output for C. Once that output is available, the next Stage reads it, performs C, and continues with D and E if there is no further shuffle boundary. C therefore marks the Stage boundary; there is no rule that all narrow operations belong to Stage A and all wide operations to Stage B.</p>
+<h2 id="8-cac-cau-hoi-can-tim-hieu-tiep">8. Questions to Explore Next</h2>
+<ul>
+<li>Which components does the Driver contain?</li>
+<li>Which components does an Executor contain, and how does it manage memory?</li>
+<li>Adaptive Query Execution (AQE).</li>
+<li>Join types in Spark.</li>
+</ul>
+<hr />
+<h2 id="loi-ket">Closing Thoughts</h2>
+<p>From the roles of the Driver and Executors to partitions, shuffle, Jobs, Stages, and Tasks, Part 1 has explained how Spark organizes and runs work across a cluster. These concepts provide the foundation for understanding physical join execution.</p>
+<p>In <a href="../p2.en/">Apache Spark Architecture (Part 2)</a>, we continue with join strategies, the role of RDDs, communication in PySpark, and memory management on the Driver and Executors.</p>
+<p>There is still much more to learn about Spark. Please share any corrections so we can learn together.</p>
+<p>Thank you for reading to the end! I hope this article helps you understand Spark's architecture more clearly. See you in future articles.</p>
+<footer class="airflow-article-end spark-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 005</span>
+    <strong>Understand the system,<br>not just the syntax.</strong>
+  </div>
+  <a href="../../">Back to the library <span aria-hidden="true">→</span></a>
+</footer>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/reading-language.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>

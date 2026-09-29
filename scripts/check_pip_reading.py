@@ -48,7 +48,7 @@ def main():
                         page.keyboard.press("Escape")
                         expect(page.locator(".pip-launcher")).to_be_focused()
 
-                    # The first read starts exactly five seconds after mounting/resuming.
+                    # Reaching for the book starts five seconds after mounting/resuming.
                     if scenario == "moving pointer":
                         page.clock.run_for(3_000)
                         box = page.locator(".pip-mascot-wrapper").bounding_box()
@@ -58,10 +58,12 @@ def main():
                         page.clock.run_for(999)
                     else:
                         page.clock.run_for(4_999)
-                    assert robot.get_attribute("data-pose") != "reading"
+                    assert robot.get_attribute("data-pose") not in ("opening", "reading")
                     page.clock.run_for(1)
-                    expect(robot).to_have_attribute("data-pose", "reading")
+                    expect(robot).to_have_attribute("data-pose", "opening")
                     for _ in range(3):
+                        page.clock.run_for(350)
+                        expect(robot).to_have_attribute("data-pose", "reading")
                         page.clock.run_for(1_000)
                         expect(page.locator(".pip-book-open")).to_have_css("opacity", "1")
                         expect(page.locator(".pip-book-closed")).to_have_css("opacity", "0")
@@ -75,18 +77,29 @@ def main():
                         }""")
                         assert 0 < hands[0] < .25, hands
                         assert .75 < hands[1] < 1, hands
-                        page.clock.run_for(2_500)
-                        expect(robot).to_have_attribute("data-pose", "idle")
-                        # Allow the book to finish closing, then require a full 5s rest.
+                        # Reading has enough time for the delayed, two-line eye scan.
+                        scan_end = page.locator(".pip-launcher .pip-eye-scan").evaluate("""node =>
+                            node.getAnimations().find(a => a.animationName === 'pip-read')
+                                .effect.getComputedTiming().endTime
+                        """)
+                        assert scan_end < 6800, "Pip looks up before finishing the eye scan"
+                        page.clock.run_for(5_800)
+                        expect(robot).to_have_attribute("data-pose", "looking-up")
+                        expect(page.locator(".pip-book-open")).to_have_css("opacity", "1")
+                        # Looking up does not release the book prematurely.
                         page.clock.run_for(650)
+                        expect(robot).to_have_attribute("data-pose", "closing")
+                        page.clock.run_for(1_000)
+                        expect(robot).to_have_attribute("data-pose", "idle")
                         expect(page.locator(".pip-book-open")).to_have_css("opacity", "0")
-                        for _ in range(19):
+                        # With random fixed at .5, the varied rest lasts 7.5 seconds.
+                        for _ in range(29):
                             page.clock.run_for(250)
-                            assert robot.get_attribute("data-pose") != "reading", "Book reopened before a full 5s rest"
+                            assert robot.get_attribute("data-pose") not in ("opening", "reading"), "Book reopened during its rest"
                         page.clock.run_for(249)
                         expect(robot).to_have_attribute("data-pose", "idle")
                         page.clock.run_for(1)
-                        expect(robot).to_have_attribute("data-pose", "reading")
+                        expect(robot).to_have_attribute("data-pose", "opening")
                     page.emulate_media(reduced_motion="reduce")
                     expect(robot).to_have_class(re.compile(r"\bis-paused\b"))
                     page.clock.run_for(20_000)
@@ -94,12 +107,12 @@ def main():
                     page.emulate_media(reduced_motion="no-preference")
                     expect(robot).not_to_have_class(re.compile(r"\bis-paused\b"))
                     page.clock.run_for(5_000)
-                    expect(robot).to_have_attribute("data-pose", "reading")
+                    expect(robot).to_have_attribute("data-pose", "opening")
                     page.locator(".pip-launcher").click()
                     page.clock.run_for(10_000)
                     expect(robot).to_have_attribute("data-pose", "idle")
                     expect(robot).to_have_class(re.compile(r"\bis-paused\b"))
-                    print(f"PASS: {scenario}: waits 5s after book closes; hands at book edges; pause/resume works")
+                    print(f"PASS: {scenario}: staged reading; hands at book edges; varied rest; pause/resume")
                     page.close()
             finally:
                 browser.close()

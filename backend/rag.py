@@ -15,8 +15,8 @@ INDEX_SPEC = {
 }
 ARTICLE_PATHS = (
     "airflow/architecture.md",
-    "architecture/shared-disk-vs-shared-nothing.md",
     "postgres/postgres.md",
+    "postgres/p2.md",
     "index/index.md",
 )
 

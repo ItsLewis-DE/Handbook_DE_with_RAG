@@ -1,0 +1,2004 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="From Big Data characteristics to storage platforms: Data Lake, Data Warehouse, Data Mart, and the convergence in Data Lakehouse.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc.en/">
+      
+      
+        <link rel="prev" href="../doc/">
+      
+      
+        <link rel="next" href="../../postgres/postgres/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Data Lake, Data Warehouse, and Data Mart - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/reading-language.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+    <link rel="alternate" hreflang="vi" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/">
+  
+    <link rel="alternate" hreflang="en" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc.en/">
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand and navigation -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
+        </span>
+      </a>
+
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
+        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </nav>
+
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../doc/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/postgres/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/Handbook_DE_with_RAG" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/Handbook_DE_with_RAG
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse, and Data Mart (English)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse, and Data Mart (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Distinguish Between Data Storage Models?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-at-van-e-va-inh-nghia-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The Context and Definition of Big Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The Context and Definition of Big Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-boi-canh-bung-no-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1. Rapid Data Growth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-big-data-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2. What Is Big Data?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2. What Is Big Data?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phan-loai-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ac-trung-cua-big-data-mo-hinh-5v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Five Vs of Big Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cac-nen-tang-luu-tru-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Data Storage Platforms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Data Storage Platforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. Data Lake — A Repository That Takes Everything In
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1. Data Lake — A Repository That Takes Everything In">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. Data Warehouse — An Organized Library
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2. Data Warehouse — An Organized Library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-data-mart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Data Mart
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3. Data Mart">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-hinh-dung-luong-du-lieu-nhu-mot-nha-hang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4. A Restaurant Analogy for the Data Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-etl-va-elt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. ETL and ELT
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. ETL and ELT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-etl-extract-transform-load" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. ETL — Extract → Transform → Load
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-elt-extract-load-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. ELT — Extract → Load → Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-xu-huong-tuong-lai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Future Trends
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Future Trends">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-data-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Data Lakehouse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-giao-dich-acid-trong-data-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. ACID Transactions in a Data Lakehouse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closing Thoughts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes in Databases (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Orchestration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Distinguish Between Data Storage Models?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-at-van-e-va-inh-nghia-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The Context and Definition of Big Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The Context and Definition of Big Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-boi-canh-bung-no-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1. Rapid Data Growth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-big-data-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2. What Is Big Data?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2. What Is Big Data?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phan-loai-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ac-trung-cua-big-data-mo-hinh-5v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Five Vs of Big Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cac-nen-tang-luu-tru-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Data Storage Platforms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Data Storage Platforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. Data Lake — A Repository That Takes Everything In
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1. Data Lake — A Repository That Takes Everything In">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. Data Warehouse — An Organized Library
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2. Data Warehouse — An Organized Library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#han-che_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-data-mart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Data Mart
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3. Data Mart">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ac-iem-cot-loi_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-hinh-dung-luong-du-lieu-nhu-mot-nha-hang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4. A Restaurant Analogy for the Data Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-etl-va-elt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. ETL and ELT
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. ETL and ELT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-etl-extract-transform-load" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1. ETL — Extract → Transform → Load
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-elt-extract-load-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2. ELT — Extract → Load → Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-xu-huong-tuong-lai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Future Trends
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Future Trends">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-data-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Data Lakehouse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-giao-dich-acid-trong-data-lakehouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. ACID Transactions in a Data Lakehouse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closing Thoughts
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+<nav class="reading-language" aria-label="Reading language">
+  <div class="reading-language__options">
+  
+    <a href="../doc/" lang="vi" hreflang="vi" data-reading-language="vi" >Tiếng Việt</a>
+  
+    <a href="./" lang="en" hreflang="en" data-reading-language="en" aria-current="page">English</a>
+  
+  </div>
+</nav>
+
+  
+                  
+  
+
+
+
+  
+  
+
+
+<header class="airflow-article-hero storage-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 006</span>
+  </div>
+  <h1>Data Lake, Data Warehouse<br><em>&amp; Data Mart</em></h1>
+  <p class="airflow-article-hero__dek">
+    From the characteristics of Big Data to how storage platforms operate,
+    differ, and converge in the Data Lakehouse architecture.
+  </p>
+  <div class="airflow-article-hero__meta" aria-label="Article information">
+    <span>DATA ARCHITECTURE</span>
+    <span>EDITION 06 · 2026</span>
+  </div>
+</header>
+
+<blockquote>
+<p><strong>Before you read:</strong> This is a long article that needs more than a quick skim. Set aside some time, grab a glass of water, and give it your full attention.</p>
+</blockquote>
+<h2 id="vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu">Why Distinguish Between Data Storage Models?</h2>
+<p>A business might collect orders, website clicks, application logs, and images at the same time. All of these are data, but they should not necessarily be stored and used in the same way. As data volumes grow, the question is not just <strong>where to store the data</strong>, but also <strong>who will use it and for what purpose</strong>.</p>
+<p>This article starts with the characteristics of Big Data, then explores Data Lakes, Data Warehouses, and Data Marts to explain the role, strengths, and limitations of each model. Finally, we look at how the Data Lakehouse combines these capabilities.</p>
+<h2 id="1-at-van-e-va-inh-nghia-big-data">1. The Context and Definition of Big Data</h2>
+<h3 id="11-boi-canh-bung-no-du-lieu">1.1. Rapid Data Growth</h3>
+<p>In the digital age, the amount of data generated worldwide each day is growing rapidly. The internet, social networks, mobile devices, sensor systems, and online services continuously produce enormous amounts of data.</p>
+<p>For example, in a single minute, 12 million people send iMessages, 6 million people shop online, YouTube users stream 694,000 videos, and TikTok users watch 167 million videos.</p>
+<p>Businesses collect data from many sources:</p>
+<ul>
+<li>Website behavior, such as clicks and time spent on a page.</li>
+<li>GPS data from phones.</li>
+<li>Purchase history.</li>
+<li>Social media comments.</li>
+</ul>
+<h3 id="12-big-data-la-gi">1.2. What Is Big Data?</h3>
+<p><strong>Big Data</strong> refers to datasets so large and complex that they are difficult to manage or analyze with traditional data processing tools, particularly spreadsheets and conventional processing systems.</p>
+<h4 id="phan-loai-du-lieu">Data Categories</h4>
+<ul>
+<li><strong>Structured data:</strong> Follows a clearly defined schema and can be represented as rows and columns. Examples include Excel spreadsheets and SQL databases.</li>
+<li><strong>Unstructured data:</strong> Does not have a readily identifiable structure that fits the conventional rows and columns of a relational database. It does not follow a fixed format, sequence, set of semantics, or rules. Examples include images and videos.</li>
+<li><strong>Semi-structured data:</strong> Is not simply stored as rows and columns in a relational database. Instead, it contains tags, elements, or metadata that group and organize it hierarchically. Examples include XML and JSON files.</li>
+</ul>
+<h4 id="ac-trung-cua-big-data-mo-hinh-5v">The Five Vs of Big Data</h4>
+<ul>
+<li><strong>Volume:</strong> The amount of data to process can range from tens of terabytes (TB) to hundreds of petabytes (PB).</li>
+<li><strong>Velocity:</strong> Data is generated and arrives at the system rapidly, sometimes in real time.</li>
+<li><strong>Variety:</strong> Data comes in many forms, from structured data to unstructured text, audio, and video. Some forms need additional processing to extract meaning and support metadata.</li>
+<li><strong>Veracity:</strong> The accuracy, reliability, quality, and integrity of the data.</li>
+<li><strong>Value:</strong> The business value gained by turning data into useful information.</li>
+</ul>
+<h2 id="2-cac-nen-tang-luu-tru-du-lieu">2. Data Storage Platforms</h2>
+<h3 id="21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu">2.1. Data Lake — A Repository That Takes Everything In</h3>
+<p><strong>Definition:</strong> A Data Lake is a centralized repository that stores data at any scale: structured data such as SQL tables, semi-structured data such as JSON and XML, and unstructured data such as images, videos, audio files, and PDFs. Examples of storage tools include MinIO and Amazon S3.</p>
+<h4 id="ac-iem-cot-loi">Core Characteristics</h4>
+<ul>
+<li><strong>Raw data storage:</strong> Data is kept as received from its source, without transformation.</li>
+<li><strong>Scalability:</strong> Data Lakes are often built on cloud storage systems such as Amazon S3, Google Cloud Storage, and Azure Data Lake Storage. Low storage costs make petabyte-scale storage feasible.</li>
+<li><strong>Support for diverse data types:</strong> They accept structured, semi-structured, and unstructured data.</li>
+<li><strong>Separation of storage and compute:</strong> Data is stored independently, with compute clusters such as Spark or Presto used when processing is needed.</li>
+</ul>
+<h4 id="han-che">Limitations</h4>
+<ul>
+<li><strong>Risk of becoming a Data Swamp:</strong> Without careful schema management, data classification, metadata, ownership, and input quality controls, data becomes difficult to manage.</li>
+<li><strong>Lack of ACID transactions:</strong> Traditional Data Lakes do not provide the full set of transactional capabilities found in Data Warehouses.</li>
+<li><strong>Lack of data versioning:</strong> They do not have a built-in mechanism for querying past versions of data.</li>
+<li><strong>Slower queries than a Data Warehouse:</strong> They primarily serve as storage and are not optimized for queries in the same way as a database.</li>
+</ul>
+<h3 id="22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai">2.2. Data Warehouse — An Organized Library</h3>
+<p><strong>Definition:</strong> A Data Warehouse is a central data storage system that integrates data from multiple sources. Most modern Data Warehouses use columnar storage to optimize queries that read many rows.</p>
+<p><strong>Examples include:</strong> Snowflake, Google BigQuery, and Amazon Redshift.</p>
+<h4 id="ac-iem-cot-loi_1">Core Characteristics</h4>
+<ul>
+<li><strong>Subject-oriented:</strong> Data is organized around key business subjects such as customers, sales, and products.</li>
+<li><strong>Integrated:</strong> Data from multiple sources is cleaned and usually standardized into a consistent format before being loaded.</li>
+<li><strong>Time-variant:</strong> Historical data is often retained for long periods, depending on configuration, to support comparisons and trend analysis.</li>
+<li><strong>Non-volatile:</strong> End users rarely change or delete loaded data. When changes occur, new data is often added alongside existing data. The primary use is reading data for analysis.</li>
+</ul>
+<h4 id="han-che_1">Limitations</h4>
+<ul>
+<li>Primarily optimized for storing structured data.</li>
+<li>Data can arrive with a delay because it usually goes through transformation steps first.</li>
+<li>Querying the data from machine learning and deep learning libraries can be difficult.</li>
+</ul>
+<h3 id="23-data-mart">2.3. Data Mart</h3>
+<p><strong>Definition:</strong> In a traditional data warehouse architecture, a Data Mart is a repository focused on a particular subject or business unit within an organization.</p>
+<h4 id="ac-iem-cot-loi_2">Core Characteristics</h4>
+<ul>
+<li><strong>Focused scope:</strong> While a Data Warehouse covers the entire business, a Data Mart contains data for one area, such as sales, finance, or marketing.</li>
+<li><strong>Smaller size:</strong> Because it holds specialized data, a Data Mart is usually smaller than the overall warehouse, allowing faster queries.</li>
+<li><strong>Optimized data structure:</strong> Data is often modeled in a form that end users can easily understand, such as a <strong>Star Schema</strong>, to directly support <strong>Business Intelligence (BI)</strong> tools.</li>
+</ul>
+<h3 id="24-hinh-dung-luong-du-lieu-nhu-mot-nha-hang">2.4. A Restaurant Analogy for the Data Flow</h3>
+<p>Think of the whole data system as a large restaurant.</p>
+<p>The <strong>Data Lake</strong> is the restaurant's central ingredient store. It accepts and stores all kinds of ingredients largely as they arrive: vegetables, meat, seafood, spices, and even ingredients that have not been prepared at all. As long as there is room, it takes them in.</p>
+<p>The <strong>Data Pipeline (ETL/ELT)</strong> moves and prepares those ingredients. They are brought from storage into the kitchen, washed, cut, sorted, and prepared to a consistent standard before cooking.</p>
+<p>The <strong>Data Warehouse</strong> is the central kitchen. Prepared ingredients are cooked, organized, and standardized into finished dishes, checked for quality, and made ready to serve.</p>
+<p>Finally, <strong>Data Marts</strong> are separate serving counters, such as Asian food, European food, or desserts. Each counter offers a specific group of dishes, so customers can find what they need without going through the entire kitchen.</p>
+<p><img alt="Data Lake as ingredient storage, the Pipeline as preparation, the Data Warehouse as the central kitchen, and Data Marts as serving counters" loading="lazy" src="../../assets/images/ware_lake_lw/flow.png" /></p>
+<p><em>The illustration shows the role of each layer.</em></p>
+<h2 id="3-etl-va-elt">3. ETL and ELT</h2>
+<p>We mentioned ETL and ELT earlier. What do they mean?</p>
+<h3 id="31-etl-extract-transform-load">3.1. ETL — Extract → Transform → Load</h3>
+<p>ETL processes data in this order:</p>
+<div class="highlight"><pre><span></span><code>Data sources → Extract → Transform → Load → Data Warehouse
+</code></pre></div>
+<ul>
+<li><strong>Extract:</strong> Retrieve data from sources such as databases, APIs, and CSV/JSON files.</li>
+<li><strong>Transform:</strong> Clean, standardize, process, and combine the data.</li>
+<li><strong>Load:</strong> Load the data into the Data Warehouse after processing is complete.</li>
+</ul>
+<p>ELT uses a different order:</p>
+<h3 id="32-elt-extract-load-transform">3.2. ELT — Extract → Load → Transform</h3>
+<p>ELT changes the sequence to:</p>
+<div class="highlight"><pre><span></span><code>Data sources → Extract → Load → Transform
+</code></pre></div>
+<ul>
+<li><strong>Extract:</strong> Retrieve data from its sources.</li>
+<li><strong>Load:</strong> Put the raw data into storage first, for example in Amazon S3.</li>
+<li><strong>Transform:</strong> Process the data later, when it is needed.</li>
+</ul>
+<h2 id="4-xu-huong-tuong-lai">4. Future Trends</h2>
+<h3 id="41-data-lakehouse">4.1. Data Lakehouse</h3>
+<p>One trend in data architecture is the <strong>Data Lakehouse</strong>. Introduced by Databricks as a combination of the Data Warehouse and Data Lake, it builds on the strengths and addresses the limitations of each:</p>
+<ul>
+<li>A Data Warehouse stores clearly structured data, but usually focuses on certain forms, such as numerical and tabular data.</li>
+<li>As LLMs and AI develop, model training requires diverse data types and cannot rely on just one form.</li>
+<li>A Data Lake accepts many data types, but data without structure can be difficult to manage. Traditional Data Lakes also lack reliability when there is no <strong>concurrency control</strong> for simultaneous reads and writes.</li>
+</ul>
+<p>A Data Lakehouse combines the flexibility of a Data Lake with a data management layer such as <strong>Iceberg</strong> or <strong>Delta</strong>. This helps address the Data Swamp problem while providing Data Warehouse capabilities such as ACID transactions and data versioning.</p>
+<p>What does ACID mean?</p>
+<h3 id="42-giao-dich-acid-trong-data-lakehouse">4.2. ACID Transactions in a Data Lakehouse</h3>
+<p>A Data Lakehouse also supports the ACID properties:</p>
+<ul>
+<li><strong>A — Atomicity:</strong> A transaction either succeeds in full or has no effect. For example, if a write fails midway before the final log entry is written, it is treated as if it never happened.</li>
+<li><strong>C — Consistency:</strong> Data follows the required rules and schema. For example, a numeric <code>age</code> column cannot accept a string.</li>
+<li><strong>I — Isolation:</strong> Concurrent writers do not interfere with each other's transactions. For example, if you are writing based on version 10 but another writer has already created version 11, your write fails and needs to be retried.</li>
+<li><strong>D — Durability:</strong> Successfully written data is not lost.</li>
+</ul>
+<hr />
+<h2 id="loi-ket">Closing Thoughts</h2>
+<p>No single storage system fits every type of data and every user. When designing a data platform, start with the data you need to store, how it will be processed, and each group's query needs: exploring raw data, producing shared reports, or analyzing a department's activity. These needs explain why Data Lakes, Data Warehouses, Data Marts, and Data Lakehouses can play different roles within the same architecture.</p>
+<p>Thank you for reading to the end! See you in future articles.</p>
+<footer class="airflow-article-end ware-lake-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 006</span>
+    <strong>Understand the system,<br>not just the syntax.</strong>
+  </div>
+  <a href="../../">Back to the library <span aria-hidden="true">→</span></a>
+</footer>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/reading-language.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>

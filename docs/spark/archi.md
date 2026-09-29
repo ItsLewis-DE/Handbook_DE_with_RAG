@@ -1,6 +1,7 @@
 ---
-title: Kiến trúc Apache Spark
+title: Kiến trúc Apache Spark (phần 1)
 lang: vi
+translation_key: spark-architecture
 hide:
   - navigation
 ---
@@ -10,7 +11,7 @@ hide:
     <a href="../../">BEHIND THE PIPELINE</a>
     <span>ARTICLE / 005</span>
   </div>
-  <h1>Kiến trúc<br><em>Apache Spark</em></h1>
+  <h1>Kiến trúc<br><em>Apache Spark (phần 1)</em></h1>
   <p class="airflow-article-hero__dek">
     Từ lý do Spark ra đời đến cách một câu lệnh được thực thi trên cụm máy:
     hiểu kiến trúc để biết điều gì xảy ra khi chương trình chạy hoặc gặp lỗi.
@@ -95,7 +96,8 @@ Các thành phần này phối hợp với nhau như thế nào?
   Bước 3: Khi khởi động xong các executor không làm việc với Cluster Manager nữa mà sẽ chủ động kết nối với Driver.
   Bước 4: Khi gặp một Action Driver sẽ giao việc cho các executor này. Khi làm việc xong các executor này sẽ trả kết quả về cho Driver.
 
-![Trực quan](../assets/images/spark/flow.png)
+[![Luồng phối hợp giữa Driver, Cluster Manager và Executor trong Spark](../assets/images/spark/flow.png){ loading=lazy .article-diagram--wide }](../assets/images/spark/flow.png){ title="Xem ảnh kích thước gốc" }
+
 ## 6. Partition, dependency và shuffle
 
 ### Partition là gì?
@@ -125,7 +127,7 @@ Sau khi các Stage trước, với những thao tác Narrow Dependency, hoàn t�
 3. **Ghi dữ liệu xuống đĩa:** Sau khi hoàn tất tính toán, Spark ghi dữ liệu xuống ổ đĩa của worker node.
 4. **Đọc dữ liệu ở Stage tiếp theo:** Các Stage sau đọc dữ liệu kết quả của Stage trước từ ổ đĩa.
 
-![Quá trình shuffle](../assets/images/spark/shuffle.png)
+[![Quá trình shuffle](../assets/images/spark/shuffle.png){ loading=lazy }](../assets/images/spark/shuffle.png){ title="Xem ảnh kích thước gốc" }
 
 ### Vì sao dữ liệu shuffle cần được ghi xuống đĩa?
 
@@ -186,7 +188,7 @@ Bộ tối ưu **Catalyst Optimizer** tiếp nhận `Unresolved Logical Plan` v�
 
 Khi chương trình gọi một **Action**, kế hoạch đã được chuẩn bị được đưa vào thực thi và `SparkContext` tạo một **Job**. Trên cây RDD, `DAGScheduler` lần theo các quan hệ phụ thuộc từ RDD đích về RDD nguồn, rồi chia Job thành các **Stage** tại ranh giới shuffle. Với mỗi Stage, `DAGScheduler` tạo các **Task** — thông thường mỗi Task xử lý một **partition** — và đóng gói chúng thành **TaskSet**. `TaskScheduler` nhận TaskSet và phân bổ các Task tới những **Executor** phù hợp.
 
-![Sơ đồ các bước lập kế hoạch và thực thi truy vấn trong Apache Spark](../assets/images/spark/Planing.png)
+[![Sơ đồ các bước lập kế hoạch và thực thi truy vấn trong Apache Spark](../assets/images/spark/Planing.png){ loading=lazy .article-diagram--wide }](../assets/images/spark/Planing.png){ title="Xem ảnh kích thước gốc" }
 
 #### Stage được chia tại ranh giới shuffle
 
@@ -200,6 +202,7 @@ A (narrow) → B (narrow) → C (wide, cần shuffle) → D (narrow) → E (narr
 
 Trong trường hợp này, các Task của Stage trước thực hiện A và B rồi tạo đầu ra shuffle phục vụ C. Sau khi đầu ra đó sẵn sàng, Stage tiếp theo đọc dữ liệu shuffle, thực hiện phần xử lý của C và tiếp tục với D, E nếu không có thêm ranh giới shuffle. Vì vậy, C đánh dấu điểm tách Stage; không có quy tắc “mọi phép narrow thuộc Stage A, mọi phép wide thuộc Stage B”.
 
+
 ## 8. Các câu hỏi cần tìm hiểu tiếp
 
 - Driver chứa những thành phần nào?
@@ -211,20 +214,13 @@ Trong trường hợp này, các Task của Stage trước thực hiện A và B
 
 ## Lời kết
 
-<figure class="airflow-closing-comic" id="loi-ket">
-  <img
-    src="../../assets/images/spark/end_spark.png"
-    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Spark, cảm ơn người đọc và hẹn gặp ở bài viết sau"
-    loading="lazy"
-  >
-  <figcaption>
-    <span>LỜI KẾT</span>
-    <div>
-      <strong>Cảm ơn bạn đã đọc đến cuối!</strong>
-      <p>Hy vọng bài viết giúp bạn hiểu kiến trúc Spark rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
-    </div>
-  </figcaption>
-</figure>
+Từ vai trò của Driver và Executor đến partition, shuffle và luồng thực thi Job, Stage, Task, phần 1 đã trình bày cách Spark tổ chức và thực thi công việc trên cụm máy. Những khái niệm này là nền tảng để tìm hiểu cách Spark xử lý các phép Join ở tầng vật lý.
+
+Trong [Kiến trúc Apache Spark (phần 2)](p2.md), chúng ta sẽ tiếp tục với các chiến lược Join, vai trò của RDD, cơ chế giao tiếp trong PySpark và cách quản lý bộ nhớ trên Driver, Executor.
+
+Vẫn còn nhiều điều về Spark để tiếp tục tìm hiểu. Nếu có điểm nào chưa chính xác, mong bạn góp ý để cùng học hỏi.
+
+Cảm ơn bạn đã đọc đến cuối! Hy vọng bài viết giúp bạn hiểu kiến trúc Spark rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.
 
 <footer class="airflow-article-end spark-article-end">
   <div>

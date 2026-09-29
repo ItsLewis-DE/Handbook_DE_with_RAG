@@ -9,8 +9,15 @@ cards:
     order: 0
     variant: postgres
     art: assets/images/postgres/card-art.jpg
-    heading: PostgreSQL<br>Phân cấp &amp; lưu trữ
-    summary: Database cluster, bộ đệm shared_buffers, database, schema và cấu trúc thư mục PGDATA.
+    heading: PostgreSQL (phần 1)<br>Phân cấp, tiến trình &amp; bộ nhớ
+    summary: Cluster, database, schema, kết nối, cơ chế khóa và bộ nhớ phục vụ truy vấn.
+    footer: DATABASE INTERNALS
+  postgres/p2.md:
+    order: 0.5
+    variant: postgres
+    art: assets/images/postgres/card-art.jpg
+    heading: PostgreSQL (phần 2)<br>Truy vấn, lưu trữ &amp; phục hồi
+    summary: Hành trình SQL qua Parser, Planner, Executor đến bộ đệm, WAL, PGDATA và TOAST.
     footer: DATABASE INTERNALS
   index/index.md:
     order: 1
@@ -19,13 +26,6 @@ cards:
     heading: Index trong<br>cơ sở dữ liệu
     summary: Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.
     footer: Tác giả · Phong Thanh
-  architecture/shared-disk-vs-shared-nothing.md:
-    order: 2
-    variant: disk
-    art: assets/images/disk/card-art.jpg
-    heading: Shared-disk<br>&amp; shared-nothing
-    summary: Ownership, locality, shuffle và những đánh đổi khi mở rộng hệ thống dữ liệu.
-    footer: DATA ARCHITECTURE
   ware_lake_lw/doc.md:
     order: 3
     variant: storage
@@ -44,7 +44,14 @@ cards:
     order: 5
     variant: spark
     art: assets/images/spark/card-art.jpg
-    heading: Kiến trúc<br>Apache Spark
+    heading: Kiến trúc<br>Apache Spark (phần 1)
     summary: Từ Driver và Executor đến luồng thực thi Job, Stage, Task và cơ chế shuffle.
+    footer: DISTRIBUTED COMPUTING
+  spark/p2.md:
+    order: 6
+    variant: spark
+    art: assets/images/spark/card-art.jpg
+    heading: Kiến trúc<br>Apache Spark (phần 2)
+    summary: Các chiến lược Join, vai trò của RDD, giao tiếp PySpark và quản lý bộ nhớ Driver, Executor.
     footer: DISTRIBUTED COMPUTING
 ---

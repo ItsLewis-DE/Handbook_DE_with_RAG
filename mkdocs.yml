@@ -24,33 +24,50 @@ nav:
   - Home: index.md
   - Thư viện: library.md
   - Data Architecture:
-      - Shared-disk vs shared-nothing: architecture/shared-disk-vs-shared-nothing.md
       - Data Lake, Data Warehouse và Data Mart: ware_lake_lw/doc.md
+      - "Data Lake, Data Warehouse, and Data Mart (English)": ware_lake_lw/doc.en.md
   - Database Internals:
-      - Phân cấp & Lưu trữ PostgreSQL: postgres/postgres.md
-      - PostgreSQL Hierarchy & Storage (English): postgres/postgres.en.md
+      - "PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ": postgres/postgres.md
+      - "PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi": postgres/p2.md
+      - "PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)": postgres/postgres.en.md
+      - "PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)": postgres/p2.en.md
       - Index trong cơ sở dữ liệu: index/index.md
       - Indexes in Databases (English): index/index.en.md
   - Orchestration:
       - Apache Airflow: airflow/architecture.md
       - Apache Airflow (English): airflow/architecture.en.md
   - Distributed Computing:
-      - Apache Spark: spark/archi.md
+      - Apache Spark (phần 1): spark/archi.md
+      - Kiến trúc Apache Spark (phần 2): spark/p2.md
+      - "Apache Spark (Part 1): Architecture and Execution (English)": spark/archi.en.md
+      - "Apache Spark (Part 2): Joins, RDD, and Memory (English)": spark/p2.en.md
 
 hooks:
   - hooks/reading_languages.py
 
 extra:
   article_translations:
+    lake-warehouse-mart:
+      vi: ware_lake_lw/doc.md
+      en: ware_lake_lw/doc.en.md
     airflow-architecture:
       vi: airflow/architecture.md
       en: airflow/architecture.en.md
-    postgres-storage:
+    postgres-processes:
       vi: postgres/postgres.md
       en: postgres/postgres.en.md
+    postgres-storage:
+      vi: postgres/p2.md
+      en: postgres/p2.en.md
     database-index:
       vi: index/index.md
       en: index/index.en.md
+    spark-architecture:
+      vi: spark/archi.md
+      en: spark/archi.en.md
+    spark-execution-memory:
+      vi: spark/p2.md
+      en: spark/p2.en.md
 
 markdown_extensions:
   - attr_list

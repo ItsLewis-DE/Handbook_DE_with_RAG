@@ -57,6 +57,7 @@
           </g>
           ` : ''}
 
+          <g class="pip-balance">
           <g class="pip-upper-body">
           <!-- Torso Body (Crisp silhouette border) -->
           <g class="pip-torso">
@@ -106,6 +107,7 @@
 
           <!-- Head Group (High Contrast & TV Screen) -->
           <g class="pip-head-group" style="transform-origin: 60px 65px;">
+            <g class="pip-head-balance">
             <g class="pip-head-look">
             <!-- Antenna -->
             <g class="pip-antenna">
@@ -130,17 +132,20 @@
 
             <!-- Smiling Eyes -->
             <g class="pip-eyes">
+              <g class="pip-eye-scan">
               <g class="pip-eye" style="transform-origin: 45px 43px;">
                 <path d="M 40 45 Q 45 37 50 45" stroke="#7fe3c5" stroke-width="3.5" stroke-linecap="round" fill="none" filter="url(#pipGlow_${type})" />
               </g>
               <g class="pip-eye" style="transform-origin: 75px 43px;">
                 <path d="M 70 45 Q 75 37 80 45" stroke="#7fe3c5" stroke-width="3.5" stroke-linecap="round" fill="none" filter="url(#pipGlow_${type})" />
               </g>
+              </g>
             </g>
 
             <!-- Coral Cheeks -->
             <circle class="pip-cheeks" cx="39" cy="50" r="3.6" fill="#ed6840" opacity="0.9" />
             <circle class="pip-cheeks" cx="81" cy="50" r="3.6" fill="#ed6840" opacity="0.9" />
+            </g>
             </g>
           </g>
 
@@ -167,6 +172,7 @@
               <circle cx="114" cy="46" r="2.2" fill="#2a4e48" />
               </g>
             </g>
+          </g>
           </g>
           </g>
         </g>
@@ -222,7 +228,7 @@
   function animateMascot(chat, launcher) {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const timers = new Map();
-    const readingDuration = 3500;
+    const readingDuration = 6800;
     const readingRest = 5000;
     const bookTransition = 650;
     chat.style.setProperty("--pip-book-transition", `${bookTransition}ms`);
@@ -233,9 +239,23 @@
     let lastGreeting = -Infinity;
     let pointerFrame = 0;
     let pointer = null;
+    let headTarget = 0;
+    let balanceDirection = 1;
     const random = (min, max) => min + Math.random() * (max - min);
     const canAnimate = () => active && !document.hidden && !reducedMotion.matches && chat.isConnected;
-    const pose = (name) => { chat.dataset.pose = name; };
+    const readingBook = () => ["opening", "reading", "looking-up", "closing"].includes(chat.dataset.pose);
+    const gesturing = () => readingBook() || chat.dataset.pose === "greeting";
+
+    function resetBalance() {
+      cancel("balance");
+      chat.style.removeProperty("--pip-balance-tilt");
+      chat.style.removeProperty("--pip-head-balance");
+    }
+
+    function pose(name) {
+      chat.dataset.pose = name;
+      if (name !== "idle") resetBalance();
+    }
 
     function cancel(key) {
       window.clearTimeout(timers.get(key));
@@ -259,33 +279,57 @@
     }
 
     function read() {
+      // Let a greeting finish before reaching for the book.
+      if (chat.dataset.pose === "greeting") {
+        after("reading-cycle", read, 300);
+        return;
+      }
       cancel("pose");
       resetGaze();
-      pose("reading");
+      pose("opening");
       after("pose", () => {
-        rest();
-        // Start the full rest period after the closing transition finishes.
-        after("reading-cycle", read, bookTransition + readingRest);
-      }, readingDuration);
+        pose("reading");
+        after("pose", () => {
+          pose("looking-up");
+          after("pose", () => {
+            pose("closing");
+            after("pose", () => {
+              rest();
+              // Rest begins only after the book and both arms have settled.
+              after("reading-cycle", read, random(readingRest, 10000));
+            }, 1000);
+          }, 650);
+        }, readingDuration);
+      }, 350);
     }
 
     function rest() {
       pose("idle");
+      if (pointer) updatePointer();
+      after("balance", () => {
+        if (gesturing() || nearby || focused) return;
+        balanceDirection *= -1;
+        const tilt = balanceDirection * random(0.7, 1.2);
+        chat.style.setProperty("--pip-balance-tilt", `${tilt}deg`);
+        chat.style.setProperty("--pip-head-balance", `${-tilt * 0.65}deg`);
+      }, random(2200, 3800));
     }
 
     function greet() {
       if (!canAnimate()) return;
       cancel("entrance");
-      if (["greeting", "reading"].includes(chat.dataset.pose)) return;
+      if (gesturing()) return;
       cancel("pose");
       // Passing over the hit area repeatedly should not restart the wave.
       if (performance.now() - lastGreeting < 5000) return rest();
       lastGreeting = performance.now();
       pose("greeting");
-      after("pose", rest, 2300);
+      after("pose", rest, 2200);
     }
 
     function resetGaze() {
+      cancel("head-look");
+      headTarget = 0;
       chat.style.removeProperty("--pip-look-x");
       chat.style.removeProperty("--pip-look-y");
       chat.style.removeProperty("--pip-look-tilt");
@@ -299,15 +343,20 @@
       const dy = pointer.y - (rect.top + rect.height * 0.3);
       const wasNearby = nearby;
       nearby = Math.hypot(dx, dy) < 200;
-      if (chat.dataset.pose === "reading") return;
+      if (readingBook()) return;
       if (nearby) {
+        resetBalance();
         chat.style.setProperty("--pip-look-x", `${Math.max(-3, Math.min(3, dx / 45))}px`);
         chat.style.setProperty("--pip-look-y", `${Math.max(-2, Math.min(2, dy / 65))}px`);
-        chat.style.setProperty("--pip-look-tilt", `${Math.max(-4, Math.min(4, dx / 40))}deg`);
+        headTarget = Math.max(-4, Math.min(4, dx / 40));
+        // Coalesce targets without restarting the delay on every pointer event.
+        if (!timers.has("head-look")) {
+          after("head-look", () => chat.style.setProperty("--pip-look-tilt", `${headTarget}deg`), 100);
+        }
         if (!wasNearby) greet();
       } else if (wasNearby) {
         resetGaze();
-        if (!focused && !["greeting", "reading"].includes(chat.dataset.pose)) rest();
+        if (!focused && !gesturing()) rest();
       }
     }
 
@@ -318,7 +367,7 @@
       window.cancelAnimationFrame(pointerFrame);
       pointerFrame = 0;
       resetGaze();
-      if (wasNearby && canAnimate() && !focused && !["greeting", "reading"].includes(chat.dataset.pose)) rest();
+      if (wasNearby && canAnimate() && !focused && !gesturing()) rest();
     }
 
     document.addEventListener("pointermove", (event) => {
@@ -332,7 +381,7 @@
     launcher.addEventListener("focus", () => { focused = true; greet(); });
     launcher.addEventListener("blur", () => {
       focused = false;
-      if (canAnimate() && !nearby && !["greeting", "reading"].includes(chat.dataset.pose)) rest();
+      if (canAnimate() && !nearby && !gesturing()) rest();
     });
 
     function refresh() {
@@ -344,9 +393,10 @@
       nearby = false;
       focused = document.activeElement === launcher;
       resetGaze();
+      resetBalance();
       chat.classList.remove("is-blinking", "is-double-blink");
       chat.classList.toggle("is-paused", !canAnimate());
-      pose("idle");
+      rest();
       if (canAnimate()) {
         after("blink", blink, random(1800, 3500));
         // This deadline is independent of hover, focus, and greeting timers.

@@ -49,12 +49,12 @@ hide:
         </div>
 
         <div class="article-deck-shell">
-          <div class="article-deck" tabindex="0" aria-label="Chồng 7 bài viết. Dùng nút điều hướng, phím mũi tên hoặc kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
+          <div class="article-deck" tabindex="0" aria-label="Chồng 8 bài viết. Dùng nút điều hướng, phím mũi tên hoặc kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
             <article class="article-sheet article-sheet--airflow" data-article-title="Kiến trúc Apache Airflow" data-deck-position="current">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/airflow/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>01 / 07</b></div>
+              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>01 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Hiểu kiến trúc<br>Apache Airflow</h2>
@@ -66,14 +66,14 @@ hide:
               </div>
             </article>
 
-            <article class="article-sheet article-sheet--spark" data-article-title="Kiến trúc Apache Spark" data-deck-position="next">
+            <article class="article-sheet article-sheet--spark" data-article-title="Kiến trúc Apache Spark (phần 1)" data-deck-position="next">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>02 / 07</b></div>
+              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>02 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-                <h2>Kiến trúc<br>Apache Spark</h2>
+                <h2>Kiến trúc<br>Apache Spark (phần 1)</h2>
                 <p>Từ Driver và Executor đến luồng thực thi Job, Stage, Task và cơ chế shuffle.</p>
               </div>
               <div class="article-sheet__foot">
@@ -82,11 +82,27 @@ hide:
               </div>
             </article>
 
-            <article class="article-sheet article-sheet--index" data-article-title="Index trong cơ sở dữ liệu" data-deck-position="back">
+            <article class="article-sheet article-sheet--spark" data-article-title="Kiến trúc Apache Spark (phần 2)" data-deck-position="back">
+              <div class="article-sheet__art" aria-hidden="true">
+                <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
+              </div>
+              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>03 / 08</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+                <h2>Kiến trúc<br>Apache Spark (phần 2)</h2>
+                <p>Các chiến lược Join, vai trò của RDD, giao tiếp PySpark và quản lý bộ nhớ Driver, Executor.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>DISTRIBUTED COMPUTING</span>
+                <a href="spark/p2/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
+            <article class="article-sheet article-sheet--index" data-article-title="Index trong cơ sở dữ liệu" data-deck-position="hidden">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/index/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>03 / 07</b></div>
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>04 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Index trong<br>cơ sở dữ liệu</h2>
@@ -98,15 +114,15 @@ hide:
               </div>
             </article>
 
-            <article class="article-sheet article-sheet--postgres" data-article-title="Phân cấp &amp; Lưu trữ PostgreSQL" data-deck-position="hidden">
+            <article class="article-sheet article-sheet--postgres" data-article-title="PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ" data-deck-position="hidden">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/postgres/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>04 / 07</b></div>
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>05 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-                <h2>PostgreSQL<br>Phân cấp &amp; lưu trữ</h2>
-                <p>Database cluster, bộ đệm shared_buffers, database, schema và cấu trúc thư mục PGDATA.</p>
+                <h2>PostgreSQL (phần 1)<br>Phân cấp, tiến trình &amp; bộ nhớ</h2>
+                <p>Cluster, database, schema, kết nối, cơ chế khóa và bộ nhớ phục vụ truy vấn.</p>
               </div>
               <div class="article-sheet__foot">
                 <span>DATABASE INTERNALS</span>
@@ -118,7 +134,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/kafka/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>STREAMING</span><b>05 / 07</b></div>
+              <div class="article-sheet__meta"><span>STREAMING</span><b>06 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Apache Kafka<br>internals</h2>
@@ -131,7 +147,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/dbt/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>06 / 07</b></div>
+              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>07 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>dbt: từ SQL<br>đến lineage</h2>
@@ -144,7 +160,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/docker/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>INFRASTRUCTURE</span><b>07 / 07</b></div>
+              <div class="article-sheet__meta"><span>INFRASTRUCTURE</span><b>08 / 08</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Docker &amp; Kubernetes<br>cho Data Engineer</h2>
@@ -163,9 +179,9 @@ hide:
         </div>
 
         <div class="stack-card__footer">
-          <span><b>04</b> bài đã mở</span>
+          <span><b>05</b> bài đã mở</span>
           <span><b>03</b> bài sắp tới</span>
-          <span class="article-deck__count"><b>04</b> / 07</span>
+          <span class="article-deck__count"><b>05</b> / 08</span>
         </div>
       </div>
 
@@ -178,42 +194,26 @@ hide:
     <div class="section-heading section-heading--split">
       <div>
         <p class="section-eyebrow">THE KNOWLEDGE SHELF / 01</p>
-        <h2 id="library-title">Hôm nay bạn muốn tìm hiểu điều gì?</h2>
+        <h2 id="library-title">4 bài viết mới nhất</h2>
       </div>
     </div>
 
-    <div class="published-articles" aria-label="Bốn bài viết đã xuất bản">
-      <article class="published-article published-article--postgres">
-        <span class="published-article__number" aria-hidden="true">04</span>
+    <div class="published-articles" aria-label="4 bài viết mới nhất">
+      <article class="published-article published-article--spark">
+        <span class="published-article__number" aria-hidden="true">06</span>
         <div class="published-article__header">
-          <p class="published-article__meta">DATABASE INTERNALS · ED. 04</p>
+          <p class="published-article__meta">DISTRIBUTED COMPUTING · ED. 06</p>
         </div>
-        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 45V64M70 82V64H290V82M180 64V82M70 112V137M180 112V137M290 112V137"/><g class="diagram-node diagram-node--accent"><rect x="128" y="15" width="104" height="30" rx="6"/><text x="180.0" y="34">CLUSTER</text></g><g class="diagram-node"><rect x="28" y="82" width="84" height="30" rx="6"/><text x="70.0" y="101">database</text></g><g class="diagram-node"><rect x="138" y="82" width="84" height="30" rx="6"/><text x="180.0" y="101">database</text></g><g class="diagram-node"><rect x="248" y="82" width="84" height="30" rx="6"/><text x="290.0" y="101">database</text></g><g class="diagram-node"><path d="M46 146v16c0 10 48 10 48 0v-16"/><ellipse cx="70" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M156 146v16c0 10 48 10 48 0v-16"/><ellipse cx="180" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M266 146v16c0 10 48 10 48 0v-16"/><ellipse cx="290" cy="146" rx="24" ry="8"/></g><circle class="diagram-signal" cx="180" cy="64" r="4"/></svg>
-        <h3>PostgreSQL<br>Phân cấp &amp; lưu trữ</h3>
-        <p>Database cluster, bộ đệm shared_buffers, database, schema và cấu trúc thư mục PGDATA.</p>
-        <a href="postgres/postgres/" aria-label="Đọc bài viết: PostgreSQL: Phân cấp &amp; lưu trữ">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
-      </article>
-
-      <article class="published-article published-article--index">
-        <span class="published-article__number" aria-hidden="true">03</span>
-        <div class="published-article__header">
-          <p class="published-article__meta">DATABASE INTERNALS · ED. 03</p>
-        </div>
-        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 43V63H80V82M180 63H280V82M80 112V134H38V148M80 134H125V148M280 112V134H235V148M280 134H322V148"/><path class="diagram-route diagram-route--accent" d="M180 43V63H280V82M280 112V134H235V148"/><g class="diagram-node diagram-node--accent"><rect x="149" y="13" width="62" height="30" rx="6"/><text x="180.0" y="32">42</text></g><g class="diagram-node"><rect x="49" y="82" width="62" height="30" rx="6"/><text x="80.0" y="101">18</text></g><g class="diagram-node diagram-node--accent"><rect x="249" y="82" width="62" height="30" rx="6"/><text x="280.0" y="101">67</text></g><g class="diagram-node"><rect x="8" y="148" width="60" height="30" rx="6"/><text x="38.0" y="167">08 · 12</text></g><g class="diagram-node"><rect x="95" y="148" width="60" height="30" rx="6"/><text x="125.0" y="167">24 · 36</text></g><g class="diagram-node diagram-node--accent"><rect x="205" y="148" width="60" height="30" rx="6"/><text x="235.0" y="167">51 · 58</text></g><g class="diagram-node"><rect x="292" y="148" width="60" height="30" rx="6"/><text x="322.0" y="167">73 · 91</text></g><circle class="diagram-signal" cx="235" cy="134" r="4"/></svg>
-        <h3>Index trong<br>cơ sở dữ liệu</h3>
-        <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
-        <a href="index/" aria-label="Đọc bài viết: Index trong cơ sở dữ liệu">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
-      </article>
-
-      <article class="published-article published-article--airflow">
-        <span class="published-article__number" aria-hidden="true">01</span>
-        <div class="published-article__header">
-          <p class="published-article__meta">ORCHESTRATION · ED. 01</p>
-        </div>
-        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M69 94H110V40H145M110 94V148H145M215 40H249V94H289M215 148H249V94M215 94H289M110 94H145"/><g class="diagram-node diagram-node--accent"><rect x="7" y="79" width="62" height="30" rx="6"/><text x="38.0" y="98">DAG</text></g><g class="diagram-node"><rect x="145" y="25" width="70" height="30" rx="6"/><text x="180.0" y="44">extract</text></g><g class="diagram-node"><rect x="145" y="79" width="70" height="30" rx="6"/><text x="180.0" y="98">check</text></g><g class="diagram-node"><rect x="145" y="133" width="70" height="30" rx="6"/><text x="180.0" y="152">load</text></g><g class="diagram-node diagram-node--accent"><rect x="289" y="79" width="64" height="30" rx="6"/><text x="321.0" y="98">ready</text></g><circle class="diagram-signal" cx="110" cy="94" r="4"/><circle class="diagram-signal diagram-signal--late" cx="249" cy="94" r="4"/></svg>
-        <h3>Hiểu kiến trúc<br>Apache Airflow</h3>
-        <p>Từ nhu cầu điều phối đến Scheduler, Executor và High Availability.</p>
-        <a href="airflow/architecture/" aria-label="Đọc bài viết: Kiến trúc Apache Airflow">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false">
+          <path class="diagram-route" d="M90 65V95H180V125M270 65V95H180"/>
+          <g class="diagram-node"><rect x="40" y="35" width="100" height="30" rx="6"/><text x="90" y="54">TABLE A</text></g>
+          <g class="diagram-node"><rect x="220" y="35" width="100" height="30" rx="6"/><text x="270" y="54">TABLE B</text></g>
+          <g class="diagram-node diagram-node--accent"><rect x="130" y="125" width="100" height="30" rx="6"/><text x="180" y="144">JOIN</text></g>
+          <circle class="diagram-signal" cx="180" cy="95" r="4"/>
+        </svg>
+        <h3>Kiến trúc<br>Apache Spark (phần 2)</h3>
+        <p>Các chiến lược Join, vai trò của RDD, giao tiếp PySpark và quản lý bộ nhớ Driver, Executor.</p>
+        <a href="spark/p2/" aria-label="Đọc bài viết: Kiến trúc Apache Spark (phần 2)">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
       </article>
 
       <article class="published-article published-article--spark">
@@ -232,11 +232,42 @@ hide:
           <g class="diagram-node diagram-node--accent"><rect x="264" y="149" width="72" height="28" rx="6"/><text x="300" y="167">TASKS</text></g>
           <circle class="diagram-signal" cx="180" cy="70" r="4"/>
         </svg>
-        <h3>Kiến trúc<br>Apache Spark</h3>
+        <h3>Kiến trúc<br>Apache Spark (phần 1)</h3>
         <p>Từ Driver và Executor đến luồng thực thi Job, Stage, Task và cơ chế shuffle.</p>
-        <a href="spark/archi/" aria-label="Đọc bài viết: Kiến trúc Apache Spark">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+        <a href="spark/archi/" aria-label="Đọc bài viết: Kiến trúc Apache Spark (phần 1)">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+      </article>
+
+      <article class="published-article published-article--postgres">
+        <span class="published-article__number" aria-hidden="true">04</span>
+        <div class="published-article__header">
+          <p class="published-article__meta">DATABASE INTERNALS · PHẦN 2</p>
+        </div>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false">
+          <path class="diagram-route" d="M98 49H130M230 49H260M310 64V107H180V137"/>
+          <g class="diagram-node"><rect x="8" y="34" width="90" height="30" rx="6"/><text x="53" y="53">PARSER</text></g>
+          <g class="diagram-node"><rect x="130" y="34" width="100" height="30" rx="6"/><text x="180" y="53">PLANNER</text></g>
+          <g class="diagram-node diagram-node--accent"><rect x="260" y="34" width="96" height="30" rx="6"/><text x="308" y="53">EXECUTOR</text></g>
+          <g class="diagram-node diagram-node--accent"><rect x="118" y="137" width="124" height="30" rx="6"/><text x="180" y="156">BUFFERS / WAL</text></g>
+          <circle class="diagram-signal" cx="180" cy="107" r="4"/>
+        </svg>
+        <h3>PostgreSQL (phần 2)<br>Truy vấn, lưu trữ &amp; phục hồi</h3>
+        <p>Hành trình SQL qua Parser, Planner, Executor đến bộ đệm, WAL, PGDATA và TOAST.</p>
+        <a href="postgres/p2/" aria-label="Đọc bài viết: PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+      </article>
+
+      <article class="published-article published-article--postgres">
+        <span class="published-article__number" aria-hidden="true">04</span>
+        <div class="published-article__header">
+          <p class="published-article__meta">DATABASE INTERNALS · PHẦN 1</p>
+        </div>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 45V64M70 82V64H290V82M180 64V82M70 112V137M180 112V137M290 112V137"/><g class="diagram-node diagram-node--accent"><rect x="128" y="15" width="104" height="30" rx="6"/><text x="180.0" y="34">CLUSTER</text></g><g class="diagram-node"><rect x="28" y="82" width="84" height="30" rx="6"/><text x="70.0" y="101">database</text></g><g class="diagram-node"><rect x="138" y="82" width="84" height="30" rx="6"/><text x="180.0" y="101">database</text></g><g class="diagram-node"><rect x="248" y="82" width="84" height="30" rx="6"/><text x="290.0" y="101">database</text></g><g class="diagram-node"><path d="M46 146v16c0 10 48 10 48 0v-16"/><ellipse cx="70" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M156 146v16c0 10 48 10 48 0v-16"/><ellipse cx="180" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M266 146v16c0 10 48 10 48 0v-16"/><ellipse cx="290" cy="146" rx="24" ry="8"/></g><circle class="diagram-signal" cx="180" cy="64" r="4"/></svg>
+        <h3>PostgreSQL (phần 1)<br>Phân cấp, tiến trình &amp; bộ nhớ</h3>
+        <p>Cluster, database, schema, kết nối, cơ chế khóa và bộ nhớ phục vụ truy vấn.</p>
+        <a href="postgres/postgres/" aria-label="Đọc bài viết: PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
       </article>
     </div>
+
+    <p class="library-section__all"><a href="library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a></p>
 
   </section>
 
@@ -254,24 +285,24 @@ hide:
         <h2 id="writing-title">Không học thuộc tool.<br><em>Học cách nó suy nghĩ.</em></h2>
       </div>
       <div class="writing-section__lead-box">
-        <span class="writing-section__lead-label">QUY TRÌNH BIÊN SOẠN · 3 GIAI ĐOẠN</span>
+        <span class="writing-section__lead-label">PHƯƠNG PHÁP TRÌNH BÀY · 3 NGUYÊN TẮC</span>
         <p class="writing-section__lead">
-          Mỗi bài viết được xây như một cuộc điều tra nhỏ: bắt đầu bằng câu hỏi
-          “vì sao”, đi vào phần lõi, rồi quay lại với quyết định trong thực tế.
+          Mỗi bài viết được biên soạn theo mạch truyền tải có chủ đích: khơi gợi từ câu hỏi
+          bản chất, trực quan hóa luồng vận hành bên trong, và đúc kết tư duy đánh đổi thực tế.
         </p>
       </div>
     </div>
 
     <div class="blueprint-dag-stream" aria-hidden="true">
-      <div class="dag-node dag-node--source"><span>SOURCE</span><i class="dag-portal dag-portal--source"></i></div>
+      <div class="dag-node dag-node--source"><span>ORIGIN</span><i class="dag-portal dag-portal--source"></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node dag-node--active dag-node--step-1"><span>01 · PROBLEM</span><i></i></div>
+      <div class="dag-node dag-node--active dag-node--step-1"><span>01 · PRINCIPLE</span><i></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node dag-node--active dag-node--step-2"><span>02 · INTERNALS</span><i></i></div>
+      <div class="dag-node dag-node--active dag-node--step-2"><span>02 · VISUALIZE</span><i></i></div>
       <div class="dag-connector"></div>
       <div class="dag-node dag-node--active dag-node--step-3"><span>03 · TRADE-OFF</span><i></i></div>
       <div class="dag-connector"></div>
-      <div class="dag-node dag-node--production"><span>PRODUCTION</span><i class="dag-portal dag-portal--production"></i></div>
+      <div class="dag-node dag-node--production"><span>INTUITION</span><i class="dag-portal dag-portal--production"></i></div>
 
       <div class="dag-track-runner">
         <div class="dag-vehicle">
@@ -284,32 +315,33 @@ hide:
       </div>
     </div>
 
-    <div class="writing-principles" role="list" aria-label="Quy trình 3 bước mổ xẻ kiến trúc">
+    <div class="writing-principles" role="list" aria-label="3 nguyên tắc trình bày của tác giả">
       <article class="writing-card" data-step-number="01" role="listitem">
         <header class="writing-card__header">
           <div class="writing-card__stamp" aria-hidden="true">
             <small>BƯỚC</small><b>01</b>
           </div>
           <div class="writing-card__meta">
-            <span class="writing-card__stage">ORIGIN / NGUYÊN DO</span>
+            <span class="writing-card__stage">GÓC NHÌN / ĐẶT VẤN ĐỀ</span>
           </div>
         </header>
 
         <div class="writing-card__flow">
-          <span class="writing-card__flow-badge">PROBLEM</span>
+          <span class="writing-card__flow-badge">WHY OVER WHAT</span>
         </div>
 
-        <h3 class="writing-card__title">Bắt đầu từ vấn đề</h3>
-        <p class="writing-card__question">“Tại sao giải pháp này cần phải ra đời?”</p>
+        <h3 class="writing-card__title">Khởi đầu từ câu hỏi bản chất</h3>
+        <p class="writing-card__question">“Vì sao công nghệ này bắt buộc phải tồn tại?”</p>
         <p class="writing-card__desc">
-          Trước mỗi component luôn là một bài toán thực tế: điểm nghẽn cổ chai,
-          giới hạn mở rộng hoặc sự sụp đổ của những cách tiếp cận cũ.
+          Thay vì liệt kê định nghĩa khô khan, bài viết luôn bắt đầu bằng bài toán thực tế
+          và bối cảnh lịch sử. Đặt người đọc vào vị trí của người thiết kế để thấu hiểu
+          động lực gốc rễ trước khi chạm vào cú pháp.
         </p>
 
         <footer class="writing-card__tags" aria-label="Khía cạnh phân tích">
-          <span>Root Problem</span>
-          <span>Why it exists</span>
-          <span>Failure Modes</span>
+          <span>First Principles</span>
+          <span>Problem Context</span>
+          <span>Design Motivation</span>
         </footer>
       </article>
 
@@ -319,25 +351,26 @@ hide:
             <small>BƯỚC</small><b>02</b>
           </div>
           <div class="writing-card__meta">
-            <span class="writing-card__stage">INTERNALS / BÊN TRONG</span>
+            <span class="writing-card__stage">MINH HỌA / BÓC TÁCH</span>
           </div>
         </header>
 
         <div class="writing-card__flow">
-          <span class="writing-card__flow-badge">CORE MECHANISM</span>
+          <span class="writing-card__flow-badge">SHOW DON'T TELL</span>
         </div>
 
-        <h3 class="writing-card__title">Mở chiếc hộp đen</h3>
-        <p class="writing-card__question">“Bên dưới nắp máy thật sự vận hành ra sao?”</p>
+        <h3 class="writing-card__title">Trực quan hóa luồng vận hành</h3>
+        <p class="writing-card__question">“Làm sao để người đọc nhìn thấy chuyển động của dữ liệu?”</p>
         <p class="writing-card__desc">
-          Bóc tách từng tầng kiến trúc, luồng dữ liệu (data flow) và trạng thái
-          phân tán, thay vì dừng lại ở các câu lệnh cấu hình bề mặt.
+          Kiến trúc phức tạp được đơn giản hóa bằng sơ đồ luồng dữ liệu tự thiết kế và các phép
+          ẩn dụ gần gũi. Tác giả biến những cơ chế trừu tượng thành hình ảnh mạch lạc, giúp
+          người đọc nắm bắt trọn vẹn đường đi của hệ thống.
         </p>
 
         <footer class="writing-card__tags" aria-label="Khía cạnh phân tích">
-          <span>Architecture</span>
-          <span>Data Flow</span>
-          <span>State &amp; Locks</span>
+          <span>Visual First</span>
+          <span>Data Modeling</span>
+          <span>Intuitive Diagrams</span>
         </footer>
       </article>
 
@@ -347,25 +380,26 @@ hide:
             <small>BƯỚC</small><b>03</b>
           </div>
           <div class="writing-card__meta">
-            <span class="writing-card__stage">SYNTHESIS / THỰC CHIẾN</span>
+            <span class="writing-card__stage">PHẢN BIỆN / ĐÁNH ĐỔI</span>
           </div>
         </header>
 
         <div class="writing-card__flow">
-          <span class="writing-card__flow-badge">PRODUCTION</span>
+          <span class="writing-card__flow-badge">NO SILVER BULLET</span>
         </div>
 
-        <h3 class="writing-card__title">Nối lại với thực tế</h3>
-        <p class="writing-card__question">“Đánh đổi điều gì khi đưa vào vận hành?”</p>
+        <h3 class="writing-card__title">Đúc kết ranh giới &amp; Đánh đổi</h3>
+        <p class="writing-card__question">“Cái giá phải trả và giới hạn thực tế là gì?”</p>
         <p class="writing-card__desc">
-          Hiểu rõ giới hạn chịu tải, chi phí vận hành và ranh giới phù hợp để
-          đưa ra quyết định kiến trúc chuẩn xác cho hệ thống thực tế.
+          Không thần thánh hóa bất kỳ công cụ nào. Bài viết luôn khép lại bằng góc nhìn phản biện:
+          chỉ rõ ranh giới phù hợp, cái giá phải trả và các điểm đánh đổi kinh điển, giúp người đọc
+          tự tin ra quyết định kiến trúc độc lập.
         </p>
 
         <footer class="writing-card__tags" aria-label="Khía cạnh phân tích">
-          <span>Trade-offs</span>
-          <span>Failure Modes</span>
-          <span>Production Limits</span>
+          <span>Trade-off Mindset</span>
+          <span>Critical Thinking</span>
+          <span>Practical Limits</span>
         </footer>
       </article>
     </div>

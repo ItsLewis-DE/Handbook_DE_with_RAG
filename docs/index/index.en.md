@@ -24,23 +24,13 @@ hide:
   </div>
 </header>
 
-<figure class="airflow-opening-comic">
-  <img
-    src="../../assets/images/index/image4.png"
-    alt="A playful comic reminding readers to prepare for a long article about database indexes"
-    loading="eager"
-  >
-  <figcaption>
-    <span>BEFORE YOU READ</span>
-    <strong>A fairly long article</strong>
-  </figcaption>
-</figure>
+> **Before you read:** This is a long article that takes more than a few minutes to skim. Set aside some time, grab a glass of water, and give it your full attention.
 
 ## 1. How Do Databases Store Data?
 
-To understand index concepts more easily, let us first look at **how databases store data on disk**.
+To understand indexes, let’s first look at **how databases store data on disk**.
 
-When querying a database, we typically view data as rows and columns. However, at the storage layer, the DBMS does not access each row individually; instead, it **reads and writes in units called pages (or blocks)**. Depending on the database management system, each page ranges from 4 KB to 16 KB in size. Data is packed into a page as much as possible; when a page is full, the system allocates a new page to continue storing data.
+When querying a database, we typically view data as rows and columns. However, at the storage layer, the DBMS typically **reads and writes in units called pages (or blocks)** rather than accessing individual rows. Depending on the database management system, each page ranges from 4 KB to 16 KB in size. Data is packed into a page as much as possible; when a page is full, the system allocates a new page to continue storing data.
 
 ### What Does a Page Contain?
 
@@ -52,18 +42,7 @@ Typically, a page consists of the following components:
 
 Illustration of page structure:
 
-```mermaid
-flowchart TB
-    subgraph PAGE["DATA PAGE"]
-        direction TB
-        HEADER["PAGE HEADER<br/>File ID and Page ID<br/>Metadata + free space"]
-        DATA["DATA ROWS<br/>Actual data stored as bytes"]
-        OFFSETS["OFFSET ARRAY<br/>Starting byte addresses of each data row"]
-
-        HEADER --- DATA
-        DATA --- OFFSETS
-    end
-```
+![Data page containing a header, data rows, and an offset array](../assets/images/index/data_page.png){ loading=lazy }
 
 ### Heap and Clustered: Two Ways to Organize Data in a Page
 
@@ -76,48 +55,20 @@ Typically, data is organized inside pages in one of two ways:
 
 Imagine you need to find a title in a very thick book. If the book **lacks a table of contents**, you must flip through it from the first page to the last until you find the right title. This approach is time-consuming, especially for a book thousands of pages long. A table of contents solves this problem by arranging titles in an order, such as alphabetical order, and listing their corresponding page numbers. To find a title, you simply **consult the table of contents and turn directly to the indicated page**.
 
-Indexes in a database operate on the exact same idea. Instead of scanning every row to locate desired values, the system **consults the index** to quickly pinpoint the record or page holding the data, then **reads only what is necessary**.
+![Sequential book search compared with a table-of-contents lookup](../assets/images/index/book.png){ loading=lazy }
+
+Database indexes follow a similar idea. Instead of scanning every row to locate desired values, the system **consults the index** to quickly pinpoint the record or page holding the data, then **reads only what is necessary**.
 
 An index is an **auxiliary data structure that accelerates lookups**. In internal nodes, it stores **separator keys and pointers** to child index pages. In leaf nodes, it stores keys with pointers or identifiers for data rows; depending on the index type, leaf nodes may contain the values themselves. The following sections explain when an index uses pointers and the roles of internal and leaf nodes. On disk, an index is usually organized into multiple **index pages**, each containing multiple **index entries**.
 
 
 ## 3. How Do B-tree and B+tree Work?
 
-Index pages are not laid out flat; rather, they are linked together according to an index structure. The two most common index structures are **B-tree and B+tree**. These are **balanced multi-way search trees**, consisting of a root node, internal (intermediate) nodes, and leaf nodes. If you have studied data structures and algorithms, you can think of them as generalizations of balanced search trees like AVL or Red-Black trees. The key difference is that each node in a B-tree or B+tree can hold **multiple keys and multiple child branches**, rather than just two branches (left and right).
+Index pages are not laid out flat; rather, they are linked together according to an index structure. Two common index structures are **B-tree and B+tree**. These are **balanced multi-way search trees**, consisting of a root node, internal (intermediate) nodes, and leaf nodes. If you have studied data structures and algorithms, you can think of them as generalizations of balanced search trees like AVL or Red-Black trees. The key difference is that each node in a B-tree or B+tree can hold **multiple keys and multiple child branches**, rather than just two branches (left and right).
 
 ### High-Level Model: A Balanced B-tree
 
-```mermaid
-flowchart TB
-    ROOT["ROOT NODE<br/>30 | 60"]
-
-    LEFT["INTERNAL NODE<br/>10 | 20"]
-    CENTER["INTERNAL NODE<br/>40 | 50"]
-    RIGHT["INTERNAL NODE<br/>70 | 80"]
-
-    L1["LEAF NODE<br/>5"]
-    L2["LEAF NODE<br/>15"]
-    L3["LEAF NODE<br/>25"]
-    L4["LEAF NODE<br/>35"]
-    L5["LEAF NODE<br/>45"]
-    L6["LEAF NODE<br/>55"]
-    L7["LEAF NODE<br/>65"]
-    L8["LEAF NODE<br/>75"]
-    L9["LEAF NODE<br/>85"]
-
-    ROOT --> LEFT
-    ROOT --> CENTER
-    ROOT --> RIGHT
-    LEFT --> L1
-    LEFT --> L2
-    LEFT --> L3
-    CENTER --> L4
-    CENTER --> L5
-    CENTER --> L6
-    RIGHT --> L7
-    RIGHT --> L8
-    RIGHT --> L9
-```
+![Balanced B-tree with root, internal, and leaf nodes](../assets/images/index/tree.png){ loading=lazy }
 
 > **Note:** This diagram illustrates how keys **partition the search space** and how nodes connect. For visual clarity, the actual data rows or row pointers associated with each key are omitted. In a B-tree, every key in both internal and leaf nodes may carry row data or a row pointer; arrows in the diagram represent **child node pointers**.
 
@@ -181,13 +132,13 @@ All indexed keys appear in the leaf nodes. Each entry contains a key and a value
 
 ### Physical Pointers (RID — Row Identifier)
 
-When the main table is stored as Heap Pages without a clustered index (such as in PostgreSQL), secondary indexes store static disk coordinates in the format `FileID:PageID:SlotNumber` to point directly to data rows.
+When the main table is stored as Heap Pages without a clustered index (such as in PostgreSQL), secondary indexes store physical disk coordinates in the format `FileID:PageID:SlotNumber` to point directly to data rows.
 
 A RID typically consists of the following components:
 
 - **File ID:** Identifier of the data file on disk.
 - **Page Number:** The sequential page number within that file.
-- **Slot Number:** The specific index position within the page's Offset Array.
+- **Slot Number:** The row’s position in the page’s Offset Array.
 
 ### Actual Data at Leaf Nodes and Clustered Indexes
 
@@ -201,7 +152,7 @@ Auto-incrementing columns are ideal candidates for clustered indexes because the
 
 ### Logical Keys and the Lookup Process
 
-When a primary table is organized via a clustered index and secondary indexes are added, secondary indexes store the value of the primary key instead of static physical disk addresses. For example, given `ID = 3`, the system uses this primary key value to traverse the clustered index tree and retrieve the full row.
+When a primary table is organized via a clustered index and secondary indexes are added, secondary indexes store the value of the primary key instead of physical disk addresses. For example, given `ID = 3`, the system uses this primary key value to traverse the clustered index tree and retrieve the full row.
 
 > **Note:** The two models above—storing actual row data at leaf nodes versus storing logical keys—pertain specifically to B+trees.
 
@@ -209,7 +160,12 @@ Why do secondary indexes use logical keys—requiring traversing the tree twice 
 
 When data is inserted or changed, row locations may change. If secondary indexes stored physical RIDs, the system would have to update those RIDs, incurring additional I/O.
 
-![Differences between data pointers in B-tree and B+tree leaf nodes](../assets/images/index/difference.png)
+The two ways to locate a data row can be compared as follows:
+
+| Lookup method | When it applies | Path to the data |
+| --- | --- | --- |
+| **Physical RID pointer** | The main table uses Heap Pages and has no clustered index. | The RID stores `FileID:PageID:SlotNumber` coordinates and points directly to the data row. |
+| **Logical key** | A secondary index on a table organized by a clustered index. | The secondary index stores the primary key, such as `ID = 3`; the system uses it to search the clustered index and retrieve the row: `Secondary Index → Clustered Index → Row`. |
 
 ### Non-Clustered Indexes
 
@@ -270,7 +226,7 @@ The system deletes the key from the leaf node. If the node enters an underflow s
 
 **Borrowing a key**
 
-The system can borrow a key from either the left or right sibling node. The separator key in the parent node is demoted into the deficient node. If borrowing from the left, the largest key in the left node is promoted to replace the parent separator; if borrowing from the right, the smallest key in the right node is promoted. This sequence preserves the ordered sorting invariant across the tree.
+The system can borrow a key from either the left or right sibling node. The separator key in the parent node is demoted into the deficient node. If borrowing from the left, the largest key in the left node is promoted to replace the parent separator; if borrowing from the right, the smallest key in the right node is promoted. This preserves the order of keys in the tree.
 
 **State before borrowing:**
 
@@ -283,7 +239,7 @@ The system can borrow a key from either the left or right sibling node. The sepa
 1. Demote key `30` from parent to right child, forming `[30, 40]`.
 2. Promote key `20` from left child to replace key `30` in the parent.
 
-**Final state:** Parent contains `[20]`, left child contains `[10]`, right child contains `[30, 40]`. The tree is restored to balanced equilibrium.
+**Final state:** Parent contains `[20]`, left child contains `[10]`, right child contains `[30, 40]`. The tree is balanced again.
 
 **Merging nodes**
 
@@ -337,7 +293,7 @@ Because all indexed keys reside at the leaf level, deletion always occurs in lea
 
 ### During `UPDATE` Operations
 
-How indexes handle `UPDATE` statements depends entirely on whether updated columns belong to the index key:
+How an index handles an `UPDATE` depends on whether the updated columns are part of its key:
 
 - **Columns not part of the index key:** Updated directly without affecting index structures.
 - **Columns belonging to the index key:** To maintain sort order, the system does not modify keys in place; instead, it executes a `DELETE` followed by an `INSERT`. Both operations consume additional I/O and resources, so changes to index keys should be limited.
@@ -346,7 +302,7 @@ How indexes handle `UPDATE` statements depends entirely on whether updated colum
 
 When a table has multiple non-clustered indexes, DML statements incur the following costs:
 
-- **Multiplied write operations:** With 5 non-clustered indexes, a single `INSERT` forces 5 separate insertion operations across 5 B+trees, multiplying disk I/O and WAL logging by a factor of five.
+- **Multiplied write operations:** With 5 non-clustered indexes, a single `INSERT` forces 5 separate insertion operations across 5 B+trees, multiplying index writes by five and increasing WAL writes.
 - **Random disk writes:** Different indexes organize keys under different logical orderings. Updating a single row forces writes to distinct, widely separated disk pages, resulting in random rather than sequential disk I/O.
 - **Page splits:** DML statements can cause page splits, which may propagate throughout a tree.
 
@@ -358,7 +314,7 @@ Besides the B-tree/B+tree family that plays a central role in RDBMSs, storage sy
 
 When a workload does not require range queries and prioritizes **point lookup** speed, a Hash Index is an option worth considering.
 
-As the name implies, this structure utilizes a hash table, typically held permanently in memory (RAM) for optimal performance. By hashing search keys directly, average lookup complexity reaches the theoretical ideal of `O(1)`.
+As the name implies, this structure utilizes a hash table, typically kept in memory (RAM) for optimal performance. By hashing search keys directly, average lookup complexity is `O(1)`.
 
 ### Limitations of Hash Indexes
 
@@ -373,14 +329,14 @@ Despite good lookup performance, Hash Indexes have several notable drawbacks:
 Hash functions must minimize collisions for the following reasons:
 
 - Prevent **data skew**, where one bucket contains too many keys while another contains none.
-- When too many keys cluster in one bucket, the system must search sequentially inside that bucket, erasing the `O(1)` speed advantage.
+- When too many keys cluster in one bucket, the system must search within that bucket, erasing the `O(1)` speed advantage.
 - When bucket capacity is exhausted, the system must allocate **overflow pages** chained via linked list pointers. Every overflow page access requires additional disk I/O; excessive I/O degrades overall system throughput.
 
 ### Why Hash Tables Exceeding RAM Degrade Performance
 
 When a hash table exceeds RAM capacity, part of its data must be moved to disk. Because a hash function distributes data randomly, a query can easily target the disk-resident portion (**cache miss**), turning an in-memory lookup into a much slower random disk read (**Random I/O**).
 
-![Performance degradation when hash table exceeds RAM capacity](../assets/images/index/RAM.png)
+The chain of effects is: **Hash Table exceeds RAM → some data resides on disk → a lookup reaches a bucket absent from RAM (cache miss) → Random I/O occurs → performance drops**. Because hashing distributes data randomly, lookups can access different disk locations instead of reading sequentially. Lookup speed therefore also depends on whether the required bucket is in RAM.
 
 ### Process of Building an In-Memory Hash Table
 
@@ -424,17 +380,11 @@ Index intersection introduces several notable costs:
 
 To reduce costs when queries often filter on multiple columns together, you can create a **composite index (compound index)**. It combines multiple columns in a single B+tree.
 
-A composite B+tree shares the same structural framework as standard B+trees, but each key consists of a tuple of values rather than a single attribute. For instance, in an index on `(age, sex)`, a single key might be `(21, male)`.
+A composite index uses the same B+tree structure, but each key is a tuple of values rather than a single value. For instance, in an index on `(age, sex)`, a single key might be `(21, male)`.
 
 Keys are sorted hierarchically: first by the leftmost column, then by the second column within ties of the first, then by the third column within ties of the second, and so on.
 
-```text
-                     [ ('Dev', 28)  |  ('HR', 30) ]
-                    /               |              \
-                   ▼                ▼               ▼
-         [ ('Dev', 20) ]     [ ('Dev', 28) ]     [ ('HR', 30) ]
-         [ ('Dev', 22) ] <-> [ ('HR', 25)  ] <-> [ ('HR', 32) ]
-```
+![B+tree with composite department and age keys](../assets/images/index/key.png){ loading=lazy }
 
 In the diagram above:
 
@@ -449,7 +399,7 @@ Given an index on three columns `(A, B, C)`, queries utilize the index effective
 
 Why must queries start with the leftmost column? In composite index `(a, b)`, records are ordered primarily by `a`. Only within rows sharing identical values of `a` are records ordered by `b`.
 
-When a query filters on `a`, the system quickly zeroes in on a continuous range. Within that range, `b` is already ordered, enabling rapid traversal:
+When a query filters on `a`, the system quickly locates the relevant range. Within that range, `b` is already ordered, enabling rapid traversal:
 
 ```sql
 WHERE a = 10 AND b = 20
@@ -461,12 +411,12 @@ Conversely, if `a` is omitted and the query filters only on `b`:
 WHERE b = 20
 ```
 
-Target values of `b` lie scattered across distinct groups of `a` throughout the index. The database must scan wide swaths—or the entirety—of the index, failing to leverage the B+tree's logarithmic search capabilities.
+Target values of `b` lie scattered across distinct groups of `a` throughout the index. The database usually has to scan large parts of the index, or even all of it, making less effective use of the B+tree’s search structure.
 
 ### Key Considerations When Choosing Column Order
 
-- **Mixing equality and range conditions:** Place columns with equality (`=`) first and range conditions (`>`, `<`, `BETWEEN`) after. Equality conditions narrow traversal to a specific sub-range, within which subsequent columns remain ordered for efficient range processing.
-- **Multiple equality columns in `WHERE`:** Prioritize columns with highest selectivity. High-selectivity columns possess fewer duplicate values (e.g., `user_id`), eliminating non-matching records early.
+- **Mixing equality and range conditions:** Usually, place columns with equality (`=`) conditions before those with range conditions. Equality conditions narrow traversal to a specific sub-range, within which subsequent columns remain ordered for efficient range processing.
+- **Multiple equality columns in `WHERE`:** Prioritize columns with highest selectivity. High-selectivity columns possess fewer duplicate values (e.g., `userid`), eliminating non-matching records early.
 - **Queries with `ORDER BY`:** Place the column to be sorted last in the composite index.
 
 ## 8. Covering Indexes
@@ -479,23 +429,11 @@ If a query needs additional columns that are not in the index, the DBMS must use
 
 #### When the Index Contains Pointers to the Main Table
 
-Data rows in the base table are not physically arranged according to secondary index keys. Consequently, when a key matches multiple rows and the query needs extra columns, the DBMS must issue multiple random disk reads against the base table.
+Data rows in the base table are not physically arranged according to secondary index keys. Consequently, when a key matches multiple rows and the query needs extra columns, the DBMS must make multiple random accesses to the base table.
 
 Illustration:
 
-```text
-    INDEX disk page                          PRIMARY TABLE disk pages
-┌─────────────────────────┐               ┌────────────────────────────────┐
-│ ('IT', Pointer #10)  ───┼──────────────>│ Disk page 2:  Row #10 ('IT')   │
-│ ('IT', Pointer #500) ───┼──┐            └────────────────────────────────┘
-│ ('IT', Pointer #80)  ───┼──┼──┐         ┌────────────────────────────────┐
-└─────────────────────────┘  │  └────────>│ Disk page 15: Row #80 ('IT')  │
-     (Sequential read)       │            └────────────────────────────────┘
-                             │            ┌────────────────────────────────┐
-                             └───────────>│ Disk page 89: Row #500 ('IT') │
-                                          └────────────────────────────────┘
-                                                (Random disk jump)
-```
+![Index pointers to rows on different disk pages, causing random reads](../assets/images/index/dick.png){ loading=lazy }
 
 #### When the Index Contains a Clustered Key
 
@@ -534,7 +472,7 @@ Suppose we have an index `idx_emp (dept_id, salary)`.
 SELECT salary FROM Employees WHERE dept_id = 10;
 ```
 
-For this query, `idx_emp` acts as a covering index because it satisfies both `dept_id` and `salary`. The engine performs an index-only scan.
+For this query, `idx_emp` acts as a covering index because it contains both `dept_id` and `salary`. The engine performs an index-only scan.
 
 #### Example 2: Query Requires Additional Columns Outside the Index
 
@@ -579,7 +517,7 @@ When a query has a matching condition, the database scans only active-order entr
 - When filter predicates are stable and clearly defined across major application queries.
 - When the cost of a full index exceeds the benefit it provides for rarely read rows.
 
-The optimizer uses a Partial Index only when it can prove that the query condition implies the index predicate. Thus, `WHERE status = 'active'` can use the index above, while an unrelated condition cannot.
+The optimizer uses a Partial Index only when it can prove that the query condition implies the index predicate. Thus, `WHERE status = 'active'` can use the index above, while a condition unrelated to `status` cannot.
 
 ### Trade-offs
 
@@ -594,26 +532,15 @@ Partial indexes are not universally superior to full indexes:
 
 ## Conclusion
 
-<figure class="airflow-closing-comic" id="loi-ket">
-  <img
-    src="../../assets/images/index/end_index.png"
-    alt="Comic strip showing Shin sharing the journey of learning Indexes and thanking readers"
-    loading="lazy"
-  >
-  <figcaption>
-    <span>CONCLUSION</span>
-    <div>
-      <strong>Thank you for reading all the way through!</strong>
-      <p>Hopefully, this article helps you understand Indexes better. See you in future posts.</p>
-    </div>
-  </figcaption>
-</figure>
+This article on database indexes draws on the author’s own reading, notes, and learning, so it may still contain inaccuracies or omissions. I welcome your feedback and corrections.
+
+Thank you for reading to the end! I hope this article helps you understand database indexes more clearly. See you in future articles.
 
 
 <footer class="airflow-article-end index-article-end">
   <div>
     <span>BEHIND THE PIPELINE / 003</span>
-    <strong>Understanding the system,<br>not just syntax.</strong>
+    <strong>Understand the system,<br>not just the syntax.</strong>
   </div>
-  <a href="../../">Return to library <span aria-hidden="true">→</span></a>
+  <a href="../../">Back to the library <span aria-hidden="true">→</span></a>
 </footer>

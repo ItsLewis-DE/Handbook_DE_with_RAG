@@ -1,0 +1,2068 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Pipeline RAG — chatbot hỏi đáp tài liệu Data Engineering bằng tiếng Việt, kết hợp tìm kiếm hybrid, mô hình ngôn ngữ local và trích dẫn nguồn.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/p2/">
+      
+      
+        <link rel="prev" href="../archi/">
+      
+      
+        <link rel="next" href="../archi.en/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Kiến trúc Apache Spark (phần 2) - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/reading-language.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+    <link rel="alternate" hreflang="vi" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/p2/">
+  
+    <link rel="alternate" hreflang="en" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/p2.en/">
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-broadcast-hash-join" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand and navigation -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
+        </span>
+      </a>
+
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
+        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </nav>
+
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../ware_lake_lw/doc/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/postgres/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="./" aria-current="page">
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/Handbook_DE_with_RAG" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/Handbook_DE_with_RAG
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse, and Data Mart (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes in Databases (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Orchestration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-broadcast-hash-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Broadcast Hash Join
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-shuffle-hash-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Shuffle Hash Join
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sort-merge-join-smj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Sort-Merge Join (SMJ)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-broadcast-nested-loop-join-bnlj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Broadcast Nested Loop Join (BNLJ)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cartesian-product-join-shuffle-and-replicate-nested-loop-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cartesian Product Join (Shuffle-and-Replicate Nested Loop Join)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-rdd-va-vai-tro-trong-thuc-thi-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. RDD và vai trò trong thực thi Spark
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. RDD và vai trò trong thực thi Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rdd-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDD là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mo-hinh-phan-tang-thuc-thi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mô hình phân tầng thực thi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kha-nang-chiu-loi-cua-rdd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khả năng chịu lỗi của RDD
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-co-che-giao-tiep-noi-bo-cua-pyspark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Cơ chế giao tiếp nội bộ của PySpark
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Cơ chế giao tiếp nội bộ của PySpark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-pyspark-can-giao-tiep-voi-spark-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao PySpark cần giao tiếp với Spark Engine?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giao-tiep-tai-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giao tiếp tại Driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giao-tiep-tai-worker-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giao tiếp tại worker node
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-bo-nho-cua-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Bộ nhớ của Driver
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Bộ nhớ của Driver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cac-thanh-phan-bo-nho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các thành phần bộ nhớ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cach-don-dep-bo-nho-tren-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cách dọn dẹp bộ nhớ trên Driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-bo-nho-cua-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Bộ nhớ của Executor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Bộ nhớ của Executor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm-heap-sparkexecutormemory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JVM Heap (spark.executor.memory)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM Heap (spark.executor.memory)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reserved-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reserved Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unified-memory-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unified Memory Pool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Overhead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managed-off-heap-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managed Off-Heap Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archi.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-broadcast-hash-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Broadcast Hash Join
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-shuffle-hash-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Shuffle Hash Join
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sort-merge-join-smj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Sort-Merge Join (SMJ)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-broadcast-nested-loop-join-bnlj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Broadcast Nested Loop Join (BNLJ)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cartesian-product-join-shuffle-and-replicate-nested-loop-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cartesian Product Join (Shuffle-and-Replicate Nested Loop Join)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-rdd-va-vai-tro-trong-thuc-thi-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. RDD và vai trò trong thực thi Spark
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. RDD và vai trò trong thực thi Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rdd-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDD là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mo-hinh-phan-tang-thuc-thi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mô hình phân tầng thực thi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kha-nang-chiu-loi-cua-rdd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Khả năng chịu lỗi của RDD
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-co-che-giao-tiep-noi-bo-cua-pyspark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Cơ chế giao tiếp nội bộ của PySpark
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Cơ chế giao tiếp nội bộ của PySpark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-pyspark-can-giao-tiep-voi-spark-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao PySpark cần giao tiếp với Spark Engine?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giao-tiep-tai-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giao tiếp tại Driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giao-tiep-tai-worker-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giao tiếp tại worker node
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-bo-nho-cua-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Bộ nhớ của Driver
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Bộ nhớ của Driver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cac-thanh-phan-bo-nho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các thành phần bộ nhớ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cach-don-dep-bo-nho-tren-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cách dọn dẹp bộ nhớ trên Driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-bo-nho-cua-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Bộ nhớ của Executor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Bộ nhớ của Executor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm-heap-sparkexecutormemory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JVM Heap (spark.executor.memory)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM Heap (spark.executor.memory)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reserved-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reserved Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unified-memory-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unified Memory Pool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Overhead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managed-off-heap-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managed Off-Heap Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+<nav class="reading-language" aria-label="Ngôn ngữ đọc">
+  <div class="reading-language__options">
+  
+    <a href="./" lang="vi" hreflang="vi" data-reading-language="vi" aria-current="page">Tiếng Việt</a>
+  
+    <a href="../p2.en/" lang="en" hreflang="en" data-reading-language="en" >English</a>
+  
+  </div>
+</nav>
+
+  
+                  
+  
+
+
+
+  
+  
+
+
+<header class="airflow-article-hero spark-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 006</span>
+  </div>
+  <h1>Kiến trúc<br><em>Apache Spark (phần 2)</em></h1>
+  <p class="airflow-article-hero__dek">
+    Từ các chiến lược Join và RDD đến giao tiếp trong PySpark,
+    cách Driver và Executor tổ chức, sử dụng bộ nhớ.
+  </p>
+  <div class="airflow-article-hero__meta" aria-label="Thông tin bài viết">
+    <span>DISTRIBUTED COMPUTING</span>
+    <span>DEEP DIVE</span>
+    <span>EDITION 06 · 2026</span>
+  </div>
+</header>
+
+<p>Trong Spark, cần phân biệt giữa <strong>Logical Join</strong> và <strong>Physical Join Strategy</strong>. Spark hỗ trợ đầy đủ các kiểu
+Join logic tiêu chuẩn như SQL (<code>LEFT</code>, <code>RIGHT</code>, <code>INNER</code>…), nhưng ở tầng thực thi vật lý, <strong>Catalyst
+Optimizer</strong> sẽ tự động lựa chọn các thuật toán phân tán phù hợp, như Broadcast Hash Join hay Sort-Merge
+Join, để giảm thiểu chi phí shuffle qua mạng và tối ưu bộ nhớ. Bài viết này trình bày các thuật toán
+Physical Join đó, sau đó đi vào vai trò của RDD, cơ chế giao tiếp trong PySpark và quản lý bộ nhớ
+trên Driver, Executor.</p>
+<h2 id="1-broadcast-hash-join">1. Broadcast Hash Join</h2>
+<p>Dữ liệu ban đầu nằm rải rác trong các partition trên các Executor. Khi thực hiện <strong>Broadcast Hash Join</strong>,
+Spark tập hợp các partition của bảng nhỏ về Driver thành một bảng hoàn chỉnh. Driver sau đó chuyển bảng dữ
+liệu này thành <strong>bảng băm (Hash Table)</strong>.</p>
+<p>Các Executor tải bảng băm về và lưu vào bộ nhớ đệm, sau đó khởi chạy các Task để quét từng dòng trong
+partition của bảng lớn. Mỗi dòng được ghép nối bằng cách đối chiếu key của bảng lớn với key của bảng nhỏ
+trong bảng băm.</p>
+<ul>
+<li>
+<p><strong>Ưu điểm:</strong> Loại bỏ hoàn toàn chi phí shuffle. Đây là phép Join có tốc độ thực thi nhanh nhất trong
+  Spark.</p>
+</li>
+<li>
+<p><strong>Nhược điểm:</strong> Dễ gây quá tải RAM của Driver và Executor nếu bảng quá lớn; chỉ áp dụng được khi Join giữa
+  một bảng lớn và một bảng nhỏ.</p>
+</li>
+</ul>
+<p><a href="../../assets/images/spark/broadcast.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Broadcast Hash Join trong Spark" loading="lazy" src="../../assets/images/spark/broadcast.png" /></a></p>
+<h2 id="2-shuffle-hash-join">2. Shuffle Hash Join</h2>
+<p>Với <strong>Shuffle Hash Join</strong>, dữ liệu của cả hai bảng được shuffle qua mạng dựa trên giá trị hash của Join Key,
+nhằm đưa các dòng có cùng key về cùng một partition trên một Executor.</p>
+<p>Tại mỗi partition, Spark xây dựng một <strong>Hash Table</strong> cho phần dữ liệu của bảng nhỏ hơn, sau đó đọc từng dòng
+của bảng lớn hơn và tra cứu trong Hash Table để ghép nối.</p>
+<p>Cơ chế này gần tương tự Broadcast Hash Join, nhưng có thêm bước shuffle ở đầu và Driver không tập hợp các
+partition của bảng nhỏ. Bước shuffle là cần thiết vì nếu bảng nhỏ vẫn có kích thước quá lớn, việc tập hợp
+toàn bộ bảng về Driver có thể gây tràn RAM.</p>
+<ul>
+<li>
+<p><strong>Ưu điểm:</strong> Nhanh hơn Sort-Merge Join vì không cần sắp xếp dữ liệu.</p>
+</li>
+<li>
+<p><strong>Nhược điểm:</strong> Dễ bị ảnh hưởng bởi lệch dữ liệu (<strong>Data Skew</strong>) và gặp lỗi <strong>OOM (Out Of Memory)</strong> nếu
+  partition của bảng nhỏ vẫn lớn hơn RAM của Executor.</p>
+</li>
+</ul>
+<p><a href="../../assets/images/spark/shuffle_hash.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Shuffle Hash Join trong Spark" loading="lazy" src="../../assets/images/spark/shuffle_hash.png" /></a></p>
+<h2 id="3-sort-merge-join-smj">3. Sort-Merge Join (SMJ)</h2>
+<p>Với <strong>Sort-Merge Join (SMJ)</strong>, dữ liệu của cả hai bảng được shuffle theo Join Key để đưa các dòng có cùng
+key về cùng một partition. Executor sau đó sắp xếp dữ liệu của cả hai bảng theo thứ tự Join Key.</p>
+<p>Executor duyệt song song hai tập dữ liệu đã sắp xếp bằng hai con trỏ đọc để tìm các dòng có key khớp nhau.</p>
+<ul>
+<li>
+<p><strong>Ưu điểm:</strong> Xử lý được dữ liệu có kích thước rất lớn, hỗ trợ ghi xuống đĩa khi kích thước partition vượt
+  quá dung lượng RAM.</p>
+</li>
+<li>
+<p><strong>Nhược điểm:</strong> Phát sinh chi phí shuffle qua mạng, tiêu tốn CPU cho việc sắp xếp và nhạy cảm với hiện
+  tượng Data Skew.</p>
+</li>
+</ul>
+<p><a href="../../assets/images/spark/sort_join.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Sort-Merge Join trong Spark" class="article-diagram--wide" loading="lazy" src="../../assets/images/spark/sort_join.png" /></a></p>
+<h2 id="4-broadcast-nested-loop-join-bnlj">4. Broadcast Nested Loop Join (BNLJ)</h2>
+<p>Tương tự Broadcast Hash Join, Driver tập hợp dữ liệu của bảng nhỏ rồi broadcast bảng này tới các Executor.
+Sau đó, <strong>Broadcast Nested Loop Join (BNLJ)</strong> sử dụng hai vòng lặp lồng nhau để so sánh từng dòng của bảng
+lớn với từng dòng của bảng nhỏ.</p>
+<p>BNLJ đặc biệt hữu ích khi phép Join không có <strong>equi-join key</strong>, chẳng hạn với các điều kiện <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>,
+<code>&lt;=</code>, vì khi đó Spark không thể sử dụng các thuật toán Hash Join hoặc Sort-Merge Join thông thường.</p>
+<p>Cơ chế hai vòng lặp được mô phỏng như sau:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Giả lập logic bên trong một Task của Executor</span>
+<span class="n">bang_nho</span> <span class="o">=</span> <span class="p">[</span><span class="n">dong_1</span><span class="p">,</span> <span class="n">dong_2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">dong_k</span><span class="p">]</span>  <span class="c1"># Nằm trọn trong RAM của Executor</span>
+
+<span class="k">for</span> <span class="n">dong_lon</span> <span class="ow">in</span> <span class="n">partition_bang_lon</span><span class="p">:</span>
+    <span class="c1"># Vòng lặp trong: duyệt toàn bộ bảng nhỏ</span>
+    <span class="k">for</span> <span class="n">dong_nho</span> <span class="ow">in</span> <span class="n">bang_nho</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dieu_kien_non_equi</span><span class="p">(</span><span class="n">dong_lon</span><span class="p">,</span> <span class="n">dong_nho</span><span class="p">):</span>  <span class="c1"># Ví dụ: dong_lon.gia &gt; dong_nho.gia_san</span>
+            <span class="n">xuat_ket_qua</span><span class="p">(</span><span class="n">dong_lon</span><span class="p">,</span> <span class="n">dong_nho</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="../../assets/images/spark/BNJT.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Broadcast Nested Loop Join trong Spark" loading="lazy" src="../../assets/images/spark/BNJT.png" /></a></p>
+<h2 id="5-cartesian-product-join-shuffle-and-replicate-nested-loop-join">5. Cartesian Product Join (Shuffle-and-Replicate Nested Loop Join)</h2>
+<p><strong>Cartesian Product Join</strong>, còn gọi là <strong>Shuffle-and-Replicate Nested Loop Join</strong>, là chiến lược tốn kém
+nhất trong các phép Join. Chiến lược này được sử dụng khi không có equi-join key và không thể tập hợp bảng
+vào RAM.</p>
+<p>Spark phải ghép từng partition của bảng A với từng partition của bảng B, tương tự phép tích Descartes. Giả
+sử bảng A có <code>P_A</code> partition và bảng B có <code>P_B</code> partition, Spark sẽ tạo tổng cộng <strong><code>P_A × P_B</code> partition
+đầu ra</strong>.</p>
+<p>Trong mỗi partition mới, Task thực hiện hai vòng lặp lồng nhau để duyệt dữ liệu, tương tự BNLJ.</p>
+<p><a href="../../assets/images/spark/last_join.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Cartesian Product Join trong Spark" loading="lazy" src="../../assets/images/spark/last_join.png" /></a></p>
+<h2 id="6-rdd-va-vai-tro-trong-thuc-thi-spark">6. RDD và vai trò trong thực thi Spark</h2>
+<h3 id="rdd-la-gi">RDD là gì?</h3>
+<p><strong>RDD</strong> là mô hình trừu tượng dữ liệu cốt lõi và nguyên thủy nhất của Apache Spark. Khi sử dụng DataFrame,
+bên dưới vẫn là RDD. Dù chương trình được viết bằng DataFrame, Dataset hay Spark SQL, Spark không thực thi
+trực tiếp DataFrame ở tầng máy tính.</p>
+<ul>
+<li>
+<p><strong>DataFrame và SQL</strong> là lớp trừu tượng logic (Logical Abstraction), giúp người dùng khai báo dữ liệu dưới
+  dạng bảng và cột. Khi một Action được gọi, Catalyst Optimizer tối ưu logic truy vấn và chuyển thành
+  Physical Plan. Kế hoạch này tiếp tục được chuyển thành chuỗi hoặc cây RDD để DAGScheduler phân chia thành
+  các Stage và Task.</p>
+</li>
+<li>
+<p><strong>Executor</strong> thực thi tính toán thông qua các phương thức của RDD.</p>
+</li>
+</ul>
+<h3 id="mo-hinh-phan-tang-thuc-thi">Mô hình phân tầng thực thi</h3>
+<div class="highlight"><pre><span></span><code>[Giao diện người dùng]     DataFrame API / Spark SQL / Datasets
+                                         │
+                                         ▼ (Catalyst Optimizer &amp; Tungsten)
+[Tầng biên dịch ngầm]      Logical Plan ──► Physical Plan
+                                         │
+                                         ▼ (Biên dịch thành RDD nội bộ)
+[Động cơ cốt lõi]          RDD Graph (FileScanRDD, ShuffledRowRDD, Lineage)
+                                         │
+                                         ▼ (DAGScheduler &amp; TaskScheduler)
+[Tầng thực thi vật lý]     Stages ──► Tasks ──► CPU/RAM của Executor
+</code></pre></div>
+<h3 id="kha-nang-chiu-loi-cua-rdd">Khả năng chịu lỗi của RDD</h3>
+<p>Một tính năng quan trọng của RDD là <strong>khả năng chịu lỗi</strong>. Khi một Action được gọi, Physical Plan được
+chuyển thành cây RDD. Nếu một worker node gặp lỗi, Spark có thể dựa vào cây này để phân công xử lý lại các
+partition đã mất trên những worker node còn hoạt động, thay vì hủy toàn bộ Job.</p>
+<h2 id="7-co-che-giao-tiep-noi-bo-cua-pyspark">7. Cơ chế giao tiếp nội bộ của PySpark</h2>
+<p>Apache Spark hỗ trợ nhiều ngôn ngữ lập trình như Scala, Java, Python và R. <strong>PySpark</strong> là Python API của
+Apache Spark, cho phép người dùng viết chương trình xử lý dữ liệu bằng Python và thực thi trên Spark. Để làm
+việc hiệu quả với Spark, Data Engineer cần hiểu cả cách viết mã PySpark lẫn cơ chế hoạt động phía sau, đặc
+biệt là cách Python giao tiếp với Spark Engine.</p>
+<p>Phần này trình bày cơ chế giao tiếp nội bộ của PySpark ở phía <strong>Driver</strong> và <strong>worker node</strong>, tức là cách mã
+Python được truyền sang JVM để Spark xử lý.</p>
+<h3 id="vi-sao-pyspark-can-giao-tiep-voi-spark-engine">Vì sao PySpark cần giao tiếp với Spark Engine?</h3>
+<p>PySpark cung cấp API để người dùng xử lý dữ liệu bằng Python, trong khi phần lõi thực thi của Spark chủ yếu
+chạy trên <strong>JVM</strong>. Vì vậy, PySpark cần cơ chế giao tiếp giữa tiến trình Python và JVM để chuyển các lệnh của
+người dùng sang Spark Engine xử lý.</p>
+<p><strong>JVM</strong> là môi trường phần mềm trung gian giúp máy tính chạy các chương trình được viết bằng Java và những
+ngôn ngữ liên quan, chẳng hạn Scala.</p>
+<h3 id="giao-tiep-tai-driver">Giao tiếp tại Driver</h3>
+<p>Cơ chế giao tiếp nội bộ tại Driver hoạt động theo mô hình <strong>hai tiến trình</strong>:</p>
+<ul>
+<li>
+<p><strong>Python Driver Process (CPython):</strong> Tiến trình Python thông thường, có thể thấy trong Task Manager hoặc
+  Activity Monitor, chịu trách nhiệm thực thi mã Python của người dùng.</p>
+</li>
+<li>
+<p><strong>JVM Driver Process (Java/Scala Spark Driver):</strong> Tiến trình Java chạy ngầm, được tạo khi gọi lệnh khởi
+  tạo <code>SparkSession</code> trong Python.</p>
+</li>
+</ul>
+<p>Hai tiến trình trao đổi với nhau thông qua thư viện <strong>Py4J</strong>. Khi người dùng viết một câu lệnh Python, Py4J
+chuyển lời gọi hàm sang JVM Driver; JVM sau đó trả thông tin về tiến trình Python.</p>
+<p><a href="../../assets/images/spark/driver.png" title="Xem ảnh kích thước gốc"><img alt="Giao tiếp giữa Python Driver và JVM Driver qua Py4J" loading="lazy" src="../../assets/images/spark/driver.png" /></a></p>
+<p>Khi gặp một <strong>Action</strong>, JVM Driver kích hoạt Job trên cụm và nhận kết quả từ các Executor. Dữ liệu kết quả
+sau đó được chuyển về tiến trình Python thông qua một <strong>local socket</strong>.</p>
+<h3 id="giao-tiep-tai-worker-node">Giao tiếp tại worker node</h3>
+<p>Cơ chế giao tiếp nội bộ tại worker node cũng dựa trên mô hình <strong>hai tiến trình</strong>:</p>
+<ul>
+<li>
+<p><strong>JVM Executor:</strong> Trên mỗi worker node, ứng dụng Spark có một hoặc nhiều tiến trình JVM Executor. Các tiến
+  trình này quản lý luồng tính toán, bộ nhớ đệm và trực tiếp thực thi mã tính toán trên dữ liệu tại worker
+  node.</p>
+</li>
+<li>
+<p><strong>Python Worker Process (CPython):</strong> Khi một Task chứa mã Python, chẳng hạn RDD <code>map</code>/<code>filter</code>, Python
+  UDFs hoặc Pandas UDFs, JVM Executor khởi chạy các tiến trình Python Worker để thực thi mã đó.</p>
+</li>
+</ul>
+<p><a href="../../assets/images/spark/worker.png" title="Xem ảnh kích thước gốc"><img alt="Giao tiếp giữa JVM Executor và Python Worker tại worker node" loading="lazy" src="../../assets/images/spark/worker.png" /></a></p>
+<h2 id="8-bo-nho-cua-driver">8. Bộ nhớ của Driver</h2>
+<h3 id="cac-thanh-phan-bo-nho">Các thành phần bộ nhớ</h3>
+<p>Bộ nhớ của Driver gồm <strong>hai phần</strong>:</p>
+<ul>
+<li>
+<p><strong>JVM Heap (<code>spark.driver.memory</code>):</strong> Dung lượng RAM chính được cấp phát cho tiến trình JVM Driver. Đây là
+  nơi chứa dữ liệu thu thập từ các Executor và dữ liệu sử dụng cho broadcast.</p>
+</li>
+<li>
+<p><strong>Memory Overhead (<code>spark.driver.memoryOverhead</code> — Off-Heap / Native):</strong> Mặc định bằng <code>max(384 MB, 0.10 *
+  driverMemory)</code>. Vùng nhớ này phục vụ việc quản lý của hệ điều hành, tiến trình Python Driver và các nhu
+  cầu bộ nhớ liên quan.</p>
+</li>
+</ul>
+<p><a href="../../assets/images/spark/driver_mem.png" title="Xem ảnh kích thước gốc"><img alt="Các thành phần bộ nhớ của Driver trong Spark" loading="lazy" src="../../assets/images/spark/driver_mem.png" /></a></p>
+<h3 id="cach-don-dep-bo-nho-tren-driver">Cách dọn dẹp bộ nhớ trên Driver</h3>
+<ul>
+<li>
+<p><strong>Bộ dọn rác JVM (Garbage Collector):</strong> GC tự động đánh dấu và thu hồi vùng nhớ Heap chứa dữ liệu không
+  còn được sử dụng.</p>
+</li>
+<li>
+<p><strong>Tiến trình ngầm ContextCleaner:</strong> Khi dữ liệu bị GC xóa, ContextCleaner dọn dẹp các dữ liệu liên quan
+  đến dữ liệu đã bị xóa đó.</p>
+</li>
+<li>
+<p><strong>Dọn dẹp chủ động:</strong> Lập trình viên có thể ra lệnh để dọn dẹp bộ nhớ.</p>
+</li>
+</ul>
+<h2 id="9-bo-nho-cua-executor">9. Bộ nhớ của Executor</h2>
+<p>Bộ nhớ của Executor gồm <strong>ba phần</strong>: JVM Heap, Memory Overhead và Managed Off-Heap Memory.</p>
+<h3 id="jvm-heap-sparkexecutormemory">JVM Heap (<code>spark.executor.memory</code>)</h3>
+<p><strong>JVM Heap</strong> được chia thành ba khu vực chính:</p>
+<h4 id="reserved-memory">Reserved Memory</h4>
+<p><strong>Reserved Memory</strong> có dung lượng cố định <strong>300 MB</strong>. Đây là phần JVM Heap được Spark loại khỏi vùng bộ nhớ
+mà Unified Memory Manager có thể sử dụng cho Execution và Storage. Phần này tạo khoảng trống cho các cấu
+trúc nội bộ của Spark/JVM và những nhu cầu bộ nhớ khác, đồng thời giảm nguy cơ hết bộ nhớ do Spark sử dụng
+toàn bộ Heap.</p>
+<h4 id="unified-memory-pool">Unified Memory Pool</h4>
+<p><strong>Unified Memory Pool</strong> là vùng bộ nhớ dùng chung, được tính theo công thức:</p>
+<div class="highlight"><pre><span></span><code>Unified Memory = (spark.executor.memory - 300 MB) × spark.memory.fraction
+</code></pre></div>
+<p>Mặc định, <strong><code>spark.memory.fraction = 0.6</code></strong>, tương đương 60% phần Heap khả dụng.</p>
+<p>Vùng này được chia thành <strong>hai vùng bộ nhớ con</strong>:</p>
+<ul>
+<li>
+<p><strong>Execution Memory:</strong> Lưu dữ liệu ngắn hạn và được giải phóng ngay sau khi Task xử lý xong. Vùng này chứa
+  dữ liệu shuffle hoặc các Hash Table phục vụ phép Join, chẳng hạn Shuffle Hash Join.</p>
+</li>
+<li>
+<p><strong>Storage Memory:</strong> Lưu các DataFrame/RDD được cache hoặc persist (<code>df.cache()</code>, <code>df.persist()</code>) và các
+  <strong>Broadcast Variables</strong>, chẳng hạn Hash Table trong Broadcast Hash Join.</p>
+</li>
+</ul>
+<p>Ranh giới giữa Execution và Storage là <strong>ranh giới động</strong>, với mức phân chia mặc định là <strong>0.5</strong>. Khi một
+vùng còn trống, vùng kia có thể mượn dung lượng; cả Execution và Storage đều có thể sử dụng phần bộ nhớ đang
+rảnh của nhau. Tuy nhiên, Execution có quyền thu hồi phần bộ nhớ mà Storage đã mượn, trong khi Storage không
+thể lấy phần bộ nhớ Execution đang được Task sử dụng.</p>
+<h4 id="user-memory">User Memory</h4>
+<p><strong>User Memory</strong> được tính theo công thức:</p>
+<div class="highlight"><pre><span></span><code>User Memory = (spark.executor.memory - 300 MB) × (1 - spark.memory.fraction)
+</code></pre></div>
+<p>Vùng này chiếm khoảng <strong>40% phần Heap còn lại sau khi trừ Reserved Memory</strong>, dùng để chứa các câu lệnh do
+người dùng tự tạo, chẳng hạn <strong>UDF</strong>.</p>
+<h3 id="memory-overhead">Memory Overhead</h3>
+<p><strong>Memory Overhead</strong> là vùng bộ nhớ nằm ngoài JVM Heap. Với PySpark, nếu không cấu hình
+<strong><code>spark.executor.pyspark.memory</code></strong>, bộ nhớ của Python Worker cũng được tính vào vùng này.</p>
+<h3 id="managed-off-heap-memory">Managed Off-Heap Memory</h3>
+<p><strong>Managed Off-Heap Memory</strong> là tùy chọn cấp phát bộ nhớ ngoài Heap dành riêng cho động cơ <strong>Project
+Tungsten</strong>. Vùng nhớ này không được quản lý bởi JVM Garbage Collector, giúp loại bỏ các đợt tạm dừng dọn rác
+(GC Pauses) khi xử lý tập dữ liệu lớn.</p>
+<p><a href="../../assets/images/spark/exec_mem.png" title="Xem ảnh kích thước gốc"><img alt="Các vùng bộ nhớ của Executor trong Spark" class="article-diagram--wide" loading="lazy" src="../../assets/images/spark/exec_mem.png" /></a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/reading-language.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>

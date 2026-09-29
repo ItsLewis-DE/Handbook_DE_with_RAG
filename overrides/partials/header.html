@@ -12,7 +12,6 @@
         <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
         <span>INDEXING &amp; B-TREE <b>♦</b></span>
         <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
-        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
         <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
       </div>
       <div class="top-marquee__group" aria-hidden="true">
@@ -23,7 +22,6 @@
         <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
         <span>INDEXING &amp; B-TREE <b>♦</b></span>
         <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
-        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
         <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
       </div>
     </div>
@@ -53,12 +51,6 @@
         </button>
       </nav>
 
-      {% if "material/search" in config.plugins and config.plugins["material/search"].config.enabled %}
-        <label class="custom-header__search" for="__search" role="button" tabindex="0" aria-label="Tìm bài viết">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.6 4.6"/></svg>
-          <span>Tìm bài viết</span>
-        </label>
-      {% endif %}
     </div>
 
     <div class="library-panel" id="library-panel" hidden>
@@ -116,7 +108,4 @@
     </div>
   </div>
 
-  {% if "material/search" in config.plugins and config.plugins["material/search"].config.enabled %}
-    {% include "partials/search.html" %}
-  {% endif %}
 </header>

@@ -3529,6 +3529,23 @@ body:has(.landing-page) .md-content__inner::before {
   margin-bottom: 0.6rem;
 }
 
+.library-section__all {
+  margin: 1.2rem 0 0;
+  text-align: right;
+}
+
+.library-section__all a {
+  color: var(--landing-ink);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.library-section__all a:focus-visible {
+  outline: 2px solid var(--landing-orange);
+  outline-offset: 4px;
+}
+
 .published-articles {
   display: grid;
   gap: 0.9rem;

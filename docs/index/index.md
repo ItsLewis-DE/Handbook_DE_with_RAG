@@ -23,17 +23,7 @@ hide:
   </div>
 </header>
 
-<figure class="airflow-opening-comic">
-  <img
-    src="../../assets/images/index/image4.png"
-    alt="Truyện tranh vui nhắc người đọc chuẩn bị cho một bài viết dài về index trong cơ sở dữ liệu"
-    loading="eager"
-  >
-  <figcaption>
-    <span>LƯU Ý TRƯỚC KHI ĐỌC</span>
-    <strong>Một bài viết khá dài</strong>
-  </figcaption>
-</figure>
+> **Lưu ý trước khi đọc:** Đây là một bài viết dài, cần nhiều hơn vài phút đọc lướt. Bạn hãy dành thời gian, chuẩn bị một ly nước và giữ sự tập trung để theo dõi nội dung.
 
 ## 1. Database lưu trữ dữ liệu như thế nào?
 
@@ -51,18 +41,7 @@ Thông thường, một page gồm các phần sau:
 
 Minh họa cấu trúc page:
 
-```mermaid
-flowchart TB
-    subgraph PAGE["DATA PAGE"]
-        direction TB
-        HEADER["PAGE HEADER<br/>File ID và Page ID<br/>Metadata + dung lượng trống"]
-        DATA["DATA ROWS<br/>Dữ liệu thực tế được lưu dưới dạng bytes"]
-        OFFSETS["OFFSET ARRAY<br/>Địa chỉ byte bắt đầu của từng dòng dữ liệu"]
-
-        HEADER --- DATA
-        DATA --- OFFSETS
-    end
-```
+![Cấu trúc một data page gồm page header, data rows và offset array](../assets/images/index/data_page.png){ loading=lazy }
 
 ### Heap và Clustered: hai cách tổ chức dữ liệu trong page
 
@@ -75,6 +54,8 @@ Thông thường, dữ liệu được lưu trong page theo hai cách:
 
 Hãy hình dung bạn cần tìm một tựa sách trong một cuốn sách rất dày. Nếu cuốn sách **không có mục lục**, bạn phải lật lần lượt từ trang đầu đến trang cuối cho đến khi thấy đúng tựa sách. Cách này rất tốn thời gian, nhất là khi cuốn sách dài hàng nghìn trang. Mục lục giải quyết vấn đề bằng cách sắp xếp các tựa sách theo một thứ tự, chẳng hạn thứ tự chữ cái, rồi ghi kèm số trang tương ứng. Muốn tìm một tựa đề, bạn chỉ cần **tra mục lục và mở thẳng đến trang được chỉ dẫn**.
 
+![So sánh việc tìm kiếm tuần tự trong sách với tra cứu qua mục lục](../assets/images/index/book.png){ loading=lazy }
+
 Index trong cơ sở dữ liệu vận hành theo ý tưởng tương tự. Thay vì duyệt từng dòng để tìm giá trị mong muốn, hệ thống **tra index** để nhanh chóng xác định bản ghi hoặc page chứa dữ liệu, sau đó **chỉ đọc phần cần thiết**.
 
 Index là một **cấu trúc phụ giúp tăng tốc tìm kiếm**. Ở nút trung gian, index lưu **key phân tách và con trỏ**, trỏ đến index page con. Ở nút lá, index lưu key cùng con trỏ hoặc định danh đến bản ghi; tùy loại index, nút lá có thể chứa luôn giá trị. Các phần tiếp theo sẽ giải thích khi nào index dùng con trỏ, cũng như vai trò của nút trung gian và nút lá. Trên đĩa, index thường được tổ chức thành nhiều **index page**; mỗi index page gồm nhiều **index entry**.
@@ -86,37 +67,7 @@ Các index page thường không được trải phẳng mà liên kết với n
 
 ### Mô hình tổng quan: một B-tree cân bằng
 
-```mermaid
-flowchart TB
-    ROOT["NÚT GỐC<br/>30 | 60"]
-
-    LEFT["NÚT TRUNG GIAN<br/>10 | 20"]
-    CENTER["NÚT TRUNG GIAN<br/>40 | 50"]
-    RIGHT["NÚT TRUNG GIAN<br/>70 | 80"]
-
-    L1["NÚT LÁ<br/>5"]
-    L2["NÚT LÁ<br/>15"]
-    L3["NÚT LÁ<br/>25"]
-    L4["NÚT LÁ<br/>35"]
-    L5["NÚT LÁ<br/>45"]
-    L6["NÚT LÁ<br/>55"]
-    L7["NÚT LÁ<br/>65"]
-    L8["NÚT LÁ<br/>75"]
-    L9["NÚT LÁ<br/>85"]
-
-    ROOT --> LEFT
-    ROOT --> CENTER
-    ROOT --> RIGHT
-    LEFT --> L1
-    LEFT --> L2
-    LEFT --> L3
-    CENTER --> L4
-    CENTER --> L5
-    CENTER --> L6
-    RIGHT --> L7
-    RIGHT --> L8
-    RIGHT --> L9
-```
+![Cây B-tree cân bằng gồm nút gốc, các nút trung gian và các nút lá](../assets/images/index/tree.png){ loading=lazy }
 
 > **Lưu ý:** Sơ đồ này chỉ minh họa cách các key **phân chia khoảng tìm kiếm** và cách các node liên kết với nhau. Để dễ quan sát, phần dữ liệu thực tế hoặc con trỏ đến dữ liệu đi kèm từng key không được hiển thị. Trong B-tree, mỗi key ở node trung gian và node lá đều có thể đi kèm dữ liệu hoặc con trỏ đến dữ liệu; các mũi tên trong sơ đồ biểu diễn **con trỏ đến node con**.
 
@@ -208,7 +159,12 @@ Vì sao chỉ mục phụ dùng khóa logic, dù phải duyệt cây hai lần (
 
 Khi thêm hoặc thay đổi dữ liệu, vị trí của các dòng có thể thay đổi. Nếu các chỉ mục phụ lưu RID, hệ thống phải cập nhật lại những RID này, gây tốn I/O.
 
-![Sự khác nhau giữa con trỏ dữ liệu trong B-tree và nút lá B+tree](../assets/images/index/difference.png)
+Hai cách định vị dòng dữ liệu có thể được đối chiếu như sau:
+
+| Cách định vị | Trường hợp sử dụng | Đường đi tới dữ liệu |
+| --- | --- | --- |
+| **Con trỏ vật lý RID** | Bảng chính lưu dưới dạng Heap Pages, không có clustered index. | RID lưu tọa độ `FileID:PageID:SlotNumber`, trỏ trực tiếp tới dòng dữ liệu. |
+| **Khóa logic** | Chỉ mục phụ trên bảng được tổ chức theo clustered index. | Chỉ mục phụ lưu khóa chính, chẳng hạn `ID = 3`; hệ thống dùng khóa đó để tra clustered index rồi lấy dòng dữ liệu: `Secondary Index → Clustered Index → Row`. |
 
 ### Non-clustered index
 
@@ -379,7 +335,7 @@ Hàm băm cần hạn chế tối đa tình trạng xung đột vì các nguyên
 
 Khi bảng băm vượt quá dung lượng RAM, một phần dữ liệu buộc phải được đẩy xuống ổ đĩa. Do tính chất phân tán ngẫu nhiên của hàm băm, mỗi lượt truy vấn rất dễ rơi vào phần nằm trên đĩa (**cache miss**), biến thao tác tra cứu trên RAM thành thao tác đọc đĩa ngẫu nhiên (**Random I/O**) rất chậm.
 
-![Ảnh hưởng đến hiệu năng khi bảng băm lớn hơn RAM](../assets/images/index/RAM.png)
+Chuỗi tác động là: **Hash Table lớn hơn RAM → một phần dữ liệu nằm trên đĩa → tra cứu trúng bucket không có trong RAM (cache miss) → phát sinh Random I/O → hiệu năng giảm**. Vì hàm băm phân tán dữ liệu ngẫu nhiên, các lượt tra cứu có thể rơi vào những vị trí khác nhau trên đĩa, thay vì đọc tuần tự. Do đó, tốc độ tra cứu còn phụ thuộc vào việc bucket cần tìm có nằm trong RAM hay không.
 
 ### Quy trình hình thành bảng băm trên RAM
 
@@ -427,13 +383,7 @@ Cây B+tree của composite index có cấu trúc tương tự cây B+tree thôn
 
 Hệ thống sắp xếp khóa theo thứ tự phân cấp: trước hết theo cột ngoài cùng bên trái, sau đó theo cột thứ hai trong từng nhóm có cùng giá trị cột thứ nhất, rồi đến cột thứ ba trong từng nhóm của cột thứ hai, và tiếp tục như vậy.
 
-```text
-                     [ ('Dev', 28)  |  ('HR', 30) ]
-                    /               |              \
-                   ▼                ▼               ▼
-         [ ('Dev', 20) ]     [ ('Dev', 28) ]     [ ('HR', 30) ]
-         [ ('Dev', 22) ] <-> [ ('HR', 25)  ] <-> [ ('HR', 32) ]
-```
+![Cây B+tree với khóa ghép theo phòng ban và tuổi ở các nút trung gian và nút lá](../assets/images/index/key.png){ loading=lazy }
 
 Với sơ đồ trên:
 
@@ -482,19 +432,7 @@ Dữ liệu trong bảng chính không được sắp xếp theo non-clustered i
 
 Ví dụ minh họa:
 
-```text
-    Trang đĩa của INDEX                      Các trang đĩa của BẢNG CHÍNH
-┌─────────────────────────┐               ┌────────────────────────────────┐
-│ ('IT', Con trỏ #10)  ───┼──────────────>│ Trang đĩa 2:  Dòng #10 ('IT')   │
-│ ('IT', Con trỏ #500) ───┼──┐            └────────────────────────────────┘
-│ ('IT', Con trỏ #80)  ───┼──┼──┐         ┌────────────────────────────────┐
-└─────────────────────────┘  │  └────────>│ Trang đĩa 15: Dòng #80 ('IT')  │
-     (Đọc tuần tự)           │            └────────────────────────────────┘
-                             │            ┌────────────────────────────────┐
-                             └───────────>│ Trang đĩa 89: Dòng #500 ('IT') │
-                                          └────────────────────────────────┘
-                                                (Nhảy đĩa ngẫu nhiên)
-```
+![Index trỏ tới các dòng trong bảng chính nằm trên nhiều page, gây truy cập đĩa ngẫu nhiên](../assets/images/index/dick.png){ loading=lazy }
 
 #### Khi index chứa clustered key
 
@@ -593,20 +531,9 @@ Partial Index không phải lúc nào cũng tốt hơn index đầy đủ:
 
 ## Lời kết
 
-<figure class="airflow-closing-comic" id="loi-ket">
-  <img
-    src="../../assets/images/index/end_index.png"
-    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Index và cảm ơn người đọc"
-    loading="lazy"
-  >
-  <figcaption>
-    <span>LỜI KẾT</span>
-    <div>
-      <strong>Cảm ơn bạn đã đọc đến cuối!</strong>
-      <p>Hy vọng bài viết giúp bạn hiểu Index rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
-    </div>
-  </figcaption>
-</figure>
+Bài viết về Index được tổng hợp từ quá trình tự đọc, ghi chép và tìm hiểu của tác giả, nên vẫn có thể còn những điểm chưa chính xác hoặc thiếu sót. Mong bạn đón nhận với tinh thần cởi mở và góp ý để nội dung được hoàn thiện hơn.
+
+Cảm ơn bạn đã đọc đến cuối! Hy vọng bài viết giúp bạn hiểu Index rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.
 
 
 <footer class="airflow-article-end index-article-end">
