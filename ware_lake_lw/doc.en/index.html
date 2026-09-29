@@ -1,22 +1,22 @@
 
 <!doctype html>
-<html lang="vi" class="no-js">
+<html lang="en" class="no-js">
   <head>
     
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Behind the Pipeline — Cẩm nang Data Engineering về kiến trúc và vận hành các hệ thống dữ liệu.">
+        <meta name="description" content="From Big Data characteristics to storage platforms: Data Lake, Data Warehouse, Data Mart, and the convergence in Data Lakehouse.">
       
       
       
-        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/">
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc.en/">
       
       
-        <link rel="prev" href="../../library/">
+        <link rel="prev" href="../doc/">
       
       
-        <link rel="next" href="../doc.en/">
+        <link rel="next" href="../../postgres/postgres/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Data Lake, Data Warehouse và Data Mart - Behind the Pipeline</title>
+        <title>Data Lake, Data Warehouse, and Data Mart - Behind the Pipeline</title>
       
     
     
@@ -191,7 +191,7 @@
                   
                   
                     <li>
-                      <a href="./" aria-current="page">
+                      <a href="../doc/" >
                         <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
                       </a>
                     </li>
@@ -494,6 +494,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -511,7 +539,7 @@
   <span class="md-ellipsis">
     
   
-    Data Lake, Data Warehouse và Data Mart
+    Data Lake, Data Warehouse, and Data Mart (English)
   
 
     
@@ -529,7 +557,7 @@
   <span class="md-ellipsis">
     
   
-    Data Lake, Data Warehouse và Data Mart
+    Data Lake, Data Warehouse, and Data Mart (English)
   
 
     
@@ -556,7 +584,7 @@
   <a href="#vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Vì sao cần phân biệt các mô hình lưu trữ dữ liệu?
+        Why Distinguish Between Data Storage Models?
       
     </span>
   </a>
@@ -567,19 +595,19 @@
   <a href="#1-at-van-e-va-inh-nghia-big-data" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Đặt vấn đề và định nghĩa Big Data
+        1. The Context and Definition of Big Data
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Đặt vấn đề và định nghĩa Big Data">
+    <nav class="md-nav" aria-label="1. The Context and Definition of Big Data">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#11-boi-canh-bung-no-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.1. Bối cảnh bùng nổ dữ liệu
+        1.1. Rapid Data Growth
       
     </span>
   </a>
@@ -590,19 +618,19 @@
   <a href="#12-big-data-la-gi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.2. Big Data là gì?
+        1.2. What Is Big Data?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1.2. Big Data là gì?">
+    <nav class="md-nav" aria-label="1.2. What Is Big Data?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#phan-loai-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phân loại dữ liệu
+        Data Categories
       
     </span>
   </a>
@@ -613,7 +641,7 @@
   <a href="#ac-trung-cua-big-data-mo-hinh-5v" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đặc trưng của Big Data: mô hình 5V
+        The Five Vs of Big Data
       
     </span>
   </a>
@@ -634,31 +662,31 @@
   <a href="#2-cac-nen-tang-luu-tru-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Các nền tảng lưu trữ dữ liệu
+        2. Data Storage Platforms
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Các nền tảng lưu trữ dữ liệu">
+    <nav class="md-nav" aria-label="2. Data Storage Platforms">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”
+        2.1. Data Lake — A Repository That Takes Everything In
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”">
+    <nav class="md-nav" aria-label="2.1. Data Lake — A Repository That Takes Everything In">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#ac-iem-cot-loi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đặc điểm cốt lõi
+        Core Characteristics
       
     </span>
   </a>
@@ -669,7 +697,7 @@
   <a href="#han-che" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hạn chế
+        Limitations
       
     </span>
   </a>
@@ -685,19 +713,19 @@
   <a href="#22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”
+        2.2. Data Warehouse — An Organized Library
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”">
+    <nav class="md-nav" aria-label="2.2. Data Warehouse — An Organized Library">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#ac-iem-cot-loi_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đặc điểm cốt lõi
+        Core Characteristics
       
     </span>
   </a>
@@ -708,7 +736,7 @@
   <a href="#han-che_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hạn chế
+        Limitations
       
     </span>
   </a>
@@ -736,7 +764,7 @@
   <a href="#ac-iem-cot-loi_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đặc điểm cốt lõi
+        Core Characteristics
       
     </span>
   </a>
@@ -752,7 +780,7 @@
   <a href="#24-hinh-dung-luong-du-lieu-nhu-mot-nha-hang" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.4. Hình dung luồng dữ liệu như một nhà hàng
+        2.4. A Restaurant Analogy for the Data Flow
       
     </span>
   </a>
@@ -768,12 +796,12 @@
   <a href="#3-etl-va-elt" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. ETL và ELT
+        3. ETL and ELT
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. ETL và ELT">
+    <nav class="md-nav" aria-label="3. ETL and ELT">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -807,12 +835,12 @@
   <a href="#4-xu-huong-tuong-lai" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Xu hướng tương lai
+        4. Future Trends
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4. Xu hướng tương lai">
+    <nav class="md-nav" aria-label="4. Future Trends">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -830,7 +858,7 @@
   <a href="#42-giao-dich-acid-trong-data-lakehouse" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.2. Giao dịch ACID trong Data Lakehouse
+        4.2. ACID Transactions in a Data Lakehouse
       
     </span>
   </a>
@@ -846,7 +874,7 @@
   <a href="#loi-ket" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lời kết
+        Closing Thoughts
       
     </span>
   </a>
@@ -857,34 +885,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../doc.en/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Data Lake, Data Warehouse, and Data Mart (English)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1440,7 +1440,7 @@
   <a href="#vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Vì sao cần phân biệt các mô hình lưu trữ dữ liệu?
+        Why Distinguish Between Data Storage Models?
       
     </span>
   </a>
@@ -1451,19 +1451,19 @@
   <a href="#1-at-van-e-va-inh-nghia-big-data" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Đặt vấn đề và định nghĩa Big Data
+        1. The Context and Definition of Big Data
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Đặt vấn đề và định nghĩa Big Data">
+    <nav class="md-nav" aria-label="1. The Context and Definition of Big Data">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#11-boi-canh-bung-no-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.1. Bối cảnh bùng nổ dữ liệu
+        1.1. Rapid Data Growth
       
     </span>
   </a>
@@ -1474,19 +1474,19 @@
   <a href="#12-big-data-la-gi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.2. Big Data là gì?
+        1.2. What Is Big Data?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1.2. Big Data là gì?">
+    <nav class="md-nav" aria-label="1.2. What Is Big Data?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#phan-loai-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phân loại dữ liệu
+        Data Categories
       
     </span>
   </a>
@@ -1497,7 +1497,7 @@
   <a href="#ac-trung-cua-big-data-mo-hinh-5v" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đặc trưng của Big Data: mô hình 5V
+        The Five Vs of Big Data
       
     </span>
   </a>
@@ -1518,31 +1518,31 @@
   <a href="#2-cac-nen-tang-luu-tru-du-lieu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Các nền tảng lưu trữ dữ liệu
+        2. Data Storage Platforms
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Các nền tảng lưu trữ dữ liệu">
+    <nav class="md-nav" aria-label="2. Data Storage Platforms">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”
+        2.1. Data Lake — A Repository That Takes Everything In
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”">
+    <nav class="md-nav" aria-label="2.1. Data Lake — A Repository That Takes Everything In">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#ac-iem-cot-loi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đặc điểm cốt lõi
+        Core Characteristics
       
     </span>
   </a>
@@ -1553,7 +1553,7 @@
   <a href="#han-che" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hạn chế
+        Limitations
       
     </span>
   </a>
@@ -1569,19 +1569,19 @@
   <a href="#22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”
+        2.2. Data Warehouse — An Organized Library
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”">
+    <nav class="md-nav" aria-label="2.2. Data Warehouse — An Organized Library">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#ac-iem-cot-loi_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đặc điểm cốt lõi
+        Core Characteristics
       
     </span>
   </a>
@@ -1592,7 +1592,7 @@
   <a href="#han-che_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hạn chế
+        Limitations
       
     </span>
   </a>
@@ -1620,7 +1620,7 @@
   <a href="#ac-iem-cot-loi_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Đặc điểm cốt lõi
+        Core Characteristics
       
     </span>
   </a>
@@ -1636,7 +1636,7 @@
   <a href="#24-hinh-dung-luong-du-lieu-nhu-mot-nha-hang" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.4. Hình dung luồng dữ liệu như một nhà hàng
+        2.4. A Restaurant Analogy for the Data Flow
       
     </span>
   </a>
@@ -1652,12 +1652,12 @@
   <a href="#3-etl-va-elt" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. ETL và ELT
+        3. ETL and ELT
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. ETL và ELT">
+    <nav class="md-nav" aria-label="3. ETL and ELT">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1691,12 +1691,12 @@
   <a href="#4-xu-huong-tuong-lai" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Xu hướng tương lai
+        4. Future Trends
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4. Xu hướng tương lai">
+    <nav class="md-nav" aria-label="4. Future Trends">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1714,7 +1714,7 @@
   <a href="#42-giao-dich-acid-trong-data-lakehouse" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.2. Giao dịch ACID trong Data Lakehouse
+        4.2. ACID Transactions in a Data Lakehouse
       
     </span>
   </a>
@@ -1730,7 +1730,7 @@
   <a href="#loi-ket" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lời kết
+        Closing Thoughts
       
     </span>
   </a>
@@ -1752,12 +1752,12 @@
                 
   
 
-<nav class="reading-language" aria-label="Ngôn ngữ đọc">
+<nav class="reading-language" aria-label="Reading language">
   <div class="reading-language__options">
   
-    <a href="./" lang="vi" hreflang="vi" data-reading-language="vi" aria-current="page">Tiếng Việt</a>
+    <a href="../doc/" lang="vi" hreflang="vi" data-reading-language="vi" >Tiếng Việt</a>
   
-    <a href="../doc.en/" lang="en" hreflang="en" data-reading-language="en" >English</a>
+    <a href="./" lang="en" hreflang="en" data-reading-language="en" aria-current="page">English</a>
   
   </div>
 </nav>
@@ -1779,146 +1779,146 @@
   </div>
   <h1>Data Lake, Data Warehouse<br><em>&amp; Data Mart</em></h1>
   <p class="airflow-article-hero__dek">
-    Từ đặc trưng của Big Data đến cách các nền tảng lưu trữ dữ liệu vận hành,
-    khác biệt và hội tụ trong kiến trúc Data Lakehouse.
+    From the characteristics of Big Data to how storage platforms operate,
+    differ, and converge in the Data Lakehouse architecture.
   </p>
-  <div class="airflow-article-hero__meta" aria-label="Thông tin bài viết">
+  <div class="airflow-article-hero__meta" aria-label="Article information">
     <span>DATA ARCHITECTURE</span>
     <span>EDITION 06 · 2026</span>
   </div>
 </header>
 
 <blockquote>
-<p><strong>Lưu ý trước khi đọc:</strong> Đây là một bài viết dài, cần nhiều hơn vài phút đọc lướt. Bạn hãy dành thời gian, chuẩn bị một ly nước và giữ sự tập trung để theo dõi nội dung.</p>
+<p><strong>Before you read:</strong> This is a long article that needs more than a quick skim. Set aside some time, grab a glass of water, and give it your full attention.</p>
 </blockquote>
-<h2 id="vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu">Vì sao cần phân biệt các mô hình lưu trữ dữ liệu?</h2>
-<p>Một doanh nghiệp có thể cùng lúc thu thập đơn hàng, lượt nhấp trên website, log ứng dụng và hình ảnh. Tất cả đều là dữ liệu, nhưng không phải loại nào cũng nên được lưu và khai thác theo cùng một cách. Khi lượng dữ liệu tăng lên, câu hỏi không chỉ là <strong>lưu ở đâu</strong>, mà còn là <strong>ai sẽ dùng dữ liệu và dùng để làm gì</strong>.</p>
-<p>Bài viết bắt đầu từ các đặc trưng của Big Data, sau đó đi qua Data Lake, Data Warehouse và Data Mart để làm rõ vai trò, điểm mạnh và giới hạn của từng mô hình. Cuối cùng, chúng ta sẽ xem Data Lakehouse kết hợp những khả năng đó như thế nào.</p>
-<h2 id="1-at-van-e-va-inh-nghia-big-data">1. Đặt vấn đề và định nghĩa Big Data</h2>
-<h3 id="11-boi-canh-bung-no-du-lieu">1.1. Bối cảnh bùng nổ dữ liệu</h3>
-<p>Trong kỷ nguyên số, lượng dữ liệu được tạo ra mỗi ngày trên thế giới tăng với tốc độ rất nhanh. Internet, mạng xã hội, thiết bị di động, hệ thống cảm biến và các dịch vụ trực tuyến liên tục tạo ra lượng dữ liệu khổng lồ.</p>
-<p>Ví dụ, trong một phút có 12 triệu người gửi iMessage, 6 triệu người mua sắm trực tuyến; người dùng YouTube phát trực tuyến 694.000 video và người dùng TikTok xem 167 triệu video.</p>
-<p>Doanh nghiệp thu thập dữ liệu từ nhiều nguồn khác nhau:</p>
+<h2 id="vi-sao-can-phan-biet-cac-mo-hinh-luu-tru-du-lieu">Why Distinguish Between Data Storage Models?</h2>
+<p>A business might collect orders, website clicks, application logs, and images at the same time. All of these are data, but they should not necessarily be stored and used in the same way. As data volumes grow, the question is not just <strong>where to store the data</strong>, but also <strong>who will use it and for what purpose</strong>.</p>
+<p>This article starts with the characteristics of Big Data, then explores Data Lakes, Data Warehouses, and Data Marts to explain the role, strengths, and limitations of each model. Finally, we look at how the Data Lakehouse combines these capabilities.</p>
+<h2 id="1-at-van-e-va-inh-nghia-big-data">1. The Context and Definition of Big Data</h2>
+<h3 id="11-boi-canh-bung-no-du-lieu">1.1. Rapid Data Growth</h3>
+<p>In the digital age, the amount of data generated worldwide each day is growing rapidly. The internet, social networks, mobile devices, sensor systems, and online services continuously produce enormous amounts of data.</p>
+<p>For example, in a single minute, 12 million people send iMessages, 6 million people shop online, YouTube users stream 694,000 videos, and TikTok users watch 167 million videos.</p>
+<p>Businesses collect data from many sources:</p>
 <ul>
-<li>Hành vi người dùng trên website, như lượt nhấp chuột và thời gian xem trang.</li>
-<li>Dữ liệu GPS từ điện thoại.</li>
-<li>Lịch sử mua hàng.</li>
-<li>Bình luận trên mạng xã hội.</li>
+<li>Website behavior, such as clicks and time spent on a page.</li>
+<li>GPS data from phones.</li>
+<li>Purchase history.</li>
+<li>Social media comments.</li>
 </ul>
-<h3 id="12-big-data-la-gi">1.2. Big Data là gì?</h3>
-<p><strong>Big Data (dữ liệu lớn)</strong> là thuật ngữ chỉ những tập dữ liệu có kích thước rất lớn và phức tạp, khó quản lý hoặc phân tích bằng các công cụ xử lý dữ liệu truyền thống, đặc biệt là bảng tính và hệ thống xử lý dữ liệu thông thường.</p>
-<h4 id="phan-loai-du-lieu">Phân loại dữ liệu</h4>
+<h3 id="12-big-data-la-gi">1.2. What Is Big Data?</h3>
+<p><strong>Big Data</strong> refers to datasets so large and complex that they are difficult to manage or analyze with traditional data processing tools, particularly spreadsheets and conventional processing systems.</p>
+<h4 id="phan-loai-du-lieu">Data Categories</h4>
 <ul>
-<li><strong>Dữ liệu có cấu trúc:</strong> Có thể lưu trữ theo lược đồ xác định rõ, chẳng hạn trong cơ sở dữ liệu; có thể biểu diễn thành bảng gồm hàng và cột. Ví dụ: bảng tính Excel và cơ sở dữ liệu SQL.</li>
-<li><strong>Dữ liệu phi cấu trúc:</strong> Không có cấu trúc dễ nhận dạng nên không thể tổ chức theo cách thông thường trong cơ sở dữ liệu quan hệ dưới dạng hàng và cột. Dữ liệu không tuân theo một định dạng, trình tự, ngữ nghĩa hoặc quy tắc cụ thể. Ví dụ: hình ảnh và video.</li>
-<li><strong>Dữ liệu bán cấu trúc:</strong> Không được lưu trữ đơn thuần dưới dạng hàng và cột như trong cơ sở dữ liệu quan hệ. Dữ liệu chứa thẻ, phần tử hoặc siêu dữ liệu để nhóm và sắp xếp theo hệ thống phân cấp. Ví dụ: tệp XML và JSON.</li>
+<li><strong>Structured data:</strong> Follows a clearly defined schema and can be represented as rows and columns. Examples include Excel spreadsheets and SQL databases.</li>
+<li><strong>Unstructured data:</strong> Does not have a readily identifiable structure that fits the conventional rows and columns of a relational database. It does not follow a fixed format, sequence, set of semantics, or rules. Examples include images and videos.</li>
+<li><strong>Semi-structured data:</strong> Is not simply stored as rows and columns in a relational database. Instead, it contains tags, elements, or metadata that group and organize it hierarchically. Examples include XML and JSON files.</li>
 </ul>
-<h4 id="ac-trung-cua-big-data-mo-hinh-5v">Đặc trưng của Big Data: mô hình 5V</h4>
+<h4 id="ac-trung-cua-big-data-mo-hinh-5v">The Five Vs of Big Data</h4>
 <ul>
-<li><strong>Volume (khối lượng):</strong> Lượng dữ liệu cần xử lý rất lớn, có thể từ hàng chục terabyte (TB) đến hàng trăm petabyte (PB).</li>
-<li><strong>Velocity (tốc độ):</strong> Dữ liệu được tạo ra và truyền đến hệ thống rất nhanh, thậm chí trong thời gian thực.</li>
-<li><strong>Variety (đa dạng):</strong> Dữ liệu có nhiều dạng, từ dữ liệu có cấu trúc đến phi cấu trúc, như văn bản, âm thanh và video. Một số dạng cần xử lý bổ sung để rút ra ý nghĩa và hỗ trợ siêu dữ liệu.</li>
-<li><strong>Veracity (độ tin cậy):</strong> Mức độ chính xác, đáng tin cậy, chất lượng và tính toàn vẹn của dữ liệu.</li>
-<li><strong>Value (giá trị):</strong> Giá trị doanh nghiệp có thể khai thác khi chuyển dữ liệu thành thông tin hữu ích.</li>
+<li><strong>Volume:</strong> The amount of data to process can range from tens of terabytes (TB) to hundreds of petabytes (PB).</li>
+<li><strong>Velocity:</strong> Data is generated and arrives at the system rapidly, sometimes in real time.</li>
+<li><strong>Variety:</strong> Data comes in many forms, from structured data to unstructured text, audio, and video. Some forms need additional processing to extract meaning and support metadata.</li>
+<li><strong>Veracity:</strong> The accuracy, reliability, quality, and integrity of the data.</li>
+<li><strong>Value:</strong> The business value gained by turning data into useful information.</li>
 </ul>
-<h2 id="2-cac-nen-tang-luu-tru-du-lieu">2. Các nền tảng lưu trữ dữ liệu</h2>
-<h3 id="21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu">2.1. Data Lake (hồ dữ liệu) — “Cái phễu hứng mọi thứ”</h3>
-<p><strong>Khái niệm:</strong> Data Lake là kho lưu trữ tập trung, cho phép lưu dữ liệu ở mọi quy mô: dữ liệu có cấu trúc như bảng SQL, bán cấu trúc như JSON và XML, cũng như phi cấu trúc như hình ảnh, video, tệp âm thanh và PDF. Các công cụ như Minio, AWS S3,..</p>
-<h4 id="ac-iem-cot-loi">Đặc điểm cốt lõi</h4>
+<h2 id="2-cac-nen-tang-luu-tru-du-lieu">2. Data Storage Platforms</h2>
+<h3 id="21-data-lake-ho-du-lieu-cai-pheu-hung-moi-thu">2.1. Data Lake — A Repository That Takes Everything In</h3>
+<p><strong>Definition:</strong> A Data Lake is a centralized repository that stores data at any scale: structured data such as SQL tables, semi-structured data such as JSON and XML, and unstructured data such as images, videos, audio files, and PDFs. Examples of storage tools include MinIO and Amazon S3.</p>
+<h4 id="ac-iem-cot-loi">Core Characteristics</h4>
 <ul>
-<li><strong>Lưu trữ dữ liệu thô:</strong> Dữ liệu được giữ nguyên từ nguồn, không qua quá trình transform.</li>
-<li><strong>Khả năng mở rộng lớn:</strong> Data Lake thường được xây dựng trên các hệ thống lưu trữ đám mây như Amazon S3, Google Cloud Storage và Azure Data Lake Storage. Chi phí lưu trữ thấp cho phép lưu lượng dữ liệu ở quy mô petabyte.</li>
-<li><strong>Đa dạng kiểu dữ liệu:</strong> Có thể tiếp nhận mọi loại dữ liệu từ có cấu trúc đến không có cấu trúc.</li>
-<li><strong>Tách biệt lưu trữ và tính toán:</strong> Dữ liệu được lưu ở một nơi; khi cần xử lý mới sử dụng cụm máy tính toán như Spark hoặc Presto.</li>
+<li><strong>Raw data storage:</strong> Data is kept as received from its source, without transformation.</li>
+<li><strong>Scalability:</strong> Data Lakes are often built on cloud storage systems such as Amazon S3, Google Cloud Storage, and Azure Data Lake Storage. Low storage costs make petabyte-scale storage feasible.</li>
+<li><strong>Support for diverse data types:</strong> They accept structured, semi-structured, and unstructured data.</li>
+<li><strong>Separation of storage and compute:</strong> Data is stored independently, with compute clusters such as Spark or Presto used when processing is needed.</li>
 </ul>
-<h4 id="han-che">Hạn chế</h4>
+<h4 id="han-che">Limitations</h4>
 <ul>
-<li><strong>Nguy cơ thành “Data Swamp” (đầm lầy dữ liệu):</strong> Nếu không kiểm soát chặt lược đồ, phân loại dữ liệu, gắn siêu dữ liệu (<em>metadata</em>), xác định quyền sở hữu và kiểm soát chất lượng đầu vào, dữ liệu sẽ khó quản lý.</li>
-<li><strong>Thiếu giao dịch ACID:</strong> Data Lake truyền thống không tự cung cấp đầy đủ các tính năng như đối với Data Warehouse.</li>
-<li><strong>Thiếu phiên bản dữ liệu:</strong> Không có sẵn cơ chế truy vấn các phiên bản dữ liệu trong quá khứ.</li>
-<li><strong>Truy vấn chậm hơn Data Warehouse:</strong> Hệ thống chủ yếu phục vụ lưu trữ, chưa tối ưu truy vấn như cơ sở dữ liệu.</li>
+<li><strong>Risk of becoming a Data Swamp:</strong> Without careful schema management, data classification, metadata, ownership, and input quality controls, data becomes difficult to manage.</li>
+<li><strong>Lack of ACID transactions:</strong> Traditional Data Lakes do not provide the full set of transactional capabilities found in Data Warehouses.</li>
+<li><strong>Lack of data versioning:</strong> They do not have a built-in mechanism for querying past versions of data.</li>
+<li><strong>Slower queries than a Data Warehouse:</strong> They primarily serve as storage and are not optimized for queries in the same way as a database.</li>
 </ul>
-<h3 id="22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai">2.2. Data Warehouse (kho dữ liệu) — “Thư viện đã phân loại”</h3>
-<p><strong>Khái niệm:</strong> Data Warehouse là hệ thống lưu trữ dữ liệu trung tâm, tích hợp dữ liệu từ nhiều nguồn, hầu như các Data Warehouse hiện nay đều lưu trữ dữ liệu dạng cột. Nhằm tối ưu cho các truy vấn cần lấy nhiều dòng.</p>
-<p><strong>Các công cụ như:</strong> Snowflake, Google BigQuery và Amazon Redshift,..</p>
-<h4 id="ac-iem-cot-loi_1">Đặc điểm cốt lõi</h4>
+<h3 id="22-data-warehouse-kho-du-lieu-thu-vien-a-phan-loai">2.2. Data Warehouse — An Organized Library</h3>
+<p><strong>Definition:</strong> A Data Warehouse is a central data storage system that integrates data from multiple sources. Most modern Data Warehouses use columnar storage to optimize queries that read many rows.</p>
+<p><strong>Examples include:</strong> Snowflake, Google BigQuery, and Amazon Redshift.</p>
+<h4 id="ac-iem-cot-loi_1">Core Characteristics</h4>
 <ul>
-<li><strong>Hướng chủ đề (subject-oriented):</strong> Dữ liệu được tổ chức quanh các chủ đề chính của doanh nghiệp như khách hàng, bán hàng và sản phẩm.</li>
-<li><strong>Tích hợp (integrated):</strong> Dữ liệu từ nhiều nguồn được làm sạch và thường được chuẩn hóa về định dạng thống nhất trước khi nạp vào kho.</li>
-<li><strong>Biến đổi theo thời gian (time-variant):</strong> Kho thường lưu lịch sử lâu dài tùy vào cấu hình, để so sánh và phân tích xu hướng.</li>
-<li><strong>Không biến động (non-volatile):</strong> Dữ liệu đã nạp thường ít bị người dùng cuối thay đổi hoặc xóa; khi có thay đổi, dữ liệu mới thường được thêm bên cạnh dữ liệu cũ. Dữ liệu chủ yếu được đọc để phân tích.</li>
+<li><strong>Subject-oriented:</strong> Data is organized around key business subjects such as customers, sales, and products.</li>
+<li><strong>Integrated:</strong> Data from multiple sources is cleaned and usually standardized into a consistent format before being loaded.</li>
+<li><strong>Time-variant:</strong> Historical data is often retained for long periods, depending on configuration, to support comparisons and trend analysis.</li>
+<li><strong>Non-volatile:</strong> End users rarely change or delete loaded data. When changes occur, new data is often added alongside existing data. The primary use is reading data for analysis.</li>
 </ul>
-<h4 id="han-che_1">Hạn chế</h4>
+<h4 id="han-che_1">Limitations</h4>
 <ul>
-<li>Chỉ tối ưu trong việc lưu dữ liệu dạng có cấu trúc.</li>
-<li>Độ trễ dữ liệu, vì thường phải qua những bước transform dữ liệu.</li>
-<li>Khó khăn cho các thư viện học máy, học sâu truy vấn.</li>
+<li>Primarily optimized for storing structured data.</li>
+<li>Data can arrive with a delay because it usually goes through transformation steps first.</li>
+<li>Querying the data from machine learning and deep learning libraries can be difficult.</li>
 </ul>
 <h3 id="23-data-mart">2.3. Data Mart</h3>
-<p><strong>Khái niệm:</strong> Trong kiến trúc kho dữ liệu truyền thống, Data Mart là kho dữ liệu tập trung vào một chủ đề hoặc một đơn vị kinh doanh cụ thể trong tổ chức.</p>
-<h4 id="ac-iem-cot-loi_2">Đặc điểm cốt lõi</h4>
+<p><strong>Definition:</strong> In a traditional data warehouse architecture, a Data Mart is a repository focused on a particular subject or business unit within an organization.</p>
+<h4 id="ac-iem-cot-loi_2">Core Characteristics</h4>
 <ul>
-<li><strong>Phạm vi tập trung:</strong> Khác với Data Warehouse bao phủ toàn doanh nghiệp, Data Mart chỉ chứa dữ liệu của một lĩnh vực như bán hàng, tài chính hoặc marketing.</li>
-<li><strong>Kích thước nhỏ gọn:</strong> Vì chỉ chứa dữ liệu chuyên biệt, Data Mart thường nhỏ hơn kho dữ liệu tổng, giúp truy vấn nhanh hơn.</li>
-<li><strong>Cấu trúc dữ liệu tối ưu:</strong> Dữ liệu thường được mô hình hóa theo dạng dễ hiểu với người dùng cuối, chẳng hạn mô hình ngôi sao (<em>Star Schema</em>), để phục vụ trực tiếp công cụ BI (<em>Business Intelligence</em>).</li>
+<li><strong>Focused scope:</strong> While a Data Warehouse covers the entire business, a Data Mart contains data for one area, such as sales, finance, or marketing.</li>
+<li><strong>Smaller size:</strong> Because it holds specialized data, a Data Mart is usually smaller than the overall warehouse, allowing faster queries.</li>
+<li><strong>Optimized data structure:</strong> Data is often modeled in a form that end users can easily understand, such as a <strong>Star Schema</strong>, to directly support <strong>Business Intelligence (BI)</strong> tools.</li>
 </ul>
-<h3 id="24-hinh-dung-luong-du-lieu-nhu-mot-nha-hang">2.4. Hình dung luồng dữ liệu như một nhà hàng</h3>
-<p>Bạn có thể hình dung toàn bộ hệ thống dữ liệu giống như một nhà hàng lớn.</p>
-<p>Đầu tiên, Data Lake giống như kho nguyên liệu tổng của nhà hàng. Ở đây, mọi loại nguyên liệu đều được đưa vào và lưu trữ gần như nguyên trạng: rau, thịt, hải sản, gia vị… thậm chí có cả những nguyên liệu chưa được sơ chế. Kho này không kén chọn, cứ có là nhận, miễn là còn chỗ chứa.</p>
-<p>Tiếp theo, Data Pipeline (ETL/ELT) đóng vai trò như quy trình vận chuyển và sơ chế nguyên liệu. Nguyên liệu từ kho sẽ được mang vào bếp, rửa sạch, cắt gọt, phân loại và chuẩn bị theo tiêu chuẩn nhất định trước khi chế biến.</p>
-<p>Sau đó, Data Warehouse chính là khu bếp trung tâm của nhà hàng. Tại đây, nguyên liệu đã được xử lý sẽ được nấu nướng, sắp xếp và chuẩn hóa thành các món ăn hoàn chỉnh, đảm bảo chất lượng và sẵn sàng phục vụ khách hàng.</p>
-<p>Cuối cùng, Data Mart giống như các quầy phục vụ riêng trong nhà hàng, ví dụ như quầy món Á, quầy món Âu hay quầy tráng miệng. Mỗi quầy chỉ phục vụ một nhóm món ăn cụ thể, giúp khách hàng dễ dàng lựa chọn và lấy đúng thứ mình cần mà không phải đi qua toàn bộ khu bếp.</p>
-<p><img alt="Minh họa Data Lake là kho nguyên liệu, Pipeline sơ chế, Data Warehouse là bếp trung tâm và Data Mart là các quầy phục vụ riêng" loading="lazy" src="../../assets/images/ware_lake_lw/flow.png" /></p>
-<p><em>Hình minh họa vai trò của từng lớp.</em></p>
-<h2 id="3-etl-va-elt">3. ETL và ELT</h2>
-<p>Lúc nãy ta có nhắc đến ETL/ELT, vậy thì nó là gì?</p>
+<h3 id="24-hinh-dung-luong-du-lieu-nhu-mot-nha-hang">2.4. A Restaurant Analogy for the Data Flow</h3>
+<p>Think of the whole data system as a large restaurant.</p>
+<p>The <strong>Data Lake</strong> is the restaurant's central ingredient store. It accepts and stores all kinds of ingredients largely as they arrive: vegetables, meat, seafood, spices, and even ingredients that have not been prepared at all. As long as there is room, it takes them in.</p>
+<p>The <strong>Data Pipeline (ETL/ELT)</strong> moves and prepares those ingredients. They are brought from storage into the kitchen, washed, cut, sorted, and prepared to a consistent standard before cooking.</p>
+<p>The <strong>Data Warehouse</strong> is the central kitchen. Prepared ingredients are cooked, organized, and standardized into finished dishes, checked for quality, and made ready to serve.</p>
+<p>Finally, <strong>Data Marts</strong> are separate serving counters, such as Asian food, European food, or desserts. Each counter offers a specific group of dishes, so customers can find what they need without going through the entire kitchen.</p>
+<p><img alt="Data Lake as ingredient storage, the Pipeline as preparation, the Data Warehouse as the central kitchen, and Data Marts as serving counters" loading="lazy" src="../../assets/images/ware_lake_lw/flow.png" /></p>
+<p><em>The illustration shows the role of each layer.</em></p>
+<h2 id="3-etl-va-elt">3. ETL and ELT</h2>
+<p>We mentioned ETL and ELT earlier. What do they mean?</p>
 <h3 id="31-etl-extract-transform-load">3.1. ETL — Extract → Transform → Load</h3>
-<p>ETL là quy trình xử lý dữ liệu theo thứ tự:</p>
-<div class="highlight"><pre><span></span><code>Nguồn dữ liệu → Extract → Transform → Load → Data Warehouse
+<p>ETL processes data in this order:</p>
+<div class="highlight"><pre><span></span><code>Data sources → Extract → Transform → Load → Data Warehouse
 </code></pre></div>
 <ul>
-<li><strong>Extract (Trích xuất):</strong> Lấy dữ liệu từ nhiều nguồn khác nhau như database, API, file CSV/JSON,...</li>
-<li><strong>Transform (Biến đổi):</strong> Làm sạch, chuẩn hóa, xử lý và kết hợp dữ liệu.</li>
-<li><strong>Load (Nạp):</strong> Sau khi dữ liệu đã được xử lý xong thì mới đưa vào Data Warehouse.</li>
+<li><strong>Extract:</strong> Retrieve data from sources such as databases, APIs, and CSV/JSON files.</li>
+<li><strong>Transform:</strong> Clean, standardize, process, and combine the data.</li>
+<li><strong>Load:</strong> Load the data into the Data Warehouse after processing is complete.</li>
 </ul>
-<p>còn ELT là:</p>
+<p>ELT uses a different order:</p>
 <h3 id="32-elt-extract-load-transform">3.2. ELT — Extract → Load → Transform</h3>
-<p>ELT thay đổi thứ tự thành:</p>
-<div class="highlight"><pre><span></span><code>Nguồn dữ liệu → Extract → Load → Transform
+<p>ELT changes the sequence to:</p>
+<div class="highlight"><pre><span></span><code>Data sources → Extract → Load → Transform
 </code></pre></div>
 <ul>
-<li><strong>Extract:</strong> Lấy dữ liệu từ các nguồn.</li>
-<li><strong>Load:</strong> Đưa dữ liệu raw vào hệ thống lưu trữ trước tiêu biểu như AWS S3.</li>
-<li><strong>Transform:</strong> Sau đó mới xử lý dữ liệu khi cần sử dụng.</li>
+<li><strong>Extract:</strong> Retrieve data from its sources.</li>
+<li><strong>Load:</strong> Put the raw data into storage first, for example in Amazon S3.</li>
+<li><strong>Transform:</strong> Process the data later, when it is needed.</li>
 </ul>
-<h2 id="4-xu-huong-tuong-lai">4. Xu hướng tương lai</h2>
+<h2 id="4-xu-huong-tuong-lai">4. Future Trends</h2>
 <h3 id="41-data-lakehouse">4.1. Data Lakehouse</h3>
-<p>Một xu hướng trong kiến trúc dữ liệu là <strong>Data Lakehouse</strong>. Mô hình này được Databricks giới thiệu như sự kết hợp giữa Data Warehouse và Data Lake, xuất phát từ ưu điểm và hạn chế của từng mô hình:</p>
+<p>One trend in data architecture is the <strong>Data Lakehouse</strong>. Introduced by Databricks as a combination of the Data Warehouse and Data Lake, it builds on the strengths and addresses the limitations of each:</p>
 <ul>
-<li>Data Warehouse lưu dữ liệu theo cấu trúc rõ ràng, nhưng dữ liệu thường tập trung vào một số dạng như số liệu và bảng biểu.</li>
-<li>Trong bối cảnh LLM và AI phát triển, việc huấn luyện mô hình đòi hỏi nhiều loại dữ liệu, không thể chỉ dựa vào một dạng duy nhất.</li>
-<li>Data Lake lưu được nhiều loại dữ liệu như một chiếc phễu, nhưng dữ liệu thiếu cấu trúc sẽ khó quản lý. Data Lake truyền thống cũng thiếu độ tin cậy khi chưa có cơ chế kiểm soát ghi và đọc đồng thời (<em>concurrency control</em>).</li>
+<li>A Data Warehouse stores clearly structured data, but usually focuses on certain forms, such as numerical and tabular data.</li>
+<li>As LLMs and AI develop, model training requires diverse data types and cannot rely on just one form.</li>
+<li>A Data Lake accepts many data types, but data without structure can be difficult to manage. Traditional Data Lakes also lack reliability when there is no <strong>concurrency control</strong> for simultaneous reads and writes.</li>
 </ul>
-<p>Data Lakehouse tận dụng tính linh hoạt của Data Lake, đồng thời bổ sung thêm một lớp quản lý dữ liệu như Iceberg hay Delta. Nhờ đó khi sử dụng Data Lake bạn không cần phải lo tình trạng data swap nữa. Cung cấp các tính năng quản lý dữ liệu mạng mẽ như Data Warehouse như ACID, data versioning,...</p>
-<p>ACID là gì?</p>
-<h3 id="42-giao-dich-acid-trong-data-lakehouse">4.2. Giao dịch ACID trong Data Lakehouse</h3>
-<p>Data Lakehouse còn hỗ trợ các tính chất ACID:</p>
+<p>A Data Lakehouse combines the flexibility of a Data Lake with a data management layer such as <strong>Iceberg</strong> or <strong>Delta</strong>. This helps address the Data Swamp problem while providing Data Warehouse capabilities such as ACID transactions and data versioning.</p>
+<p>What does ACID mean?</p>
+<h3 id="42-giao-dich-acid-trong-data-lakehouse">4.2. ACID Transactions in a Data Lakehouse</h3>
+<p>A Data Lakehouse also supports the ACID properties:</p>
 <ul>
-<li><strong>A — Atomicity (tính nguyên tử):</strong> Giao dịch hoặc thành công toàn bộ hoặc không có hiệu lực. Ví dụ, nếu quá trình ghi thất bại giữa chừng và log cuối cùng chưa được ghi, lần ghi đó được xem như chưa từng xảy ra.</li>
-<li><strong>C — Consistency (tính nhất quán):</strong> Dữ liệu tuân theo quy tắc và lược đồ. Ví dụ, cột <code>age</code> yêu cầu số thì không thể chèn chuỗi vào cột này.</li>
-<li><strong>I — Isolation (tính cô lập):</strong> Nhiều người ghi cùng lúc không làm các giao dịch ảnh hưởng lẫn nhau. Ví dụ, bạn đang ghi dựa trên phiên bản 10, nhưng một người khác đã ghi và tạo phiên bản 11; lần ghi dựa trên phiên bản 10 sẽ thất bại và cần thử lại.</li>
-<li><strong>D — Durability (tính bền vững):</strong> Dữ liệu đã ghi thành công sẽ không bị mất.</li>
+<li><strong>A — Atomicity:</strong> A transaction either succeeds in full or has no effect. For example, if a write fails midway before the final log entry is written, it is treated as if it never happened.</li>
+<li><strong>C — Consistency:</strong> Data follows the required rules and schema. For example, a numeric <code>age</code> column cannot accept a string.</li>
+<li><strong>I — Isolation:</strong> Concurrent writers do not interfere with each other's transactions. For example, if you are writing based on version 10 but another writer has already created version 11, your write fails and needs to be retried.</li>
+<li><strong>D — Durability:</strong> Successfully written data is not lost.</li>
 </ul>
 <hr />
-<h2 id="loi-ket">Lời kết</h2>
-<p>Không có một nơi lưu trữ phù hợp cho mọi loại dữ liệu và mọi người dùng. Khi thiết kế nền tảng dữ liệu, hãy bắt đầu từ dạng dữ liệu cần lưu, cách dữ liệu được xử lý và nhu cầu truy vấn của từng nhóm: khám phá dữ liệu thô, lập báo cáo chung hay phân tích cho một phòng ban. Từ đó, bạn sẽ thấy Data Lake, Data Warehouse, Data Mart và Data Lakehouse có thể đảm nhận những vai trò khác nhau trong cùng một kiến trúc.</p>
-<p>Cảm ơn bạn đã đọc đến cuối! Hẹn gặp lại ở những bài viết tiếp theo.</p>
+<h2 id="loi-ket">Closing Thoughts</h2>
+<p>No single storage system fits every type of data and every user. When designing a data platform, start with the data you need to store, how it will be processed, and each group's query needs: exploring raw data, producing shared reports, or analyzing a department's activity. These needs explain why Data Lakes, Data Warehouses, Data Marts, and Data Lakehouses can play different roles within the same architecture.</p>
+<p>Thank you for reading to the end! See you in future articles.</p>
 <footer class="airflow-article-end ware-lake-article-end">
   <div>
     <span>BEHIND THE PIPELINE / 006</span>
-    <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
+    <strong>Understand the system,<br>not just the syntax.</strong>
   </div>
-  <a href="../../">Trở về thư viện <span aria-hidden="true">→</span></a>
+  <a href="../../">Back to the library <span aria-hidden="true">→</span></a>
 </footer>
 
 

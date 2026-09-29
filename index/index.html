@@ -6,14 +6,14 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Pipeline RAG — chatbot hỏi đáp tài liệu Data Engineering bằng tiếng Việt, kết hợp tìm kiếm hybrid, mô hình ngôn ngữ local và trích dẫn nguồn.">
+        <meta name="description" content="Behind the Pipeline — Cẩm nang Data Engineering về kiến trúc và vận hành các hệ thống dữ liệu.">
       
       
       
         <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/index/">
       
       
-        <link rel="prev" href="../postgres/postgres.en/">
+        <link rel="prev" href="../postgres/p2.en/">
       
       
         <link rel="next" href="index.en/">
@@ -63,7 +63,6 @@
     
       <link rel="stylesheet" href="../stylesheets/library.css">
     
-      <link rel="stylesheet" href="../stylesheets/chat.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -118,7 +117,6 @@
         <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
         <span>INDEXING &amp; B-TREE <b>♦</b></span>
         <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
-        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
         <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
       </div>
       <div class="top-marquee__group" aria-hidden="true">
@@ -129,7 +127,6 @@
         <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
         <span>INDEXING &amp; B-TREE <b>♦</b></span>
         <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
-        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
         <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
       </div>
     </div>
@@ -161,12 +158,6 @@
         </button>
       </nav>
 
-      
-        <label class="custom-header__search" for="__search" role="button" tabindex="0" aria-label="Tìm bài viết">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.6 4.6"/></svg>
-          <span>Tìm bài viết</span>
-        </label>
-      
     </div>
 
     <div class="library-panel" id="library-panel" hidden>
@@ -200,22 +191,13 @@
                   
                   
                     <li>
-                      <a href="../architecture/shared-disk-vs-shared-nothing/" >
-                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Shared-disk vs shared-nothing</span><span aria-hidden="true">→</span>
-                      </a>
-                    </li>
-                  
-                
-              
-                
-                  
-                  
-                    <li>
                       <a href="../ware_lake_lw/doc/" >
                         <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
                       </a>
                     </li>
                   
+                
+              
                 
               
             </ul>
@@ -239,10 +221,23 @@
                   
                     <li>
                       <a href="../postgres/postgres/" >
-                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Phân cấp & Lưu trữ PostgreSQL</span><span aria-hidden="true">→</span>
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
                       </a>
                     </li>
                   
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../postgres/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
                 
               
                 
@@ -310,10 +305,25 @@
                   
                     <li>
                       <a href="../spark/archi/" >
-                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark</span><span aria-hidden="true">→</span>
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
                       </a>
                     </li>
                   
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../spark/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
                 
               
             </ul>
@@ -325,40 +335,6 @@
     </div>
   </div>
 
-  
-    <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Tìm kiếm">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </nav>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  
 </header>
     
     <div class="md-container" data-md-component="container">
@@ -519,14 +495,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/shared-disk-vs-shared-nothing/" class="md-nav__link">
+      <a href="../ware_lake_lw/doc/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Shared-disk vs shared-nothing
+    Data Lake, Data Warehouse và Data Mart
   
 
     
@@ -547,14 +523,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../ware_lake_lw/doc/" class="md-nav__link">
+      <a href="../ware_lake_lw/doc.en/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Data Lake, Data Warehouse và Data Mart
+    Data Lake, Data Warehouse, and Data Mart (English)
   
 
     
@@ -643,7 +619,35 @@
   <span class="md-ellipsis">
     
   
-    Phân cấp & Lưu trữ PostgreSQL
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postgres/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
   
 
     
@@ -671,7 +675,35 @@
   <span class="md-ellipsis">
     
   
-    PostgreSQL Hierarchy & Storage (English)
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postgres/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
   
 
     
@@ -1628,7 +1660,91 @@
   <span class="md-ellipsis">
     
   
-    Apache Spark
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/archi.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
   
 
     
@@ -2357,281 +2473,6 @@
 </nav>
 
   
-  
-    <details class="mobile-toc">
-      <summary>
-        <span class="mobile-toc__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h7M4 6h.01M4 12h.01M4 18h.01"/></svg></span>
-        <span class="mobile-toc__heading"><strong>Mục lục bài viết</strong><span>Khám phá từng phần của bài viết</span></span>
-        <span class="mobile-toc__count">10 phần</span>
-      </summary>
-      <nav aria-label="Mục lục bài viết">
-        <ul>
-          
-            <li>
-              <a href="#1-database-luu-tru-du-lieu-nhu-the-nao">1. Database lưu trữ dữ liệu như thế nào?</a>
-              <ul>
-            <li>
-              <a href="#mot-page-gom-nhung-gi">Một page gồm những gì?</a>
-              
-            </li>
-          
-            <li>
-              <a href="#heap-va-clustered-hai-cach-to-chuc-du-lieu-trong-page">Heap và Clustered: hai cách tổ chức dữ liệu trong page</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#2-index-la-gi">2. Index là gì?</a>
-              
-            </li>
-          
-            <li>
-              <a href="#3-b-tree-va-btree-hoat-ong-nhu-the-nao">3. B-tree và B+tree hoạt động như thế nào?</a>
-              <ul>
-            <li>
-              <a href="#mo-hinh-tong-quan-mot-b-tree-can-bang">Mô hình tổng quan: một B-tree cân bằng</a>
-              
-            </li>
-          
-            <li>
-              <a href="#b-tree-cau-truc-page-va-vi-tri-du-lieu">B-tree: cấu trúc page và vị trí dữ liệu</a>
-              <ul>
-            <li>
-              <a href="#nut-trung-gian">Nút trung gian</a>
-              
-            </li>
-          
-            <li>
-              <a href="#nut-la">Nút lá</a>
-              
-            </li>
-          
-            <li>
-              <a href="#truy-van-khoang-va-ac-iem-cua-b-tree">Truy vấn khoảng và đặc điểm của B-tree</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#btree-cau-truc-page-va-vi-tri-du-lieu">B+tree: cấu trúc page và vị trí dữ liệu</a>
-              <ul>
-            <li>
-              <a href="#nut-trung-gian_1">Nút trung gian</a>
-              
-            </li>
-          
-            <li>
-              <a href="#nut-la_1">Nút lá</a>
-              
-            </li>
-          </ul>
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#4-index-lien-ket-voi-du-lieu-trong-bang-nhu-the-nao">4. Index liên kết với dữ liệu trong bảng như thế nào?</a>
-              <ul>
-            <li>
-              <a href="#con-tro-vat-ly-rid-row-identifier">Con trỏ vật lý (RID — Row Identifier)</a>
-              
-            </li>
-          
-            <li>
-              <a href="#du-lieu-thuc-te-tai-nut-la-va-clustered-index">Dữ liệu thực tế tại nút lá và clustered index</a>
-              
-            </li>
-          
-            <li>
-              <a href="#khoa-logic-va-qua-trinh-tra-cuu">Khóa logic và quá trình tra cứu</a>
-              
-            </li>
-          
-            <li>
-              <a href="#non-clustered-index">Non-clustered index</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#5-index-thay-oi-nhu-the-nao-khi-ghi-du-lieu">5. Index thay đổi như thế nào khi ghi dữ liệu?</a>
-              <ul>
-            <li>
-              <a href="#khi-insert-du-lieu">Khi INSERT dữ liệu</a>
-              <ul>
-            <li>
-              <a href="#b-tree">B-tree</a>
-              
-            </li>
-          
-            <li>
-              <a href="#btree">B+tree</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#khi-delete-du-lieu">Khi DELETE dữ liệu</a>
-              <ul>
-            <li>
-              <a href="#b-tree_1">B-tree</a>
-              
-            </li>
-          
-            <li>
-              <a href="#btree_1">B+tree</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#khi-update-du-lieu">Khi UPDATE dữ liệu</a>
-              
-            </li>
-          
-            <li>
-              <a href="#chi-phi-duy-tri-nhieu-index">Chi phí duy trì nhiều index</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#6-hash-index">6. Hash Index</a>
-              <ul>
-            <li>
-              <a href="#co-che-tra-cuu">Cơ chế tra cứu</a>
-              
-            </li>
-          
-            <li>
-              <a href="#han-che-cua-hash-index">Hạn chế của Hash Index</a>
-              
-            </li>
-          
-            <li>
-              <a href="#vi-sao-ham-bam-can-han-che-xung-ot">Vì sao hàm băm cần hạn chế xung đột?</a>
-              
-            </li>
-          
-            <li>
-              <a href="#vi-sao-bang-bam-lon-hon-ram-lam-giam-hieu-nang">Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?</a>
-              
-            </li>
-          
-            <li>
-              <a href="#quy-trinh-hinh-thanh-bang-bam-tren-ram">Quy trình hình thành bảng băm trên RAM</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#7-composite-index">7. Composite Index</a>
-              <ul>
-            <li>
-              <a href="#loc-theo-nhieu-cot-va-phep-giao-chi-muc">Lọc theo nhiều cột và phép giao chỉ mục</a>
-              
-            </li>
-          
-            <li>
-              <a href="#cau-truc-khoa-ghep">Cấu trúc khóa ghép</a>
-              
-            </li>
-          
-            <li>
-              <a href="#quy-tac-tien-to-trai">Quy tắc tiền tố trái</a>
-              
-            </li>
-          
-            <li>
-              <a href="#luu-y-khi-chon-thu-tu-cot">Lưu ý khi chọn thứ tự cột</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#8-covering-index">8. Covering Index</a>
-              <ul>
-            <li>
-              <a href="#chi-phi-truy-cap-lai-bang">Chi phí truy cập lại bảng</a>
-              <ul>
-            <li>
-              <a href="#khi-index-chua-con-tro-en-bang-chinh">Khi index chứa con trỏ đến bảng chính</a>
-              
-            </li>
-          
-            <li>
-              <a href="#khi-index-chua-clustered-key">Khi index chứa clustered key</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#khi-nao-index-bao-phu-mot-truy-van">Khi nào index bao phủ một truy vấn?</a>
-              <ul>
-            <li>
-              <a href="#vi-du-1-index-chua-u-cac-cot-truy-van-can">Ví dụ 1: Index chứa đủ các cột truy vấn cần</a>
-              
-            </li>
-          
-            <li>
-              <a href="#vi-du-2-truy-van-can-them-cot-ngoai-index">Ví dụ 2: Truy vấn cần thêm cột ngoài index</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#index-only-scan">Index-only scan</a>
-              
-            </li>
-          
-            <li>
-              <a href="#chi-phi-mo-rong-khoa-va-vai-tro-cua-include">Chi phí mở rộng khóa và vai trò của INCLUDE</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#9-partial-index">9. Partial Index</a>
-              <ul>
-            <li>
-              <a href="#chi-muc-tren-mot-tap-con-du-lieu">Chỉ mục trên một tập con dữ liệu</a>
-              
-            </li>
-          
-            <li>
-              <a href="#khi-nao-nen-dung">Khi nào nên dùng?</a>
-              
-            </li>
-          
-            <li>
-              <a href="#anh-oi">Đánh đổi</a>
-              
-            </li>
-          </ul>
-            </li>
-          
-            <li>
-              <a href="#loi-ket">Lời kết</a>
-              
-            </li>
-          
-        </ul>
-      </nav>
-    </details>
-  
-  
                   
   
 
@@ -2658,18 +2499,9 @@
   </div>
 </header>
 
-<figure class="airflow-opening-comic">
-  <img
-    src="../../assets/images/index/image4.png"
-    alt="Truyện tranh vui nhắc người đọc chuẩn bị cho một bài viết dài về index trong cơ sở dữ liệu"
-    loading="eager"
-  >
-  <figcaption>
-    <span>LƯU Ý TRƯỚC KHI ĐỌC</span>
-    <strong>Một bài viết khá dài</strong>
-  </figcaption>
-</figure>
-
+<blockquote>
+<p><strong>Lưu ý trước khi đọc:</strong> Đây là một bài viết dài, cần nhiều hơn vài phút đọc lướt. Bạn hãy dành thời gian, chuẩn bị một ly nước và giữ sự tập trung để theo dõi nội dung.</p>
+</blockquote>
 <h2 id="1-database-luu-tru-du-lieu-nhu-the-nao">1. Database lưu trữ dữ liệu như thế nào?</h2>
 <p>Để hiểu khái niệm index dễ hơn, trước hết hãy xem <strong>database lưu trữ dữ liệu trên ổ đĩa</strong> như thế nào.</p>
 <p>Khi truy vấn database, chúng ta thường thấy dữ liệu ở dạng hàng và cột. Tuy nhiên, tại tầng lưu trữ, DBMS không truy cập riêng lẻ từng hàng mà thường <strong>đọc và ghi theo đơn vị gọi là page (hoặc block)</strong>. Tùy hệ quản trị cơ sở dữ liệu, mỗi page có kích thước từ 4 KB đến 16 KB. Dữ liệu được đưa vào một page nhiều nhất có thể; khi page đã đầy, hệ thống tạo page mới để tiếp tục lưu trữ.</p>
@@ -2681,16 +2513,7 @@
 <li><strong>Offset Array:</strong> Lưu địa chỉ byte bắt đầu của từng dòng dữ liệu. Nhờ đó, khi cần đọc một dòng trong page, hệ thống chỉ việc tra Offset Array để truy cập trực tiếp thay vì quét toàn bộ page.</li>
 </ul>
 <p>Minh họa cấu trúc page:</p>
-<pre class="mermaid"><code>flowchart TB
-    subgraph PAGE["DATA PAGE"]
-        direction TB
-        HEADER["PAGE HEADER&lt;br/&gt;File ID và Page ID&lt;br/&gt;Metadata + dung lượng trống"]
-        DATA["DATA ROWS&lt;br/&gt;Dữ liệu thực tế được lưu dưới dạng bytes"]
-        OFFSETS["OFFSET ARRAY&lt;br/&gt;Địa chỉ byte bắt đầu của từng dòng dữ liệu"]
-
-        HEADER --- DATA
-        DATA --- OFFSETS
-    end</code></pre>
+<p><img alt="Cấu trúc một data page gồm page header, data rows và offset array" loading="lazy" src="../assets/images/index/data_page.png" /></p>
 <h3 id="heap-va-clustered-hai-cach-to-chuc-du-lieu-trong-page">Heap và Clustered: hai cách tổ chức dữ liệu trong page</h3>
 <p>Thông thường, dữ liệu được lưu trong page theo hai cách:</p>
 <ul>
@@ -2699,40 +2522,13 @@
 </ul>
 <h2 id="2-index-la-gi">2. Index là gì?</h2>
 <p>Hãy hình dung bạn cần tìm một tựa sách trong một cuốn sách rất dày. Nếu cuốn sách <strong>không có mục lục</strong>, bạn phải lật lần lượt từ trang đầu đến trang cuối cho đến khi thấy đúng tựa sách. Cách này rất tốn thời gian, nhất là khi cuốn sách dài hàng nghìn trang. Mục lục giải quyết vấn đề bằng cách sắp xếp các tựa sách theo một thứ tự, chẳng hạn thứ tự chữ cái, rồi ghi kèm số trang tương ứng. Muốn tìm một tựa đề, bạn chỉ cần <strong>tra mục lục và mở thẳng đến trang được chỉ dẫn</strong>.</p>
+<p><img alt="So sánh việc tìm kiếm tuần tự trong sách với tra cứu qua mục lục" loading="lazy" src="../assets/images/index/book.png" /></p>
 <p>Index trong cơ sở dữ liệu vận hành theo ý tưởng tương tự. Thay vì duyệt từng dòng để tìm giá trị mong muốn, hệ thống <strong>tra index</strong> để nhanh chóng xác định bản ghi hoặc page chứa dữ liệu, sau đó <strong>chỉ đọc phần cần thiết</strong>.</p>
 <p>Index là một <strong>cấu trúc phụ giúp tăng tốc tìm kiếm</strong>. Ở nút trung gian, index lưu <strong>key phân tách và con trỏ</strong>, trỏ đến index page con. Ở nút lá, index lưu key cùng con trỏ hoặc định danh đến bản ghi; tùy loại index, nút lá có thể chứa luôn giá trị. Các phần tiếp theo sẽ giải thích khi nào index dùng con trỏ, cũng như vai trò của nút trung gian và nút lá. Trên đĩa, index thường được tổ chức thành nhiều <strong>index page</strong>; mỗi index page gồm nhiều <strong>index entry</strong>.</p>
 <h2 id="3-b-tree-va-btree-hoat-ong-nhu-the-nao">3. B-tree và B+tree hoạt động như thế nào?</h2>
 <p>Các index page thường không được trải phẳng mà liên kết với nhau theo một cấu trúc index. Hai cấu trúc index phổ biến là <strong>B-tree và B+tree</strong>. Đây là những <strong>cây tìm kiếm đa nhánh cân bằng</strong>, gồm nút gốc, các nút trung gian và các nút lá. Nếu đã học cấu trúc dữ liệu và giải thuật, bạn có thể hình dung chúng tương tự các cây tìm kiếm cân bằng như AVL hoặc Red-Black tree. Điểm khác biệt là mỗi node của B-tree/B+tree có thể chứa <strong>nhiều key và nhiều nhánh con</strong>, thay vì chỉ có hai nhánh trái và phải.</p>
 <h3 id="mo-hinh-tong-quan-mot-b-tree-can-bang">Mô hình tổng quan: một B-tree cân bằng</h3>
-<pre class="mermaid"><code>flowchart TB
-    ROOT["NÚT GỐC&lt;br/&gt;30 | 60"]
-
-    LEFT["NÚT TRUNG GIAN&lt;br/&gt;10 | 20"]
-    CENTER["NÚT TRUNG GIAN&lt;br/&gt;40 | 50"]
-    RIGHT["NÚT TRUNG GIAN&lt;br/&gt;70 | 80"]
-
-    L1["NÚT LÁ&lt;br/&gt;5"]
-    L2["NÚT LÁ&lt;br/&gt;15"]
-    L3["NÚT LÁ&lt;br/&gt;25"]
-    L4["NÚT LÁ&lt;br/&gt;35"]
-    L5["NÚT LÁ&lt;br/&gt;45"]
-    L6["NÚT LÁ&lt;br/&gt;55"]
-    L7["NÚT LÁ&lt;br/&gt;65"]
-    L8["NÚT LÁ&lt;br/&gt;75"]
-    L9["NÚT LÁ&lt;br/&gt;85"]
-
-    ROOT --&gt; LEFT
-    ROOT --&gt; CENTER
-    ROOT --&gt; RIGHT
-    LEFT --&gt; L1
-    LEFT --&gt; L2
-    LEFT --&gt; L3
-    CENTER --&gt; L4
-    CENTER --&gt; L5
-    CENTER --&gt; L6
-    RIGHT --&gt; L7
-    RIGHT --&gt; L8
-    RIGHT --&gt; L9</code></pre>
+<p><img alt="Cây B-tree cân bằng gồm nút gốc, các nút trung gian và các nút lá" loading="lazy" src="../assets/images/index/tree.png" /></p>
 <blockquote>
 <p><strong>Lưu ý:</strong> Sơ đồ này chỉ minh họa cách các key <strong>phân chia khoảng tìm kiếm</strong> và cách các node liên kết với nhau. Để dễ quan sát, phần dữ liệu thực tế hoặc con trỏ đến dữ liệu đi kèm từng key không được hiển thị. Trong B-tree, mỗi key ở node trung gian và node lá đều có thể đi kèm dữ liệu hoặc con trỏ đến dữ liệu; các mũi tên trong sơ đồ biểu diễn <strong>con trỏ đến node con</strong>.</p>
 </blockquote>
@@ -2785,7 +2581,28 @@
 </blockquote>
 <p>Vì sao chỉ mục phụ dùng khóa logic, dù phải duyệt cây hai lần (<strong>Double Traversal</strong>), thay vì dùng con trỏ vật lý RID?</p>
 <p>Khi thêm hoặc thay đổi dữ liệu, vị trí của các dòng có thể thay đổi. Nếu các chỉ mục phụ lưu RID, hệ thống phải cập nhật lại những RID này, gây tốn I/O.</p>
-<p><img alt="Sự khác nhau giữa con trỏ dữ liệu trong B-tree và nút lá B+tree" src="../assets/images/index/difference.png" /></p>
+<p>Hai cách định vị dòng dữ liệu có thể được đối chiếu như sau:</p>
+<table>
+<thead>
+<tr>
+<th>Cách định vị</th>
+<th>Trường hợp sử dụng</th>
+<th>Đường đi tới dữ liệu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Con trỏ vật lý RID</strong></td>
+<td>Bảng chính lưu dưới dạng Heap Pages, không có clustered index.</td>
+<td>RID lưu tọa độ <code>FileID:PageID:SlotNumber</code>, trỏ trực tiếp tới dòng dữ liệu.</td>
+</tr>
+<tr>
+<td><strong>Khóa logic</strong></td>
+<td>Chỉ mục phụ trên bảng được tổ chức theo clustered index.</td>
+<td>Chỉ mục phụ lưu khóa chính, chẳng hạn <code>ID = 3</code>; hệ thống dùng khóa đó để tra clustered index rồi lấy dòng dữ liệu: <code>Secondary Index → Clustered Index → Row</code>.</td>
+</tr>
+</tbody>
+</table>
 <h3 id="non-clustered-index">Non-clustered index</h3>
 <p><strong>Non-clustered index</strong> tăng tốc độ truy xuất mà không thay đổi thứ tự sắp xếp vật lý của bảng dữ liệu gốc. Đây là một cây B+tree độc lập, tồn tại bên cạnh bảng dữ liệu.</p>
 <p>Theo mặc định, nút lá không chứa toàn bộ hàng mà chứa:</p>
@@ -2916,7 +2733,7 @@
 </ul>
 <h3 id="vi-sao-bang-bam-lon-hon-ram-lam-giam-hieu-nang">Vì sao bảng băm lớn hơn RAM làm giảm hiệu năng?</h3>
 <p>Khi bảng băm vượt quá dung lượng RAM, một phần dữ liệu buộc phải được đẩy xuống ổ đĩa. Do tính chất phân tán ngẫu nhiên của hàm băm, mỗi lượt truy vấn rất dễ rơi vào phần nằm trên đĩa (<strong>cache miss</strong>), biến thao tác tra cứu trên RAM thành thao tác đọc đĩa ngẫu nhiên (<strong>Random I/O</strong>) rất chậm.</p>
-<p><img alt="Ảnh hưởng đến hiệu năng khi bảng băm lớn hơn RAM" src="../assets/images/index/RAM.png" /></p>
+<p>Chuỗi tác động là: <strong>Hash Table lớn hơn RAM → một phần dữ liệu nằm trên đĩa → tra cứu trúng bucket không có trong RAM (cache miss) → phát sinh Random I/O → hiệu năng giảm</strong>. Vì hàm băm phân tán dữ liệu ngẫu nhiên, các lượt tra cứu có thể rơi vào những vị trí khác nhau trên đĩa, thay vì đọc tuần tự. Do đó, tốc độ tra cứu còn phụ thuộc vào việc bucket cần tìm có nằm trong RAM hay không.</p>
 <h3 id="quy-trinh-hinh-thanh-bang-bam-tren-ram">Quy trình hình thành bảng băm trên RAM</h3>
 <p>Quy trình hình thành bảng băm (Hash Index/Hash Map) trên RAM trong hệ quản trị cơ sở dữ liệu gồm các bước sau:</p>
 <ol>
@@ -2954,12 +2771,7 @@
 <p>Để giảm chi phí khi truy vấn thường lọc đồng thời theo nhiều cột, có thể tạo <strong>composite index (chỉ mục hỗn hợp)</strong>. Chỉ mục này gộp nhiều cột vào một cây B+tree duy nhất.</p>
 <p>Cây B+tree của composite index có cấu trúc tương tự cây B+tree thông thường, nhưng mỗi khóa là một khóa ghép thay vì một giá trị đơn lẻ. Ví dụ, với index <code>(age, sex)</code>, một khóa có thể mang giá trị <code>(21,male)</code>.</p>
 <p>Hệ thống sắp xếp khóa theo thứ tự phân cấp: trước hết theo cột ngoài cùng bên trái, sau đó theo cột thứ hai trong từng nhóm có cùng giá trị cột thứ nhất, rồi đến cột thứ ba trong từng nhóm của cột thứ hai, và tiếp tục như vậy.</p>
-<div class="highlight"><pre><span></span><code>                     [ ('Dev', 28)  |  ('HR', 30) ]
-                    /               |              \
-                   ▼                ▼               ▼
-         [ ('Dev', 20) ]     [ ('Dev', 28) ]     [ ('HR', 30) ]
-         [ ('Dev', 22) ] &lt;-&gt; [ ('HR', 25)  ] &lt;-&gt; [ ('HR', 32) ]
-</code></pre></div>
+<p><img alt="Cây B+tree với khóa ghép theo phòng ban và tuổi ở các nút trung gian và nút lá" loading="lazy" src="../assets/images/index/key.png" /></p>
 <p>Với sơ đồ trên:</p>
 <ul>
 <li>Khi tìm nhân viên <code>('HR', 25)</code>, hệ thống xác định khóa này lớn hơn <code>('Dev', 28)</code> nhưng nhỏ hơn <code>('HR', 30)</code> vì cùng phòng HR và <code>25 &lt; 30</code>. Hệ thống đi vào nhánh giữa.</li>
@@ -2989,18 +2801,7 @@
 <h4 id="khi-index-chua-con-tro-en-bang-chinh">Khi index chứa con trỏ đến bảng chính</h4>
 <p>Dữ liệu trong bảng chính không được sắp xếp theo non-clustered index key. Vì vậy, khi một giá trị key khớp với nhiều dòng và truy vấn cần lấy các cột khác, DBMS phải thực hiện nhiều lần truy cập ngẫu nhiên để lấy dữ liệu từ bảng chính.</p>
 <p>Ví dụ minh họa:</p>
-<div class="highlight"><pre><span></span><code>    Trang đĩa của INDEX                      Các trang đĩa của BẢNG CHÍNH
-┌─────────────────────────┐               ┌────────────────────────────────┐
-│ ('IT', Con trỏ #10)  ───┼──────────────&gt;│ Trang đĩa 2:  Dòng #10 ('IT')   │
-│ ('IT', Con trỏ #500) ───┼──┐            └────────────────────────────────┘
-│ ('IT', Con trỏ #80)  ───┼──┼──┐         ┌────────────────────────────────┐
-└─────────────────────────┘  │  └────────&gt;│ Trang đĩa 15: Dòng #80 ('IT')  │
-     (Đọc tuần tự)           │            └────────────────────────────────┘
-                             │            ┌────────────────────────────────┐
-                             └───────────&gt;│ Trang đĩa 89: Dòng #500 ('IT') │
-                                          └────────────────────────────────┘
-                                                (Nhảy đĩa ngẫu nhiên)
-</code></pre></div>
+<p><img alt="Index trỏ tới các dòng trong bảng chính nằm trên nhiều page, gây truy cập đĩa ngẫu nhiên" loading="lazy" src="../assets/images/index/dick.png" /></p>
 <h4 id="khi-index-chua-clustered-key">Khi index chứa clustered key</h4>
 <p>Clustered key đóng vai trò row locator. Nếu truy vấn cần cột không có trong non-clustered index, DBMS dùng clustered key tìm được để tra cứu lại clustered index.</p>
 <p>Với mỗi dòng khớp điều kiện, DBMS thường phải duyệt một đường đi trong Clustered B+Tree từ nút gốc đến nút lá để lấy dữ liệu. Đây là <strong>Key Lookup</strong>.</p>
@@ -3064,21 +2865,8 @@ Với MỖI giá trị PK tìm được, hệ thống phải duyệt lại cây 
 </ul>
 <hr />
 <h2 id="loi-ket">Lời kết</h2>
-<figure class="airflow-closing-comic" id="loi-ket">
-  <img
-    src="../../assets/images/index/end_index.png"
-    alt="Truyện tranh Shin chia sẻ hành trình tìm hiểu Index và cảm ơn người đọc"
-    loading="lazy"
-  >
-  <figcaption>
-    <span>LỜI KẾT</span>
-    <div>
-      <strong>Cảm ơn bạn đã đọc đến cuối!</strong>
-      <p>Hy vọng bài viết giúp bạn hiểu Index rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
-    </div>
-  </figcaption>
-</figure>
-
+<p>Bài viết về Index được tổng hợp từ quá trình tự đọc, ghi chép và tìm hiểu của tác giả, nên vẫn có thể còn những điểm chưa chính xác hoặc thiếu sót. Mong bạn đón nhận với tinh thần cởi mở và góp ý để nội dung được hoàn thiện hơn.</p>
+<p>Cảm ơn bạn đã đọc đến cuối! Hy vọng bài viết giúp bạn hiểu Index rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
 <footer class="airflow-article-end index-article-end">
   <div>
     <span>BEHIND THE PIPELINE / 003</span>
@@ -3162,7 +2950,6 @@ Với MỖI giá trị PK tìm được, hệ thống phải duyệt lại cây 
       
         <script src="../javascripts/author-dialog.js"></script>
       
-        <script src="../javascripts/chat.js"></script>
       
     
   </body>

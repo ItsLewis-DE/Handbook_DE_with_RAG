@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/">
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/p2/">
       
       
-        <link rel="prev" href="../../airflow/architecture.en/">
+        <link rel="prev" href="../archi/">
       
       
-        <link rel="next" href="../p2/">
+        <link rel="next" href="../archi.en/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Kiến trúc Apache Spark (phần 1) - Behind the Pipeline</title>
+        <title>Kiến trúc Apache Spark (phần 2) - Behind the Pipeline</title>
       
     
     
@@ -72,9 +72,9 @@
     
   
   
-    <link rel="alternate" hreflang="vi" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/">
+    <link rel="alternate" hreflang="vi" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/p2/">
   
-    <link rel="alternate" hreflang="en" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi.en/">
+    <link rel="alternate" hreflang="en" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/p2.en/">
   
 
   </head>
@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tai-sao-can-hieu-kien-truc-spark" class="md-skip">
+        <a href="#1-broadcast-hash-join" class="md-skip">
           Bỏ qua
         </a>
       
@@ -304,7 +304,7 @@
                   
                   
                     <li>
-                      <a href="./" aria-current="page">
+                      <a href="../archi/" >
                         <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
                       </a>
                     </li>
@@ -315,7 +315,7 @@
                   
                   
                     <li>
-                      <a href="../p2/" >
+                      <a href="./" aria-current="page">
                         <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
                       </a>
                     </li>
@@ -951,6 +951,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -968,7 +996,7 @@
   <span class="md-ellipsis">
     
   
-    Apache Spark (phần 1)
+    Kiến trúc Apache Spark (phần 2)
   
 
     
@@ -986,7 +1014,7 @@
   <span class="md-ellipsis">
     
   
-    Apache Spark (phần 1)
+    Kiến trúc Apache Spark (phần 2)
   
 
     
@@ -1010,10 +1038,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#tai-sao-can-hieu-kien-truc-spark" class="md-nav__link">
+  <a href="#1-broadcast-hash-join" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tại sao cần hiểu kiến trúc Spark?
+        1. Broadcast Hash Join
       
     </span>
   </a>
@@ -1021,10 +1049,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-spark-la-gi" class="md-nav__link">
+  <a href="#2-shuffle-hash-join" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Spark là gì?
+        2. Shuffle Hash Join
       
     </span>
   </a>
@@ -1032,10 +1060,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-spark-ra-oi-nhu-the-nao" class="md-nav__link">
+  <a href="#3-sort-merge-join-smj" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Spark ra đời như thế nào?
+        3. Sort-Merge Join (SMJ)
       
     </span>
   </a>
@@ -1043,10 +1071,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-iem-truy-cap-vao-spark" class="md-nav__link">
+  <a href="#4-broadcast-nested-loop-join-bnlj" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Điểm truy cập vào Spark
+        4. Broadcast Nested Loop Join (BNLJ)
       
     </span>
   </a>
@@ -1054,22 +1082,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-kien-truc-apache-spark" class="md-nav__link">
+  <a href="#5-cartesian-product-join-shuffle-and-replicate-nested-loop-join" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Kiến trúc Apache Spark
+        5. Cartesian Product Join (Shuffle-and-Replicate Nested Loop Join)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4. Kiến trúc Apache Spark">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-rdd-va-vai-tro-trong-thuc-thi-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. RDD và vai trò trong thực thi Spark
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. RDD và vai trò trong thực thi Spark">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#driver-program-tien-trinh-ieu-khien" class="md-nav__link">
+  <a href="#rdd-la-gi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Driver Program — tiến trình điều khiển
+        RDD là gì?
       
     </span>
   </a>
@@ -1077,10 +1116,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#worker-node-va-executor" class="md-nav__link">
+  <a href="#mo-hinh-phan-tang-thuc-thi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Worker node và Executor
+        Mô hình phân tầng thực thi
       
     </span>
   </a>
@@ -1088,10 +1127,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cluster-manager-bo-quan-ly-tai-nguyen" class="md-nav__link">
+  <a href="#kha-nang-chiu-loi-cua-rdd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cluster Manager — bộ quản lý tài nguyên
+        Khả năng chịu lỗi của RDD
       
     </span>
   </a>
@@ -1104,22 +1143,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-partition-dependency-va-shuffle" class="md-nav__link">
+  <a href="#7-co-che-giao-tiep-noi-bo-cua-pyspark" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Partition, dependency và shuffle
+        7. Cơ chế giao tiếp nội bộ của PySpark
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="6. Partition, dependency và shuffle">
+    <nav class="md-nav" aria-label="7. Cơ chế giao tiếp nội bộ của PySpark">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#partition-la-gi" class="md-nav__link">
+  <a href="#vi-sao-pyspark-can-giao-tiep-voi-spark-engine" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Partition là gì?
+        Vì sao PySpark cần giao tiếp với Spark Engine?
       
     </span>
   </a>
@@ -1127,10 +1166,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#narrow-dependency" class="md-nav__link">
+  <a href="#giao-tiep-tai-driver" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Narrow Dependency
+        Giao tiếp tại Driver
       
     </span>
   </a>
@@ -1138,32 +1177,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#wide-dependency-va-shuffle" class="md-nav__link">
+  <a href="#giao-tiep-tai-worker-node" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Wide Dependency và shuffle
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qua-trinh-shuffle-dien-ra-nhu-the-nao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quá trình shuffle diễn ra như thế nào?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vi-sao-du-lieu-shuffle-can-uoc-ghi-xuong-ia" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vì sao dữ liệu shuffle cần được ghi xuống đĩa?
+        Giao tiếp tại worker node
       
     </span>
   </a>
@@ -1176,34 +1193,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-luong-xu-ly-truy-van-voi-dataframe-api-va-spark-sql" class="md-nav__link">
+  <a href="#8-bo-nho-cua-driver" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. Luồng xử lý truy vấn với DataFrame API và Spark SQL
+        8. Bộ nhớ của Driver
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="7. Luồng xử lý truy vấn với DataFrame API và Spark SQL">
+    <nav class="md-nav" aria-label="8. Bộ nhớ của Driver">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#giai-oan-1-khai-bao-truy-van-va-anh-gia-luoi-bieng" class="md-nav__link">
+  <a href="#cac-thanh-phan-bo-nho" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Giai đoạn 1: Khai báo truy vấn và đánh giá lười biếng
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Giai đoạn 1: Khai báo truy vấn và đánh giá lười biếng">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cay-cu-phap-truu-tuong-la-gi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cây cú pháp trừu tượng là gì?
+        Các thành phần bộ nhớ
       
     </span>
   </a>
@@ -1211,57 +1216,13 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#dataframe-va-unresolved-logical-plan" class="md-nav__link">
+  <a href="#cach-don-dep-bo-nho-tren-driver" class="md-nav__link">
     <span class="md-ellipsis">
       
-        DataFrame và Unresolved Logical Plan
+        Cách dọn dẹp bộ nhớ trên Driver
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#giai-oan-2-toi-uu-hoa-bang-catalyst-optimizer-va-project-tungsten" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Giai đoạn 2: Tối ưu hóa bằng Catalyst Optimizer và Project Tungsten
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#giai-oan-3-kich-hoat-action-va-lap-lich-thuc-thi-tren-driver" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Giai đoạn 3: Kích hoạt Action và lập lịch thực thi trên Driver
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Giai đoạn 3: Kích hoạt Action và lập lịch thực thi trên Driver">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#stage-uoc-chia-tai-ranh-gioi-shuffle" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Stage được chia tại ranh giới shuffle
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -1271,24 +1232,91 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-cac-cau-hoi-can-tim-hieu-tiep" class="md-nav__link">
+  <a href="#9-bo-nho-cua-executor" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8. Các câu hỏi cần tìm hiểu tiếp
+        9. Bộ nhớ của Executor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Bộ nhớ của Executor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm-heap-sparkexecutormemory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JVM Heap (spark.executor.memory)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM Heap (spark.executor.memory)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reserved-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reserved Memory
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#loi-ket" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#unified-memory-pool" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lời kết
+        Unified Memory Pool
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Overhead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managed-off-heap-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managed Off-Heap Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1296,34 +1324,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../p2/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Kiến trúc Apache Spark (phần 2)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1419,10 +1419,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#tai-sao-can-hieu-kien-truc-spark" class="md-nav__link">
+  <a href="#1-broadcast-hash-join" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tại sao cần hiểu kiến trúc Spark?
+        1. Broadcast Hash Join
       
     </span>
   </a>
@@ -1430,10 +1430,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-spark-la-gi" class="md-nav__link">
+  <a href="#2-shuffle-hash-join" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Spark là gì?
+        2. Shuffle Hash Join
       
     </span>
   </a>
@@ -1441,10 +1441,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-spark-ra-oi-nhu-the-nao" class="md-nav__link">
+  <a href="#3-sort-merge-join-smj" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Spark ra đời như thế nào?
+        3. Sort-Merge Join (SMJ)
       
     </span>
   </a>
@@ -1452,10 +1452,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-iem-truy-cap-vao-spark" class="md-nav__link">
+  <a href="#4-broadcast-nested-loop-join-bnlj" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Điểm truy cập vào Spark
+        4. Broadcast Nested Loop Join (BNLJ)
       
     </span>
   </a>
@@ -1463,22 +1463,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-kien-truc-apache-spark" class="md-nav__link">
+  <a href="#5-cartesian-product-join-shuffle-and-replicate-nested-loop-join" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Kiến trúc Apache Spark
+        5. Cartesian Product Join (Shuffle-and-Replicate Nested Loop Join)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4. Kiến trúc Apache Spark">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-rdd-va-vai-tro-trong-thuc-thi-spark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. RDD và vai trò trong thực thi Spark
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. RDD và vai trò trong thực thi Spark">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#driver-program-tien-trinh-ieu-khien" class="md-nav__link">
+  <a href="#rdd-la-gi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Driver Program — tiến trình điều khiển
+        RDD là gì?
       
     </span>
   </a>
@@ -1486,10 +1497,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#worker-node-va-executor" class="md-nav__link">
+  <a href="#mo-hinh-phan-tang-thuc-thi" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Worker node và Executor
+        Mô hình phân tầng thực thi
       
     </span>
   </a>
@@ -1497,10 +1508,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cluster-manager-bo-quan-ly-tai-nguyen" class="md-nav__link">
+  <a href="#kha-nang-chiu-loi-cua-rdd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cluster Manager — bộ quản lý tài nguyên
+        Khả năng chịu lỗi của RDD
       
     </span>
   </a>
@@ -1513,22 +1524,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-partition-dependency-va-shuffle" class="md-nav__link">
+  <a href="#7-co-che-giao-tiep-noi-bo-cua-pyspark" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Partition, dependency và shuffle
+        7. Cơ chế giao tiếp nội bộ của PySpark
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="6. Partition, dependency và shuffle">
+    <nav class="md-nav" aria-label="7. Cơ chế giao tiếp nội bộ của PySpark">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#partition-la-gi" class="md-nav__link">
+  <a href="#vi-sao-pyspark-can-giao-tiep-voi-spark-engine" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Partition là gì?
+        Vì sao PySpark cần giao tiếp với Spark Engine?
       
     </span>
   </a>
@@ -1536,10 +1547,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#narrow-dependency" class="md-nav__link">
+  <a href="#giao-tiep-tai-driver" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Narrow Dependency
+        Giao tiếp tại Driver
       
     </span>
   </a>
@@ -1547,32 +1558,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#wide-dependency-va-shuffle" class="md-nav__link">
+  <a href="#giao-tiep-tai-worker-node" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Wide Dependency và shuffle
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qua-trinh-shuffle-dien-ra-nhu-the-nao" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quá trình shuffle diễn ra như thế nào?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vi-sao-du-lieu-shuffle-can-uoc-ghi-xuong-ia" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vì sao dữ liệu shuffle cần được ghi xuống đĩa?
+        Giao tiếp tại worker node
       
     </span>
   </a>
@@ -1585,34 +1574,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#7-luong-xu-ly-truy-van-voi-dataframe-api-va-spark-sql" class="md-nav__link">
+  <a href="#8-bo-nho-cua-driver" class="md-nav__link">
     <span class="md-ellipsis">
       
-        7. Luồng xử lý truy vấn với DataFrame API và Spark SQL
+        8. Bộ nhớ của Driver
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="7. Luồng xử lý truy vấn với DataFrame API và Spark SQL">
+    <nav class="md-nav" aria-label="8. Bộ nhớ của Driver">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#giai-oan-1-khai-bao-truy-van-va-anh-gia-luoi-bieng" class="md-nav__link">
+  <a href="#cac-thanh-phan-bo-nho" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Giai đoạn 1: Khai báo truy vấn và đánh giá lười biếng
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Giai đoạn 1: Khai báo truy vấn và đánh giá lười biếng">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cay-cu-phap-truu-tuong-la-gi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cây cú pháp trừu tượng là gì?
+        Các thành phần bộ nhớ
       
     </span>
   </a>
@@ -1620,57 +1597,13 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#dataframe-va-unresolved-logical-plan" class="md-nav__link">
+  <a href="#cach-don-dep-bo-nho-tren-driver" class="md-nav__link">
     <span class="md-ellipsis">
       
-        DataFrame và Unresolved Logical Plan
+        Cách dọn dẹp bộ nhớ trên Driver
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#giai-oan-2-toi-uu-hoa-bang-catalyst-optimizer-va-project-tungsten" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Giai đoạn 2: Tối ưu hóa bằng Catalyst Optimizer và Project Tungsten
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#giai-oan-3-kich-hoat-action-va-lap-lich-thuc-thi-tren-driver" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Giai đoạn 3: Kích hoạt Action và lập lịch thực thi trên Driver
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Giai đoạn 3: Kích hoạt Action và lập lịch thực thi trên Driver">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#stage-uoc-chia-tai-ranh-gioi-shuffle" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Stage được chia tại ranh giới shuffle
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -1680,24 +1613,91 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-cac-cau-hoi-can-tim-hieu-tiep" class="md-nav__link">
+  <a href="#9-bo-nho-cua-executor" class="md-nav__link">
     <span class="md-ellipsis">
       
-        8. Các câu hỏi cần tìm hiểu tiếp
+        9. Bộ nhớ của Executor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Bộ nhớ của Executor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm-heap-sparkexecutormemory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JVM Heap (spark.executor.memory)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM Heap (spark.executor.memory)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reserved-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reserved Memory
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#loi-ket" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#unified-memory-pool" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lời kết
+        Unified Memory Pool
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Overhead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managed-off-heap-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managed Off-Heap Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1721,7 +1721,7 @@
   
     <a href="./" lang="vi" hreflang="vi" data-reading-language="vi" aria-current="page">Tiếng Việt</a>
   
-    <a href="../archi.en/" lang="en" hreflang="en" data-reading-language="en" >English</a>
+    <a href="../p2.en/" lang="en" hreflang="en" data-reading-language="en" >English</a>
   
   </div>
 </nav>
@@ -1739,177 +1739,251 @@
 <header class="airflow-article-hero spark-article-hero">
   <div class="airflow-article-hero__eyebrow">
     <a href="../../">BEHIND THE PIPELINE</a>
-    <span>ARTICLE / 005</span>
+    <span>ARTICLE / 006</span>
   </div>
-  <h1>Kiến trúc<br><em>Apache Spark (phần 1)</em></h1>
+  <h1>Kiến trúc<br><em>Apache Spark (phần 2)</em></h1>
   <p class="airflow-article-hero__dek">
-    Từ lý do Spark ra đời đến cách một câu lệnh được thực thi trên cụm máy:
-    hiểu kiến trúc để biết điều gì xảy ra khi chương trình chạy hoặc gặp lỗi.
+    Từ các chiến lược Join và RDD đến giao tiếp trong PySpark,
+    cách Driver và Executor tổ chức, sử dụng bộ nhớ.
   </p>
   <div class="airflow-article-hero__meta" aria-label="Thông tin bài viết">
     <span>DISTRIBUTED COMPUTING</span>
     <span>DEEP DIVE</span>
-    <span>EDITION 05 · 2026</span>
+    <span>EDITION 06 · 2026</span>
   </div>
 </header>
 
-<h2 id="tai-sao-can-hieu-kien-truc-spark">Tại sao cần hiểu kiến trúc Spark?</h2>
-<p>Có thể bạn đã biết đến Spark hoặc sử dụng công cụ này trong một dự án. Tuy nhiên, khi chương trình gặp lỗi, việc tìm lời giải trên ChatGPT và áp dụng thành công chưa đồng nghĩa với việc hiểu <strong>vì sao cách sửa đó có tác dụng</strong>. Hiểu cách Spark vận hành bên dưới sẽ giúp bạn chủ động xác định nguyên nhân. Bài viết này giới thiệu kiến trúc Spark và cách Spark thực thi một câu lệnh.</p>
-<h2 id="1-spark-la-gi">1. Spark là gì?</h2>
-<p><strong>Apache Spark</strong> là một engine tính toán phân tán dùng để xử lý dữ liệu lớn trên nhiều máy. Với hạ tầng phù hợp, Spark có thể xử lý dữ liệu ở quy mô petabyte.</p>
-<p>Thay vì tập trung toàn bộ dữ liệu và phép tính trên một máy, Spark chia dữ liệu thành nhiều <strong>partition</strong> và công việc thành nhiều <strong>task</strong>. Các Executor trên nhiều máy thực thi những task này song song.</p>
-<h2 id="2-spark-ra-oi-nhu-the-nao">2. Spark ra đời như thế nào?</h2>
-<p>Spark bắt đầu từ một dự án nghiên cứu tại <strong>UC Berkeley</strong> năm 2009 và được công bố mã nguồn vào đầu năm 2010. Đến năm 2013, dự án chuyển sang <strong>Apache Software Foundation</strong>.</p>
-<p>Khi đó, <strong>MapReduce</strong> đã hỗ trợ xử lý dữ liệu trên nhiều máy, nhưng còn hạn chế với những công việc cần sử dụng lại cùng một tập dữ liệu qua nhiều lượt tính toán. Việc phải đọc lại dữ liệu từ ổ đĩa sau mỗi lượt xử lý làm tăng độ trễ. Spark được thiết kế để hỗ trợ những công việc này bằng cách cho phép <strong>giữ và tái sử dụng dữ liệu trong RAM</strong> giữa các phép tính, đồng thời duy trì khả năng chịu lỗi.</p>
-<p>Spark nổi bật với các đặc điểm sau:</p>
+<p>Trong Spark, cần phân biệt giữa <strong>Logical Join</strong> và <strong>Physical Join Strategy</strong>. Spark hỗ trợ đầy đủ các kiểu
+Join logic tiêu chuẩn như SQL (<code>LEFT</code>, <code>RIGHT</code>, <code>INNER</code>…), nhưng ở tầng thực thi vật lý, <strong>Catalyst
+Optimizer</strong> sẽ tự động lựa chọn các thuật toán phân tán phù hợp, như Broadcast Hash Join hay Sort-Merge
+Join, để giảm thiểu chi phí shuffle qua mạng và tối ưu bộ nhớ. Bài viết này trình bày các thuật toán
+Physical Join đó, sau đó đi vào vai trò của RDD, cơ chế giao tiếp trong PySpark và quản lý bộ nhớ
+trên Driver, Executor.</p>
+<h2 id="1-broadcast-hash-join">1. Broadcast Hash Join</h2>
+<p>Dữ liệu ban đầu nằm rải rác trong các partition trên các Executor. Khi thực hiện <strong>Broadcast Hash Join</strong>,
+Spark tập hợp các partition của bảng nhỏ về Driver thành một bảng hoàn chỉnh. Driver sau đó chuyển bảng dữ
+liệu này thành <strong>bảng băm (Hash Table)</strong>.</p>
+<p>Các Executor tải bảng băm về và lưu vào bộ nhớ đệm, sau đó khởi chạy các Task để quét từng dòng trong
+partition của bảng lớn. Mỗi dòng được ghép nối bằng cách đối chiếu key của bảng lớn với key của bảng nhỏ
+trong bảng băm.</p>
 <ul>
-<li><strong>Xử lý trên bộ nhớ:</strong> Dữ liệu đệm được lưu trong RAM, giúp Spark thực thi các tác vụ lặp lại nhanh hơn nhiều lần so với MapReduce.</li>
-<li><strong>Khả năng chịu lỗi:</strong> Được hỗ trợ bởi RDD và Lineage Graph.</li>
-<li><strong>Đánh giá lười biếng (lazy evaluation):</strong> Spark chưa thực thi ngay khi người dùng khai báo các phép biến đổi, mà chỉ bắt đầu thực thi khi một Action được gọi.</li>
-<li><strong>Hỗ trợ đa ngôn ngữ:</strong> Java, Scala và Python.</li>
+<li>
+<p><strong>Ưu điểm:</strong> Loại bỏ hoàn toàn chi phí shuffle. Đây là phép Join có tốc độ thực thi nhanh nhất trong
+  Spark.</p>
+</li>
+<li>
+<p><strong>Nhược điểm:</strong> Dễ gây quá tải RAM của Driver và Executor nếu bảng quá lớn; chỉ áp dụng được khi Join giữa
+  một bảng lớn và một bảng nhỏ.</p>
+</li>
 </ul>
-<p>Những đặc điểm này sẽ được trình bày chi tiết ở các phần sau.</p>
-<h2 id="3-iem-truy-cap-vao-spark">3. Điểm truy cập vào Spark</h2>
-<p><strong>SparkSession</strong> (hoặc <strong>SparkContext</strong>) là điểm truy cập giúp kết nối mã của bạn với hệ thống Spark. Đây là đối tượng đầu tiên cần khởi tạo khi sử dụng Spark.</p>
-<p>Ví dụ khởi tạo <code>SparkSession</code> bằng Python:</p>
-<div class="highlight"><pre><span></span><code><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"MyFirstSparkApp"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">"local[*]"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.executor.memory"</span><span class="p">,</span> <span class="s2">"2g"</span><span class="p">)</span> \
-    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-</code></pre></div>
-<h2 id="4-kien-truc-apache-spark">4. Kiến trúc Apache Spark</h2>
-<p>Kiến trúc Spark được mô tả chủ yếu theo các thành phần thực thi và vai trò của chúng trong hệ thống phân tán, thay vì phân chia theo các tầng (layer).</p>
-<h3 id="driver-program-tien-trinh-ieu-khien">Driver Program — tiến trình điều khiển</h3>
-<p>Spark được thiết kế theo mô hình <strong>Master–Worker</strong> (còn được gọi là Master–Slave). Trong mô hình điều phối ứng dụng được mô tả ở đây, <strong>Driver Program</strong> giữ vai trò Master: tiến trình trung tâm chịu trách nhiệm <strong>điều phối toàn bộ ứng dụng</strong>.</p>
-<p>Driver bao gồm các thành phần sau:</p>
-<table>
-<thead>
-<tr>
-<th>Thành phần</th>
-<th>Vai trò</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>SparkSession</strong></td>
-<td>Điểm truy cập giúp kết nối mã của bạn với hệ thống Spark; là đối tượng đầu tiên cần khởi tạo khi sử dụng Spark.</td>
-</tr>
-<tr>
-<td><strong>SparkContext</strong></td>
-<td>Thành phần bên dưới SparkSession kể từ Spark 2.0, chịu trách nhiệm kết nối Driver với cụm Spark và giúp Driver gửi công việc tới các Executor.</td>
-</tr>
-<tr>
-<td><strong>DAGScheduler</strong></td>
-<td>Nhận kế hoạch tính toán, xây dựng DAG và phân chia công việc thành các Stage.</td>
-</tr>
-<tr>
-<td><strong>TaskScheduler</strong></td>
-<td>Nhận các task từ DAGScheduler và gửi chúng tới từng Executor.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="worker-node-va-executor">Worker node và Executor</h3>
-<p>Phía Worker gồm các <strong>worker node</strong> và <strong>Executor</strong>:</p>
+<p><a href="../../assets/images/spark/broadcast.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Broadcast Hash Join trong Spark" loading="lazy" src="../../assets/images/spark/broadcast.png" /></a></p>
+<h2 id="2-shuffle-hash-join">2. Shuffle Hash Join</h2>
+<p>Với <strong>Shuffle Hash Join</strong>, dữ liệu của cả hai bảng được shuffle qua mạng dựa trên giá trị hash của Join Key,
+nhằm đưa các dòng có cùng key về cùng một partition trên một Executor.</p>
+<p>Tại mỗi partition, Spark xây dựng một <strong>Hash Table</strong> cho phần dữ liệu của bảng nhỏ hơn, sau đó đọc từng dòng
+của bảng lớn hơn và tra cứu trong Hash Table để ghép nối.</p>
+<p>Cơ chế này gần tương tự Broadcast Hash Join, nhưng có thêm bước shuffle ở đầu và Driver không tập hợp các
+partition của bảng nhỏ. Bước shuffle là cần thiết vì nếu bảng nhỏ vẫn có kích thước quá lớn, việc tập hợp
+toàn bộ bảng về Driver có thể gây tràn RAM.</p>
 <ul>
-<li><strong>Worker node:</strong> Máy vật lý hoặc máy ảo thuộc cụm phân tán.</li>
-<li><strong>Executor:</strong> Tiến trình con được khởi tạo trên worker node, chịu trách nhiệm chạy các task trên những luồng song song.</li>
+<li>
+<p><strong>Ưu điểm:</strong> Nhanh hơn Sort-Merge Join vì không cần sắp xếp dữ liệu.</p>
+</li>
+<li>
+<p><strong>Nhược điểm:</strong> Dễ bị ảnh hưởng bởi lệch dữ liệu (<strong>Data Skew</strong>) và gặp lỗi <strong>OOM (Out Of Memory)</strong> nếu
+  partition của bảng nhỏ vẫn lớn hơn RAM của Executor.</p>
+</li>
 </ul>
-<h3 id="cluster-manager-bo-quan-ly-tai-nguyen">Cluster Manager — bộ quản lý tài nguyên</h3>
-<p><strong>Cluster Manager</strong> chịu trách nhiệm quản lý và phân bổ tài nguyên cho ứng dụng Spark. Khi cần chạy, ứng dụng gửi yêu cầu tài nguyên tới Cluster Manager. Thành phần này cấp CPU và RAM trên các worker node, đồng thời khởi tạo các Executor để thực thi task.</p>
-<p>Các thành phần này phối hợp với nhau như thế nào?
-  Bước 1: Khi bạn chạy spark-submit, tiến trình Driver được tạo ra và khởi chạy SparkContext. Driver liên hệ với Cluster Manager yêu cầu cấp phát tài nguyên.
-  Bước 2: Cluster Manager rà soát tình trạng các worker node. Với các worker node đáp ứng yêu cầu, cluster manager sẽ gửi lệnh đến worker node để yêu cầu khởi chạy các executor trên worker node đó.
-  Bước 3: Khi khởi động xong các executor không làm việc với Cluster Manager nữa mà sẽ chủ động kết nối với Driver.
-  Bước 4: Khi gặp một Action Driver sẽ giao việc cho các executor này. Khi làm việc xong các executor này sẽ trả kết quả về cho Driver.</p>
-<p><a href="../../assets/images/spark/flow.png" title="Xem ảnh kích thước gốc"><img alt="Luồng phối hợp giữa Driver, Cluster Manager và Executor trong Spark" class="article-diagram--wide" loading="lazy" src="../../assets/images/spark/flow.png" /></a></p>
-<h2 id="6-partition-dependency-va-shuffle">6. Partition, dependency và shuffle</h2>
-<h3 id="partition-la-gi">Partition là gì?</h3>
-<p>Để hiểu shuffle, trước tiên cần nắm được khái niệm <strong>partition</strong> trong Spark.</p>
-<p><strong>Partition</strong> (phân vùng dữ liệu) là đơn vị lưu trữ và song song hóa cơ bản. Spark xử lý dữ liệu lớn theo nguyên lý “chia để trị”: tập dữ liệu được chia thành những phần nhỏ gọi là partition. Mỗi partition được một task xử lý trên một Executor.</p>
-<h3 id="narrow-dependency">Narrow Dependency</h3>
-<p>Với <strong>Narrow Dependency</strong>, mỗi partition của tập dữ liệu con chỉ phụ thuộc vào một partition của tập dữ liệu cha.</p>
-<p>Các phép biến đổi như <code>map()</code>, <code>filter()</code> và <code>flatMap()</code> là những ví dụ của Narrow Dependency.</p>
-<h3 id="wide-dependency-va-shuffle">Wide Dependency và shuffle</h3>
-<p>Với <strong>Wide Dependency</strong>, để tính toán một partition con, Spark cần tập hợp dữ liệu từ nhiều hoặc tất cả các partition cha nằm rải rác trên những máy khác nhau. Các phép biến đổi như <code>groupByKey()</code>, <code>reduceByKey()</code>, <code>join()</code> và <code>distinct()</code> là những ví dụ được xét ở đây.</p>
-<p>Để tập hợp dữ liệu từ nhiều partition thành một partition mới, dữ liệu được truyền qua mạng. Quá trình này được gọi là <strong>shuffle</strong>.</p>
-<h3 id="qua-trinh-shuffle-dien-ra-nhu-the-nao">Quá trình shuffle diễn ra như thế nào?</h3>
-<p>Sau khi các Stage trước, với những thao tác Narrow Dependency, hoàn tất việc xử lý, dữ liệu được biểu diễn dưới dạng <code>(key, value)</code>. Quá trình shuffle tiếp tục qua các bước sau:</p>
-<ol>
-<li><strong>Xác định partition đích:</strong> Spark sử dụng <code>HashPartitioner</code> để tính Partition ID cho từng dòng dữ liệu theo công thức <code>Partition ID = |hash(Key)| mod N</code>, trong đó <code>N</code> là tổng số partition ở Stage sau.</li>
-<li><strong>Lưu vào bộ đệm và sắp xếp:</strong> Dữ liệu được lưu vào bộ nhớ đệm trên RAM của Executor, sau đó được sắp xếp theo Partition ID.</li>
-<li><strong>Ghi dữ liệu xuống đĩa:</strong> Sau khi hoàn tất tính toán, Spark ghi dữ liệu xuống ổ đĩa của worker node.</li>
-<li><strong>Đọc dữ liệu ở Stage tiếp theo:</strong> Các Stage sau đọc dữ liệu kết quả của Stage trước từ ổ đĩa.</li>
-</ol>
-<p><a href="../../assets/images/spark/shuffle.png" title="Xem ảnh kích thước gốc"><img alt="Quá trình shuffle" loading="lazy" src="../../assets/images/spark/shuffle.png" /></a></p>
-<h3 id="vi-sao-du-lieu-shuffle-can-uoc-ghi-xuong-ia">Vì sao dữ liệu shuffle cần được ghi xuống đĩa?</h3>
-<p>Vì sao Executor không chuyển trực tiếp dữ liệu đã xử lý cho các Executor ở Stage tiếp theo mà phải ghi xuống đĩa? Cách tổ chức này xuất phát từ những lý do sau:</p>
+<p><a href="../../assets/images/spark/shuffle_hash.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Shuffle Hash Join trong Spark" loading="lazy" src="../../assets/images/spark/shuffle_hash.png" /></a></p>
+<h2 id="3-sort-merge-join-smj">3. Sort-Merge Join (SMJ)</h2>
+<p>Với <strong>Sort-Merge Join (SMJ)</strong>, dữ liệu của cả hai bảng được shuffle theo Join Key để đưa các dòng có cùng
+key về cùng một partition. Executor sau đó sắp xếp dữ liệu của cả hai bảng theo thứ tự Join Key.</p>
+<p>Executor duyệt song song hai tập dữ liệu đã sắp xếp bằng hai con trỏ đọc để tìm các dòng có key khớp nhau.</p>
 <ul>
-<li><strong>Tránh tràn bộ nhớ:</strong> Dữ liệu của một thao tác shuffle có thể rất lớn. Nếu Executor giữ toàn bộ dữ liệu đã xử lý trong RAM, bộ nhớ có thể bị đầy. Khi đó, Spark buộc phải chuyển dữ liệu xuống ổ đĩa.</li>
-<li><strong>Tránh deadlock:</strong> Trong một cụm Spark, số lượng CPU core và dung lượng RAM là cố định, được dùng chung giữa các Stage. Giả sử cụm có 100 core để chạy task, Stage trước có 200 task và Stage sau cũng có 200 task. Nếu 100 task đã xử lý xong vẫn giữ tiến trình và RAM để chờ các task ở Stage sau lấy dữ liệu, chúng tiếp tục chiếm cả 100 core. Các task ở Stage sau không còn core để chạy và lấy dữ liệu, dẫn đến deadlock.</li>
-<li><strong>Hạn chế số lượng kết nối mạng tăng đột biến:</strong> Giả sử cụm được nâng lên 200 core. Có 100 task ở Stage trước xử lý xong và giữ nguyên trạng thái, trong khi 100 task ở Stage sau bắt đầu chạy để kéo dữ liệu về. Hệ thống khi đó phải duy trì đồng thời <code>100 × 100</code> kết nối mạng. Nếu số lượng kết nối quá lớn, băng thông mạng có thể bị nghẽn.</li>
-<li><strong>Đảm bảo khả năng chịu lỗi:</strong> Nếu một task ở Stage sau gặp lỗi, task đó chỉ cần đọc lại dữ liệu từ ổ đĩa, thay vì phải khởi chạy lại các task ở Stage trước.</li>
+<li>
+<p><strong>Ưu điểm:</strong> Xử lý được dữ liệu có kích thước rất lớn, hỗ trợ ghi xuống đĩa khi kích thước partition vượt
+  quá dung lượng RAM.</p>
+</li>
+<li>
+<p><strong>Nhược điểm:</strong> Phát sinh chi phí shuffle qua mạng, tiêu tốn CPU cho việc sắp xếp và nhạy cảm với hiện
+  tượng Data Skew.</p>
+</li>
 </ul>
-<h2 id="7-luong-xu-ly-truy-van-voi-dataframe-api-va-spark-sql">7. Luồng xử lý truy vấn với DataFrame API và Spark SQL</h2>
-<p>Phần này trình bày chi tiết luồng vận hành của <strong>Apache Spark</strong>, từ khi tiếp nhận một truy vấn qua DataFrame API hoặc Spark SQL, qua các bước tối ưu hóa và lập lịch phân tán, cho đến khi phân các task cho executor.</p>
-<h3 id="giai-oan-1-khai-bao-truy-van-va-anh-gia-luoi-bieng">Giai đoạn 1: Khai báo truy vấn và đánh giá lười biếng</h3>
-<p>Khi bạn khai báo các phép xử lý DataFrame, chẳng hạn <code>df.filter()</code>, Spark chưa thực thi ngay. Thay vào đó, Spark tạo một node mới và ghép vào <strong>cây cú pháp trừu tượng (Abstract Syntax Tree — AST)</strong>. Đây là giai đoạn đánh giá lười biếng (lazy evaluation).</p>
-<h4 id="cay-cu-phap-truu-tuong-la-gi">Cây cú pháp trừu tượng là gì?</h4>
-<p><strong>AST</strong> là một cây phân cấp dùng để biểu diễn cấu trúc ngữ pháp của mã lệnh. Cây gồm nút gốc, các nhánh hoặc nút trung gian và các nút lá.</p>
-<p>Ví dụ:</p>
-<div class="highlight"><pre><span></span><code><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"age"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">18</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
+<p><a href="../../assets/images/spark/sort_join.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Sort-Merge Join trong Spark" class="article-diagram--wide" loading="lazy" src="../../assets/images/spark/sort_join.png" /></a></p>
+<h2 id="4-broadcast-nested-loop-join-bnlj">4. Broadcast Nested Loop Join (BNLJ)</h2>
+<p>Tương tự Broadcast Hash Join, Driver tập hợp dữ liệu của bảng nhỏ rồi broadcast bảng này tới các Executor.
+Sau đó, <strong>Broadcast Nested Loop Join (BNLJ)</strong> sử dụng hai vòng lặp lồng nhau để so sánh từng dòng của bảng
+lớn với từng dòng của bảng nhỏ.</p>
+<p>BNLJ đặc biệt hữu ích khi phép Join không có <strong>equi-join key</strong>, chẳng hạn với các điều kiện <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>,
+<code>&lt;=</code>, vì khi đó Spark không thể sử dụng các thuật toán Hash Join hoặc Sort-Merge Join thông thường.</p>
+<p>Cơ chế hai vòng lặp được mô phỏng như sau:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Giả lập logic bên trong một Task của Executor</span>
+<span class="n">bang_nho</span> <span class="o">=</span> <span class="p">[</span><span class="n">dong_1</span><span class="p">,</span> <span class="n">dong_2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">dong_k</span><span class="p">]</span>  <span class="c1"># Nằm trọn trong RAM của Executor</span>
+
+<span class="k">for</span> <span class="n">dong_lon</span> <span class="ow">in</span> <span class="n">partition_bang_lon</span><span class="p">:</span>
+    <span class="c1"># Vòng lặp trong: duyệt toàn bộ bảng nhỏ</span>
+    <span class="k">for</span> <span class="n">dong_nho</span> <span class="ow">in</span> <span class="n">bang_nho</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dieu_kien_non_equi</span><span class="p">(</span><span class="n">dong_lon</span><span class="p">,</span> <span class="n">dong_nho</span><span class="p">):</span>  <span class="c1"># Ví dụ: dong_lon.gia &gt; dong_nho.gia_san</span>
+            <span class="n">xuat_ket_qua</span><span class="p">(</span><span class="n">dong_lon</span><span class="p">,</span> <span class="n">dong_nho</span><span class="p">)</span>
 </code></pre></div>
-<p>Câu lệnh trên được biểu diễn thành cây AST như sau:</p>
-<div class="highlight"><pre><span></span><code>[ Project / Select ]                    ← Nút gốc: lấy cột 'name'
-          │
-          ▼
-[ Filter / Where ]                      ← Nhánh: lọc dữ liệu
-     /          \
-(Điều kiện)   (Nguồn dữ liệu)
-    │               │
-  [ &gt; ]     [ Relation: users.csv ]      ← Lá: nguồn tệp
-  /   \
-['age'] [18]                            ← Lá: toán hạng (cột và hằng số)
-</code></pre></div>
-<h4 id="dataframe-va-unresolved-logical-plan">DataFrame và Unresolved Logical Plan</h4>
-<p>Về bản chất, một đối tượng <strong>DataFrame</strong> trong Spark là một lớp bao (wrapper) chứa con trỏ tới cây AST, thay vì trực tiếp chứa dữ liệu. Khi khai báo logic xử lý trên DataFrame, bạn đang bổ sung một nhánh mới vào cây AST. Ở giai đoạn này, cây AST còn được gọi là <strong>Unresolved Logical Plan</strong>. Sỡ dĩ còn được gọi là <strong>Unresolved Logical Plan</strong> là vì khi này Spark vẫn chưa xác minh các cột/ bảng đó có tồn tại hay không.</p>
-<h3 id="giai-oan-2-toi-uu-hoa-bang-catalyst-optimizer-va-project-tungsten">Giai đoạn 2: Tối ưu hóa bằng Catalyst Optimizer và Project Tungsten</h3>
-<p>Bộ tối ưu <strong>Catalyst Optimizer</strong> tiếp nhận <code>Unresolved Logical Plan</code> và xử lý qua bốn bước:</p>
-<ol>
-<li><strong>Analysis — phân tích:</strong> Catalyst đối chiếu cây biểu thức với <strong>Catalog</strong> (kho metadata được khởi tạo cùng <code>SparkSession</code>) để kiểm tra tên bảng, tên cột và kiểu dữ liệu. Nếu truy vấn dùng tên cột hoặc kiểu dữ liệu không hợp lệ, Spark báo lỗi. Khi truy vấn hợp lệ, <code>Unresolved Logical Plan</code> trở thành <strong>Analyzed Logical Plan</strong>.</li>
-<li><strong>Logical Optimization — tối ưu kế hoạch logic:</strong> Spark áp dụng các quy tắc tối ưu lên <code>Analyzed Logical Plan</code>. Chẳng hạn, <strong>Predicate Pushdown</strong> đẩy điều kiện lọc xuống gần <code>LogicalRelation</code> (nguồn dữ liệu) để hạn chế đọc dữ liệu dư thừa; Spark cũng có thể gộp các nút lọc. Cách biến đổi cây theo quy tắc này được gọi là <strong>Rule-Based Optimization</strong> hay <strong>Tree Rewriting</strong>. Kết quả là <strong>Optimized Logical Plan</strong>.</li>
-<li><strong>Physical Planning — lập kế hoạch vật lý:</strong> Spark chuyển kế hoạch logic thành một hoặc nhiều <strong>Physical Plan</strong>, tương ứng với các thuật toán thực thi trên cụm. Đây là bước chuyển từ “cần làm gì” sang “thực hiện như thế nào”. Khi có thông tin thống kê trong Catalog, mô hình tối ưu dựa trên chi phí (<strong>Cost-Based Optimization — CBO</strong>) có thể hỗ trợ lựa chọn <strong>Selected Physical Plan</strong>. Có thể hình dung các yếu tố chi phí gồm tài nguyên CPU, lượng đọc/ghi đĩa (I/O) và dữ liệu truyền qua mạng khi shuffle; đây là cách diễn giải các yếu tố cần cân nhắc, không phải công thức tính chi phí cố định của Spark.</li>
-<li><strong>Chuẩn bị cho lập lịch:</strong> Kế hoạch vật lý được triển khai thành chuỗi hoặc cây các RDD (Resilient Distributed Dataset) cùng quan hệ phụ thuộc giữa chúng. <code>DAGScheduler</code> dựa vào các quan hệ phụ thuộc đó để đi từ RDD đích về các RDD nguồn và xác định ranh giới giữa các Stage.</li>
-</ol>
-<h3 id="giai-oan-3-kich-hoat-action-va-lap-lich-thuc-thi-tren-driver">Giai đoạn 3: Kích hoạt Action và lập lịch thực thi trên Driver</h3>
-<p>Khi chương trình gọi một <strong>Action</strong>, kế hoạch đã được chuẩn bị được đưa vào thực thi và <code>SparkContext</code> tạo một <strong>Job</strong>. Trên cây RDD, <code>DAGScheduler</code> lần theo các quan hệ phụ thuộc từ RDD đích về RDD nguồn, rồi chia Job thành các <strong>Stage</strong> tại ranh giới shuffle. Với mỗi Stage, <code>DAGScheduler</code> tạo các <strong>Task</strong> — thông thường mỗi Task xử lý một <strong>partition</strong> — và đóng gói chúng thành <strong>TaskSet</strong>. <code>TaskScheduler</code> nhận TaskSet và phân bổ các Task tới những <strong>Executor</strong> phù hợp.</p>
-<p><a href="../../assets/images/spark/Planing.png" title="Xem ảnh kích thước gốc"><img alt="Sơ đồ các bước lập kế hoạch và thực thi truy vấn trong Apache Spark" class="article-diagram--wide" loading="lazy" src="../../assets/images/spark/Planing.png" /></a></p>
-<h4 id="stage-uoc-chia-tai-ranh-gioi-shuffle">Stage được chia tại ranh giới shuffle</h4>
-<p>Stage không được chia đơn giản thành một nhóm chỉ chứa các phép biến đổi <em>narrow</em> và một nhóm chỉ chứa phép biến đổi <em>wide</em>. Ranh giới xuất hiện ở <strong>shuffle dependency</strong>: Stage phía trước tạo dữ liệu shuffle, còn Stage phía sau đọc dữ liệu đó để tiếp tục xử lý. Các phép biến đổi nối với nhau bằng narrow dependency có thể nằm cùng một Stage.</p>
-<p>Ví dụ, xét chuỗi phép biến đổi:</p>
-<div class="highlight"><pre><span></span><code>A (narrow) → B (narrow) → C (wide, cần shuffle) → D (narrow) → E (narrow)
-</code></pre></div>
-<p>Trong trường hợp này, các Task của Stage trước thực hiện A và B rồi tạo đầu ra shuffle phục vụ C. Sau khi đầu ra đó sẵn sàng, Stage tiếp theo đọc dữ liệu shuffle, thực hiện phần xử lý của C và tiếp tục với D, E nếu không có thêm ranh giới shuffle. Vì vậy, C đánh dấu điểm tách Stage; không có quy tắc “mọi phép narrow thuộc Stage A, mọi phép wide thuộc Stage B”.</p>
-<h2 id="8-cac-cau-hoi-can-tim-hieu-tiep">8. Các câu hỏi cần tìm hiểu tiếp</h2>
+<p><a href="../../assets/images/spark/BNJT.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Broadcast Nested Loop Join trong Spark" loading="lazy" src="../../assets/images/spark/BNJT.png" /></a></p>
+<h2 id="5-cartesian-product-join-shuffle-and-replicate-nested-loop-join">5. Cartesian Product Join (Shuffle-and-Replicate Nested Loop Join)</h2>
+<p><strong>Cartesian Product Join</strong>, còn gọi là <strong>Shuffle-and-Replicate Nested Loop Join</strong>, là chiến lược tốn kém
+nhất trong các phép Join. Chiến lược này được sử dụng khi không có equi-join key và không thể tập hợp bảng
+vào RAM.</p>
+<p>Spark phải ghép từng partition của bảng A với từng partition của bảng B, tương tự phép tích Descartes. Giả
+sử bảng A có <code>P_A</code> partition và bảng B có <code>P_B</code> partition, Spark sẽ tạo tổng cộng <strong><code>P_A × P_B</code> partition
+đầu ra</strong>.</p>
+<p>Trong mỗi partition mới, Task thực hiện hai vòng lặp lồng nhau để duyệt dữ liệu, tương tự BNLJ.</p>
+<p><a href="../../assets/images/spark/last_join.png" title="Xem ảnh kích thước gốc"><img alt="Cơ chế Cartesian Product Join trong Spark" loading="lazy" src="../../assets/images/spark/last_join.png" /></a></p>
+<h2 id="6-rdd-va-vai-tro-trong-thuc-thi-spark">6. RDD và vai trò trong thực thi Spark</h2>
+<h3 id="rdd-la-gi">RDD là gì?</h3>
+<p><strong>RDD</strong> là mô hình trừu tượng dữ liệu cốt lõi và nguyên thủy nhất của Apache Spark. Khi sử dụng DataFrame,
+bên dưới vẫn là RDD. Dù chương trình được viết bằng DataFrame, Dataset hay Spark SQL, Spark không thực thi
+trực tiếp DataFrame ở tầng máy tính.</p>
 <ul>
-<li>Driver chứa những thành phần nào?</li>
-<li>Executor chứa những thành phần nào và quản lý bộ nhớ ra sao?</li>
-<li>AQE</li>
-<li>Các loại join trong Spark</li>
+<li>
+<p><strong>DataFrame và SQL</strong> là lớp trừu tượng logic (Logical Abstraction), giúp người dùng khai báo dữ liệu dưới
+  dạng bảng và cột. Khi một Action được gọi, Catalyst Optimizer tối ưu logic truy vấn và chuyển thành
+  Physical Plan. Kế hoạch này tiếp tục được chuyển thành chuỗi hoặc cây RDD để DAGScheduler phân chia thành
+  các Stage và Task.</p>
+</li>
+<li>
+<p><strong>Executor</strong> thực thi tính toán thông qua các phương thức của RDD.</p>
+</li>
 </ul>
-<hr />
-<h2 id="loi-ket">Lời kết</h2>
-<p>Từ vai trò của Driver và Executor đến partition, shuffle và luồng thực thi Job, Stage, Task, phần 1 đã trình bày cách Spark tổ chức và thực thi công việc trên cụm máy. Những khái niệm này là nền tảng để tìm hiểu cách Spark xử lý các phép Join ở tầng vật lý.</p>
-<p>Trong <a href="../p2/">Kiến trúc Apache Spark (phần 2)</a>, chúng ta sẽ tiếp tục với các chiến lược Join, vai trò của RDD, cơ chế giao tiếp trong PySpark và cách quản lý bộ nhớ trên Driver, Executor.</p>
-<p>Vẫn còn nhiều điều về Spark để tiếp tục tìm hiểu. Nếu có điểm nào chưa chính xác, mong bạn góp ý để cùng học hỏi.</p>
-<p>Cảm ơn bạn đã đọc đến cuối! Hy vọng bài viết giúp bạn hiểu kiến trúc Spark rõ hơn. Hẹn gặp lại ở những bài viết tiếp theo.</p>
-<footer class="airflow-article-end spark-article-end">
-  <div>
-    <span>BEHIND THE PIPELINE / 005</span>
-    <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
-  </div>
-  <a href="../../">Trở về thư viện <span aria-hidden="true">→</span></a>
-</footer>
+<h3 id="mo-hinh-phan-tang-thuc-thi">Mô hình phân tầng thực thi</h3>
+<div class="highlight"><pre><span></span><code>[Giao diện người dùng]     DataFrame API / Spark SQL / Datasets
+                                         │
+                                         ▼ (Catalyst Optimizer &amp; Tungsten)
+[Tầng biên dịch ngầm]      Logical Plan ──► Physical Plan
+                                         │
+                                         ▼ (Biên dịch thành RDD nội bộ)
+[Động cơ cốt lõi]          RDD Graph (FileScanRDD, ShuffledRowRDD, Lineage)
+                                         │
+                                         ▼ (DAGScheduler &amp; TaskScheduler)
+[Tầng thực thi vật lý]     Stages ──► Tasks ──► CPU/RAM của Executor
+</code></pre></div>
+<h3 id="kha-nang-chiu-loi-cua-rdd">Khả năng chịu lỗi của RDD</h3>
+<p>Một tính năng quan trọng của RDD là <strong>khả năng chịu lỗi</strong>. Khi một Action được gọi, Physical Plan được
+chuyển thành cây RDD. Nếu một worker node gặp lỗi, Spark có thể dựa vào cây này để phân công xử lý lại các
+partition đã mất trên những worker node còn hoạt động, thay vì hủy toàn bộ Job.</p>
+<h2 id="7-co-che-giao-tiep-noi-bo-cua-pyspark">7. Cơ chế giao tiếp nội bộ của PySpark</h2>
+<p>Apache Spark hỗ trợ nhiều ngôn ngữ lập trình như Scala, Java, Python và R. <strong>PySpark</strong> là Python API của
+Apache Spark, cho phép người dùng viết chương trình xử lý dữ liệu bằng Python và thực thi trên Spark. Để làm
+việc hiệu quả với Spark, Data Engineer cần hiểu cả cách viết mã PySpark lẫn cơ chế hoạt động phía sau, đặc
+biệt là cách Python giao tiếp với Spark Engine.</p>
+<p>Phần này trình bày cơ chế giao tiếp nội bộ của PySpark ở phía <strong>Driver</strong> và <strong>worker node</strong>, tức là cách mã
+Python được truyền sang JVM để Spark xử lý.</p>
+<h3 id="vi-sao-pyspark-can-giao-tiep-voi-spark-engine">Vì sao PySpark cần giao tiếp với Spark Engine?</h3>
+<p>PySpark cung cấp API để người dùng xử lý dữ liệu bằng Python, trong khi phần lõi thực thi của Spark chủ yếu
+chạy trên <strong>JVM</strong>. Vì vậy, PySpark cần cơ chế giao tiếp giữa tiến trình Python và JVM để chuyển các lệnh của
+người dùng sang Spark Engine xử lý.</p>
+<p><strong>JVM</strong> là môi trường phần mềm trung gian giúp máy tính chạy các chương trình được viết bằng Java và những
+ngôn ngữ liên quan, chẳng hạn Scala.</p>
+<h3 id="giao-tiep-tai-driver">Giao tiếp tại Driver</h3>
+<p>Cơ chế giao tiếp nội bộ tại Driver hoạt động theo mô hình <strong>hai tiến trình</strong>:</p>
+<ul>
+<li>
+<p><strong>Python Driver Process (CPython):</strong> Tiến trình Python thông thường, có thể thấy trong Task Manager hoặc
+  Activity Monitor, chịu trách nhiệm thực thi mã Python của người dùng.</p>
+</li>
+<li>
+<p><strong>JVM Driver Process (Java/Scala Spark Driver):</strong> Tiến trình Java chạy ngầm, được tạo khi gọi lệnh khởi
+  tạo <code>SparkSession</code> trong Python.</p>
+</li>
+</ul>
+<p>Hai tiến trình trao đổi với nhau thông qua thư viện <strong>Py4J</strong>. Khi người dùng viết một câu lệnh Python, Py4J
+chuyển lời gọi hàm sang JVM Driver; JVM sau đó trả thông tin về tiến trình Python.</p>
+<p><a href="../../assets/images/spark/driver.png" title="Xem ảnh kích thước gốc"><img alt="Giao tiếp giữa Python Driver và JVM Driver qua Py4J" loading="lazy" src="../../assets/images/spark/driver.png" /></a></p>
+<p>Khi gặp một <strong>Action</strong>, JVM Driver kích hoạt Job trên cụm và nhận kết quả từ các Executor. Dữ liệu kết quả
+sau đó được chuyển về tiến trình Python thông qua một <strong>local socket</strong>.</p>
+<h3 id="giao-tiep-tai-worker-node">Giao tiếp tại worker node</h3>
+<p>Cơ chế giao tiếp nội bộ tại worker node cũng dựa trên mô hình <strong>hai tiến trình</strong>:</p>
+<ul>
+<li>
+<p><strong>JVM Executor:</strong> Trên mỗi worker node, ứng dụng Spark có một hoặc nhiều tiến trình JVM Executor. Các tiến
+  trình này quản lý luồng tính toán, bộ nhớ đệm và trực tiếp thực thi mã tính toán trên dữ liệu tại worker
+  node.</p>
+</li>
+<li>
+<p><strong>Python Worker Process (CPython):</strong> Khi một Task chứa mã Python, chẳng hạn RDD <code>map</code>/<code>filter</code>, Python
+  UDFs hoặc Pandas UDFs, JVM Executor khởi chạy các tiến trình Python Worker để thực thi mã đó.</p>
+</li>
+</ul>
+<p><a href="../../assets/images/spark/worker.png" title="Xem ảnh kích thước gốc"><img alt="Giao tiếp giữa JVM Executor và Python Worker tại worker node" loading="lazy" src="../../assets/images/spark/worker.png" /></a></p>
+<h2 id="8-bo-nho-cua-driver">8. Bộ nhớ của Driver</h2>
+<h3 id="cac-thanh-phan-bo-nho">Các thành phần bộ nhớ</h3>
+<p>Bộ nhớ của Driver gồm <strong>hai phần</strong>:</p>
+<ul>
+<li>
+<p><strong>JVM Heap (<code>spark.driver.memory</code>):</strong> Dung lượng RAM chính được cấp phát cho tiến trình JVM Driver. Đây là
+  nơi chứa dữ liệu thu thập từ các Executor và dữ liệu sử dụng cho broadcast.</p>
+</li>
+<li>
+<p><strong>Memory Overhead (<code>spark.driver.memoryOverhead</code> — Off-Heap / Native):</strong> Mặc định bằng <code>max(384 MB, 0.10 *
+  driverMemory)</code>. Vùng nhớ này phục vụ việc quản lý của hệ điều hành, tiến trình Python Driver và các nhu
+  cầu bộ nhớ liên quan.</p>
+</li>
+</ul>
+<p><a href="../../assets/images/spark/driver_mem.png" title="Xem ảnh kích thước gốc"><img alt="Các thành phần bộ nhớ của Driver trong Spark" loading="lazy" src="../../assets/images/spark/driver_mem.png" /></a></p>
+<h3 id="cach-don-dep-bo-nho-tren-driver">Cách dọn dẹp bộ nhớ trên Driver</h3>
+<ul>
+<li>
+<p><strong>Bộ dọn rác JVM (Garbage Collector):</strong> GC tự động đánh dấu và thu hồi vùng nhớ Heap chứa dữ liệu không
+  còn được sử dụng.</p>
+</li>
+<li>
+<p><strong>Tiến trình ngầm ContextCleaner:</strong> Khi dữ liệu bị GC xóa, ContextCleaner dọn dẹp các dữ liệu liên quan
+  đến dữ liệu đã bị xóa đó.</p>
+</li>
+<li>
+<p><strong>Dọn dẹp chủ động:</strong> Lập trình viên có thể ra lệnh để dọn dẹp bộ nhớ.</p>
+</li>
+</ul>
+<h2 id="9-bo-nho-cua-executor">9. Bộ nhớ của Executor</h2>
+<p>Bộ nhớ của Executor gồm <strong>ba phần</strong>: JVM Heap, Memory Overhead và Managed Off-Heap Memory.</p>
+<h3 id="jvm-heap-sparkexecutormemory">JVM Heap (<code>spark.executor.memory</code>)</h3>
+<p><strong>JVM Heap</strong> được chia thành ba khu vực chính:</p>
+<h4 id="reserved-memory">Reserved Memory</h4>
+<p><strong>Reserved Memory</strong> có dung lượng cố định <strong>300 MB</strong>. Đây là phần JVM Heap được Spark loại khỏi vùng bộ nhớ
+mà Unified Memory Manager có thể sử dụng cho Execution và Storage. Phần này tạo khoảng trống cho các cấu
+trúc nội bộ của Spark/JVM và những nhu cầu bộ nhớ khác, đồng thời giảm nguy cơ hết bộ nhớ do Spark sử dụng
+toàn bộ Heap.</p>
+<h4 id="unified-memory-pool">Unified Memory Pool</h4>
+<p><strong>Unified Memory Pool</strong> là vùng bộ nhớ dùng chung, được tính theo công thức:</p>
+<div class="highlight"><pre><span></span><code>Unified Memory = (spark.executor.memory - 300 MB) × spark.memory.fraction
+</code></pre></div>
+<p>Mặc định, <strong><code>spark.memory.fraction = 0.6</code></strong>, tương đương 60% phần Heap khả dụng.</p>
+<p>Vùng này được chia thành <strong>hai vùng bộ nhớ con</strong>:</p>
+<ul>
+<li>
+<p><strong>Execution Memory:</strong> Lưu dữ liệu ngắn hạn và được giải phóng ngay sau khi Task xử lý xong. Vùng này chứa
+  dữ liệu shuffle hoặc các Hash Table phục vụ phép Join, chẳng hạn Shuffle Hash Join.</p>
+</li>
+<li>
+<p><strong>Storage Memory:</strong> Lưu các DataFrame/RDD được cache hoặc persist (<code>df.cache()</code>, <code>df.persist()</code>) và các
+  <strong>Broadcast Variables</strong>, chẳng hạn Hash Table trong Broadcast Hash Join.</p>
+</li>
+</ul>
+<p>Ranh giới giữa Execution và Storage là <strong>ranh giới động</strong>, với mức phân chia mặc định là <strong>0.5</strong>. Khi một
+vùng còn trống, vùng kia có thể mượn dung lượng; cả Execution và Storage đều có thể sử dụng phần bộ nhớ đang
+rảnh của nhau. Tuy nhiên, Execution có quyền thu hồi phần bộ nhớ mà Storage đã mượn, trong khi Storage không
+thể lấy phần bộ nhớ Execution đang được Task sử dụng.</p>
+<h4 id="user-memory">User Memory</h4>
+<p><strong>User Memory</strong> được tính theo công thức:</p>
+<div class="highlight"><pre><span></span><code>User Memory = (spark.executor.memory - 300 MB) × (1 - spark.memory.fraction)
+</code></pre></div>
+<p>Vùng này chiếm khoảng <strong>40% phần Heap còn lại sau khi trừ Reserved Memory</strong>, dùng để chứa các câu lệnh do
+người dùng tự tạo, chẳng hạn <strong>UDF</strong>.</p>
+<h3 id="memory-overhead">Memory Overhead</h3>
+<p><strong>Memory Overhead</strong> là vùng bộ nhớ nằm ngoài JVM Heap. Với PySpark, nếu không cấu hình
+<strong><code>spark.executor.pyspark.memory</code></strong>, bộ nhớ của Python Worker cũng được tính vào vùng này.</p>
+<h3 id="managed-off-heap-memory">Managed Off-Heap Memory</h3>
+<p><strong>Managed Off-Heap Memory</strong> là tùy chọn cấp phát bộ nhớ ngoài Heap dành riêng cho động cơ <strong>Project
+Tungsten</strong>. Vùng nhớ này không được quản lý bởi JVM Garbage Collector, giúp loại bỏ các đợt tạm dừng dọn rác
+(GC Pauses) khi xử lý tập dữ liệu lớn.</p>
+<p><a href="../../assets/images/spark/exec_mem.png" title="Xem ảnh kích thước gốc"><img alt="Các vùng bộ nhớ của Executor trong Spark" class="article-diagram--wide" loading="lazy" src="../../assets/images/spark/exec_mem.png" /></a></p>
 
 
 

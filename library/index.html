@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Pipeline RAG — chatbot hỏi đáp tài liệu Data Engineering bằng tiếng Việt, kết hợp tìm kiếm hybrid, mô hình ngôn ngữ local và trích dẫn nguồn.">
+        <meta name="description" content="Behind the Pipeline — Cẩm nang Data Engineering về kiến trúc và vận hành các hệ thống dữ liệu.">
       
       
       
@@ -16,7 +16,7 @@
         <link rel="prev" href="..">
       
       
-        <link rel="next" href="../architecture/shared-disk-vs-shared-nothing/">
+        <link rel="next" href="../ware_lake_lw/doc/">
       
       
         
@@ -63,7 +63,6 @@
     
       <link rel="stylesheet" href="../stylesheets/library.css">
     
-      <link rel="stylesheet" href="../stylesheets/chat.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -109,7 +108,6 @@
         <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
         <span>INDEXING &amp; B-TREE <b>♦</b></span>
         <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
-        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
         <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
       </div>
       <div class="top-marquee__group" aria-hidden="true">
@@ -120,7 +118,6 @@
         <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
         <span>INDEXING &amp; B-TREE <b>♦</b></span>
         <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
-        <span>SHARED-DISK VS SHARED-NOTHING <b>♦</b></span>
         <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
       </div>
     </div>
@@ -152,12 +149,6 @@
         </button>
       </nav>
 
-      
-        <label class="custom-header__search" for="__search" role="button" tabindex="0" aria-label="Tìm bài viết">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.6 4.6"/></svg>
-          <span>Tìm bài viết</span>
-        </label>
-      
     </div>
 
     <div class="library-panel" id="library-panel" hidden>
@@ -191,22 +182,13 @@
                   
                   
                     <li>
-                      <a href="../architecture/shared-disk-vs-shared-nothing/" >
-                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Shared-disk vs shared-nothing</span><span aria-hidden="true">→</span>
-                      </a>
-                    </li>
-                  
-                
-              
-                
-                  
-                  
-                    <li>
                       <a href="../ware_lake_lw/doc/" >
                         <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
                       </a>
                     </li>
                   
+                
+              
                 
               
             </ul>
@@ -230,10 +212,23 @@
                   
                     <li>
                       <a href="../postgres/postgres/" >
-                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Phân cấp & Lưu trữ PostgreSQL</span><span aria-hidden="true">→</span>
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
                       </a>
                     </li>
                   
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../postgres/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
                 
               
                 
@@ -301,10 +296,25 @@
                   
                     <li>
                       <a href="../spark/archi/" >
-                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark</span><span aria-hidden="true">→</span>
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
                       </a>
                     </li>
                   
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../spark/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
                 
               
             </ul>
@@ -316,40 +326,6 @@
     </div>
   </div>
 
-  
-    <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Tìm kiếm">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </nav>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  
 </header>
     
     <div class="md-container" data-md-component="container">
@@ -518,14 +494,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/shared-disk-vs-shared-nothing/" class="md-nav__link">
+      <a href="../ware_lake_lw/doc/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Shared-disk vs shared-nothing
+    Data Lake, Data Warehouse và Data Mart
   
 
     
@@ -546,14 +522,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../ware_lake_lw/doc/" class="md-nav__link">
+      <a href="../ware_lake_lw/doc.en/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Data Lake, Data Warehouse và Data Mart
+    Data Lake, Data Warehouse, and Data Mart (English)
   
 
     
@@ -640,7 +616,35 @@
   <span class="md-ellipsis">
     
   
-    Phân cấp & Lưu trữ PostgreSQL
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postgres/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
   
 
     
@@ -668,7 +672,35 @@
   <span class="md-ellipsis">
     
   
-    PostgreSQL Hierarchy & Storage (English)
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postgres/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
   
 
     
@@ -926,7 +958,91 @@
   <span class="md-ellipsis">
     
   
-    Apache Spark
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/archi.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
   
 
     
@@ -984,9 +1100,6 @@
     
     
   
-    
-    
-  
 
   
     
@@ -995,12 +1108,18 @@
     
     
   
+    
+    
+  
 
   
     
     
   
 
+  
+    
+    
   
     
     
@@ -1015,7 +1134,7 @@
 
   <div class="library-page__toolbar" data-library-controls hidden>
     <div class="library-page__filters" role="group" aria-label="Lọc bài viết theo chủ đề">
-      <button type="button" data-topic="all" aria-pressed="true">Tất cả <span>6</span></button>
+      <button type="button" data-topic="all" aria-pressed="true">Tất cả <span>7</span></button>
       
         
         <button type="button" id="data-architecture" data-topic="data-architecture" aria-pressed="false">Data Architecture</button>
@@ -1036,7 +1155,7 @@
       <input type="search" placeholder="Tìm trong thư viện…" autocomplete="off" data-library-search>
     </label>
   </div>
-  <p class="library-page__count" role="status" aria-live="polite" aria-atomic="true" data-library-count>6 bài viết</p>
+  <p class="library-page__count" role="status" aria-live="polite" aria-atomic="true" data-library-count>7 bài viết</p>
 
   <div class="library-page__grid">
     
@@ -1047,53 +1166,53 @@
             <img src="../assets/images/postgres/card-art.jpg" alt="" loading="eager" decoding="async">
           </div>
         
-        <div class="article-sheet__meta"><span>Database Internals</span><b>01 / 06</b></div>
+        <div class="article-sheet__meta"><span>Database Internals</span><b>01 / 07</b></div>
         <div class="article-sheet__body">
           <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-          <h2 id="library-article-1">PostgreSQL<br>Phân cấp &amp; lưu trữ</h2>
-          <p>Database cluster, bộ đệm shared_buffers, database, schema và cấu trúc thư mục PGDATA.</p>
+          <h2 id="library-article-1">PostgreSQL (phần 1)<br>Phân cấp, tiến trình &amp; bộ nhớ</h2>
+          <p>Cluster, database, schema, kết nối, cơ chế khóa và bộ nhớ phục vụ truy vấn.</p>
         </div>
         <div class="article-sheet__foot">
           <span>DATABASE INTERNALS</span>
-          <a href="../postgres/postgres/" aria-label="Mở bài viết: Phân cấp & Lưu trữ PostgreSQL">Mở bài viết <b aria-hidden="true">↗</b></a>
+          <a href="../postgres/postgres/" aria-label="Mở bài viết: PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ">Mở bài viết <b aria-hidden="true">↗</b></a>
         </div>
       </article>
     
       
-      <article class="article-sheet article-sheet--index library-page__card" data-library-card data-topic="database-internals" aria-labelledby="library-article-2">
+      <article class="article-sheet article-sheet--postgres library-page__card" data-library-card data-topic="database-internals" aria-labelledby="library-article-2">
+        
+          <div class="article-sheet__art" aria-hidden="true">
+            <img src="../assets/images/postgres/card-art.jpg" alt="" loading="eager" decoding="async">
+          </div>
+        
+        <div class="article-sheet__meta"><span>Database Internals</span><b>02 / 07</b></div>
+        <div class="article-sheet__body">
+          <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+          <h2 id="library-article-2">PostgreSQL (phần 2)<br>Truy vấn, lưu trữ &amp; phục hồi</h2>
+          <p>Hành trình SQL qua Parser, Planner, Executor đến bộ đệm, WAL, PGDATA và TOAST.</p>
+        </div>
+        <div class="article-sheet__foot">
+          <span>DATABASE INTERNALS</span>
+          <a href="../postgres/p2/" aria-label="Mở bài viết: PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi">Mở bài viết <b aria-hidden="true">↗</b></a>
+        </div>
+      </article>
+    
+      
+      <article class="article-sheet article-sheet--index library-page__card" data-library-card data-topic="database-internals" aria-labelledby="library-article-3">
         
           <div class="article-sheet__art" aria-hidden="true">
             <img src="../assets/images/index/card-art.jpg" alt="" loading="eager" decoding="async">
           </div>
         
-        <div class="article-sheet__meta"><span>Database Internals</span><b>02 / 06</b></div>
+        <div class="article-sheet__meta"><span>Database Internals</span><b>03 / 07</b></div>
         <div class="article-sheet__body">
           <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-          <h2 id="library-article-2">Index trong<br>cơ sở dữ liệu</h2>
+          <h2 id="library-article-3">Index trong<br>cơ sở dữ liệu</h2>
           <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
         </div>
         <div class="article-sheet__foot">
           <span>Tác giả · Phong Thanh</span>
           <a href="../index/" aria-label="Mở bài viết: Index trong cơ sở dữ liệu">Mở bài viết <b aria-hidden="true">↗</b></a>
-        </div>
-      </article>
-    
-      
-      <article class="article-sheet article-sheet--disk library-page__card" data-library-card data-topic="data-architecture" aria-labelledby="library-article-3">
-        
-          <div class="article-sheet__art" aria-hidden="true">
-            <img src="../assets/images/disk/card-art.jpg" alt="" loading="eager" decoding="async">
-          </div>
-        
-        <div class="article-sheet__meta"><span>Data Architecture</span><b>03 / 06</b></div>
-        <div class="article-sheet__body">
-          <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-          <h2 id="library-article-3">Shared-disk<br>&amp; shared-nothing</h2>
-          <p>Ownership, locality, shuffle và những đánh đổi khi mở rộng hệ thống dữ liệu.</p>
-        </div>
-        <div class="article-sheet__foot">
-          <span>DATA ARCHITECTURE</span>
-          <a href="../architecture/shared-disk-vs-shared-nothing/" aria-label="Mở bài viết: Shared-disk vs shared-nothing">Mở bài viết <b aria-hidden="true">↗</b></a>
         </div>
       </article>
     
@@ -1104,7 +1223,7 @@
             <img src="../assets/images/ware_lake_lw/card-art.png" alt="" loading="lazy" decoding="async">
           </div>
         
-        <div class="article-sheet__meta"><span>Data Architecture</span><b>04 / 06</b></div>
+        <div class="article-sheet__meta"><span>Data Architecture</span><b>04 / 07</b></div>
         <div class="article-sheet__body">
           <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
           <h2 id="library-article-4">Data Lake, Warehouse<br>&amp; Data Mart</h2>
@@ -1123,7 +1242,7 @@
             <img src="../assets/images/airflow/card-art.jpg" alt="" loading="lazy" decoding="async">
           </div>
         
-        <div class="article-sheet__meta"><span>Orchestration</span><b>05 / 06</b></div>
+        <div class="article-sheet__meta"><span>Orchestration</span><b>05 / 07</b></div>
         <div class="article-sheet__body">
           <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
           <h2 id="library-article-5">Hiểu kiến trúc<br>Apache Airflow</h2>
@@ -1142,15 +1261,34 @@
             <img src="../assets/images/spark/card-art.jpg" alt="" loading="lazy" decoding="async">
           </div>
         
-        <div class="article-sheet__meta"><span>Distributed Computing</span><b>06 / 06</b></div>
+        <div class="article-sheet__meta"><span>Distributed Computing</span><b>06 / 07</b></div>
         <div class="article-sheet__body">
           <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-          <h2 id="library-article-6">Kiến trúc<br>Apache Spark</h2>
+          <h2 id="library-article-6">Kiến trúc<br>Apache Spark (phần 1)</h2>
           <p>Từ Driver và Executor đến luồng thực thi Job, Stage, Task và cơ chế shuffle.</p>
         </div>
         <div class="article-sheet__foot">
           <span>DISTRIBUTED COMPUTING</span>
-          <a href="../spark/archi/" aria-label="Mở bài viết: Apache Spark">Mở bài viết <b aria-hidden="true">↗</b></a>
+          <a href="../spark/archi/" aria-label="Mở bài viết: Apache Spark (phần 1)">Mở bài viết <b aria-hidden="true">↗</b></a>
+        </div>
+      </article>
+    
+      
+      <article class="article-sheet article-sheet--spark library-page__card" data-library-card data-topic="distributed-computing" aria-labelledby="library-article-7">
+        
+          <div class="article-sheet__art" aria-hidden="true">
+            <img src="../assets/images/spark/card-art.jpg" alt="" loading="lazy" decoding="async">
+          </div>
+        
+        <div class="article-sheet__meta"><span>Distributed Computing</span><b>07 / 07</b></div>
+        <div class="article-sheet__body">
+          <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+          <h2 id="library-article-7">Kiến trúc<br>Apache Spark (phần 2)</h2>
+          <p>Các chiến lược Join, vai trò của RDD, giao tiếp PySpark và quản lý bộ nhớ Driver, Executor.</p>
+        </div>
+        <div class="article-sheet__foot">
+          <span>DISTRIBUTED COMPUTING</span>
+          <a href="../spark/p2/" aria-label="Mở bài viết: Kiến trúc Apache Spark (phần 2)">Mở bài viết <b aria-hidden="true">↗</b></a>
         </div>
       </article>
     
@@ -1220,7 +1358,6 @@
       
         <script src="../javascripts/author-dialog.js"></script>
       
-        <script src="../javascripts/chat.js"></script>
       
     
   <script src="../javascripts/library-catalog.js"></script>

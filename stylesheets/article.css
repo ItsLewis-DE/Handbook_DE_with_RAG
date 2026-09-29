@@ -8,6 +8,7 @@ body:has(.airflow-article-hero) {
   --airflow-accent-bright: #ed6840;
   --airflow-diagram-bg: #ebe7dc;
   --airflow-diagram-node: #fffaf0;
+  --article-diagram-width: 39rem;
   --airflow-line: rgba(23, 48, 45, 0.16);
   /* Muted ink, terracotta, teal, sage and earth tones from the site palette. */
   --article-heading-1: var(--airflow-ink);
@@ -447,6 +448,42 @@ body:has(.airflow-article-hero) .md-typeset p:not(.airflow-article-hero__dek) {
   max-width: 39rem;
 }
 
+/* Use the Spark article's content width for diagrams in every article. */
+body:has(.airflow-article-hero) .md-typeset > p:has(> img:only-child, > a:only-child > img:only-child) {
+  max-width: var(--article-diagram-width);
+}
+
+body:has(.airflow-article-hero) .md-typeset > p > img:only-child,
+body:has(.airflow-article-hero) .md-typeset > p > a:only-child > img:only-child {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Bound article illustrations without stretching or cropping tall diagrams. */
+body:has(.postgres-article-hero, .airflow-architecture-hero, .spark-article-hero) .md-typeset > p > img:only-child,
+body:has(.postgres-article-hero, .airflow-architecture-hero, .spark-article-hero) .md-typeset > p > a:only-child > img:only-child {
+  margin-inline: auto;
+  max-height: 28rem;
+  max-width: min(100%, var(--article-image-width, 32rem));
+  width: auto;
+}
+
+body:has(.airflow-article-hero) .md-typeset > p > a:only-child:has(> img:only-child) {
+  cursor: zoom-in;
+  display: block;
+}
+
+/* Give dense diagrams room for labels; simple diagrams can stay smaller. */
+.md-typeset img.article-diagram--wide {
+  --article-image-width: 36rem;
+}
+
+.md-typeset img.article-diagram--compact {
+  --article-image-width: 26rem;
+}
+
 body:has(.airflow-article-hero) .md-typeset p strong,
 body:has(.airflow-article-hero) .md-typeset li strong {
   color: var(--airflow-ink);
@@ -574,10 +611,13 @@ body:has(.airflow-article-hero) .md-typeset table:not([class]) td:first-child {
 body:has(.airflow-article-hero) .md-typeset .mermaid {
   background: var(--airflow-diagram-bg);
   border: 1px solid var(--airflow-line);
+  box-sizing: border-box;
   color: var(--airflow-ink);
   margin: 1.7rem 0 2.4rem;
+  max-width: var(--article-diagram-width);
   padding: clamp(1rem, 4vw, 2rem);
   text-align: center;
+  width: 100%;
 }
 
 body:has(.airflow-article-hero) .md-typeset pre.mermaid,
@@ -1395,7 +1435,6 @@ body:has(.storage-article-hero) .md-typeset blockquote {
   }
 
   body:has(.airflow-article-hero) .md-typeset .mermaid {
-    max-width: 100%;
     overflow-x: auto;
     padding: 0.75rem;
     -webkit-overflow-scrolling: touch;
@@ -1403,8 +1442,8 @@ body:has(.storage-article-hero) .md-typeset blockquote {
 
   body:has(.airflow-article-hero) .md-typeset .mermaid svg {
     height: auto;
-    max-width: none !important;
-    min-width: 34rem;
+    max-width: 100% !important;
+    min-width: 0;
   }
 
   body:has(.airflow-article-hero) .md-typeset__scrollwrap {
@@ -1533,9 +1572,21 @@ body:has(.airflow-article-hero) .md-typeset :not(pre) > code {
   border-color: #e5e5e5;
 }
 
+/* Warm callouts keep article notes distinct from the neutral reading palette. */
 body:has(.airflow-article-hero) .md-typeset blockquote {
-  background: #f7f7f7;
-  border-left-color: #b7b7b7;
+  background: #fff7e6;
+  border: 1px solid #f2d5a0;
+  border-left: 0.25rem solid #d97706;
+  border-radius: 0.4rem;
+}
+
+body:has(.airflow-article-hero) .md-typeset blockquote > p:first-child > strong:first-child {
+  color: #92400e;
+}
+
+body:has(.airflow-article-hero) .md-typeset blockquote :not(pre) > code {
+  background: #ffedcc;
+  border-color: #f2d5a0;
 }
 
 body:has(.airflow-article-hero) .md-typeset table:not([class]) {

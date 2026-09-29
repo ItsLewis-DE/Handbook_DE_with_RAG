@@ -1,0 +1,1942 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Follow a PostgreSQL query through parsing, planning, execution, shared buffers, WAL, and physical storage.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/p2.en/">
+      
+      
+        <link rel="prev" href="../postgres.en/">
+      
+      
+        <link rel="next" href="../../index/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>PostgreSQL (Part 2): Query Processing, Storage, and Recovery - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/reading-language.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+    <link rel="alternate" hreflang="vi" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/p2/">
+  
+    <link rel="alternate" hreflang="en" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/p2.en/">
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tang-2-xu-ly-truy-van" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand and navigation -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
+        </span>
+      </a>
+
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
+        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </nav>
+
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../ware_lake_lw/doc/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../postgres/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/Handbook_DE_with_RAG" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/Handbook_DE_with_RAG
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse, and Data Mart (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postgres.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tang-2-xu-ly-truy-van" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 2: Query Processing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 2: Query Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-1-parser-phan-tich-cu-phap-tho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1: Parser (Raw Parsing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-2-rewriter-analyzer-phan-tich-ngu-nghia-va-bien-oi-quy-tac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2: Rewriter / Analyzer (Semantic Analysis and Query Rewriting)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-3-planner-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3: Planner / Optimizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-4-executor-thuc-thi-ke-hoach-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4: Executor (Plan Execution)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-5-tang-bo-nho-em-va-luu-tru-vat-ly-storage-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 5: Buffer Management and Physical Storage (Storage Engine)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 5: Buffer Management and Physical Storage (Storage Engine)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cac-khai-niem-can-biet-o-giai-oan-nay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts to understand at this stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tang-3-bo-nho-em-va-giao-dich" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 3: Buffer Management and Transactions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 3: Buffer Management and Transactions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bo-em-shared_buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shared_buffers Cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bo-em-wal_buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The wal_buffers Buffer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commit-log-clog-pg_xact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commit Log (CLOG / pg_xact)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan-en-kien-truc-tang-nay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How This Layer Handles Concurrent Transactions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tang-4-luu-tru-vat-ly-va-phuc-hoi-tham-hoa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 4: Physical Storage and Disaster Recovery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 4: Physical Storage and Disaster Recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-tri-luu-tru-cua-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where Schemas Are Stored
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-truc-thu-muc-pgdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory Structure of PGDATA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xu-ly-cot-du-lieu-lon-bang-toast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling Large Data Columns with TOAST
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tom-tat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes in Databases (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Orchestration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tang-2-xu-ly-truy-van" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 2: Query Processing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 2: Query Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-1-parser-phan-tich-cu-phap-tho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1: Parser (Raw Parsing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-2-rewriter-analyzer-phan-tich-ngu-nghia-va-bien-oi-quy-tac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2: Rewriter / Analyzer (Semantic Analysis and Query Rewriting)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-3-planner-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3: Planner / Optimizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-4-executor-thuc-thi-ke-hoach-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4: Executor (Plan Execution)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-5-tang-bo-nho-em-va-luu-tru-vat-ly-storage-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 5: Buffer Management and Physical Storage (Storage Engine)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 5: Buffer Management and Physical Storage (Storage Engine)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cac-khai-niem-can-biet-o-giai-oan-nay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts to understand at this stage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tang-3-bo-nho-em-va-giao-dich" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 3: Buffer Management and Transactions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 3: Buffer Management and Transactions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bo-em-shared_buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The shared_buffers Cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bo-em-wal_buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The wal_buffers Buffer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commit-log-clog-pg_xact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commit Log (CLOG / pg_xact)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-hoi-lien-quan-en-kien-truc-tang-nay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How This Layer Handles Concurrent Transactions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tang-4-luu-tru-vat-ly-va-phuc-hoi-tham-hoa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 4: Physical Storage and Disaster Recovery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 4: Physical Storage and Disaster Recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-tri-luu-tru-cua-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where Schemas Are Stored
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-truc-thu-muc-pgdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory Structure of PGDATA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xu-ly-cot-du-lieu-lon-bang-toast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling Large Data Columns with TOAST
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tom-tat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+<nav class="reading-language" aria-label="Reading language">
+  <div class="reading-language__options">
+  
+    <a href="../p2/" lang="vi" hreflang="vi" data-reading-language="vi" >Tiếng Việt</a>
+  
+    <a href="./" lang="en" hreflang="en" data-reading-language="en" aria-current="page">English</a>
+  
+  </div>
+</nav>
+
+  
+                  
+  
+
+
+
+  
+  
+
+
+<header class="airflow-article-hero postgres-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 004 · PART 2</span>
+  </div>
+  <h1>PostgreSQL<br><em>Query processing,<br>storage &amp; recovery</em></h1>
+  <div class="airflow-article-hero__meta" aria-label="Article information">
+    <span>DATABASE INTERNALS</span>
+    <span>PART 2 / 2 · 2026</span>
+  </div>
+</header>
+
+<p>In <a href="../postgres.en/">Part 1 — Hierarchy, processes, and memory</a>, we explored PostgreSQL’s logical hierarchy and connection model. Each client connection is handled by a backend process, which uses private query memory and accesses shared pages through <code>shared_buffers</code>.</p>
+<p>This second article follows a query through the SQL engine, shared buffers, transactions, and physical storage. These correspond to layers 2, 3, and 4 in the architectural overview; layer 1 covers client connections and processes.</p>
+<p><strong>In this series:</strong> <a href="../postgres.en/">Part 1 — Hierarchy, processes, and memory</a> · Part 2 — Query processing, storage, and recovery.</p>
+<p><strong>The four architectural layers:</strong></p>
+<ul>
+<li><a href="../postgres.en/#tang-1-tien-trinh-ket-noi-va-bo-nho">Layer 1 — Processes, connections, and memory</a> · Part 1.</li>
+<li><a href="./#tang-2-xu-ly-truy-van">Layer 2 — Query processing</a> · Part 2.</li>
+<li><a href="./#tang-3-bo-nho-em-va-giao-dich">Layer 3 — Buffer management and transactions</a> · Part 2.</li>
+<li><a href="./#tang-4-luu-tru-vat-ly-va-phuc-hoi-tham-hoa">Layer 4 — Physical storage and recovery</a> · Part 2.</li>
+</ul>
+<h2 id="tang-2-xu-ly-truy-van">Layer 2: Query Processing</h2>
+<p><strong>Layer 2 (SQL Engine / Query Processing Layer)</strong> handles PostgreSQL’s query logic. It turns declarative SQL text, such as <code>SELECT * FROM table</code>, into a physical execution plan selected using estimated costs.</p>
+<p>Query compilation and execution proceed through these stages:</p>
+<p><img alt="Query processing stages in PostgreSQL" loading="lazy" src="../../assets/images/postgres/2.png" /></p>
+<h3 id="giai-oan-1-parser-phan-tich-cu-phap-tho">Stage 1: Parser (Raw Parsing)</h3>
+<p>This stage converts raw SQL text into an in-memory tree structure called a <strong>Parse Tree</strong>.</p>
+<blockquote>
+<p><strong>Note:</strong> At this stage, the Parser only validates syntax and command order, not whether the referenced table exists. For example, when parsing the sentence "The green dragon is flying over the moon", the Parser only knows the sentence is grammatically correct, but it has no knowledge of whether "green dragon" actually exists.</p>
+</blockquote>
+<p>The Parser operates independently of the actual data for speed and <strong>separation of concerns</strong>. The validation of table existence, column data types, and user access privileges is fully delegated to the second stage: Rewriter / Analyzer.</p>
+<p>This is an example of a Parse Tree:</p>
+<div class="highlight"><pre><span></span><code>SelectStmt
+├── targetList (List of columns to retrieve)
+│   ├── ResTarget -&gt; ColumnRef ("name")
+│   └── ResTarget -&gt; ColumnRef ("age")
+├── fromClause (Data source)
+│   └── RangeVar (relname = "users")
+└── whereClause (Filter condition)
+    └── A_Expr (operator "&gt;")
+        ├── lexpr -&gt; ColumnRef ("age")
+        └── rexpr -&gt; A_Const (integer value = 18)
+</code></pre></div>
+<h3 id="giai-oan-2-rewriter-analyzer-phan-tich-ngu-nghia-va-bien-oi-quy-tac">Stage 2: Rewriter / Analyzer (Semantic Analysis and Query Rewriting)</h3>
+<p>At this stage, the system checks that referenced tables and columns exist, validates data types, and checks access privileges against system catalogs such as <code>pg_class</code>, <code>pg_attribute</code>, and <code>pg_constraint</code>. The Parse Tree becomes a <strong>Query Tree</strong>.</p>
+<p>Next, the system applies transformation rules to adjust the Query Tree structure if the query accesses a view. This stage also handles Row-Level Security (RLS) and DML rewrite rules.</p>
+<h3 id="giai-oan-3-planner-optimizer">Stage 3: Planner / Optimizer</h3>
+<p>At this stage, the Query Tree is transformed into a physical execution plan (<strong>Plan Tree</strong>) with the lowest estimated cost. PostgreSQL operates using a <strong>Cost-Based Optimizer (CBO)</strong> model, rather than applying rigid rules such as always using an index when one exists.</p>
+<p>What is "cost" here? Cost reflects the amount of resources consumed by a query, including disk I/O and CPU processing—rather than time. For a given query, the Planner generates multiple execution strategies and estimates the resource consumption of each. The strategy with the lowest resource consumption is selected as the Plan Tree.</p>
+<p>Based on statistical data from the Analyzer, the Planner first estimates the number of rows returned by each expression. Then, the Planner uses dynamic programming to generate strategies, compute costs, and immediately eliminate suboptimal branches. Finally, the Planner selects the strategy with the most appropriate Total Cost or Startup Cost, depending on whether a <code>LIMIT</code> or <code>CURSOR</code> is present, and passes the resulting Plan Tree to the Executor.</p>
+<ul>
+<li><strong>Total Cost:</strong> Cost to return all data from the entire table.</li>
+<li><strong>Startup Cost:</strong> Cost to begin returning the first data row.</li>
+</ul>
+<p>What does a Plan Tree look like? Suppose you run a simple query:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
+<p>PostgreSQL transforms this command into a chain of three nodes stacked vertically:</p>
+<div class="highlight"><pre><span></span><code>[Node 3: LIMIT (Returns exactly 2 people)]        &lt;-- Top node (Parent node)
+                       ↑
+       [Node 2: FILTER (Checks age &gt; 18)]      &lt;-- Middle node
+                       ↑
+       [Node 1: SEQ SCAN (Reads each row from users table)] &lt;-- Bottom node (Child node)
+</code></pre></div>
+<h3 id="giai-oan-4-executor-thuc-thi-ke-hoach-execution">Stage 4: Executor (Plan Execution)</h3>
+<p>A common misconception is that Node 1 first reads a million rows and passes them all to Node 2, which filters them and sends every result to Node 3 just to return two people.</p>
+<p>PostgreSQL instead passes rows through a <strong>pull-based execution model</strong>: a parent node requests rows from its child. For example:</p>
+<p>The client asks the LIMIT node for results. LIMIT asks FILTER: “I need two people. Give me the first one.”</p>
+<p>FILTER has no data yet, so it asks SEQ SCAN for one row. SEQ SCAN reads the first row, Nam with <code>age = 15</code>, and passes it to FILTER.</p>
+<p>FILTER sees that <code>15 &lt; 18</code>, rejects the row, and asks SEQ SCAN for the next one.</p>
+<p>SEQ SCAN reads the second row, Lan with <code>age = 20</code>, and passes it to FILTER. Since <code>20 &gt; 18</code>, FILTER passes Lan’s row to LIMIT.</p>
+<p>LIMIT now has one person and requests another from FILTER. The process repeats until LIMIT receives a second person, such as Hùng with <code>age = 22</code>.</p>
+<p>Once LIMIT has two people, execution stops. As rows are read, the Executor also checks tuple header metadata to determine their visibility.</p>
+<h3 id="giai-oan-5-tang-bo-nho-em-va-luu-tru-vat-ly-storage-engine">Stage 5: Buffer Management and Physical Storage (Storage Engine)</h3>
+<p>At this stage, when nodes require data access, the Executor never directly interacts with disk but instead sends requests to the <strong>Buffer Manager</strong>. The Buffer Manager queries a hash table (<strong>Buffer Mapping Hash Table</strong>). If the data is already in RAM, the Executor directly extracts and returns the data to the parent node. Having data in RAM reduces disk I/O costs.</p>
+<p>When the data is not present in RAM (<strong>Buffer Miss</strong>), the Buffer Manager must load a page from disk into <code>shared_buffers</code>. Then, the Executor reads the data from there.</p>
+<p>When writing data, changes are made in RAM, and the corresponding pages are marked as Dirty Pages. Immediately upon modifying data in RAM, PostgreSQL generates a <strong>WAL record</strong> and stores it in <code>wal_buffers</code> in RAM.</p>
+<p>When a user executes <code>COMMIT</code>, the system does not immediately write Dirty Pages to disk. Instead, it first writes the content of <code>wal_buffers</code> to disk, following a fundamental principle of databases: <strong>A dirty page must not be written to disk until the WAL record describing its changes has been safely persisted.</strong></p>
+<p>Dirty Pages remain in <code>shared_buffers</code> in RAM so that background processes such as Checkpointer or <code>bgwriter</code> can gradually write them to disk later. PostgreSQL acknowledges <code>COMMIT</code> to the client only after receiving confirmation that the WAL records have been safely persisted to physical storage.</p>
+<p><img alt="Buffer Manager handling buffer hits and misses" loading="lazy" src="../../assets/images/postgres/buf.png" /></p>
+<h4 id="cac-khai-niem-can-biet-o-giai-oan-nay">Concepts to understand at this stage</h4>
+<p>To better understand this stage, let's explore the following concepts:</p>
+<p><strong>Dirty Page:</strong> A page in RAM that has been modified. A <strong>clean page</strong> matches its on-disk copy exactly. A <strong>dirty page</strong> contains the <strong>latest version</strong> in RAM, while the disk still holds the <strong>older version</strong>.</p>
+<p>The lifecycle of a dirty page:</p>
+<p><img alt="The lifecycle of a dirty page" loading="lazy" src="../../assets/images/postgres/dirty.png" /></p>
+<h5 id="thanh-phan-nao-chiu-trach-nhiem-don-dep-dirty-page">Which component is responsible for cleaning Dirty Pages?</h5>
+<ul>
+<li><strong>Checkpointer:</strong> Scans the entire <code>shared_buffers</code>, identifies all Dirty Pages, and forces them to be written to disk. The Checkpointer marks a checkpoint in the WAL file to record recovery progress.</li>
+<li><strong>Background Writer (<code>bgwriter</code>):</strong> Identifies a small number of less-used Dirty Pages and writes them to disk before a checkpoint occurs.</li>
+<li><strong>Backend (client process):</strong> When a new buffer needs to be loaded but the selected buffer for reuse is a Dirty Page, the backend can write that buffer to disk before using it.</li>
+</ul>
+<p>A checkpoint can be triggered by elapsed time or WAL volume. The Checkpointer writes the necessary Dirty Pages to disk, records a checkpoint in WAL, and updates checkpoint information in <code>pg_control</code>. The Background Writer prepares clean buffers for backends to reuse, reducing the need for backends to flush dirty buffers when they need new ones. A backend can write any dirty buffer selected for replacement, even one it did not modify itself.</p>
+<h2 id="tang-3-bo-nho-em-va-giao-dich">Layer 3: Buffer Management and Transactions</h2>
+<p>Shared Memory consists of the following components:</p>
+<p><img alt="Components of PostgreSQL shared memory" loading="lazy" src="../../assets/images/postgres/SM.png" /></p>
+<h3 id="bo-em-shared_buffers">The <code>shared_buffers</code> Cache</h3>
+<p><code>shared_buffers</code> is the largest shared memory region in PostgreSQL, serving as an intermediate cache for reading and writing 8 KB data blocks of tables and indexes. It acts as a <strong>read cache</strong> for pages loaded from disk and as the place where pages are modified. These modified pages become <strong>dirty pages</strong> until they are written to disk.</p>
+<p>PostgreSQL combines <code>shared_buffers</code> with the Linux kernel's OS Page Cache. This combination is known as <strong>double buffering</strong>.</p>
+<p>When <code>shared_buffers</code> is full and a new query requires loading additional 8 KB pages from disk into RAM, the system uses <strong>Clock Sweep</strong> to find buffer space to reuse. <code>shared_buffers</code> is divided into an array of <strong>buffer frames</strong> of fixed size 8 KB. Each buffer frame contains two values:</p>
+<ul>
+<li><strong><code>refcount</code>:</strong> The number of processes currently using the buffer frame. If <code>refcount &gt; 0</code>, the buffer frame cannot be released; if <code>refcount = 0</code>, the system may consider releasing the frame and writing data to disk.</li>
+<li><strong><code>usage_count</code> (0–5):</strong> A higher value indicates the data has been used more frequently.</li>
+</ul>
+<p>How Clock Sweep operates:</p>
+<p><img alt="Clock Sweep selecting a buffer frame for reuse" loading="lazy" src="../../assets/images/postgres/clock.png" /></p>
+<p>Clock Sweep scans buffer frames in a circle to find one that can be reused. This mechanism only considers frames with <code>refcount = 0</code>; each time a frame is examined, <code>usage_count</code> is decremented by one. The process continues until a reusable frame is found.</p>
+<p><code>shared_buffers</code> keeps 8 KB pages in RAM so they can be reused without another disk read. But what happens when a query scans a very large table?</p>
+<p>When PostgreSQL detects a large table scan, it limits how much of <code>shared_buffers</code> that operation uses. The system allocates only a small number of buffer frames, depending on the operation type, to form a <strong>Buffer Ring</strong> within <code>shared_buffers</code>.</p>
+<p>At the start of the query, it uses 32 buffer frames from <code>shared_buffers</code>. When scanning reaches page 33, instead of using Clock Sweep to find new frames across the entire RAM, the system returns to frame 1 within the 32-frame ring, discards the old data, and loads page 33.</p>
+<ul>
+<li><strong>For small tables:</strong> PostgreSQL still loads directly into the shared cache.</li>
+<li><strong><code>BAS_BULKREAD</code>:</strong> When scanning a large table (estimated table size greater than 25% of total <code>shared_buffers</code>), the Buffer Ring consists of 32 pages of 8 KB.</li>
+<li><strong><code>BAS_VACUUM</code>:</strong> Enables Autovacuum to scan large tables to clean Dead Tuples; the Buffer Ring consists of 32 pages of 8 KB.</li>
+<li><strong><code>BAS_BULKWRITE</code>:</strong> When loading a large amount of data, the Buffer Ring consists of 32 pages of 8 KB.</li>
+</ul>
+<p>A problem arises when this RAM region must serve a very large table scan.</p>
+<h3 id="bo-em-wal_buffers">The <code>wal_buffers</code> Buffer</h3>
+<p><code>wal_buffers</code> contains WAL records generated when a data page modification occurs in RAM. The data in this buffer is written to the physical file (<code>pg_wal</code>) when the system receives a <code>COMMIT</code> command.</p>
+<h3 id="commit-log-clog-pg_xact">Commit Log (CLOG / <code>pg_xact</code>)</h3>
+<p>The Commit Log is a compact bit array that stores the status of each transaction ID. On disk, this data is stored in the <code>pg_clog</code> directory; in RAM, it is stored in the <strong>SLRU Buffer</strong>.</p>
+<p>The Commit Log tracks transaction states, such as committed or in progress, using two bits per transaction to save memory. When the SLRU Buffer in RAM fills up, the system pushes Transaction IDs that have not been used for a long time to disk via the <strong>LRU</strong> mechanism.</p>
+<h3 id="cau-hoi-lien-quan-en-kien-truc-tang-nay">How This Layer Handles Concurrent Transactions</h3>
+<p>How does PostgreSQL handle a query that runs for 10 minutes while thousands of <code>UPDATE</code> and <code>DELETE</code> commands execute alongside it?</p>
+<p>First, let's understand <strong>MVCC (Multi-Version Concurrency Control)</strong>, which allows multiple readers and writers to operate simultaneously without blocking each other. The MVCC rule is: "Reads do not block writes, and writes do not block reads."</p>
+<p>For data modification operations, the system makes the following changes:</p>
+<ul>
+<li><strong><code>INSERT</code>:</strong> <code>t_xmin = current XID</code>, <code>t_xmax = 0</code>.</li>
+<li><strong><code>DELETE</code>:</strong> <code>t_xmax = current XID</code>.</li>
+<li><strong><code>UPDATE</code>:</strong> Creates a new row that the old row points to. The old row has <code>t_xmax = current XID</code>; the new row has <code>t_xmin = current XID</code> and <code>t_xmax = 0</code>.</li>
+</ul>
+<p>When executing a query, the system captures a snapshot of the current state called a <strong>Transaction Snapshot</strong>. When the Executor reads a row, it compares the row's <code>t_xmax</code> and <code>t_xmin</code> with the snapshot:</p>
+<ul>
+<li><strong>Visible:</strong> <code>xmin</code> belongs to a transaction that committed before the snapshot was created, and <code>xmax</code> is not set or belongs to a transaction executed after the snapshot.</li>
+<li><strong>Hidden:</strong> The row was created by a transaction still in progress or by a transaction executed after the snapshot.</li>
+</ul>
+<p>Thanks to the snapshot, if you run a reporting query for 10 minutes, its results remain consistent with the state at the start of the query, regardless of thousands of <code>UPDATE</code> or <code>DELETE</code> commands executed during that time. If every running <code>UPDATE</code> or <code>INSERT</code> locked its corresponding data row, the system would return to the traditional two-way blocking model. MVCC uses snapshots to let writes run alongside reads without interfering with each other.</p>
+<p>A Transaction Snapshot contains three parameters:</p>
+<ul>
+<li><strong><code>xmin</code>:</strong> The XID of the oldest transaction still running.</li>
+<li><strong><code>xmax</code>:</strong> The first XID not yet assigned; all XIDs &gt;= <code>xmax</code> are not visible.</li>
+<li><strong><code>xip_list</code>:</strong> An array containing a list of active XIDs at the time of snapshot capture.</li>
+</ul>
+<p>Next, let’s look at <strong>Serializable Snapshot Isolation (SSI)</strong> and <strong>SIREAD locks</strong>.</p>
+<p><strong>Serializable</strong> means that concurrent transactions produce a result equivalent to some serial execution, with each transaction finishing before the next begins.</p>
+<p>A common issue is the <strong>doctors-on-call problem</strong>. The hospital requires at least one doctor on duty. Currently, doctors A and B are both on duty (<code>on_call = true</code>). Both doctors simultaneously submit requests to take time off through parallel transactions (T1 and T2):</p>
+<ul>
+<li><strong>T1 (Doctor A):</strong> Reads the table and counts the number of doctors on duty using the command <code>SELECT count(*) FROM doctors WHERE on_call = true;</code>. The result returned is 2. Since the result is greater than 1, T1 updates Doctor A's status to <code>false</code>.</li>
+<li><strong>T2 (Doctor B):</strong> Runs in parallel and performs a similar count. The result is still 2 because T1 has not yet committed. Since the result is greater than 1, T2 updates Doctor B's status to <code>false</code>.</li>
+</ul>
+<p>Both T1 and T2 successfully <code>COMMIT</code>. The hospital is left with no doctor on duty, violating its business rule.</p>
+<p>To resolve this situation, PostgreSQL uses the <strong>SSI algorithm via SIREAD Locks</strong>. SIREAD Lock is not a physical lock but a <strong>tag</strong> stored in <strong>Shared Memory</strong> to indicate that T1 has previously read this data row. When a query reads multiple data rows, the system can aggregate SIREAD Locks from the row level to the page level, and then from multiple pages to the table level.</p>
+<p>Aggregating SIREAD Locks only expands the monitoring scope and avoids <strong>RAM exhaustion</strong>, without physically locking tables.</p>
+<p>An <strong>rw-antidependency</strong>, also called an <strong>rw-conflict</strong>, occurs when a transaction T1 reads a set of data, and then transaction T2 writes or modifies that data, making the data T1 read outdated. This relationship is represented by an edge on a graph: T1 ──(rw)──► T2.</p>
+<p>The anomaly <strong>Write Skew (non-serializable execution)</strong> only occurs when the graph contains two consecutive rw edges: T1 ──(rw)──► T2 ──(rw)──► T3. In this case, T1 and T3 may be the same transaction, forming a cycle. In the above example, T1 reads data from a shared table while T2 modifies a row in that table, causing the data T1 read to become incorrect. When the system detects Write Skew, it <strong>aborts</strong> the transaction attempting to <code>COMMIT</code> last to preserve data integrity.</p>
+<p>When building a B-tree, the data in the tree <strong>does not contain</strong> transaction version metadata (MVCC metadata) such as <code>t_xmin</code>, <code>t_xmax</code>, and <code>t_infomask</code>. This information is only stored in the table's main record. Therefore, when using a <strong>covering index</strong>, the system navigates to the index entry containing valid data, checks the page number that holds the row, and then checks the <code>all-visible</code> bit of the page in the <code>_vm</code> file in RAM.</p>
+<p>The <code>_vm</code> file represents a bit array used to track data pages. Each heap page is associated with two bits in the <code>_vm</code> file: <code>all-visible</code> and <code>all-frozen</code>. Since the <code>_vm</code> file is typically small, the system rarely writes it to disk.</p>
+<p>If <code>all-visible = 1</code>, all rows on the page are considered visible, including to the current snapshot. The system does not need to read the heap page from disk to check <code>t_xmin</code> and <code>t_xmax</code>, thus avoiding random disk reads. If <code>all-visible = 0</code>, the system cannot definitively determine whether the row is visible to the current snapshot, so it must read from disk to verify, increasing I/O cost.</p>
+<p>This phenomenon of requiring disk reads for verification is called <strong>Heap Fetches</strong>. Heap Fetches increase when a large amount of data is updated and Autovacuum has not yet scanned it. In such cases, even with a covering index, performance does not improve. This phenomenon can be checked via the Heap Fetches metric when using <code>EXPLAIN</code>.</p>
+<p><strong>When and how are the bits in the <code>_vm</code> file updated?</strong></p>
+<ul>
+<li>When a Vacuum process scans pages and determines there are no Dead Tuples and no rows invisible to relevant snapshots, the Vacuum sets the <code>all-visible</code> bit to <code>1</code>.</li>
+<li>When a DML command accesses a page with <code>all-visible = 1</code>, the system immediately sets the bit to <code>0</code>.</li>
+</ul>
+<p><strong>Does the <code>_vm</code> file exist only when a table has an index?</strong></p>
+<p>No. The <code>_vm</code> file still exists when a table has no index and performs two critical roles:</p>
+<ul>
+<li><strong>Optimizes the Vacuum process:</strong> The system does not need to read the entire table to check for Dead Tuples. Instead, it scans the <code>_vm</code> file and skips pages with <code>all-visible = 1</code>.</li>
+<li><strong>Prevents transaction ID wraparound problems:</strong> Uses the <code>all-frozen</code> bit.</li>
+</ul>
+<h2 id="tang-4-luu-tru-vat-ly-va-phuc-hoi-tham-hoa">Layer 4: Physical Storage and Disaster Recovery</h2>
+<p>Each database cluster has a shared memory region (<code>shared_buffers</code>) in RAM and a data directory (<code>PGDATA</code>) on disk. Database data is stored in the <code>base/</code> directory.</p>
+<h3 id="vi-tri-luu-tru-cua-schema">Where Schemas Are Stored</h3>
+<p>A schema has no separate physical storage location. All schemas within the same database reside in the same directory:</p>
+<div class="highlight"><pre><span></span><code>PGDATA/base/&lt;db_oid&gt;/
+</code></pre></div>
+<p>In this case, <code>db_oid</code> is an identifier generated by the system each time the <code>CREATE DATABASE</code> command is executed.</p>
+<h3 id="cau-truc-thu-muc-pgdata">Directory Structure of <code>PGDATA</code></h3>
+<p>Illustration of a <code>PGDATA</code> directory:</p>
+<div class="highlight"><pre><span></span><code>PGDATA/                          &lt;-- Root directory of the entire cluster (instance)
+├── pg_wal/                      &lt;-- Contains Write-Ahead Log (WAL) files
+├── pg_xact/                     &lt;-- Contains transaction commit status (CLOG)
+├── global/                      &lt;-- Contains system-wide catalog tables (pg_database, pg_authid, ...)
+└── base/                        &lt;-- Directory containing data for all databases
+    ├── 1/                       &lt;-- Directory for database 'template1' (OID = 1)
+    ├── 13745/                   &lt;-- Directory for database 'postgres' (OID = 13745)
+    └── 16384/                   &lt;-- Directory for database 'my_sales_db' created by you (OID = 16384)
+        ├── 16388                &lt;-- File containing heap data pages for Table A
+        ├── 16388_fsm            &lt;-- Free Space Map (FSM) for Table A
+        ├── 16388_vm
+        ├── 16388_init
+        └── 16390                &lt;-- File containing B-Tree index for Table A
+</code></pre></div>
+<p>The subdirectories within <code>PGDATA</code> serve the following purposes:</p>
+<ul>
+<li><strong><code>pg_wal</code>:</strong> Contains WAL files, with each file defaulting to 16 MB in size. WAL (Write-Ahead Logging) is a core mechanism in PostgreSQL, requiring that all changes to tables and indexes be written and synchronized to the log before actual data pages (8 KB pages) are allowed to be written to disk. The memory buffer <code>wal_buffers</code> pushes data into this directory upon receiving a <code>COMMIT</code> command.</li>
+<li><strong><code>pg_xact</code>:</strong> Stores transaction commit status (CLOG) previously mentioned.</li>
+<li><strong><code>global</code>:</strong> Stores system catalog tables and shared configuration status files used across the entire database cluster.</li>
+</ul>
+<p>The directory <code>16384/</code> contains all data for a database. When files reach either a 1 GB threshold or a user-configured threshold, the storage engine automatically splits them into subsequent segments, such as <code>16388.1</code>, <code>16388.2</code>. Instead of combining the <code>_fsm</code>, <code>_vm</code>, and <code>_init</code> files into a single large file, the system splits them into separate files placed adjacent to each other: Main Fork (<code>16388</code>), FSM Fork, VM Fork, and Init Fork.</p>
+<ul>
+<li><strong>File <code>_fsm</code>:</strong> When an <code>INSERT</code> operation is performed, the system searches for free space within a page to store the row. Without an FSM file, the engine would need to sequentially read every 8 KB page from the beginning to the end of file <code>16388</code> to locate free space, causing severe disk I/O bottlenecks when the table is large. This file is continuously updated during insert operations, updates, or when the <code>VACUUM</code> process removes dead tuples.</li>
+<li><strong>File <code>_vm</code>:</strong> Contains the two bits <code>all-visible</code> and <code>all-frozen</code> previously mentioned, helping avoid repeated disk reads and prevent transaction ID wraparound problems.</li>
+<li><strong>File <code>_init</code>:</strong> Created when a table is unlogged, used to erase all data in the table and restore the table to its initial state in case of a failure.</li>
+</ul>
+<h3 id="xu-ly-cot-du-lieu-lon-bang-toast">Handling Large Data Columns with TOAST</h3>
+<p>TOAST is activated when a row exceeds 2 KB according to the default configuration. When creating variable-length columns such as <code>TEXT</code> or <code>VARCHAR</code>, PostgreSQL automatically creates a secondary table <code>pg_toast</code> within the database directory, along with a TOAST index. This mechanism prevents a single row from occupying two data pages. Large column values are split and moved into the TOAST table; the corresponding data on the main fork of the primary table is replaced with a compact reference structure known as a TOAST Pointer. As a result, the row on the main fork now occupies only a few dozen bytes and fits comfortably within an 8 KB page.</p>
+<hr />
+<h2 id="tom-tat">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Processing flow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Client and connection</strong></td>
+<td>The application sends SQL, such as <code>SELECT * FROM snack;</code>, to PostgreSQL over a connection. Each connection typically has its own backend process.</td>
+</tr>
+<tr>
+<td><strong>2. Query processing</strong></td>
+<td>The Parser checks syntax; the Rewriter applies rules; the Planner chooses an execution plan; the Executor runs it and returns results.</td>
+</tr>
+<tr>
+<td><strong>3. Memory</strong></td>
+<td><code>shared_buffers</code> and WAL buffers reside in shared memory. Memory for Sort, Hash, and <code>work_mem</code> belongs to each backend.</td>
+</tr>
+<tr>
+<td><strong>4. Storage</strong></td>
+<td>WAL is written first to protect data. Dirty Pages are then gradually written to table and index files on disk.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="loi-ket">Conclusion</h2>
+<p>This article on PostgreSQL architecture draws on the author’s own reading, notes, and learning, so it may still contain inaccuracies or omissions. I welcome your feedback and corrections.</p>
+<p>Thank you for reading to the end! I hope this article helps you understand PostgreSQL architecture more clearly. See you in future articles.</p>
+<p>Revisit <a href="../postgres.en/">Part 1 — Hierarchy, processes, and memory</a> for the foundations of connections, locking, and memory.</p>
+<footer class="airflow-article-end postgres-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 004</span>
+    <strong>Understand the system,<br>not just the syntax.</strong>
+  </div>
+  <a href="../../library/">Back to the library <span aria-hidden="true">→</span></a>
+</footer>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/reading-language.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+      
+    
+  </body>
+</html>
