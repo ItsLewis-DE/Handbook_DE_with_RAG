@@ -49,76 +49,28 @@ hide:
         </div>
 
         <div class="article-deck-shell">
-          <div class="article-deck" tabindex="0" aria-label="Chồng 8 bài viết. Dùng nút điều hướng, phím mũi tên hoặc kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
-            <article class="article-sheet article-sheet--airflow" data-article-title="Kiến trúc Apache Airflow" data-deck-position="current">
+          <div class="article-deck" tabindex="0" aria-label="Chồng 11 bài viết. Dùng nút điều hướng, phím mũi tên hoặc kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
+            <article class="article-sheet article-sheet--minio" data-article-title="MinIO và Object Storage" data-deck-position="current">
               <div class="article-sheet__art" aria-hidden="true">
-                <img src="assets/images/airflow/card-art.jpg" alt="" loading="lazy">
+                <img src="assets/images/minio/card-art.webp" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>01 / 08</b></div>
+              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>01 / 11</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-                <h2>Hiểu kiến trúc<br>Apache Airflow</h2>
-                <p>Từ nhu cầu điều phối đến Scheduler, Executor và High Availability.</p>
+                <h2>MinIO<br>&amp; Object Storage</h2>
+                <p>Vai trò của MinIO trong Data Pipeline và mô hình lưu trữ với Bucket, Object, Object Key, Prefix.</p>
               </div>
               <div class="article-sheet__foot">
-                <span>Tác giả · Phong Thanh</span>
-                <a href="airflow/architecture/">Mở bài viết <b aria-hidden="true">↗</b></a>
+                <span>DATA ARCHITECTURE</span>
+                <a href="minio/docs/">Mở bài viết <b aria-hidden="true">↗</b></a>
               </div>
             </article>
 
-            <article class="article-sheet article-sheet--spark" data-article-title="Kiến trúc Apache Spark (phần 1)" data-deck-position="next">
-              <div class="article-sheet__art" aria-hidden="true">
-                <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
-              </div>
-              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>02 / 08</b></div>
-              <div class="article-sheet__body">
-                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-                <h2>Kiến trúc<br>Apache Spark (phần 1)</h2>
-                <p>Từ Driver và Executor đến luồng thực thi Job, Stage, Task và cơ chế shuffle.</p>
-              </div>
-              <div class="article-sheet__foot">
-                <span>DISTRIBUTED COMPUTING</span>
-                <a href="spark/archi/">Mở bài viết <b aria-hidden="true">↗</b></a>
-              </div>
-            </article>
-
-            <article class="article-sheet article-sheet--spark" data-article-title="Kiến trúc Apache Spark (phần 2)" data-deck-position="back">
-              <div class="article-sheet__art" aria-hidden="true">
-                <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
-              </div>
-              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>03 / 08</b></div>
-              <div class="article-sheet__body">
-                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-                <h2>Kiến trúc<br>Apache Spark (phần 2)</h2>
-                <p>Các chiến lược Join, vai trò của RDD, giao tiếp PySpark và quản lý bộ nhớ Driver, Executor.</p>
-              </div>
-              <div class="article-sheet__foot">
-                <span>DISTRIBUTED COMPUTING</span>
-                <a href="spark/p2/">Mở bài viết <b aria-hidden="true">↗</b></a>
-              </div>
-            </article>
-
-            <article class="article-sheet article-sheet--index" data-article-title="Index trong cơ sở dữ liệu" data-deck-position="hidden">
-              <div class="article-sheet__art" aria-hidden="true">
-                <img src="assets/images/index/card-art.jpg" alt="" loading="lazy">
-              </div>
-              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>04 / 08</b></div>
-              <div class="article-sheet__body">
-                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
-                <h2>Index trong<br>cơ sở dữ liệu</h2>
-                <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
-              </div>
-              <div class="article-sheet__foot">
-                <span>Tác giả · Phong Thanh</span>
-                <a href="index/">Mở bài viết <b aria-hidden="true">↗</b></a>
-              </div>
-            </article>
-
-            <article class="article-sheet article-sheet--postgres" data-article-title="PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ" data-deck-position="hidden">
+            <article class="article-sheet article-sheet--postgres" data-article-title="PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ" data-deck-position="next">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/postgres/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>05 / 08</b></div>
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>02 / 11</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>PostgreSQL (phần 1)<br>Phân cấp, tiến trình &amp; bộ nhớ</h2>
@@ -130,11 +82,107 @@ hide:
               </div>
             </article>
 
+            <article class="article-sheet article-sheet--postgres" data-article-title="PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi" data-deck-position="back">
+              <div class="article-sheet__art" aria-hidden="true">
+                <img src="assets/images/postgres/card-art.jpg" alt="" loading="lazy">
+              </div>
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>03 / 11</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+                <h2>PostgreSQL (phần 2)<br>Truy vấn, lưu trữ &amp; phục hồi</h2>
+                <p>Hành trình SQL qua Parser, Planner, Executor đến bộ đệm, WAL, PGDATA và TOAST.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>DATABASE INTERNALS</span>
+                <a href="postgres/p2/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
+            <article class="article-sheet article-sheet--index" data-article-title="Index trong cơ sở dữ liệu" data-deck-position="hidden">
+              <div class="article-sheet__art" aria-hidden="true">
+                <img src="assets/images/index/card-art.jpg" alt="" loading="lazy">
+              </div>
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>04 / 11</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+                <h2>Index trong<br>cơ sở dữ liệu</h2>
+                <p>Từ full table scan đến cấu trúc dữ liệu giúp database tìm bản ghi nhanh hơn.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>Tác giả · Phong Thanh</span>
+                <a href="index/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
+            <article class="article-sheet article-sheet--storage" data-article-title="Data Lake, Data Warehouse và Data Mart" data-deck-position="hidden">
+              <div class="article-sheet__art" aria-hidden="true">
+                <img src="assets/images/ware_lake_lw/card-art.png" alt="" loading="lazy">
+              </div>
+              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>05 / 11</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+                <h2>Data Lake, Warehouse<br>&amp; Data Mart</h2>
+                <p>Vai trò từng mô hình lưu trữ và cách chúng hội tụ trong kiến trúc Data Lakehouse.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>DATA ARCHITECTURE</span>
+                <a href="ware_lake_lw/doc/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
+            <article class="article-sheet article-sheet--spark" data-article-title="Kiến trúc Apache Spark (phần 1)" data-deck-position="hidden">
+              <div class="article-sheet__art" aria-hidden="true">
+                <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
+              </div>
+              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>06 / 11</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+                <h2>Kiến trúc<br>Apache Spark (phần 1)</h2>
+                <p>Từ Driver và Executor đến luồng thực thi Job, Stage, Task và cơ chế shuffle.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>DISTRIBUTED COMPUTING</span>
+                <a href="spark/archi/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
+            <article class="article-sheet article-sheet--spark" data-article-title="Kiến trúc Apache Spark (phần 2)" data-deck-position="hidden">
+              <div class="article-sheet__art" aria-hidden="true">
+                <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
+              </div>
+              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>07 / 11</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+                <h2>Kiến trúc<br>Apache Spark (phần 2)</h2>
+                <p>Các chiến lược Join, vai trò của RDD, giao tiếp PySpark và quản lý bộ nhớ Driver, Executor.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>DISTRIBUTED COMPUTING</span>
+                <a href="spark/p2/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
+            <article class="article-sheet article-sheet--airflow" data-article-title="Kiến trúc Apache Airflow" data-deck-position="hidden">
+              <div class="article-sheet__art" aria-hidden="true">
+                <img src="assets/images/airflow/card-art.jpg" alt="" loading="lazy">
+              </div>
+              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>08 / 11</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+                <h2>Hiểu kiến trúc<br>Apache Airflow</h2>
+                <p>Từ nhu cầu điều phối đến Scheduler, Executor và High Availability.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>Tác giả · Phong Thanh</span>
+                <a href="airflow/architecture/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
             <article class="article-sheet article-sheet--planned article-sheet--clay" data-article-title="Apache Kafka internals" data-deck-position="hidden">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/kafka/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>STREAMING</span><b>06 / 08</b></div>
+              <div class="article-sheet__meta"><span>STREAMING</span><b>09 / 11</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Apache Kafka<br>internals</h2>
@@ -147,7 +195,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/dbt/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>07 / 08</b></div>
+              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>10 / 11</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>dbt: từ SQL<br>đến lineage</h2>
@@ -160,7 +208,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/docker/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>INFRASTRUCTURE</span><b>08 / 08</b></div>
+              <div class="article-sheet__meta"><span>INFRASTRUCTURE</span><b>11 / 11</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Docker &amp; Kubernetes<br>cho Data Engineer</h2>
@@ -179,9 +227,9 @@ hide:
         </div>
 
         <div class="stack-card__footer">
-          <span><b>05</b> bài đã mở</span>
+          <span><b>08</b> bài đã mở</span>
           <span><b>03</b> bài sắp tới</span>
-          <span class="article-deck__count"><b>05</b> / 08</span>
+          <span class="article-deck__count"><b>01</b> / 11</span>
         </div>
       </div>
 
@@ -199,6 +247,25 @@ hide:
     </div>
 
     <div class="published-articles" aria-label="4 bài viết mới nhất">
+      <article class="published-article published-article--minio">
+        <span class="published-article__number" aria-hidden="true">07</span>
+        <div class="published-article__header">
+          <p class="published-article__meta">DATA ARCHITECTURE · ED. 07</p>
+          <span class="published-article__status">Mới nhất</span>
+        </div>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false">
+          <path class="diagram-route" d="M68 69V94H180M292 69V94H180V121"/>
+          <g class="diagram-node"><rect x="24" y="35" width="88" height="34" rx="6"/><text x="68" y="56">JSON / CSV</text></g>
+          <g class="diagram-node"><rect x="248" y="35" width="88" height="34" rx="6"/><text x="292" y="56">PARQUET</text></g>
+          <g class="diagram-node diagram-node--accent"><path d="M118 121h124l-12 57H130z"/><text x="180" y="148">BUCKET</text></g>
+          <text class="diagram-caption" x="180" y="167">OBJECT STORAGE</text>
+          <circle class="diagram-signal" cx="180" cy="94" r="4"/>
+        </svg>
+        <h3>MinIO<br>&amp; Object Storage</h3>
+        <p>Vai trò của MinIO trong Data Pipeline và mô hình lưu trữ với Bucket, Object, Object Key, Prefix.</p>
+        <a href="minio/docs/" aria-label="Đọc bài viết: MinIO và Object Storage">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+      </article>
+
       <article class="published-article published-article--spark">
         <span class="published-article__number" aria-hidden="true">06</span>
         <div class="published-article__header">
@@ -253,17 +320,6 @@ hide:
         <h3>PostgreSQL (phần 2)<br>Truy vấn, lưu trữ &amp; phục hồi</h3>
         <p>Hành trình SQL qua Parser, Planner, Executor đến bộ đệm, WAL, PGDATA và TOAST.</p>
         <a href="postgres/p2/" aria-label="Đọc bài viết: PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
-      </article>
-
-      <article class="published-article published-article--postgres">
-        <span class="published-article__number" aria-hidden="true">04</span>
-        <div class="published-article__header">
-          <p class="published-article__meta">DATABASE INTERNALS · PHẦN 1</p>
-        </div>
-        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false"><path class="diagram-route" d="M180 45V64M70 82V64H290V82M180 64V82M70 112V137M180 112V137M290 112V137"/><g class="diagram-node diagram-node--accent"><rect x="128" y="15" width="104" height="30" rx="6"/><text x="180.0" y="34">CLUSTER</text></g><g class="diagram-node"><rect x="28" y="82" width="84" height="30" rx="6"/><text x="70.0" y="101">database</text></g><g class="diagram-node"><rect x="138" y="82" width="84" height="30" rx="6"/><text x="180.0" y="101">database</text></g><g class="diagram-node"><rect x="248" y="82" width="84" height="30" rx="6"/><text x="290.0" y="101">database</text></g><g class="diagram-node"><path d="M46 146v16c0 10 48 10 48 0v-16"/><ellipse cx="70" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M156 146v16c0 10 48 10 48 0v-16"/><ellipse cx="180" cy="146" rx="24" ry="8"/></g><g class="diagram-node"><path d="M266 146v16c0 10 48 10 48 0v-16"/><ellipse cx="290" cy="146" rx="24" ry="8"/></g><circle class="diagram-signal" cx="180" cy="64" r="4"/></svg>
-        <h3>PostgreSQL (phần 1)<br>Phân cấp, tiến trình &amp; bộ nhớ</h3>
-        <p>Cluster, database, schema, kết nối, cơ chế khóa và bộ nhớ phục vụ truy vấn.</p>
-        <a href="postgres/postgres/" aria-label="Đọc bài viết: PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
       </article>
     </div>
 

@@ -79,11 +79,11 @@ Ví dụ câu hỏi: “Executor trong Airflow làm gì?” hoặc “shared_buf
 
 ## Nội dung trong thư viện
 
-Thư viện hiện có **7 bài viết tiếng Việt** trong bốn chủ đề, và toàn bộ 7 bài đều có bản tiếng Anh song ngữ. Danh sách nguồn RAG gồm **4 bài**: Airflow, hai phần PostgreSQL và Index. Sau khi cập nhật tài liệu, cần chạy lại bước ingest để làm mới chỉ mục cục bộ.
+Thư viện hiện có **8 bài viết tiếng Việt** trong bốn chủ đề; 7 bài có bản tiếng Anh song ngữ, còn bài MinIO hiện có bản tiếng Việt. Danh sách nguồn RAG gồm **4 bài**: Airflow, hai phần PostgreSQL và Index. Sau khi cập nhật tài liệu, cần chạy lại bước ingest để làm mới chỉ mục cục bộ.
 
 | Chủ đề | Bài viết |
 | --- | --- |
-| Data Architecture | [Data Lake, Data Warehouse và Data Mart](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/) |
+| Data Architecture | [Data Lake, Data Warehouse và Data Mart](https://itslewis-de.github.io/Handbook_DE_with_RAG/ware_lake_lw/doc/) · [MinIO và Object Storage](https://itslewis-de.github.io/Handbook_DE_with_RAG/minio/docs/) |
 | Database Internals | [PostgreSQL phần 1 — Phân cấp, tiến trình và bộ nhớ](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/) · [PostgreSQL phần 2 — Truy vấn, lưu trữ và phục hồi](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/p2/) · [Index trong cơ sở dữ liệu](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/) |
 | Orchestration | [Kiến trúc Apache Airflow](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/) |
 | Distributed Computing | [Kiến trúc Apache Spark](https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/) |

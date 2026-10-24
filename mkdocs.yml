@@ -26,6 +26,7 @@ nav:
   - Data Architecture:
       - Data Lake, Data Warehouse và Data Mart: ware_lake_lw/doc.md
       - "Data Lake, Data Warehouse, and Data Mart (English)": ware_lake_lw/doc.en.md
+      - MinIO và Object Storage: minio/docs.md
   - Database Internals:
       - "PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ": postgres/postgres.md
       - "PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi": postgres/p2.md

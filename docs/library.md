@@ -33,6 +33,13 @@ cards:
     heading: Data Lake, Warehouse<br>&amp; Data Mart
     summary: Vai trò từng mô hình lưu trữ và cách chúng hội tụ trong kiến trúc Data Lakehouse.
     footer: DATA ARCHITECTURE
+  minio/docs.md:
+    order: 3.5
+    variant: minio
+    art: assets/images/minio/card-art.webp
+    heading: MinIO<br>&amp; Object Storage
+    summary: Vai trò của MinIO trong Data Pipeline và mô hình lưu trữ với Bucket, Object, Object Key, Prefix.
+    footer: DATA ARCHITECTURE
   airflow/architecture.md:
     order: 4
     variant: airflow
