@@ -1101,6 +1101,15 @@ body:has(.storage-article-hero) {
   content: "06";
 }
 
+.minio-article-hero::before {
+  content: "OBJECTS";
+}
+
+.minio-article-end::after {
+  color: rgba(20, 37, 32, 0.035);
+  content: "07";
+}
+
 body:has(.storage-article-hero) .md-typeset a:not(.airflow-article-hero a):not(.airflow-article-end a):not(.reading-language a):not(.mobile-toc a) {
   text-decoration-color: rgba(15, 129, 116, 0.38);
 }

@@ -1,0 +1,2384 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tổng quan về MinIO, vai trò trong Data Pipeline và các khái niệm cơ bản của Object Storage.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/minio/docs/">
+      
+      
+        <link rel="prev" href="../../ware_lake_lw/doc.en/">
+      
+      
+        <link rel="next" href="../../postgres/postgres/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>MinIO và Object Storage - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/reading-language.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-minio-la-gi" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand and navigation -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
+        </span>
+      </a>
+
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
+        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </nav>
+
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../ware_lake_lw/doc/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="./" aria-current="page">
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>MinIO và Object Storage</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/postgres/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/Handbook_DE_with_RAG" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/Handbook_DE_with_RAG
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse, and Data Mart (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MinIO và Object Storage
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MinIO và Object Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-minio-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. MinIO là gì?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-vai-tro-cua-minio-trong-data-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Vai trò của MinIO trong Data Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-mo-hinh-luu-tru-object-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Mô hình lưu trữ Object Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Mô hình lưu trữ Object Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#thanh-phan-cua-mot-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thành phần của một object
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-trong-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ trong MinIO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-truc-logic-qua-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu trúc logic qua Prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-cac-khai-niem-co-ban-trong-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Các khái niệm cơ bản trong MinIO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Các khái niệm cơ bản trong MinIO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-mo-rong-server-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ mở rộng Server Pool
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ví dụ mở rộng Server Pool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-1-trien-khai-server-pool-1-nam-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 1: Triển khai Server Pool 1 (năm 2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-2-mo-rong-khi-cum-gan-ay-dung-luong-nam-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 2: Mở rộng khi cụm gần đầy dung lượng (năm 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-kien-truc-cua-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Kiến trúc của MinIO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-co-che-luu-tru-cua-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cơ chế lưu trữ của MinIO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Cơ chế lưu trữ của MinIO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cau-truc-thu-muc-tren-o-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu trúc thư mục trên ổ đĩa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phan-bo-du-lieu-trong-erasure-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phân bố dữ liệu trong Erasure Set
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#luu-tru-tep-nho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lưu trữ tệp nhỏ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-co-che-du-phong-erasure-coding-reedsolomon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Cơ chế dự phòng: Erasure Coding (Reed–Solomon)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Cơ chế dự phòng: Erasure Coding (Reed–Solomon)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-khoi-phuc-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ khôi phục dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-quorum-va-write-quorum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read Quorum và Write Quorum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mo-rong-dung-luong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mở rộng dung lượng
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-phan-phoi-yeu-cau-voi-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Phân phối yêu cầu với Load Balancer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-anh-huong-cua-nhieu-tep-nho-en-hieu-nang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Ảnh hưởng của nhiều tệp nhỏ đến hiệu năng
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Ảnh hưởng của nhiều tệp nhỏ đến hiệu năng">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inode-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inode là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ap-luc-len-bo-nho-em-inode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Áp lực lên bộ nhớ đệm inode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-quy-trinh-tim-kiem-va-oc-mot-tep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Quy trình tìm kiếm và đọc một tệp
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Quy trình tìm kiếm và đọc một tệp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tiep-nhan-yeu-cau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tiếp nhận yêu cầu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dentry-cache-va-inode-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dentry Cache và Inode Cache
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dentry Cache và Inode Cache">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#truong-hop-cache-hit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trường hợp Cache Hit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#truong-hop-cache-miss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trường hợp Cache Miss
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oc-metadata-va-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đọc metadata và dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-co-che-versioning-trong-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Cơ chế Versioning trong MinIO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Cơ chế Versioning trong MinIO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cac-trang-thai-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các trạng thái Versioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ghi-e-mot-tep-co-san" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ghi đè một tệp có sẵn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xoa-du-lieu-voi-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Xóa dữ liệu với DELETE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lời kết
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes in Databases (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Orchestration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-minio-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. MinIO là gì?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-vai-tro-cua-minio-trong-data-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Vai trò của MinIO trong Data Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-mo-hinh-luu-tru-object-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Mô hình lưu trữ Object Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Mô hình lưu trữ Object Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#thanh-phan-cua-mot-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thành phần của một object
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-trong-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ trong MinIO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cau-truc-logic-qua-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu trúc logic qua Prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-cac-khai-niem-co-ban-trong-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Các khái niệm cơ bản trong MinIO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Các khái niệm cơ bản trong MinIO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-mo-rong-server-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ mở rộng Server Pool
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ví dụ mở rộng Server Pool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-1-trien-khai-server-pool-1-nam-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 1: Triển khai Server Pool 1 (năm 2024)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#giai-oan-2-mo-rong-khi-cum-gan-ay-dung-luong-nam-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giai đoạn 2: Mở rộng khi cụm gần đầy dung lượng (năm 2026)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-kien-truc-cua-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Kiến trúc của MinIO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-co-che-luu-tru-cua-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cơ chế lưu trữ của MinIO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Cơ chế lưu trữ của MinIO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cau-truc-thu-muc-tren-o-ia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cấu trúc thư mục trên ổ đĩa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phan-bo-du-lieu-trong-erasure-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phân bố dữ liệu trong Erasure Set
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#luu-tru-tep-nho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lưu trữ tệp nhỏ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-co-che-du-phong-erasure-coding-reedsolomon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Cơ chế dự phòng: Erasure Coding (Reed–Solomon)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Cơ chế dự phòng: Erasure Coding (Reed–Solomon)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-khoi-phuc-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ khôi phục dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-quorum-va-write-quorum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read Quorum và Write Quorum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mo-rong-dung-luong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mở rộng dung lượng
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-phan-phoi-yeu-cau-voi-load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Phân phối yêu cầu với Load Balancer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-anh-huong-cua-nhieu-tep-nho-en-hieu-nang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Ảnh hưởng của nhiều tệp nhỏ đến hiệu năng
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Ảnh hưởng của nhiều tệp nhỏ đến hiệu năng">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inode-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inode là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ap-luc-len-bo-nho-em-inode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Áp lực lên bộ nhớ đệm inode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-quy-trinh-tim-kiem-va-oc-mot-tep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Quy trình tìm kiếm và đọc một tệp
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Quy trình tìm kiếm và đọc một tệp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tiep-nhan-yeu-cau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tiếp nhận yêu cầu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dentry-cache-va-inode-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dentry Cache và Inode Cache
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dentry Cache và Inode Cache">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#truong-hop-cache-hit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trường hợp Cache Hit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#truong-hop-cache-miss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trường hợp Cache Miss
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oc-metadata-va-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Đọc metadata và dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-co-che-versioning-trong-minio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Cơ chế Versioning trong MinIO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Cơ chế Versioning trong MinIO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cac-trang-thai-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các trạng thái Versioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ghi-e-mot-tep-co-san" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ghi đè một tệp có sẵn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xoa-du-lieu-voi-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Xóa dữ liệu với DELETE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loi-ket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lời kết
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+<nav class="reading-language" aria-label="Ngôn ngữ đọc">
+  <div class="reading-language__options">
+  
+    <span class="reading-language__unavailable" lang="vi">Tiếng Việt · Chưa có bản tiếng Anh</span>
+  
+  </div>
+</nav>
+
+  
+                  
+  
+
+
+
+  
+  
+
+
+<header class="airflow-article-hero storage-article-hero minio-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 007</span>
+  </div>
+  <h1>MinIO<br><em>&amp; Object Storage</em></h1>
+  <p class="airflow-article-hero__dek">
+    Tổng quan về MinIO, vai trò trong Data Pipeline và các khái niệm
+    Bucket, Object, Object Key, Prefix.
+  </p>
+  <div class="airflow-article-hero__meta" aria-label="Thông tin bài viết">
+    <span>DATA ARCHITECTURE</span>
+    <span>EDITION 07 · 2026</span>
+  </div>
+</header>
+
+<h2 id="1-minio-la-gi">1. MinIO là gì?</h2>
+<p><strong>MinIO</strong> là một hệ thống lưu trữ đối tượng (<strong>Object Storage</strong>) hiệu năng cao, tương thích với Amazon S3 API. Hệ thống được thiết kế để lưu trữ và quản lý lượng lớn dữ liệu phi cấu trúc như hình ảnh, video, tệp log, JSON, CSV hay Parquet, và có thể được sử dụng làm nền tảng lưu trữ cho Data Lake.</p>
+<p>MinIO được thành lập vào năm <strong>2014 tại Thung lũng Silicon (Mỹ)</strong> bởi Anand Babu Periasamy, Garima Kapoor và Harshavardhana, trong bối cảnh lượng dữ liệu phi cấu trúc như hình ảnh, video và tài liệu ngày càng tăng mạnh. Khi đó, Amazon S3 đã trở thành một dịch vụ lưu trữ đối tượng phổ biến, nhưng các tổ chức vẫn có nhu cầu xây dựng hệ thống lưu trữ riêng mà không phụ thuộc hoàn toàn vào nhà cung cấp đám mây.</p>
+<p>Xuất phát từ nhu cầu ấy, MinIO chính thức được giới thiệu vào năm <strong>2015</strong> như một giải pháp Object Storage mã nguồn mở, tương thích với Amazon S3 API, giúp các nhà phát triển tự triển khai và quản lý hệ thống lưu trữ dữ liệu với khả năng mở rộng linh hoạt.</p>
+<h2 id="2-vai-tro-cua-minio-trong-data-pipeline">2. Vai trò của MinIO trong Data Pipeline</h2>
+<p>Trong một <strong>Data Pipeline</strong>, MinIO thường đóng vai trò là <strong>lớp lưu trữ dữ liệu (Storage Layer)</strong>, nơi tiếp nhận và lưu trữ dữ liệu được thu thập từ nhiều nguồn như API, cơ sở dữ liệu, tệp log hoặc các hệ thống bên ngoài.</p>
+<p>Dữ liệu sau khi được trích xuất (<strong>Extract</strong>) có thể được đưa vào MinIO dưới dạng các tệp CSV, JSON hoặc Parquet để lưu trữ trước khi xử lý. Tiếp theo, các công cụ xử lý dữ liệu như <strong>Apache Spark</strong> có thể đọc trực tiếp dữ liệu từ MinIO thông qua giao thức tương thích S3, thực hiện các tác vụ làm sạch, biến đổi (<strong>Transform</strong>) và ghi kết quả trở lại MinIO hoặc nạp vào Data Warehouse để phục vụ phân tích.</p>
+<h2 id="3-mo-hinh-luu-tru-object-storage">3. Mô hình lưu trữ Object Storage</h2>
+<p>Trong các hệ thống máy tính truyền thống, hệ điều hành thường lưu trữ dữ liệu bằng <strong>Block Storage</strong>, nơi dữ liệu được quản lý dưới dạng các khối lưu trữ. Khi làm việc với khối lượng dữ liệu phi cấu trúc hoặc bán cấu trúc rất lớn, đặc biệt trong môi trường Cloud Computing và Data Engineering, <strong>Object Storage</strong> trở thành một mô hình lưu trữ quan trọng.</p>
+<h3 id="thanh-phan-cua-mot-object">Thành phần của một object</h3>
+<p>Object Storage lưu trữ dữ liệu dưới dạng các đơn vị độc lập gọi là <strong>object</strong>. Mỗi object bao gồm:</p>
+<ul>
+<li><strong>Data:</strong> Nội dung thực tế như hình ảnh, video, tệp CSV, JSON, Parquet hoặc dữ liệu nhị phân.</li>
+<li><strong>Metadata:</strong> Thông tin mô tả object như <code>Content-Type</code>, kích thước, thời điểm chỉnh sửa hoặc metadata do người dùng định nghĩa.</li>
+<li><strong>Object Key:</strong> Tên định danh dùng để xác định và truy xuất object trong một bucket.</li>
+</ul>
+<h3 id="vi-du-trong-minio">Ví dụ trong MinIO</h3>
+<p>Một object <code>customers.json</code> được lưu trong bucket <code>data-lake</code>:</p>
+<div class="highlight"><pre><span></span><code>Bucket: data-lake
+Object: customers.json
+
+OBJECT KEY
+raw/2026/customers.json
+
+METADATA
+Content-Type: application/json
+
+DATA
+{"customer_id": 101, "name": "An"}
+</code></pre></div>
+<h3 id="cau-truc-logic-qua-prefix">Cấu trúc logic qua Prefix</h3>
+<p>Object Storage không tổ chức object thành các thư mục vật lý theo mô hình cây như trên máy tính cá nhân. Ví dụ, với object key <code>raw/2026/customers.csv</code>, các thư mục <code>raw</code> và <code>2026</code> chỉ là cấu trúc logic được mô phỏng thông qua <strong>Prefix (tiền tố)</strong> và dấu phân cách <code>/</code>.</p>
+<h2 id="4-cac-khai-niem-co-ban-trong-minio">4. Các khái niệm cơ bản trong MinIO</h2>
+<table>
+<thead>
+<tr>
+<th>Khái niệm</th>
+<th>Mô tả</th>
+<th>Ví dụ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bucket</strong></td>
+<td>Nơi chứa và tổ chức các object.</td>
+<td><code>data-lake</code></td>
+</tr>
+<tr>
+<td><strong>Object</strong></td>
+<td>Đơn vị dữ liệu cơ bản trong MinIO, tương tự một tệp trên máy tính.</td>
+<td><code>customers.json</code></td>
+</tr>
+<tr>
+<td><strong>Object Key</strong></td>
+<td>Định danh của một object trong phạm vi một bucket.</td>
+<td><code>raw/2026/data.parquet</code></td>
+</tr>
+<tr>
+<td><strong>Prefix</strong></td>
+<td>Chuỗi ký tự nằm ở đầu object key, dùng để mô phỏng cấu trúc thư mục.</td>
+<td><code>raw/2026/</code> hoặc <code>raw/</code></td>
+</tr>
+<tr>
+<td><strong>Node</strong></td>
+<td>Một máy chủ chạy MinIO Server.</td>
+<td><code>server1</code></td>
+</tr>
+<tr>
+<td><strong>Drive</strong></td>
+<td>Các ổ đĩa mà MinIO dùng để lưu trữ dữ liệu.</td>
+<td>Ổ cứng 4 TB trên mỗi server.</td>
+</tr>
+<tr>
+<td><strong>Erasure Set</strong></td>
+<td>Tập hợp gồm <strong>4–16 ổ đĩa</strong> nằm rải rác trên nhiều máy chủ. Khi tải dữ liệu lên, MinIO chạy thuật toán băm trên object key để xác định Erasure Set lưu trữ đối tượng dữ liệu đó.</td>
+<td>Erasure Set có 16 ổ đĩa.</td>
+</tr>
+<tr>
+<td><strong>Server Pool</strong></td>
+<td>Tập hợp gồm các máy chủ và ổ đĩa giống hệt nhau. Một cụm MinIO có thể gồm nhiều Server Pool hợp lại. Khi cụm sắp hết dung lượng, có thể bổ sung một Server Pool để mở rộng.</td>
+<td>Server Pool 1 gồm 4 server, mỗi server gắn 4 ổ cứng 4 TB.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vi-du-mo-rong-server-pool">Ví dụ mở rộng Server Pool</h3>
+<h4 id="giai-oan-1-trien-khai-server-pool-1-nam-2024">Giai đoạn 1: Triển khai Server Pool 1 (năm 2024)</h4>
+<p>Một cụm MinIO được triển khai để lưu trữ với cấu hình:</p>
+<ul>
+<li><strong>Số lượng máy:</strong> 4 server (<code>server1</code>, <code>server2</code>, <code>server3</code>, <code>server4</code>).</li>
+<li><strong>Ổ đĩa:</strong> Mỗi server gắn 4 ổ cứng 4 TB.</li>
+<li><strong>Tổng số đĩa:</strong> 16 đĩa, tương đương 64 TB thô.</li>
+</ul>
+<p>Tất cả 4 máy này hợp thành <strong>Server Pool 1</strong>.</p>
+<h4 id="giai-oan-2-mo-rong-khi-cum-gan-ay-dung-luong-nam-2026">Giai đoạn 2: Mở rộng khi cụm gần đầy dung lượng (năm 2026)</h4>
+<p>Sau 2 năm, cụm đã sử dụng 95% dung lượng và cần mở rộng.</p>
+<p>Lúc này, trên thị trường đã có ổ 16 TB. Thay vì tiếp tục mua ổ 4 TB, có thể triển khai một nhóm máy mới với dung lượng lớn hơn để tạo thành <strong>Server Pool 2</strong>:</p>
+<ul>
+<li><strong>Số lượng máy mới:</strong> 4 server (<code>server5</code>, <code>server6</code>, <code>server7</code>, <code>server8</code>).</li>
+<li><strong>Ổ đĩa mới:</strong> Mỗi server gắn 4 ổ cứng 16 TB, lớn gấp 4 lần ổ cũ.</li>
+<li><strong>Tổng số đĩa mới:</strong> 16 đĩa, tương đương 256 TB thô.</li>
+</ul>
+<p>4 máy mới này hợp thành <strong>Server Pool 2</strong>.</p>
+<p>Sau đó, chỉ cần thêm cấu hình Server Pool mới vào cụm MinIO, hệ thống sẽ tự động gộp dung lượng và hoạt động liền mạch trên cả hai pool.</p>
+<h2 id="5-kien-truc-cua-minio">5. Kiến trúc của MinIO</h2>
+<p>MinIO sử dụng <strong>kiến trúc đối xứng hoàn toàn</strong>. Trong toàn bộ cụm (cluster), mọi node và drive đều có vai trò, trách nhiệm và cấu trúc phần mềm giống hệt nhau, không có sự phân cấp thứ bậc.</p>
+<p>Khác với các hệ thống lưu trữ phân tán khác, MinIO không sử dụng cơ sở dữ liệu bên ngoài để lưu trữ metadata. Metadata của từng object được ghi vào tệp nhị phân <code>xl.meta</code> và lưu trên các ổ đĩa bên cạnh dữ liệu.</p>
+<h2 id="6-co-che-luu-tru-cua-minio">6. Cơ chế lưu trữ của MinIO</h2>
+<h3 id="cau-truc-thu-muc-tren-o-ia">Cấu trúc thư mục trên ổ đĩa</h3>
+<p>Dưới tầng hệ điều hành, MinIO lưu trữ dữ liệu dưới dạng cấu trúc thư mục phẳng. Mỗi bucket tương ứng với một thư mục cùng tên ở thư mục gốc của ổ đĩa. Ví dụ, với tệp <code>raw_data/metrics.parquet</code>, cấu trúc bên dưới ổ đĩa như sau:</p>
+<div class="highlight"><pre><span></span><code>/mnt/disk-1/
+├── my-bucket/                         # Tương đương Bucket "my-bucket"
+│   └── raw-data/                      # Prefix (thư mục ảo trong S3)
+│       └── metrics.parquet/           # Object name được biểu diễn thành thư mục
+│           ├── xl.meta                # Metadata, thông tin versioning, checksum
+│           └── part.1
+</code></pre></div>
+<h3 id="phan-bo-du-lieu-trong-erasure-set">Phân bố dữ liệu trong Erasure Set</h3>
+<p>Với mỗi object key, ví dụ <code>lake/orders.parquet</code>, MinIO tạo một thư mục con tương ứng trên tất cả các đĩa thuộc Erasure Set. Tệp <code>xl.meta</code> được lưu trong thư mục này.</p>
+<p>Khi tải một tệp lên <code>lake/orders.parquet</code>, MinIO băm object key để xác định Erasure Set lưu trữ object đó. Sau đó, hệ thống sử dụng kỹ thuật <strong>Reed–Solomon Erasure Coding</strong> để chia object thành <code>K</code> mảnh dữ liệu (<strong>Data Shards</strong>) và <code>M</code> mảnh mã sửa lỗi.</p>
+<p>Mỗi drive trong Erasure Set chứa một hoặc nhiều mảnh này tùy cấu hình. Các mảnh không được lưu chung trong một drive vì nếu drive đó bị hỏng, toàn bộ các mảnh dữ liệu sẽ bị mất. Mỗi mảnh được lưu trên drive đi kèm một tệp <code>xl.meta</code>. Kỹ thuật Reed–Solomon Erasure Coding được trình bày kỹ hơn ở phần bên dưới.</p>
+<h3 id="luu-tru-tep-nho">Lưu trữ tệp nhỏ</h3>
+<p>Với các tệp nhỏ, dưới <strong>128 KB – 256 KB</strong>, MinIO không tạo tệp dữ liệu thô <code>part.1</code> riêng biệt mà nhúng trực tiếp dữ liệu vào tệp <code>xl.meta</code>.</p>
+<h2 id="7-co-che-du-phong-erasure-coding-reedsolomon">7. Cơ chế dự phòng: Erasure Coding (Reed–Solomon)</h2>
+<p>MinIO sử dụng thuật toán <strong>Reed–Solomon Erasure Coding</strong>. Trong một Erasure Set có <code>N</code> ổ đĩa:</p>
+<div class="highlight"><pre><span></span><code>N = K + M
+</code></pre></div>
+<p>Trong đó:</p>
+<ul>
+<li><strong><code>K</code>:</strong> Số lượng mảnh dữ liệu thực tế (Data Shards).</li>
+<li><strong><code>M</code>:</strong> Số lượng mảnh dự phòng (Parity Blocks).</li>
+</ul>
+<p><code>K + M</code> mảnh này được ghi đồng thời xuống <code>N</code> ổ đĩa vật lý khác nhau trong Erasure Set.</p>
+<p>Việc chia thành các mảnh nhằm chống mất mát dữ liệu khi một drive bị hỏng. <code>M</code> cũng là số mảnh bất kỳ tối đa mà hệ thống có thể mất trong tổng số <code>N</code> mảnh.</p>
+<h3 id="vi-du-khoi-phuc-du-lieu">Ví dụ khôi phục dữ liệu</h3>
+<p>Giả sử Erasure Set có <strong>16 ổ đĩa</strong>, cấu hình <code>K = 12</code> và <code>M = 4</code>:</p>
+<ol>
+<li>Một tệp 120 MB được chia thành 12 mảnh nhỏ, mỗi mảnh 10 MB.</li>
+<li>Hệ thống tính thêm 4 mảnh Parity, mỗi mảnh 10 MB.</li>
+<li>Nếu 4 ổ đĩa hoặc 1 máy chủ gặp sự cố cùng lúc, MinIO chỉ cần lấy 12 mảnh còn hoạt động trên các ổ khác để tái tạo trọn vẹn tệp 120 MB ban đầu.</li>
+</ol>
+<h3 id="read-quorum-va-write-quorum">Read Quorum và Write Quorum</h3>
+<p>Trong MinIO, thao tác đọc hoặc ghi dữ liệu phải đáp ứng các điều kiện về số lượng ổ đĩa hoạt động:</p>
+<ul>
+<li><strong>Read Quorum:</strong> Hệ thống cần tối thiểu <code>K</code> ổ đĩa còn hoạt động để tái tạo toàn bộ tệp ban đầu và chịu được việc mất tối đa <code>M</code> ổ đĩa cùng lúc.</li>
+<li><strong>Write Quorum:</strong> Yêu cầu tối thiểu <code>K + 1</code> ổ đĩa, hoặc <code>⌈(K + M) / 2⌉</code> tùy mức cấu hình nghiêm ngặt, hoạt động để chấp nhận thao tác ghi hoặc xóa mới. Điều kiện này giúp tránh hiện tượng não chia đôi.</li>
+</ul>
+<p>Ví dụ, phòng A chứa 8 đĩa, phòng B chứa 8 đĩa. Nếu <code>K = 8</code>, cả hai bên đều có thể cho phép ghi, dẫn đến tình trạng cùng ghi vào một tệp. Yêu cầu <code>K + 1</code> giúp bên có nhiều ổ đĩa hơn trở thành bên được phép ghi.</p>
+<h3 id="mo-rong-dung-luong">Mở rộng dung lượng</h3>
+<p>Đối với một Erasure Set đang hoạt động, không thể tăng dung lượng bằng cách lắp thêm ổ đĩa hoặc máy chủ đơn lẻ. Vì vậy, MinIO sử dụng khái niệm Server Pool để doanh nghiệp có thể gia tăng khả năng lưu trữ mà không gây downtime.</p>
+<h2 id="8-phan-phoi-yeu-cau-voi-load-balancer">8. Phân phối yêu cầu với Load Balancer</h2>
+<p>Trong môi trường production, các hệ thống xử lý dữ liệu như Apache Spark hoặc Trino có thể tạo ra lượng lớn yêu cầu đọc/ghi dữ liệu đến MinIO thông qua S3 API. Nếu tất cả các yêu cầu đều được gửi trực tiếp đến một MinIO Node, node đó có nguy cơ trở thành điểm nghẽn về tài nguyên mạng và khả năng xử lý, dù các node khác vẫn tham gia vào quá trình đọc/ghi dữ liệu nội bộ.</p>
+<p>Để giải quyết vấn đề này, <strong>Load Balancer</strong> được đặt phía trước MinIO Cluster, cung cấp một S3 Endpoint thống nhất và phân phối các yêu cầu đến những node đang hoạt động. Load Balancer có thể sử dụng các thuật toán như <strong>Round Robin</strong> hoặc <strong>Least Connections</strong> để phân phối lưu lượng, hạn chế tình trạng quá tải tại một node.</p>
+<p>Nhờ kiến trúc phân tán không có Master Node (<strong>Masterless</strong>), mọi MinIO Node đều có khả năng tiếp nhận và xử lý yêu cầu từ client. Node nhận yêu cầu sẽ tự phối hợp với các node khác trong cluster khi cần thiết. Điều này giúp hệ thống tận dụng tài nguyên hiệu quả hơn, đồng thời cải thiện khả năng chịu lỗi và tính sẵn sàng của dịch vụ.</p>
+<h2 id="9-anh-huong-cua-nhieu-tep-nho-en-hieu-nang">9. Ảnh hưởng của nhiều tệp nhỏ đến hiệu năng</h2>
+<p>MinIO có thể gặp khó khăn khi xử lý quá nhiều tệp nhỏ. Mỗi tệp nhỏ được chia thành <code>N = K + M</code> mảnh lưu trên các ổ đĩa. Mỗi ổ đĩa tham gia lưu trữ object phải tạo thêm một tệp <code>xl.meta</code>. Số lượng tệp metadata quá lớn có thể làm giảm hiệu năng xử lý của hệ thống.</p>
+<p>Trong môi trường Linux, MinIO sử dụng filesystem bên dưới, thường là <strong>XFS</strong>, để lưu trữ dữ liệu. Mỗi thư mục hoặc tệp được tạo mới đều sử dụng một inode. Nếu job Spark xuất ra 1 triệu tệp nhỏ, MinIO sẽ tạo ra ít nhất 2–3 triệu inode trên ổ đĩa.</p>
+<h3 id="inode-la-gi">Inode là gì?</h3>
+<p><strong>Inode</strong> trên hệ điều hành Unix/Linux dùng để lưu trữ toàn bộ siêu dữ liệu (metadata) và vị trí thực tế trên ổ đĩa của một tệp hoặc thư mục. Đối với nhân hệ điều hành Linux, một tệp không được định danh bằng tên tệp mà bằng một số nguyên duy nhất gọi là <strong>Inode Number</strong>.</p>
+<h3 id="ap-luc-len-bo-nho-em-inode">Áp lực lên bộ nhớ đệm inode</h3>
+<p>RAM của Linux có vùng đệm <strong>Inode Cache / Dentry Cache (VFS Cache)</strong> để ghi nhớ vị trí các inode, giúp tra cứu tức thì. Khi số lượng inode tăng lên hàng triệu, RAM không thể chứa hết. Hệ điều hành liên tục phải đẩy inode cũ ra ngoài (<strong>cache eviction</strong>) và đọc inode từ ổ đĩa lên, gây áp lực lên RAM và tăng tải đọc đĩa ngẫu nhiên (<strong>Random Read I/O</strong>).</p>
+<h2 id="10-quy-trinh-tim-kiem-va-oc-mot-tep">10. Quy trình tìm kiếm và đọc một tệp</h2>
+<h3 id="tiep-nhan-yeu-cau">Tiếp nhận yêu cầu</h3>
+<p>Yêu cầu <code>GET Object</code> đi qua Load Balancer và được chuyển đến một MinIO Node bất kỳ. Node này kiểm tra tính hợp lệ và đối chiếu quyền theo IAM Policy, sau đó gửi lệnh nội bộ qua Grid Protocol tới các Server Pool và các node chứa dữ liệu để quét.</p>
+<p>Tiếp theo, MinIO tương tác với nhân Linux. Tại từng ổ đĩa vật lý, MinIO gọi xuống nhân Linux để đọc cấu trúc thư mục đại diện cho prefix đó. Hệ điều hành trước tiên kiểm tra cache trên RAM.</p>
+<h3 id="dentry-cache-va-inode-cache">Dentry Cache và Inode Cache</h3>
+<p>Linux duy trì hai vùng đệm quan trọng trên RAM:</p>
+<ul>
+<li><strong>Dentry Cache (<code>dcache</code>):</strong> Bảng băm lưu các cặp ánh xạ <code>(Thư mục cha + Tên tệp/thư mục con) → Inode Pointer</code>.</li>
+<li><strong>Inode Cache (<code>icache</code>):</strong> Lưu nội dung các inode đang hoạt động trong RAM.</li>
+</ul>
+<h4 id="truong-hop-cache-hit">Trường hợp Cache Hit</h4>
+<p>Nếu thư mục <code>orders.parquet</code> và tệp <code>xl.meta</code> vừa được ghi hoặc truy cập gần đây, toàn bộ cấu trúc đường dẫn đã nằm trong RAM. Linux chỉ mất vài nano giây để tra cứu bảng băm <code>O(1)</code> trong Dentry Cache. Trong trường hợp này, không có thao tác I/O nào xuống ổ đĩa.</p>
+<h4 id="truong-hop-cache-miss">Trường hợp Cache Miss</h4>
+<p>Linux phải đọc thư mục cha từ ổ đĩa. XFS thiết kế 4 cấp độ lưu trữ tùy theo số lượng tệp:</p>
+<ul>
+<li><strong>Shortform Format:</strong> Khi thư mục chỉ chứa vài tệp, dưới khoảng 20 tệp, toàn bộ danh sách tên tệp và số hiệu inode nằm vừa trong phần mở rộng (data fork) của chính inode thư mục cha. Hệ điều hành chỉ cần đọc inode của thư mục cha để tìm thấy tệp, không tốn thêm block đĩa nào.</li>
+<li><strong>Block Format:</strong> Khi số lượng tệp tăng lên và không còn vừa trong inode cha, XFS cấp phát một block đĩa duy nhất, thường là 4 KB, để chứa bảng danh bạ. Việc tìm kiếm diễn ra bằng cách quét tuyến tính trong block 4 KB đó.</li>
+<li><strong>Leaf Format:</strong> Khi kích thước danh mục vượt quá một block đĩa, XFS tách danh bạ thành các block chứa tên tệp thực tế và một block Leaf chứa danh sách mã băm (hash values) của tên tệp, được sắp xếp để tìm kiếm nhị phân.</li>
+<li><strong>Node / B+Tree Format:</strong> Xuất hiện khi thư mục quá lớn. Khi một thư mục hoặc prefix chứa từ hàng chục nghìn đến hàng triệu tệp con, chẳng hạn một bảng dữ liệu Spark bị lỗi partition, một block Leaf không chứa hết các hash entry. XFS chuyển danh mục sang dạng cây B+Tree nhiều tầng. Việc tìm tên tệp lúc này phải duyệt qua các Root, Intermediate và Leaf Node trên đĩa.</li>
+</ul>
+<h3 id="oc-metadata-va-du-lieu">Đọc metadata và dữ liệu</h3>
+<p>Trước tiên, hệ thống tìm inode của tệp <code>xl.meta</code>. Sau khi xác định được tệp, Linux đọc nội dung và chuyển cho MinIO. MinIO phân tích metadata để xác định Object Version cần đọc, thông tin Erasure Coding và vị trí dữ liệu tương ứng, sau đó yêu cầu hệ điều hành truy xuất thư mục dữ liệu đó.</p>
+<p>MinIO dùng cờ <code>O_DIRECT</code> khi mở tệp để chỉ thị Linux bỏ qua Page Cache. Dữ liệu được đọc trực tiếp từ ổ đĩa vào user space của MinIO, tránh tình trạng làm tràn cache.</p>
+<p>Sau đó, các node gửi danh sách cục bộ thu được về coordinator node. MinIO gộp <code>K</code> mảnh thành một đối tượng duy nhất rồi trả về cho client.</p>
+<h2 id="11-co-che-versioning-trong-minio">11. Cơ chế Versioning trong MinIO</h2>
+<p><strong>MinIO Versioning</strong> là cơ chế lưu trữ nhiều biến thể của cùng một object trong một bucket. Thay vì ghi đè hoặc xóa vĩnh viễn, MinIO gán cho mỗi lần ghi/xóa một mã định danh duy nhất (<strong>Version ID</strong>) để bảo toàn lịch sử dữ liệu.</p>
+<h3 id="cac-trang-thai-versioning">Các trạng thái Versioning</h3>
+<p>Versioning được quản lý ở cấp độ bucket và có 3 trạng thái:</p>
+<ul>
+<li><strong>Unversioned (mặc định):</strong> Bucket không quản lý phiên bản. Ghi đè làm mất dữ liệu cũ; xóa là xóa vĩnh viễn.</li>
+<li><strong>Enabled:</strong> Mọi object thêm mới hoặc ghi đè đều nhận một Version ID dạng UUID, ví dụ <code>d9426f37-64ec-4fcf-b7d1-04ef963bcfa0</code>.</li>
+<li><strong>Suspended (tạm dừng):</strong> Một khi đã bật Versioning, không thể chuyển hoàn toàn về trạng thái Unversioned mà chỉ có thể tạm dừng. Các phiên bản cũ vẫn được giữ nguyên; object mới tải lên có Version ID là <code>null</code>, hoặc ghi đè lên phiên bản <code>null</code> có sẵn.</li>
+</ul>
+<h3 id="ghi-e-mot-tep-co-san">Ghi đè một tệp có sẵn</h3>
+<p>Hệ thống không xóa hay thay đổi tệp cũ vì object trong MinIO là bất biến. Thay vào đó, hệ thống tạo một thư mục dữ liệu mới cho dữ liệu ghi đè.</p>
+<p>Để xác định thư mục dữ liệu cũ và thư mục mới nhất, hệ thống dựa vào tệp <code>xl.meta</code>. Bên trong <code>xl.meta</code> có một mảng (array) ghi nhận lịch sử của tất cả các version theo thứ tự thời gian. Khi phiên bản mới được ghi xong, bản ghi của nó được đưa lên đầu mảng:</p>
+<div class="highlight"><pre><span></span><code>{
+  "versions": [
+    {
+      "version_id": "f47ac10b-2222-...",   // Đỉnh mảng -&gt; Current Version (Mới)
+      "created_at": "2026-10-24 10:00:00",
+      "data_dir": "f47ac10b-2222-..."       // Trỏ đích danh vào folder mới
+    },
+    {
+      "version_id": "7c8e9b0a-1111-...",   // Bản ghi cũ -&gt; Noncurrent Version
+      "created_at": "2026-10-23 09:00:00",
+      "data_dir": "7c8e9b0a-1111-..."       // Trỏ vào folder cũ
+    }
+  ]
+}
+</code></pre></div>
+<p>Khi client cần đọc một object, MinIO kiểm tra tệp <code>xl.meta</code> và lấy phần tử đầu tiên ở đầu mảng để trả về dữ liệu mới nhất. Chỉ khi người dùng yêu cầu một Version ID cụ thể, hệ thống mới lấy chính xác phiên bản đó.</p>
+<h3 id="xoa-du-lieu-voi-delete">Xóa dữ liệu với DELETE</h3>
+<p>Khi thực hiện lệnh <code>DELETE</code>, dữ liệu cũ không bị xóa. MinIO tạo một phiên bản đặc biệt gọi là <strong>Delete Marker</strong> và đặt lên đầu mảng. Khi thấy Delete Marker, MinIO không trả dữ liệu này về cho người dùng. Có thể xóa vĩnh viễn dữ liệu bằng lệnh hard delete.</p>
+<hr />
+<h2 id="loi-ket">Lời kết</h2>
+<p>Từ Bucket, Object đến Erasure Set và Server Pool, các khái niệm trong bài giúp làm rõ cách MinIO tổ chức và mở rộng lưu trữ. Erasure Coding, Load Balancer và Versioning lần lượt thể hiện cách hệ thống bảo vệ dữ liệu, phân phối yêu cầu và quản lý lịch sử phiên bản. Bên cạnh đó, ảnh hưởng của nhiều tệp nhỏ đến inode và bộ nhớ đệm cũng là yếu tố cần lưu ý khi xem xét hiệu năng.</p>
+<p>Cảm ơn bạn đã đọc đến cuối! Hy vọng bài viết giúp bạn hiểu rõ hơn về MinIO và vai trò của Object Storage trong Data Pipeline. Hẹn gặp lại ở những bài viết tiếp theo.</p>
+<footer class="airflow-article-end minio-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 007</span>
+    <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
+  </div>
+  <a href="../../">Trở về thư viện <span aria-hidden="true">→</span></a>
+</footer>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/reading-language.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>
