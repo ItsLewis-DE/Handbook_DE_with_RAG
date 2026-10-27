@@ -36,6 +36,13 @@ Trong một **Data Pipeline**, MinIO thường đóng vai trò là **lớp lưu 
 
 Dữ liệu sau khi được trích xuất (**Extract**) có thể được đưa vào MinIO dưới dạng các tệp CSV, JSON hoặc Parquet để lưu trữ trước khi xử lý. Tiếp theo, các công cụ xử lý dữ liệu như **Apache Spark** có thể đọc trực tiếp dữ liệu từ MinIO thông qua giao thức tương thích S3, thực hiện các tác vụ làm sạch, biến đổi (**Transform**) và ghi kết quả trở lại MinIO hoặc nạp vào Data Warehouse để phục vụ phân tích.
 
+<figure class="minio-article-figure">
+  <a href="../../assets/images/minio/Hand-Drawn%20Data%20Pipeline%20Flowchart.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/minio/Hand-Drawn%20Data%20Pipeline%20Flowchart.png" alt="Luồng dữ liệu từ API, cơ sở dữ liệu và tệp log qua Extract, MinIO và Spark đến MinIO hoặc Data Warehouse" loading="lazy" width="1774" height="887">
+  </a>
+  <figcaption>Hình 2. MinIO lưu trữ dữ liệu sau bước Extract; Spark đọc và xử lý dữ liệu, sau đó ghi kết quả trở lại MinIO hoặc nạp vào Data Warehouse.</figcaption>
+</figure>
+
 ## 3. Mô hình lưu trữ Object Storage
 
 Trong các hệ thống máy tính truyền thống, hệ điều hành thường lưu trữ dữ liệu bằng **Block Storage**, nơi dữ liệu được quản lý dưới dạng các khối lưu trữ. Khi làm việc với khối lượng dữ liệu phi cấu trúc hoặc bán cấu trúc rất lớn, đặc biệt trong môi trường Cloud Computing và Data Engineering, **Object Storage** trở thành một mô hình lưu trữ quan trọng.
@@ -68,7 +75,7 @@ DATA
 
 ### Cấu trúc logic qua Prefix
 
-Object Storage không tổ chức object thành các thư mục vật lý theo mô hình cây như trên máy tính cá nhân. Ví dụ, với object key `raw/2026/customers.csv`, các thư mục `raw` và `2026` chỉ là cấu trúc logic được mô phỏng thông qua **Prefix (tiền tố)** và dấu phân cách `/`.
+Object Storage sử dụng không gian tên phẳng (**Flat Namespace**) để quản lý các object, thay vì tổ chức chúng theo cấu trúc thư mục phân cấp như hệ thống tệp truyền thống. Ví dụ, với Object Key `raw/2026/customers.csv`, các thành phần `raw` và `2026` chỉ đóng vai trò mô phỏng thư mục thông qua **Prefix (tiền tố)** và ký tự phân cách `/`. Về mặt logic, đây là một Object Key hoàn chỉnh, không tồn tại mối quan hệ thư mục cha–con thực sự.
 
 ## 4. Các khái niệm cơ bản trong MinIO
 
@@ -119,15 +126,15 @@ Khác với các hệ thống lưu trữ phân tán khác, MinIO không sử d�
 
 ### Cấu trúc thư mục trên ổ đĩa
 
-Dưới tầng hệ điều hành, MinIO lưu trữ dữ liệu dưới dạng cấu trúc thư mục phẳng. Mỗi bucket tương ứng với một thư mục cùng tên ở thư mục gốc của ổ đĩa. Ví dụ, với tệp `raw_data/metrics.parquet`, cấu trúc bên dưới ổ đĩa như sau:
+Dưới tầng hệ điều hành, MinIO lưu trữ dữ liệu dưới dạng cấu trúc thư mục. Mỗi bucket tương ứng với một thư mục cùng tên ở thư mục gốc của ổ đĩa. Ví dụ, với tệp `raw-data/metrics.parquet`, cấu trúc bên dưới ổ đĩa như sau:
 
 ```text
 /mnt/disk-1/
-├── my-bucket/                         # Tương đương Bucket "my-bucket"
-│   └── raw-data/                      # Prefix (thư mục ảo trong S3)
-│       └── metrics.parquet/           # Object name được biểu diễn thành thư mục
-│           ├── xl.meta                # Metadata, thông tin versioning, checksum
-│           └── part.1
+└── my-bucket/                         # Tương đương Bucket "my-bucket"
+    └── raw-data/                      # Prefix (thư mục ảo trong S3)
+        └── metrics.parquet/           # Object name được biểu diễn thành thư mục
+            ├── xl.meta                # Metadata, thông tin versioning, checksum
+            └── part.1
 ```
 
 ### Phân bố dữ liệu trong Erasure Set
@@ -136,7 +143,14 @@ Với mỗi object key, ví dụ `lake/orders.parquet`, MinIO tạo một thư m
 
 Khi tải một tệp lên `lake/orders.parquet`, MinIO băm object key để xác định Erasure Set lưu trữ object đó. Sau đó, hệ thống sử dụng kỹ thuật **Reed–Solomon Erasure Coding** để chia object thành `K` mảnh dữ liệu (**Data Shards**) và `M` mảnh mã sửa lỗi.
 
-Mỗi drive trong Erasure Set chứa một hoặc nhiều mảnh này tùy cấu hình. Các mảnh không được lưu chung trong một drive vì nếu drive đó bị hỏng, toàn bộ các mảnh dữ liệu sẽ bị mất. Mỗi mảnh được lưu trên drive đi kèm một tệp `xl.meta`. Kỹ thuật Reed–Solomon Erasure Coding được trình bày kỹ hơn ở phần bên dưới.
+Đối với một object thông thường, mỗi drive giữ một shard. Tất cả các mảnh này không được lưu chung trong một drive vì nếu drive đó bị hỏng, toàn bộ các mảnh dữ liệu sẽ bị mất. Mỗi drive lưu metadata của object trong tệp `xl.meta` riêng. Kỹ thuật Reed–Solomon Erasure Coding được trình bày kỹ hơn ở phần bên dưới.
+
+<figure class="minio-article-figure">
+  <a href="../../assets/images/minio/MinIO%20Erasure%20Coding%20Drive%20Map.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/minio/MinIO%20Erasure%20Coding%20Drive%20Map.png" alt="Một object được chia thành 4 mảnh dữ liệu và 4 mảnh parity, phân bố trên 8 ổ đĩa trong Erasure Set; mỗi ổ lưu metadata trong tệp xl.meta" loading="lazy" width="1536" height="1024">
+  </a>
+  <figcaption>Hình 3. Ví dụ Erasure Set gồm 8 ổ đĩa với K = 4 và M = 4: mỗi ổ giữ một mảnh của object cùng metadata trong tệp <code>xl.meta</code>. Prefix là cấu trúc logic trong S3, còn phần dưới minh họa cách tổ chức trên ổ đĩa vật lý.</figcaption>
+</figure>
 
 ### Lưu trữ tệp nhỏ
 
@@ -188,6 +202,13 @@ Trong môi trường production, các hệ thống xử lý dữ liệu như Apa
 
 Nhờ kiến trúc phân tán không có Master Node (**Masterless**), mọi MinIO Node đều có khả năng tiếp nhận và xử lý yêu cầu từ client. Node nhận yêu cầu sẽ tự phối hợp với các node khác trong cluster khi cần thiết. Điều này giúp hệ thống tận dụng tài nguyên hiệu quả hơn, đồng thời cải thiện khả năng chịu lỗi và tính sẵn sàng của dịch vụ.
 
+<figure class="minio-article-figure">
+  <a href="../../assets/images/minio/Distributed%20MinIO%20Cluster%20Architecture.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/minio/Distributed%20MinIO%20Cluster%20Architecture.png" alt="Spark, Trino và các client gửi yêu cầu qua Load Balancer tới các node trong cụm MinIO; các node phối hợp với nhau để đọc và ghi dữ liệu" loading="lazy" width="1774" height="887">
+  </a>
+  <figcaption>Hình 4. Load Balancer phân phối yêu cầu từ Spark, Trino và các client đến các MinIO Node; mỗi node đều có thể tiếp nhận yêu cầu và phối hợp với các node khác trong cụm.</figcaption>
+</figure>
+
 ## 9. Ảnh hưởng của nhiều tệp nhỏ đến hiệu năng
 
 MinIO có thể gặp khó khăn khi xử lý quá nhiều tệp nhỏ. Mỗi tệp nhỏ được chia thành `N = K + M` mảnh lưu trên các ổ đĩa. Mỗi ổ đĩa tham gia lưu trữ object phải tạo thêm một tệp `xl.meta`. Số lượng tệp metadata quá lớn có thể làm giảm hiệu năng xử lý của hệ thống.
@@ -206,7 +227,7 @@ RAM của Linux có vùng đệm **Inode Cache / Dentry Cache (VFS Cache)** đ�
 
 ### Tiếp nhận yêu cầu
 
-Yêu cầu `GET Object` đi qua Load Balancer và được chuyển đến một MinIO Node bất kỳ. Node này kiểm tra tính hợp lệ và đối chiếu quyền theo IAM Policy, sau đó gửi lệnh nội bộ qua Grid Protocol tới các Server Pool và các node chứa dữ liệu để quét.
+Yêu cầu `GET Object` đi qua Load Balancer và được chuyển đến một MinIO Node bất kỳ. Node này kiểm tra tính hợp lệ của yêu cầu và quyền truy cập theo IAM Policy, sau đó xác định Server Pool và Erasure Set chứa object. Node tiếp nhận yêu cầu phối hợp với các node liên quan thông qua giao thức nội bộ để truy xuất dữ liệu.
 
 Tiếp theo, MinIO tương tác với nhân Linux. Tại từng ổ đĩa vật lý, MinIO gọi xuống nhân Linux để đọc cấu trúc thư mục đại diện cho prefix đó. Hệ điều hành trước tiên kiểm tra cache trên RAM.
 
