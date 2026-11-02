@@ -5,6 +5,20 @@ hide:
 - toc
 - navigation
 cards:
+  docker/docker.md:
+    order: -2
+    variant: ink
+    art: assets/images/docker/card-art.jpg
+    heading: Docker<br>Từ Image đến Container
+    summary: Dockerfile, Image, Container, lưu trữ, networking và tổ chức Data Pipeline bằng Docker Compose.
+    footer: DEVELOPER TOOLS
+  git/git.md:
+    order: -1
+    variant: git
+    art: assets/images/git/card-art.svg
+    heading: Cơ chế hoạt động<br>của Git
+    summary: Từ Working Directory, Staging Area và Object Database đến commit, nhánh và HEAD.
+    footer: DEVELOPER TOOLS
   postgres/postgres.md:
     order: 0
     variant: postgres

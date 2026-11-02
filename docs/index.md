@@ -49,12 +49,28 @@ hide:
         </div>
 
         <div class="article-deck-shell">
-          <div class="article-deck" tabindex="0" aria-label="Chồng 11 bài viết. Dùng nút điều hướng, phím mũi tên hoặc kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
-            <article class="article-sheet article-sheet--minio" data-article-title="MinIO và Object Storage" data-deck-position="current">
+          <div class="article-deck" tabindex="0" aria-label="Chồng 12 bài viết. Dùng nút điều hướng, phím mũi tên hoặc kéo tờ giấy sang trái để xem bài tiếp theo." aria-describedby="article-deck-help">
+            <article class="article-sheet article-sheet--git" data-article-title="Cơ chế hoạt động của Git" data-deck-position="current">
+              <div class="article-sheet__art" aria-hidden="true">
+                <img src="assets/images/git/card-art.svg" alt="" loading="lazy">
+              </div>
+              <div class="article-sheet__meta"><span>DEVELOPER TOOLS</span><b>01 / 12</b></div>
+              <div class="article-sheet__body">
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+                <h2>Cơ chế hoạt động<br>của Git</h2>
+                <p>Từ Working Directory, Staging Area và Object Database đến commit, nhánh và HEAD.</p>
+              </div>
+              <div class="article-sheet__foot">
+                <span>DEVELOPER TOOLS</span>
+                <a href="git/git/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
+            </article>
+
+            <article class="article-sheet article-sheet--minio" data-article-title="MinIO và Object Storage" data-deck-position="next">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/minio/card-art.webp" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>01 / 11</b></div>
+              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>02 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>MinIO<br>&amp; Object Storage</h2>
@@ -66,11 +82,11 @@ hide:
               </div>
             </article>
 
-            <article class="article-sheet article-sheet--postgres" data-article-title="PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ" data-deck-position="next">
+            <article class="article-sheet article-sheet--postgres" data-article-title="PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ" data-deck-position="back">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/postgres/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>02 / 11</b></div>
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>03 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>PostgreSQL (phần 1)<br>Phân cấp, tiến trình &amp; bộ nhớ</h2>
@@ -82,11 +98,11 @@ hide:
               </div>
             </article>
 
-            <article class="article-sheet article-sheet--postgres" data-article-title="PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi" data-deck-position="back">
+            <article class="article-sheet article-sheet--postgres" data-article-title="PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi" data-deck-position="hidden">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/postgres/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>03 / 11</b></div>
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>04 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>PostgreSQL (phần 2)<br>Truy vấn, lưu trữ &amp; phục hồi</h2>
@@ -102,7 +118,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/index/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>04 / 11</b></div>
+              <div class="article-sheet__meta"><span>DATABASE INTERNALS</span><b>05 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Index trong<br>cơ sở dữ liệu</h2>
@@ -118,7 +134,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/ware_lake_lw/card-art.png" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>05 / 11</b></div>
+              <div class="article-sheet__meta"><span>DATA ARCHITECTURE</span><b>06 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Data Lake, Warehouse<br>&amp; Data Mart</h2>
@@ -134,7 +150,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>06 / 11</b></div>
+              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>07 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Kiến trúc<br>Apache Spark (phần 1)</h2>
@@ -150,7 +166,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/spark/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>07 / 11</b></div>
+              <div class="article-sheet__meta"><span>DISTRIBUTED COMPUTING</span><b>08 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Kiến trúc<br>Apache Spark (phần 2)</h2>
@@ -166,7 +182,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/airflow/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>08 / 11</b></div>
+              <div class="article-sheet__meta"><span>ORCHESTRATION</span><b>09 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
                 <h2>Hiểu kiến trúc<br>Apache Airflow</h2>
@@ -182,7 +198,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/kafka/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>STREAMING</span><b>09 / 11</b></div>
+              <div class="article-sheet__meta"><span>STREAMING</span><b>10 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>Apache Kafka<br>internals</h2>
@@ -195,7 +211,7 @@ hide:
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/dbt/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>10 / 11</b></div>
+              <div class="article-sheet__meta"><span>TRANSFORMATION</span><b>11 / 12</b></div>
               <div class="article-sheet__body">
                 <span class="article-sheet__status">Trong lộ trình</span>
                 <h2>dbt: từ SQL<br>đến lineage</h2>
@@ -204,17 +220,20 @@ hide:
               <div class="article-sheet__foot"><span>Dự kiến</span><em>Chờ nghiên cứu</em></div>
             </article>
 
-            <article class="article-sheet article-sheet--planned article-sheet--ink" data-article-title="Docker và Kubernetes cho Data Engineer" data-deck-position="hidden">
+            <article class="article-sheet article-sheet--ink" data-article-title="Docker — Từ Image đến Container" data-deck-position="hidden">
               <div class="article-sheet__art" aria-hidden="true">
                 <img src="assets/images/docker/card-art.jpg" alt="" loading="lazy">
               </div>
-              <div class="article-sheet__meta"><span>INFRASTRUCTURE</span><b>11 / 11</b></div>
+              <div class="article-sheet__meta"><span>DEVELOPER TOOLS</span><b>12 / 12</b></div>
               <div class="article-sheet__body">
-                <span class="article-sheet__status">Trong lộ trình</span>
-                <h2>Docker &amp; Kubernetes<br>cho Data Engineer</h2>
-                <p>Từ một container đến workload dữ liệu có thể deploy, quan sát và phục hồi.</p>
+                <span class="article-sheet__status article-sheet__status--published">Đã xuất bản</span>
+                <h2>Docker<br>Từ Image đến Container</h2>
+                <p>Dockerfile, Image, lưu trữ, networking và tổ chức Data Pipeline bằng Compose.</p>
               </div>
-              <div class="article-sheet__foot"><span>Dự kiến</span><em>Chờ nghiên cứu</em></div>
+              <div class="article-sheet__foot">
+                <span>EDITION 09 · 2026</span>
+                <a href="docker/docker/">Mở bài viết <b aria-hidden="true">↗</b></a>
+              </div>
             </article>
           </div>
 
@@ -227,9 +246,9 @@ hide:
         </div>
 
         <div class="stack-card__footer">
-          <span><b>08</b> bài đã mở</span>
+          <span><b>09</b> bài đã mở</span>
           <span><b>03</b> bài sắp tới</span>
-          <span class="article-deck__count"><b>01</b> / 11</span>
+          <span class="article-deck__count"><b>01</b> / 12</span>
         </div>
       </div>
 
@@ -247,11 +266,46 @@ hide:
     </div>
 
     <div class="published-articles" aria-label="4 bài viết mới nhất">
+      <article class="published-article published-article--docker">
+        <span class="published-article__number" aria-hidden="true">09</span>
+        <div class="published-article__header">
+          <p class="published-article__meta">DEVELOPER TOOLS · ED. 09</p>
+          <span class="published-article__status">Mới nhất</span>
+        </div>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false">
+          <path class="diagram-route" d="M98 90H132M228 90H262"/>
+          <g class="diagram-node"><rect x="10" y="65" width="88" height="50" rx="6"/><text x="54" y="94">Dockerfile</text></g>
+          <g class="diagram-node diagram-node--accent"><rect x="132" y="65" width="96" height="50" rx="6"/><text x="180" y="94">IMAGE</text></g>
+          <g class="diagram-node"><rect x="262" y="65" width="88" height="50" rx="6"/><text x="306" y="94">Container</text></g>
+          <text class="diagram-caption" x="115" y="52">BUILD</text>
+          <text class="diagram-caption" x="245" y="52">RUN</text>
+        </svg>
+        <h3>Docker<br>Từ Image đến Container</h3>
+        <p>Dockerfile, Image, lưu trữ, networking và tổ chức Data Pipeline bằng Docker Compose.</p>
+        <a href="docker/docker/" aria-label="Đọc bài viết: Docker — Từ Image đến Container">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+      </article>
+
+      <article class="published-article published-article--git">
+        <span class="published-article__number" aria-hidden="true">08</span>
+        <div class="published-article__header">
+          <p class="published-article__meta">DEVELOPER TOOLS · ED. 08</p>
+        </div>
+        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false">
+          <path class="diagram-route" d="M90 155V40M90 115C90 80 270 115 270 75V40"/>
+          <g class="diagram-node"><circle cx="90" cy="155" r="14"/><circle cx="90" cy="115" r="14"/><circle cx="90" cy="40" r="14"/></g>
+          <g class="diagram-node diagram-node--accent"><circle cx="270" cy="75" r="14"/><circle cx="270" cy="40" r="14"/></g>
+          <text class="diagram-caption" x="90" y="185">MAIN</text>
+          <text class="diagram-caption" x="270" y="110">FEATURE</text>
+        </svg>
+        <h3>Cơ chế hoạt động<br>của Git</h3>
+        <p>Từ Working Directory, Staging Area và Object Database đến commit, nhánh và HEAD.</p>
+        <a href="git/git/" aria-label="Đọc bài viết: Cơ chế hoạt động của Git">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
+      </article>
+
       <article class="published-article published-article--minio">
         <span class="published-article__number" aria-hidden="true">07</span>
         <div class="published-article__header">
           <p class="published-article__meta">DATA ARCHITECTURE · ED. 07</p>
-          <span class="published-article__status">Mới nhất</span>
         </div>
         <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false">
           <path class="diagram-route" d="M68 69V94H180M292 69V94H180V121"/>
@@ -281,45 +335,6 @@ hide:
         <h3>Kiến trúc<br>Apache Spark (phần 2)</h3>
         <p>Các chiến lược Join, vai trò của RDD, giao tiếp PySpark và quản lý bộ nhớ Driver, Executor.</p>
         <a href="spark/p2/" aria-label="Đọc bài viết: Kiến trúc Apache Spark (phần 2)">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
-      </article>
-
-      <article class="published-article published-article--spark">
-        <span class="published-article__number" aria-hidden="true">05</span>
-        <div class="published-article__header">
-          <p class="published-article__meta">DISTRIBUTED COMPUTING · ED. 05</p>
-        </div>
-        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false">
-          <path class="diagram-route" d="M180 45V70M60 95V70H300V95M180 70V95M60 125V149M180 125V149M300 125V149"/>
-          <g class="diagram-node diagram-node--accent"><rect x="132" y="15" width="96" height="30" rx="6"/><text x="180" y="34">DRIVER</text></g>
-          <g class="diagram-node"><rect x="12" y="95" width="96" height="30" rx="6"/><text x="60" y="114">Executor</text></g>
-          <g class="diagram-node"><rect x="132" y="95" width="96" height="30" rx="6"/><text x="180" y="114">Executor</text></g>
-          <g class="diagram-node"><rect x="252" y="95" width="96" height="30" rx="6"/><text x="300" y="114">Executor</text></g>
-          <g class="diagram-node diagram-node--accent"><rect x="24" y="149" width="72" height="28" rx="6"/><text x="60" y="167">TASKS</text></g>
-          <g class="diagram-node diagram-node--accent"><rect x="144" y="149" width="72" height="28" rx="6"/><text x="180" y="167">TASKS</text></g>
-          <g class="diagram-node diagram-node--accent"><rect x="264" y="149" width="72" height="28" rx="6"/><text x="300" y="167">TASKS</text></g>
-          <circle class="diagram-signal" cx="180" cy="70" r="4"/>
-        </svg>
-        <h3>Kiến trúc<br>Apache Spark (phần 1)</h3>
-        <p>Từ Driver và Executor đến luồng thực thi Job, Stage, Task và cơ chế shuffle.</p>
-        <a href="spark/archi/" aria-label="Đọc bài viết: Kiến trúc Apache Spark (phần 1)">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
-      </article>
-
-      <article class="published-article published-article--postgres">
-        <span class="published-article__number" aria-hidden="true">04</span>
-        <div class="published-article__header">
-          <p class="published-article__meta">DATABASE INTERNALS · PHẦN 2</p>
-        </div>
-        <svg class="published-article__illustration" viewBox="0 0 360 196" fill="none" aria-hidden="true" focusable="false">
-          <path class="diagram-route" d="M98 49H130M230 49H260M310 64V107H180V137"/>
-          <g class="diagram-node"><rect x="8" y="34" width="90" height="30" rx="6"/><text x="53" y="53">PARSER</text></g>
-          <g class="diagram-node"><rect x="130" y="34" width="100" height="30" rx="6"/><text x="180" y="53">PLANNER</text></g>
-          <g class="diagram-node diagram-node--accent"><rect x="260" y="34" width="96" height="30" rx="6"/><text x="308" y="53">EXECUTOR</text></g>
-          <g class="diagram-node diagram-node--accent"><rect x="118" y="137" width="124" height="30" rx="6"/><text x="180" y="156">BUFFERS / WAL</text></g>
-          <circle class="diagram-signal" cx="180" cy="107" r="4"/>
-        </svg>
-        <h3>PostgreSQL (phần 2)<br>Truy vấn, lưu trữ &amp; phục hồi</h3>
-        <p>Hành trình SQL qua Parser, Planner, Executor đến bộ đệm, WAL, PGDATA và TOAST.</p>
-        <a href="postgres/p2/" aria-label="Đọc bài viết: PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi">Đọc bài viết <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 18 18 6M6 6h12v12"/></svg></b></a>
       </article>
     </div>
 

@@ -276,6 +276,14 @@ body:has(.airflow-article-hero) .md-typeset {
   content: "POSTGRESQL";
 }
 
+.git-article-hero::before {
+  content: "GIT";
+}
+
+.docker-article-hero::before {
+  content: "DOCKER";
+}
+
 .spark-article-hero::before {
   content: "SPARK";
   left: 50%;
@@ -943,6 +951,10 @@ body:has(.airflow-article-hero) .spark-article-end::after {
   content: "05";
 }
 
+body:has(.airflow-article-hero) .git-article-end::after {
+  content: "08";
+}
+
 .airflow-article-end {
   align-items: end;
   background: transparent;
@@ -1110,7 +1122,11 @@ body:has(.storage-article-hero) {
   content: "07";
 }
 
-.md-typeset .minio-article-figure {
+.docker-article-end::after {
+  content: "09";
+}
+
+.md-typeset :is(.minio-article-figure, .docker-article-figure) {
   margin: 1.5rem 0;
   max-width: var(--article-diagram-width, 39rem);
   text-align: left;
@@ -1121,18 +1137,18 @@ body:has(.storage-article-hero) {
   max-width: 32rem;
 }
 
-.md-typeset .minio-article-figure > a {
+.md-typeset :is(.minio-article-figure, .docker-article-figure) > a {
   cursor: zoom-in;
   display: block;
 }
 
-.md-typeset .minio-article-figure img {
+.md-typeset :is(.minio-article-figure, .docker-article-figure) img {
   display: block;
   height: auto;
   width: 100%;
 }
 
-.md-typeset .minio-article-figure figcaption {
+.md-typeset :is(.minio-article-figure, .docker-article-figure) figcaption {
   color: #7a817e;
   font-size: 0.65rem;
   font-style: normal;

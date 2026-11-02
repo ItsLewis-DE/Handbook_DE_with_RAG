@@ -79,7 +79,7 @@ Ví dụ câu hỏi: “Executor trong Airflow làm gì?” hoặc “shared_buf
 
 ## Nội dung trong thư viện
 
-Thư viện hiện có **8 bài viết tiếng Việt** trong bốn chủ đề; 7 bài có bản tiếng Anh song ngữ, còn bài MinIO hiện có bản tiếng Việt. Danh sách nguồn RAG gồm **4 bài**: Airflow, hai phần PostgreSQL và Index. Sau khi cập nhật tài liệu, cần chạy lại bước ingest để làm mới chỉ mục cục bộ.
+Thư viện hiện có **10 bài viết tiếng Việt** trong năm chủ đề; 7 bài có bản tiếng Anh song ngữ, còn bài MinIO, Git và Docker hiện có bản tiếng Việt. Danh sách nguồn RAG gồm **4 bài**: Airflow, hai phần PostgreSQL và Index. Sau khi cập nhật tài liệu, cần chạy lại bước ingest để làm mới chỉ mục cục bộ.
 
 | Chủ đề | Bài viết |
 | --- | --- |
@@ -87,8 +87,9 @@ Thư viện hiện có **8 bài viết tiếng Việt** trong bốn chủ đề;
 | Database Internals | [PostgreSQL phần 1 — Phân cấp, tiến trình và bộ nhớ](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/postgres/) · [PostgreSQL phần 2 — Truy vấn, lưu trữ và phục hồi](https://itslewis-de.github.io/Handbook_DE_with_RAG/postgres/p2/) · [Index trong cơ sở dữ liệu](https://itslewis-de.github.io/Handbook_DE_with_RAG/index/) |
 | Orchestration | [Kiến trúc Apache Airflow](https://itslewis-de.github.io/Handbook_DE_with_RAG/airflow/architecture/) |
 | Distributed Computing | [Kiến trúc Apache Spark](https://itslewis-de.github.io/Handbook_DE_with_RAG/spark/archi/) |
+| Developer Tools | [Cơ chế hoạt động của Git](https://itslewis-de.github.io/Handbook_DE_with_RAG/git/git/) · [Docker — Từ Image đến Container](https://itslewis-de.github.io/Handbook_DE_with_RAG/docker/docker/) |
 
-**Trong lộ trình:** Apache Kafka, dbt, Docker và Kubernetes cho Data Engineer.
+**Trong lộ trình:** Apache Kafka, dbt và Kubernetes cho Data Engineer.
 
 ## Hình ảnh demo
 

@@ -42,6 +42,9 @@ nav:
       - Kiến trúc Apache Spark (phần 2): spark/p2.md
       - "Apache Spark (Part 1): Architecture and Execution (English)": spark/archi.en.md
       - "Apache Spark (Part 2): Joins, RDD, and Memory (English)": spark/p2.en.md
+  - Developer Tools:
+      - Cơ chế hoạt động của Git: git/git.md
+      - "Docker — Từ Image đến ứng dụng nhiều Container": docker/docker.md
 
 hooks:
   - hooks/reading_languages.py
