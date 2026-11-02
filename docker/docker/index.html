@@ -1,0 +1,2399 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dockerfile, Image, Container, Docker Registry, Docker Engine, lưu trữ, networking và Docker Compose.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/docker/docker/">
+      
+      
+        <link rel="prev" href="../../git/git/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Docker — Từ Image đến ứng dụng nhiều Container - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/reading-language.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-docker-la-gi-va-tai-sao-can-su-dung" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand and navigation -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
+        </span>
+      </a>
+
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
+        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </nav>
+
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../ware_lake_lw/doc/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../minio/docs/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>MinIO và Object Storage</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/postgres/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M6 8v8m12-8v2a5 5 0 0 1-5 5H6"/></svg>
+              
+              <span class="library-panel__group-title">Developer Tools</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../git/git/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Cơ chế hoạt động của Git</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="./" aria-current="page">
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Docker — Từ Image đến ứng dụng nhiều Container</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/Handbook_DE_with_RAG" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/Handbook_DE_with_RAG
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse, and Data Mart (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../minio/docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MinIO và Object Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes in Databases (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Orchestration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cơ chế hoạt động của Git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker — Từ Image đến ứng dụng nhiều Container
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker — Từ Image đến ứng dụng nhiều Container
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-docker-la-gi-va-tai-sao-can-su-dung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Docker là gì và tại sao cần sử dụng?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-dockerfile-docker-image-va-docker-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Dockerfile, Docker Image và Docker Container
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Dockerfile, Docker Image và Docker Container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hinh-dung-qua-quy-trinh-lam-banh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hình dung qua quy trình làm bánh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-docker-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Docker Registry
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Docker Registry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cac-khai-niem-trong-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các khái niệm trong registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cac-loai-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các loại registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-docker-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Docker Engine
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Docker Engine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kien-truc-clientserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kiến trúc Client–Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quy-trinh-xu-ly-lenh-docker-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quy trình xử lý lệnh docker run
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-writable-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Writable Layer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Writable Layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#co-che-sao-chep-khi-chinh-sua-tep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cơ chế sao chép khi chỉnh sửa tệp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vong-oi-du-lieu-trong-writable-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vòng đời dữ liệu trong writable layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-luu-tru-du-lieu-voi-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Lưu trữ dữ liệu với Mount
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Lưu trữ dữ liệu với Mount">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#named-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Named Volume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bind-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bind Mount
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tmpfs-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tmpfs Mount
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-docker-networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Docker Networking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Docker Networking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ket-noi-bang-ten-container-hoac-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kết nối bằng tên container hoặc service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bridge-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bridge Network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#host-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cac-network-driver-khac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các network driver khác
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Docker Compose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Docker Compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-cau-hinh-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ cấu hình Docker Compose
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-docker-la-gi-va-tai-sao-can-su-dung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Docker là gì và tại sao cần sử dụng?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-dockerfile-docker-image-va-docker-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Dockerfile, Docker Image và Docker Container
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Dockerfile, Docker Image và Docker Container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hinh-dung-qua-quy-trinh-lam-banh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hình dung qua quy trình làm bánh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-docker-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Docker Registry
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Docker Registry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cac-khai-niem-trong-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các khái niệm trong registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cac-loai-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các loại registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-docker-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Docker Engine
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Docker Engine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kien-truc-clientserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kiến trúc Client–Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quy-trinh-xu-ly-lenh-docker-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quy trình xử lý lệnh docker run
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-writable-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Writable Layer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Writable Layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#co-che-sao-chep-khi-chinh-sua-tep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cơ chế sao chép khi chỉnh sửa tệp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vong-oi-du-lieu-trong-writable-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vòng đời dữ liệu trong writable layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-luu-tru-du-lieu-voi-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Lưu trữ dữ liệu với Mount
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Lưu trữ dữ liệu với Mount">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#named-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Named Volume
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bind-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bind Mount
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tmpfs-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tmpfs Mount
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-docker-networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Docker Networking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Docker Networking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ket-noi-bang-ten-container-hoac-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kết nối bằng tên container hoặc service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bridge-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bridge Network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#host-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Network
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cac-network-driver-khac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các network driver khác
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Docker Compose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Docker Compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-du-cau-hinh-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ví dụ cấu hình Docker Compose
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+<nav class="reading-language" aria-label="Ngôn ngữ đọc">
+  <div class="reading-language__options">
+  
+    <span class="reading-language__unavailable" lang="vi">Tiếng Việt · Chưa có bản tiếng Anh</span>
+  
+  </div>
+</nav>
+
+  
+                  
+  
+
+
+
+  
+  
+
+
+<header class="airflow-article-hero docker-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 009</span>
+  </div>
+  <h1>Docker<br><em>Từ Image đến Container</em></h1>
+  <p class="airflow-article-hero__dek">
+    Từ Dockerfile, Image và Container đến Docker Engine, lưu trữ,
+    kết nối mạng và quản lý ứng dụng nhiều container bằng Docker Compose.
+  </p>
+  <div class="airflow-article-hero__meta" aria-label="Thông tin bài viết">
+    <span>DEVELOPER TOOLS</span>
+    <span>EDITION 09 · 2026</span>
+  </div>
+</header>
+
+<h2 id="1-docker-la-gi-va-tai-sao-can-su-dung">1. Docker là gì và tại sao cần sử dụng?</h2>
+<p><strong>Docker</strong> là một nền tảng mã nguồn mở sử dụng công nghệ ảo hóa ở cấp độ hệ điều hành (<strong>OS-level virtualization</strong>) để đóng gói ứng dụng cùng toàn bộ runtime, thư viện và cấu hình phụ thuộc vào một đơn vị độc lập gọi là <strong>container</strong>.</p>
+<p>Container giúp ứng dụng chạy nhất quán trên nhiều môi trường: từ máy tính cá nhân (<strong>local development</strong>), máy chủ staging nội bộ đến các cụm hạ tầng cloud phân tán.</p>
+<h2 id="2-dockerfile-docker-image-va-docker-container">2. Dockerfile, Docker Image và Docker Container</h2>
+<h3 id="dockerfile">Dockerfile</h3>
+<p><strong>Dockerfile</strong> là một tệp văn bản thuần túy với kích thước chỉ vài kilobyte (KB), đóng vai trò như một bản công thức để Docker Engine build một Docker Image hoàn chỉnh.</p>
+<p>Một Dockerfile tiêu chuẩn bao gồm các chỉ thị chính sau:</p>
+<table>
+<thead>
+<tr>
+<th>Chỉ thị</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FROM</code></td>
+<td>Định nghĩa base image. Các bước tiếp theo, như <code>ENV</code> và <code>RUN</code>, được xây dựng trên nền tảng của base image này.</td>
+</tr>
+<tr>
+<td><code>WORKDIR</code></td>
+<td>Thiết lập thư mục làm việc mặc định trong container cho các lệnh tiếp theo.</td>
+</tr>
+<tr>
+<td><code>ENV</code></td>
+<td>Khai báo các biến môi trường.</td>
+</tr>
+<tr>
+<td><code>RUN</code></td>
+<td>Thực thi các lệnh hệ thống.</td>
+</tr>
+<tr>
+<td><code>COPY</code></td>
+<td>Sao chép tệp, thư mục hoặc tài nguyên từ máy chủ (host) vào không gian thư mục bên trong image.</td>
+</tr>
+<tr>
+<td><code>USER</code></td>
+<td>Chuyển sang một user khác.</td>
+</tr>
+<tr>
+<td><code>ENTRYPOINT</code> và <code>CMD</code></td>
+<td>Định nghĩa lệnh thực thi mặc định khi container được khởi tạo từ image.</td>
+</tr>
+</tbody>
+</table>
+<p>Cách kết hợp <code>ENTRYPOINT</code> và <code>CMD</code> có thể được biểu diễn như sau:</p>
+<div class="highlight"><pre><span></span><code>Lệnh thực thi hoàn chỉnh = [ENTRYPOINT] + [CMD]
+</code></pre></div>
+<p>Trong đó, <code>CMD</code> cung cấp các tham số cho <code>ENTRYPOINT</code>.</p>
+<h3 id="docker-image">Docker Image</h3>
+<p><strong>Docker Image</strong> là một bản chụp tĩnh (<strong>snapshot</strong>) hoặc một bản thiết kế (<strong>blueprint</strong>) đóng gói hoàn chỉnh ứng dụng. Đây là kết quả đầu ra khi chạy lệnh <code>docker build</code> từ Dockerfile.</p>
+<p>Image chứa toàn bộ những gì ứng dụng cần để vận hành, bao gồm mã nguồn (<strong>code</strong>), môi trường thực thi (<strong>runtime</strong>), các thư viện phụ thuộc (<strong>dependencies</strong>), biến môi trường và tệp cấu hình hệ thống.</p>
+<p>Một image được cấu thành từ chuỗi các lớp (<strong>layers</strong>) xếp chồng lên nhau. Mỗi layer đại diện cho một thay đổi so với layer trước đó, chẳng hạn thêm tệp, cài thư viện hoặc sửa cấu hình, và ở trạng thái <strong>chỉ đọc (read-only)</strong>. Các layer được hình thành từ image nền và những bước như <code>RUN</code>, <code>COPY</code>; về mặt lưu trữ, có thể hình dung mỗi layer như một thư mục trên máy chủ.</p>
+<p>Docker kiểm tra thay đổi của từng layer theo thứ tự từ trên xuống dưới. Khi một layer thay đổi, các layer phía sau nó phải được xây dựng lại.</p>
+<p>Trong các pipeline xử lý dữ liệu, mã nguồn ứng dụng thay đổi liên tục, còn các thư viện phụ thuộc như Pandas, PySpark, SQLAlchemy và DuckDB thường có tần suất cập nhật thấp hơn. Vì vậy, nên sao chép tệp cấu hình thư viện (<code>requirements.txt</code>) và cài đặt thư viện bằng <code>RUN pip install</code> trước, sau đó mới sao chép mã nguồn ứng dụng bằng <code>COPY src/ ./src/</code>.</p>
+<p>Dockerfile có thể được quản lý phiên bản bằng Git; các image được chia sẻ qua những kho lưu trữ như Docker Hub.</p>
+<h3 id="docker-container">Docker Container</h3>
+<p><strong>Docker Container</strong> là một thể hiện đang chạy (<strong>running instance</strong>) được khởi tạo từ Docker Image.</p>
+<p>Các đặc điểm chính:</p>
+<ul>
+<li>Các container chạy độc lập với nhau.</li>
+<li>Dữ liệu bên trong container mang tính tạm thời và bị mất khi container bị xóa, trừ khi được lưu qua mount.</li>
+<li>Một container thực chất là một tiến trình Linux thông thường (<strong>Linux process</strong>), chạy trực tiếp trên kernel của máy chủ.</li>
+</ul>
+<h3 id="hinh-dung-qua-quy-trinh-lam-banh">Hình dung qua quy trình làm bánh</h3>
+<p>Có thể hình dung quy trình này như việc làm bánh:</p>
+<ul>
+<li><strong>Dockerfile</strong> là tờ công thức ghi chi tiết từng bước: cần nguyên liệu gì, định lượng ra sao và nướng ở nhiệt độ nào.</li>
+<li><strong>Docker Image</strong> là hộp bột bánh pha sẵn, được đóng gói và niêm phong theo công thức để dễ lưu trữ hoặc gửi đến bất kỳ căn bếp nào.</li>
+<li><strong>Docker Container</strong> là chiếc bánh thực tế đã được nướng từ hộp bột ấy. Từ một hộp bột chuẩn, bạn có thể tạo ra nhiều chiếc bánh tương tự nhau.</li>
+</ul>
+<h2 id="3-docker-registry">3. Docker Registry</h2>
+<p><strong>Docker Registry</strong> là hệ thống quản lý, lưu trữ tập trung (<strong>central storage &amp; distribution system</strong>) và phân phối Docker Image. Có thể hình dung registry tương tự GitHub, nhưng dành cho container image thay vì mã nguồn.</p>
+<h3 id="cac-khai-niem-trong-registry">Các khái niệm trong registry</h3>
+<table>
+<thead>
+<tr>
+<th>Khái niệm</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Registry</strong></td>
+<td>Máy chủ cung cấp dịch vụ lưu trữ.</td>
+</tr>
+<tr>
+<td><strong>Repository</strong></td>
+<td>Không gian lưu trữ tập hợp các phiên bản của một loại image cụ thể bên trong registry.</td>
+</tr>
+<tr>
+<td><strong>Tag / Image Digest</strong></td>
+<td>Định danh phiên bản cụ thể của image trong repository.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cac-loai-registry">Các loại registry</h3>
+<ul>
+<li><strong>Public registry:</strong> Kho lưu trữ công khai, chẳng hạn Docker Hub và GitHub Container Registry.</li>
+<li><strong>Private registry:</strong> Dùng cho dự án nội bộ nhằm bảo vệ bản quyền mã nguồn, dữ liệu nhạy cảm và đáp ứng các quy định bảo mật doanh nghiệp. Ví dụ: AWS ECR.</li>
+<li><strong>Self-hosted registry:</strong> Do doanh nghiệp tự triển khai trên hạ tầng riêng. Ví dụ: Docker Registry v2, bản mã nguồn mở do Docker cung cấp.</li>
+</ul>
+<h2 id="4-docker-engine">4. Docker Engine</h2>
+<p><strong>Docker Engine</strong> là môi trường thực thi (<strong>runtime</strong>) cốt lõi được cài đặt trực tiếp trên máy chủ hoặc máy tính cá nhân. Nó cung cấp hạ tầng để chuyển đổi mã nguồn và tệp cấu hình thành Docker Image, đồng thời điều phối việc vận hành Docker Container.</p>
+<h3 id="kien-truc-clientserver">Kiến trúc Client–Server</h3>
+<p>Docker Engine hoạt động theo mô hình <strong>Client–Server</strong>, gồm ba thành phần chính:</p>
+<ul>
+<li><strong>Docker CLI (client):</strong> Giao diện dòng lệnh cho phép người dùng tương tác qua các lệnh như <code>docker build</code>, <code>docker run</code> và <code>docker ps</code>.</li>
+<li><strong>Docker REST API:</strong> Giao diện lập trình trung gian, chuyển tiếp chỉ thị từ Docker CLI hoặc công cụ bên ngoài tới Docker Daemon.</li>
+<li><strong>Docker Daemon (<code>dockerd</code>):</strong> Dịch vụ chạy ngầm (<strong>background process</strong>), đóng vai trò xử lý chính của Docker Engine. Daemon lắng nghe yêu cầu từ REST API và trực tiếp quản lý các đối tượng (<strong>objects</strong>) trong Docker.</li>
+</ul>
+<figure class="docker-article-figure">
+  <a href="../../assets/images/docker/docker-lifecycle.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/docker/docker-lifecycle.png" alt="Mối quan hệ giữa Dockerfile, image, container, Docker Registry và các thành phần Docker Engine" loading="lazy" width="1536" height="1024">
+  </a>
+  <figcaption>Hình 1. Dockerfile, image và container trong mô hình hoạt động của Docker Engine.</figcaption>
+</figure>
+
+<h3 id="quy-trinh-xu-ly-lenh-docker-run">Quy trình xử lý lệnh <code>docker run</code></h3>
+<p>Khi người dùng nhập <code>docker run</code>, ba thành phần phối hợp như sau:</p>
+<ol>
+<li><strong>Tiếp nhận chỉ thị:</strong> Docker CLI đóng gói lệnh thành yêu cầu REST API rồi chuyển đến Docker Daemon qua Unix socket hoặc kết nối mạng.</li>
+<li><strong>Kiểm tra image:</strong> Daemon kiểm tra image tương ứng đã có trong kho lưu trữ cục bộ hay chưa. Nếu chưa có, daemon kết nối đến Docker Registry, chẳng hạn Docker Hub, để kéo (<strong>pull</strong>) image về máy.</li>
+<li><strong>Khởi tạo container:</strong> Daemon giao tiếp với kernel của hệ điều hành máy chủ để cấp phát tài nguyên phần cứng, thiết lập mạng, mount các volume nếu có và khởi tạo Docker Container.</li>
+<li><strong>Trả kết quả:</strong> Thông tin trạng thái vận hành được gửi về Docker Client để hiển thị cho người dùng.</li>
+</ol>
+<h2 id="5-writable-layer">5. Writable Layer</h2>
+<p>Mỗi Docker Image được cấu thành từ các lớp dữ liệu chỉ đọc (<strong>read-only image layers</strong>) xếp chồng lên nhau. Các lớp này ở trạng thái tĩnh và không thể thay đổi sau khi image được tạo.</p>
+<p>Khi khởi tạo container từ image bằng <code>docker run</code>, Docker Engine bổ sung một lớp mỏng có quyền đọc–ghi (<strong>read-write layer</strong>, hay <strong>writable layer</strong>) lên trên cùng. Lớp này cho phép container thay đổi dữ liệu mà không ảnh hưởng đến image gốc.</p>
+<p>Một image có thể được nhiều container sử dụng. Nếu một container sửa trực tiếp image gốc, thay đổi đó sẽ ảnh hưởng tới các container khác. Writable layer giúp tách riêng những thay đổi của từng container.</p>
+<h3 id="co-che-sao-chep-khi-chinh-sua-tep">Cơ chế sao chép khi chỉnh sửa tệp</h3>
+<p>Khi tiến trình cần sửa một tệp đã tồn tại trong image layer chỉ đọc, Docker sao chép tệp đó lên writable layer. Việc chỉnh sửa chỉ diễn ra trên bản sao này; tệp gốc trong image layer vẫn được giữ nguyên.</p>
+<figure class="docker-article-figure">
+  <a href="../../assets/images/docker/image-layers.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/docker/image-layers.png" alt="Các container dùng chung image layer chỉ đọc và có writable layer riêng để ghi thay đổi" loading="lazy" width="1536" height="1024">
+  </a>
+  <figcaption>Hình 2. Mỗi container có writable layer riêng trên các image layer chỉ đọc.</figcaption>
+</figure>
+
+<h3 id="vong-oi-du-lieu-trong-writable-layer">Vòng đời dữ liệu trong writable layer</h3>
+<p>Khi container dừng bằng <code>docker stop</code>, writable layer vẫn tồn tại. Khi container bị xóa bằng <code>docker rm</code>, toàn bộ dữ liệu trong writable layer bị xóa theo.</p>
+<h2 id="6-luu-tru-du-lieu-voi-mount">6. Lưu trữ dữ liệu với Mount</h2>
+<p>Dữ liệu phát sinh trong quá trình vận hành nằm trên writable layer và bị mất khi container bị xóa. Để duy trì dữ liệu bền vững (<strong>persistent storage</strong>) hoặc chia sẻ dữ liệu giữa máy chủ (<strong>host</strong>) và container, Docker cung cấp ba cơ chế mount chính: <strong>Named Volume</strong>, <strong>Bind Mount</strong> và <strong>tmpfs Mount</strong>.</p>
+<figure class="docker-article-figure">
+  <a href="../../assets/images/docker/storage-mounts.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/docker/storage-mounts.png" alt="Ba cơ chế lưu trữ của Docker: named volume, bind mount và tmpfs mount" loading="lazy" width="1536" height="1024">
+  </a>
+  <figcaption>Hình 3. Named volume, bind mount và tmpfs mount.</figcaption>
+</figure>
+
+<h3 id="named-volume">Named Volume</h3>
+<p><strong>Named volume</strong> được Docker Engine quản lý. Khi container dừng hoặc bị xóa, volume vẫn tồn tại.</p>
+<p>Khi khai báo named volume, Docker Engine tạo một thư mục trên host để chứa dữ liệu và quản lý quyền truy cập thư mục đó. Khi container khởi chạy, Docker mount thư mục này vào đường dẫn được chỉ định bên trong container.</p>
+<p>Mọi thao tác ghi tại đường dẫn đã mount thực chất ghi trực tiếp vào vùng lưu trữ trên host, thay vì writable layer và cơ chế lưu trữ layer của container. Named volume thường được dùng để duy trì dữ liệu bền vững cho cơ sở dữ liệu.</p>
+<h3 id="bind-mount">Bind Mount</h3>
+<p><strong>Bind mount</strong> ánh xạ trực tiếp một tệp hoặc thư mục cụ thể trên host vào không gian lưu trữ của container.</p>
+<p>Ví dụ, khi mount thư mục <code>./data</code> trên host vào thư mục dữ liệu trong container, các thay đổi đối với tệp trên host sẽ được phản ánh trong thư mục tương ứng của container.</p>
+<h3 id="tmpfs-mount">tmpfs Mount</h3>
+<p><strong>tmpfs mount</strong> ghi dữ liệu vào bộ nhớ RAM của host (<strong>host memory</strong>), thay vì writable layer của container. Cơ chế lưu trữ trong RAM cho phép đọc/ghi nhanh; khi container dừng hoặc bị xóa, dữ liệu trên tmpfs được giải phóng và không được giữ lại.</p>
+<h2 id="7-docker-networking">7. Docker Networking</h2>
+<p>Các container hoạt động độc lập, nhưng nhiều ứng dụng cần chúng giao tiếp với nhau. <strong>Docker Networking</strong> là cơ chế ảo hóa mạng cho phép container kết nối với nhau, với hệ điều hành máy chủ (<strong>Host OS</strong>) hoặc với mạng bên ngoài (<strong>Internet / External Network</strong>). Cơ chế này giúp phân tách các nhóm container và tăng khả năng cô lập mạng giữa các dịch vụ.</p>
+<p>Khi hai container cùng tham gia một Docker Network, chúng có thể giao tiếp qua mạng nội bộ. Những container thuộc Docker Network khác mặc định không thể kết nối trực tiếp với chúng qua địa chỉ IP nội bộ.</p>
+<h3 id="ket-noi-bang-ten-container-hoac-service">Kết nối bằng tên container hoặc service</h3>
+<p>Địa chỉ IP của container có thể thay đổi khi container dừng rồi khởi động lại hoặc khi nhiều container khởi động theo thứ tự khác nhau. Việc ghi cứng (<strong>hardcode</strong>) IP giữa các dịch vụ, chẳng hạn để Python kết nối PostgreSQL qua <code>172.18.0.3</code>, vì vậy dễ khiến ứng dụng mất kết nối.</p>
+<p>Trong mạng do người dùng tạo, Docker Engine cung cấp DNS nội bộ tại địa chỉ <code>127.0.0.11</code>. Các container có thể tìm và kết nối với nhau qua <strong>tên container (container name)</strong> hoặc <strong>tên dịch vụ (service name)</strong> thay vì phụ thuộc vào IP động.</p>
+<h3 id="bridge-network">Bridge Network</h3>
+<p><strong>Bridge network</strong> tạo một cầu nối mạng ảo (<strong>virtual bridge</strong>) trên host và cấp địa chỉ IP nội bộ riêng cho từng container. Có hai loại bridge network:</p>
+<ul>
+<li><strong>Default bridge:</strong> Mạng mặc định khi chạy <code>docker run</code> mà không khai báo <code>--network</code>. Các container trong mạng này thường giao tiếp với nhau qua địa chỉ IP.</li>
+<li><strong>User-defined bridge:</strong> Mạng do người dùng tạo hoặc do Docker Compose tự động khởi tạo. Loại mạng này hỗ trợ phân giải DNS tự động để các container giao tiếp bằng tên.</li>
+</ul>
+<h3 id="host-network">Host Network</h3>
+<p>Khi sử dụng bridge network mặc định, Docker đặt container trong một không gian mạng riêng (<strong>network namespace</strong>), tách biệt với máy chủ.</p>
+<p>Với <strong>host network</strong> (<code>--network host</code>), container dùng chung ngăn xếp mạng (<strong>network stack</strong>) của host. Khi kiểm tra IP từ bên trong container, bạn sẽ thấy địa chỉ IP của host.</p>
+<h3 id="cac-network-driver-khac">Các network driver khác</h3>
+<table>
+<thead>
+<tr>
+<th>Driver</th>
+<th>Đặc điểm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>None</strong></td>
+<td>Vô hiệu hóa kết nối mạng của container, chỉ giữ giao diện loopback nội bộ (<code>127.0.0.1</code>); container không kết nối với Internet hay container khác.</td>
+</tr>
+<tr>
+<td><strong>Overlay</strong></td>
+<td>Tạo mạng ảo phân tán, kết nối nhiều Docker Daemon trên các máy chủ vật lý hoặc cloud thành một mạng thống nhất để container trên các host giao tiếp với nhau.</td>
+</tr>
+<tr>
+<td><strong>Macvlan</strong></td>
+<td>Gán địa chỉ MAC riêng cho container, giúp container xuất hiện như một thiết bị mạng độc lập.</td>
+</tr>
+<tr>
+<td><strong>IPvlan</strong></td>
+<td>Tương tự Macvlan, nhưng container có IP riêng và dùng chung địa chỉ MAC của host.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="8-docker-compose">8. Docker Compose</h2>
+<p>Khi dự án có nhiều container, việc quản lý các cấu hình riêng lẻ trở nên phức tạp. <strong>Docker Compose</strong> cho phép định nghĩa và điều phối ứng dụng nhiều container (<strong>multi-container application</strong>) thông qua một tệp cấu hình khai báo duy nhất, thường là <code>docker-compose.yml</code> hoặc <code>compose.yaml</code>.</p>
+<p>Thay vì nhập thủ công nhiều lệnh <code>docker run</code> với các thiết lập về cổng, mạng, biến môi trường và volume, Docker Compose tập hợp chúng trong một tệp và khởi tạo bằng một lệnh <code>docker compose up</code>.</p>
+<h3 id="vi-du-cau-hinh-docker-compose">Ví dụ cấu hình Docker Compose</h3>
+<p>Cấu hình dưới đây minh họa một pipeline Python và cơ sở dữ liệu PostgreSQL:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">'3.8'</span>
+
+<span class="c1"># 1. Định nghĩa Mạng nội bộ</span>
+<span class="nt">networks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">data_network</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bridge</span>
+
+<span class="c1"># 2. Định nghĩa Volumes lưu trữ bền vững</span>
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">postgres_data</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres_data</span>
+
+<span class="c1"># 3. Định nghĩa Danh sách Dịch vụ</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Dịch vụ Cơ sở dữ liệu Data Warehouse</span>
+<span class="w">  </span><span class="nt">postgres_warehouse</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15-alpine</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres_warehouse</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">POSTGRES_DB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+<span class="w">      </span><span class="nt">POSTGRES_USER_FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/db_user</span>
+<span class="w">      </span><span class="nt">POSTGRES_PASSWORD_FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/db_password</span>
+<span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_user</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_password</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"5433:5432"</span><span class="w"> </span><span class="c1"># Host Port 5433 -&gt; Container Port 5432</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres_data:/var/lib/postgresql/data</span><span class="w"> </span><span class="c1"># Named Volume</span>
+<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data_network</span>
+<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span><span class="w"> </span><span class="c1"># Kiểm tra trạng thái sẵn sàng</span>
+<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"CMD-SHELL"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"pg_isready</span><span class="nv"> </span><span class="s">-U</span><span class="nv"> </span><span class="s">root</span><span class="nv"> </span><span class="s">-d</span><span class="nv"> </span><span class="s">warehouse"</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+
+<span class="w">  </span><span class="c1"># Dịch vụ Pipeline xử lý dữ liệu bằng Python</span>
+<span class="w">  </span><span class="nt">data_pipeline</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python_etl_job</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">DB_HOST</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres_warehouse</span><span class="w"> </span><span class="c1"># Kết nối qua Service Name nhờ DNS</span>
+<span class="w">      </span><span class="nt">DB_PORT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+<span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_password</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./src:/app/src</span><span class="w"> </span><span class="c1"># Bind Mount đồng bộ code</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">postgres_warehouse</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_healthy</span><span class="w"> </span><span class="c1"># Chỉ chạy khi DB đã sẵn sàng</span>
+<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data_network</span>
+<span class="w">    </span><span class="nt">deploy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">cpus</span><span class="p">:</span><span class="w"> </span><span class="s">'2.0'</span>
+<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2G</span><span class="w"> </span><span class="c1"># Giới hạn tài nguyên</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on-failure</span>
+
+<span class="nt">secrets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">db_user</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/db_user.txt</span>
+<span class="w">  </span><span class="nt">db_password</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/db_password.txt</span>
+</code></pre></div>
+<figure class="docker-article-figure">
+  <a href="../../assets/images/docker/compose-network.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/docker/compose-network.png" alt="Pipeline Python và PostgreSQL cùng tham gia data_network, sử dụng volume, bind mount và secret trong Docker Compose" loading="lazy" width="1536" height="1024">
+  </a>
+  <figcaption>Hình 4. Các dịch vụ, kết nối mạng và vùng lưu trữ trong ví dụ Docker Compose.</figcaption>
+</figure>
+
+<footer class="airflow-article-end docker-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 009</span>
+    <strong>Hiểu cách đóng gói,<br>chủ động khi triển khai.</strong>
+  </div>
+  <a href="../../library/">Trở về thư viện <span aria-hidden="true">→</span></a>
+</footer>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/reading-language.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>

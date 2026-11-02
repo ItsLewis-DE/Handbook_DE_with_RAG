@@ -1,0 +1,1863 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Từ Working Directory, Staging Area và Object Database đến cách Git tạo commit, quản lý nhánh và cập nhật HEAD.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/git/git/">
+      
+      
+        <link rel="prev" href="../../spark/p2.en/">
+      
+      
+        <link rel="next" href="../../docker/docker/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Cơ chế hoạt động của Git - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/reading-language.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mo-au" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand and navigation -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
+        </span>
+      </a>
+
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
+        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </nav>
+
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../ware_lake_lw/doc/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../minio/docs/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>MinIO và Object Storage</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/postgres/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M6 8v8m12-8v2a5 5 0 0 1-5 5H6"/></svg>
+              
+              <span class="library-panel__group-title">Developer Tools</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="./" aria-current="page">
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Cơ chế hoạt động của Git</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../docker/docker/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Docker — Từ Image đến ứng dụng nhiều Container</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/Handbook_DE_with_RAG" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/Handbook_DE_with_RAG
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse, and Data Mart (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../minio/docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MinIO và Object Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes in Databases (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Orchestration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cơ chế hoạt động của Git
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cơ chế hoạt động của Git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mo-au" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mở đầu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#git-va-github-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git và GitHub là gì?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git và GitHub là gì?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ba-khu-vuc-lam-viec-trong-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ba khu vực làm việc trong Git
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ieu-gi-xay-ra-khi-chay-git-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Điều gì xảy ra khi chạy git add?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Điều gì xảy ra khi chạy git add?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#object-database-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Object Database là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tai-sao-git-ghi-vao-object-database-ngay-khi-git-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tại sao Git ghi vào Object Database ngay khi git add?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tep-nhi-phan-gitindex-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tệp nhị phân .git/index là gì?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ieu-gi-xay-ra-khi-chay-git-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Điều gì xảy ra khi chạy git commit?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nhanh-trong-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nhánh trong Git
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Nhánh trong Git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chuyen-nhanh-voi-git-switch-va-vai-tro-cua-head" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chuyển nhánh với git switch và vai trò của HEAD
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker — Từ Image đến ứng dụng nhiều Container
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mo-au" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mở đầu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#git-va-github-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git và GitHub là gì?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git và GitHub là gì?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ba-khu-vuc-lam-viec-trong-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ba khu vực làm việc trong Git
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ieu-gi-xay-ra-khi-chay-git-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Điều gì xảy ra khi chạy git add?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Điều gì xảy ra khi chạy git add?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#object-database-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Object Database là gì?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tai-sao-git-ghi-vao-object-database-ngay-khi-git-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tại sao Git ghi vào Object Database ngay khi git add?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tep-nhi-phan-gitindex-la-gi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tệp nhị phân .git/index là gì?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ieu-gi-xay-ra-khi-chay-git-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Điều gì xảy ra khi chạy git commit?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nhanh-trong-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nhánh trong Git
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Nhánh trong Git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chuyen-nhanh-voi-git-switch-va-vai-tro-cua-head" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chuyển nhánh với git switch và vai trò của HEAD
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+<nav class="reading-language" aria-label="Ngôn ngữ đọc">
+  <div class="reading-language__options">
+  
+    <span class="reading-language__unavailable" lang="vi">Tiếng Việt · Chưa có bản tiếng Anh</span>
+  
+  </div>
+</nav>
+
+  
+                  
+  
+
+
+
+  
+  
+
+
+<header class="airflow-article-hero git-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 008</span>
+  </div>
+  <h1>Cơ chế hoạt động<br><em>của Git</em></h1>
+  <p class="airflow-article-hero__dek">
+    Từ Working Directory, Staging Area và Object Database đến cách Git tạo commit,
+    quản lý nhánh và cập nhật HEAD.
+  </p>
+  <div class="airflow-article-hero__meta" aria-label="Thông tin bài viết">
+    <span>DEVELOPER TOOLS</span>
+    <span>EDITION 08 · 2026</span>
+  </div>
+</header>
+
+<h2 id="mo-au">Mở đầu</h2>
+<p>Bạn thường xuyên sử dụng Git và GitHub, nhưng công việc hằng ngày chỉ xoay quanh vài câu lệnh quen thuộc như <code>git add .</code>, <code>git commit</code> rồi <code>git push</code>? Mọi thứ vẫn ổn cho đến khi cần chỉnh cấu hình, chuyển nhánh hoặc gặp một thông báo lỗi mà bạn chẳng biết bắt đầu xử lý từ đâu. Bạn nhờ AI, chạy theo hướng dẫn và cuối cùng cũng giải quyết được, nhưng vẫn chưa hiểu chuyện gì vừa xảy ra.</p>
+<p>Nếu thấy mình trong đó, bài viết này dành cho bạn.</p>
+<p>Để hiểu Git, hãy bắt đầu từ những thao tác bạn vẫn làm mỗi ngày: <code>git add</code> thực sự lưu những gì? Khi chạy <code>git commit</code>, Git ghi lại trạng thái dự án như thế nào? Một branch là gì, và vì sao chuyển nhánh lại có thể làm nội dung trong thư mục thay đổi?</p>
+<p>Bài viết sẽ lần lượt giải thích những cơ chế này, từ Working Directory, Staging Area và Repository đến cách Git lưu dữ liệu, liên kết các commit và xác định nhánh hiện tại thông qua HEAD. Khi hiểu điều gì diễn ra phía sau mỗi câu lệnh, bạn sẽ có cơ sở để tự tìm nguyên nhân khi gặp lỗi và hiểu được những hướng dẫn mà mình đang làm theo.</p>
+<h2 id="git-va-github-la-gi">Git và GitHub là gì?</h2>
+<h3 id="git-la-gi">Git là gì?</h3>
+<p>Git là một hệ thống quản lý phiên bản phân tán, giúp bạn ghi lại lịch sử thay đổi của dự án. Nhờ đó, bạn có thể xem lại những phiên bản trước, so sánh nội dung giữa các lần thay đổi và phối hợp làm việc với người khác.</p>
+<p>Sở dĩ nó được gọi là phân tán là vì mỗi khi bạn nhân bản (clone) một dự án, máy tính của bạn sẽ lưu trữ một bản sao hoàn chỉnh 100% của toàn bộ dự án — bao gồm tất cả lịch sử commit, các nhánh (branches), nhãn (tags) và cơ sở dữ liệu phiên bản từ ngày đầu tiên — chứ không chỉ là phiên bản mã nguồn mới nhất.</p>
+<p>Trong Git, một commit ghi nhận trạng thái của dự án tại một thời điểm, kèm thông tin như tác giả, thông điệp mô tả và liên kết đến commit cha nếu có. Những liên kết này giúp Git lần ngược lại lịch sử của dự án.</p>
+<h3 id="github-la-gi">GitHub là gì?</h3>
+<p>GitHub là một nền tảng lưu trữ các kho Git trực tuyến và hỗ trợ cộng tác phát triển phần mềm. Khi đưa dự án lên GitHub, bạn có thể chia sẻ mã nguồn, theo dõi vấn đề qua Issues và đề xuất thay đổi để mọi người cùng xem xét qua Pull Requests.</p>
+<p>Git quản lý phiên bản; GitHub cung cấp nơi lưu trữ kho Git và các công cụ để làm việc cùng nhau. Bạn có thể sử dụng Git trên máy mà không cần có tài khoản GitHub.</p>
+<p>Ví dụ, khi chạy <code>git add</code> và <code>git commit</code>, bạn đang thao tác với Git trên máy mình. Commit vừa tạo vẫn nằm trong kho cục bộ. Khi chạy <code>git push</code> đến một kho trên GitHub, bạn mới gửi các commit lên đó để người khác có thể truy cập theo quyền được cấp.</p>
+<p>Vậy trước khi tìm hiểu chuyện gì xảy ra trên GitHub, hãy bắt đầu với điều xảy ra ngay trên máy bạn khi chạy <code>git add</code>.</p>
+<h2 id="ba-khu-vuc-lam-viec-trong-git">Ba khu vực làm việc trong Git</h2>
+<p>Trong Git, một tệp tin di chuyển qua ba khu vực:</p>
+<ul>
+<li><strong>Working Directory (cây làm việc):</strong> Nơi bạn thao tác trực tiếp với các tệp tin trên hệ điều hành.</li>
+<li><strong>Staging Area (Index):</strong> Nơi đăng ký trước các thay đổi dự kiến sẽ được lưu vào lịch sử.</li>
+<li><strong>Repository (<code>.git/</code>):</strong> Nơi lưu trữ các snapshot (commit) dưới dạng cơ sở dữ liệu đối tượng (Object Database).</li>
+</ul>
+<h2 id="ieu-gi-xay-ra-khi-chay-git-add">Điều gì xảy ra khi chạy <code>git add</code>?</h2>
+<p>Khi bạn chạy câu lệnh <code>git add &lt;file&gt;</code>, Git đọc nội dung tệp từ Working Directory, thêm header, tính toán mã băm SHA rồi nén toàn bộ bằng thuật toán zlib. Mã băm SHA này được sử dụng làm <strong>Object ID</strong>. Sau khi tính SHA và xác định Object ID, Git có thể kiểm tra xem object tương ứng đã tồn tại trong Object Database hay chưa:</p>
+<ul>
+<li><strong>Nếu chưa tồn tại:</strong> Git lưu Blob Object mới.</li>
+<li><strong>Nếu đã tồn tại:</strong> Git có thể tái sử dụng object cũ mà không cần lưu thêm bản sao.</li>
+</ul>
+<p>Ví dụ, với tệp <code>hello.txt</code> chứa <code>Hello Git</code>, Git tạo dữ liệu logic cho Blob Object như sau:</p>
+<div class="highlight"><pre><span></span><code>blob 9\0Hello Git
+</code></pre></div>
+<p>Git tính SHA trên toàn bộ dữ liệu này để tạo Object ID. Cuối cùng, Git cập nhật Staging Area, hay còn gọi là Index, bằng cách ghi vào tệp nhị phân <code>.git/index</code>.</p>
+<h3 id="object-database-la-gi">Object Database là gì?</h3>
+<p><strong>Object Database (ODB)</strong> của Git là một kho lưu trữ đối tượng bất biến (Immutable Object Store), hoạt động theo mô hình <strong>Content-Addressable Storage</strong>. Có thể hiểu đây là một cơ sở dữ liệu Key-Value, thường nằm tại thư mục <code>.git/objects/</code>. Trong đó, Key là Object ID, còn Value là Git Object tương ứng.</p>
+<p>ODB lưu trữ bốn loại Git Object cốt lõi:</p>
+<ul>
+<li><strong>Blob:</strong> Chứa nội dung của tệp dưới dạng dữ liệu byte, không lưu tên tệp hay đường dẫn.</li>
+<li><strong>Tree:</strong> Biểu diễn cấu trúc thư mục, chứa các entry ánh xạ tên tệp hoặc thư mục đến Object ID của Blob hoặc Tree tương ứng, cùng thông tin file mode.</li>
+<li><strong>Commit:</strong> Đại diện cho một snapshot của repository, lưu tham chiếu đến Root Tree và các Parent Commit (nếu có), cùng thông tin tác giả (Author), người tạo commit (Committer), thời gian và Commit Message.</li>
+<li><strong>Tag (Annotated Tag):</strong> Là Git Object dùng để gắn nhãn cho một object khác, thường là Commit. Nó chứa Object ID của đối tượng được tham chiếu, tên tag, thông tin người tạo, thông điệp và có thể kèm chữ ký số.</li>
+</ul>
+<p>Do tính chất Immutable, các Git Object không bị chỉnh sửa trực tiếp sau khi được tạo. Khi nội dung thay đổi, Git tạo ra object mới với Object ID tương ứng thay vì ghi đè object cũ.</p>
+<h3 id="tai-sao-git-ghi-vao-object-database-ngay-khi-git-add">Tại sao Git ghi vào Object Database ngay khi <code>git add</code>?</h3>
+<ul>
+<li><strong>Bảo vệ dữ liệu tức thì (Data Durability):</strong> Ngay khi lệnh <code>git add</code> kết thúc, nội dung tệp tại thời điểm đó đã được lưu trong <code>.git/objects/</code>.</li>
+<li><strong>Giữ cho Staging Area gọn nhẹ:</strong> Tệp <code>.git/index</code> chỉ cần lưu thông tin tham chiếu, giúp việc truy cập nhanh hơn.</li>
+<li><strong>Tối ưu hóa hiệu năng của <code>git commit</code>:</strong> Các công đoạn đọc đĩa, tính toán mã băm và nén zlib đã được chia nhỏ và xử lý ở bước <code>git add</code>.</li>
+</ul>
+<p>Vì vậy, khi chạy <code>git commit</code>, Git không cần quét lại nội dung các tệp. Git chỉ cần ghi nhận trạng thái của <code>.git/index</code> thành các Tree Object và tạo một Commit Object trỏ tới Root Tree.</p>
+<h2 id="tep-nhi-phan-gitindex-la-gi">Tệp nhị phân <code>.git/index</code> là gì?</h2>
+<p>Tệp <code>.git/index</code> là một bảng mục lục nhị phân phẳng, ánh xạ giữa cây thư mục vật lý trên ổ đĩa với các đối tượng bên trong Git Object Database. Cấu trúc của một tệp Index:</p>
+<div class="highlight"><pre><span></span><code>+-----------------------------------------------------------------------+
+| 1. Header (12 bytes)                                                  |
++-----------------------------------------------------------------------+
+| 2. Index Entries (Nhiều bản ghi nối tiếp nhau)                        |
+|    - Stat Metadata (mtime, ctime, inode, size, mode, uid, gid)        |
+|    - Mã SHA của Blob (20 bytes hoặc 32 bytes)                         |
+|    - Flags (Stage flag, độ dài path...)                               |
+|    - Path name (Đường dẫn tương đối của tệp)                          |
++-----------------------------------------------------------------------+
+| 3. Extensions (Tùy chọn: Cached Tree, Untracked Cache...)             |
++-----------------------------------------------------------------------+
+| 4. Checksum (20 hoặc 32 bytes cuối tệp)                               |
++-----------------------------------------------------------------------+
+</code></pre></div>
+<p>Mỗi tệp được theo dõi bởi một Index Entry. Các entry được sắp xếp theo thứ tự tên đường dẫn để khi chạy <code>git add</code> với một tệp cụ thể, thuật toán tìm kiếm nhị phân (Binary Search) có thể nhanh chóng xác định vị trí tệp đó trong Index.</p>
+<p>Trong đó:</p>
+<ul>
+<li><strong>Header:</strong> Cho Git biết tệp có đúng định dạng Index không, phiên bản bao nhiêu và có bao nhiêu entry.</li>
+<li><strong>Index Entries:</strong> Chứa thông tin của từng đường dẫn, bao gồm đường dẫn tương đối, Object ID, metadata và flags.</li>
+<li><strong>Extensions:</strong> Các cấu trúc bổ sung dùng để tối ưu hóa hoặc lưu thông tin đặc biệt.</li>
+<li><strong>Checksum:</strong> Kiểm tra tính toàn vẹn của nội dung Index.</li>
+</ul>
+<p>Index không lưu trực tiếp nội dung của các tệp mà lưu con trỏ SHA đến các đối tượng trong Object Database. Trong mục Path Name của Index Entry, đường dẫn không được chia thành cấu trúc thư mục mà được lưu dưới dạng một đường dẫn phẳng, ví dụ: <code>src/source</code>.</p>
+<h2 id="ieu-gi-xay-ra-khi-chay-git-commit">Điều gì xảy ra khi chạy <code>git commit</code>?</h2>
+<p>Khi bạn chạy <code>git commit</code>, Git thực hiện các bước sau:</p>
+<ol>
+<li>
+<p><strong>Xây dựng Tree Objects từ Git Index.</strong> Khi thực hiện <code>git commit</code> thông thường, Git sử dụng trạng thái đã được staging trong Index để xây dựng một snapshot của repository dưới dạng hệ thống Tree Objects.</p>
+<p>Dựa vào đó, Git xây dựng cấu trúc phân cấp: các Tree Objects đại diện cho thư mục, chứa các entry tham chiếu đến Blob Objects hoặc các Tree Objects con, cùng với tên và file mode tương ứng.</p>
+<p>Cuối cùng, Git xác định Object ID của Root Tree Object đại diện cho toàn bộ snapshot của repository. Những Tree Objects có nội dung không thay đổi có thể được tái sử dụng từ các commit trước.</p>
+</li>
+<li>
+<p><strong>Xác định commit cha.</strong> Git mở tệp <code>.git/HEAD</code> để xem bạn đang ở nhánh nào. Sau đó, Git đọc tệp tham chiếu của nhánh, chẳng hạn <code>.git/refs/heads/main</code>, để lấy mã SHA của commit hiện tại. Mã SHA này được chỉ định làm Parent của commit chuẩn bị tạo. Nếu đây là commit đầu tiên của dự án, commit sẽ không có Parent.</p>
+</li>
+<li><strong>Tạo nội dung Commit Object.</strong> Git tạo chuỗi văn bản hoàn chỉnh cho Commit Object.</li>
+<li><strong>Lưu Commit Object.</strong> Git tính toán mã băm SHA, nén lại và ghi xuống Object Database.</li>
+<li><strong>Cập nhật con trỏ nhánh.</strong> Git ghi mã SHA của commit vừa tạo vào tệp tham chiếu của nhánh hiện tại.</li>
+</ol>
+<h2 id="nhanh-trong-git">Nhánh trong Git</h2>
+<p>Một <strong>nhánh (Branch)</strong> trong Git là một tham chiếu có thể thay đổi (Movable Reference), trỏ đến một Commit Object cụ thể thông qua Object ID (SHA-1 hoặc SHA-256), thay vì lưu một bản sao hoàn chỉnh của dự án.</p>
+<p>Mỗi branch được biểu diễn bằng một tệp văn bản nhỏ nằm trong thư mục <code>.git/refs/heads/</code>. Ví dụ, khi tạo nhánh <code>feature</code> từ <code>main</code>, Git có thể tạo tệp <code>.git/refs/heads/feature</code> chứa Object ID của commit mà <code>main</code> đang trỏ đến.</p>
+<p>Ban đầu, cả hai branch cùng tham chiếu đến một Commit Object, do đó Git không cần sao chép các Blob Objects, Tree Objects hay Commit Objects. Khi bạn tạo một commit mới trên nhánh <code>feature</code>, Git tạo Commit Object mới trỏ ngược về commit cha trước đó và tự động cập nhật mã băm trong <code>.git/refs/heads/feature</code> để trỏ tới commit mới này.</p>
+<h3 id="chuyen-nhanh-voi-git-switch-va-vai-tro-cua-head">Chuyển nhánh với <code>git switch</code> và vai trò của HEAD</h3>
+<p>Lệnh <code>git switch</code> dùng để di chuyển con trỏ <strong>HEAD</strong> từ branch này sang branch khác, đồng thời cập nhật Working Directory và Staging Area (Index) tương ứng. Cơ chế hoạt động như sau:</p>
+<ol>
+<li><strong>Kiểm tra thay đổi chưa commit.</strong> Git kiểm tra xem Working Tree và Index có thay đổi chưa commit nào xung đột với branch đích không. Ví dụ, nếu <code>app.py</code> có thay đổi chưa commit và việc chuyển nhánh sẽ ghi đè các thay đổi đó, Git dừng lại và yêu cầu bạn commit trước khi chuyển nhánh. Nếu <code>app.py</code> ở cả hai nhánh giống nhau, Git có thể cho phép chuyển nhánh mà không báo lỗi.</li>
+<li><strong>Đồng bộ thư mục làm việc.</strong> Sau khi kiểm tra, Git đọc Tree Object của nhánh đích để cập nhật thư mục làm việc.</li>
+<li><strong>Cập nhật HEAD.</strong> Git cập nhật con trỏ trong tệp <code>.git/HEAD</code>. Thông thường, HEAD là một symbolic reference trỏ đến branch hiện tại, ví dụ: <code>ref: refs/heads/main</code>.</li>
+</ol>
+<footer class="airflow-article-end git-article-end">
+  <div>
+    <span>BEHIND THE PIPELINE / 008</span>
+    <strong>Hiểu hệ thống,<br>không chỉ cú pháp.</strong>
+  </div>
+  <a href="../../library/">Trở về thư viện <span aria-hidden="true">→</span></a>
+</footer>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/reading-language.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>

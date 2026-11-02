@@ -338,6 +338,44 @@
             
           </details>
         
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M6 8v8m12-8v2a5 5 0 0 1-5 5H6"/></svg>
+              
+              <span class="library-panel__group-title">Developer Tools</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../git/git/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Cơ chế hoạt động của Git</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../docker/docker/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Docker — Từ Image đến ứng dụng nhiều Container</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
       </div>
       <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
     </div>
@@ -1573,6 +1611,121 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cơ chế hoạt động của Git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker — Từ Image đến ứng dụng nhiều Container
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -2083,6 +2236,13 @@
 <h2 id="2-vai-tro-cua-minio-trong-data-pipeline">2. Vai trò của MinIO trong Data Pipeline</h2>
 <p>Trong một <strong>Data Pipeline</strong>, MinIO thường đóng vai trò là <strong>lớp lưu trữ dữ liệu (Storage Layer)</strong>, nơi tiếp nhận và lưu trữ dữ liệu được thu thập từ nhiều nguồn như API, cơ sở dữ liệu, tệp log hoặc các hệ thống bên ngoài.</p>
 <p>Dữ liệu sau khi được trích xuất (<strong>Extract</strong>) có thể được đưa vào MinIO dưới dạng các tệp CSV, JSON hoặc Parquet để lưu trữ trước khi xử lý. Tiếp theo, các công cụ xử lý dữ liệu như <strong>Apache Spark</strong> có thể đọc trực tiếp dữ liệu từ MinIO thông qua giao thức tương thích S3, thực hiện các tác vụ làm sạch, biến đổi (<strong>Transform</strong>) và ghi kết quả trở lại MinIO hoặc nạp vào Data Warehouse để phục vụ phân tích.</p>
+<figure class="minio-article-figure">
+  <a href="../../assets/images/minio/Hand-Drawn%20Data%20Pipeline%20Flowchart.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/minio/Hand-Drawn%20Data%20Pipeline%20Flowchart.png" alt="Luồng dữ liệu từ API, cơ sở dữ liệu và tệp log qua Extract, MinIO và Spark đến MinIO hoặc Data Warehouse" loading="lazy" width="1774" height="887">
+  </a>
+  <figcaption>Hình 2. MinIO lưu trữ dữ liệu sau bước Extract; Spark đọc và xử lý dữ liệu, sau đó ghi kết quả trở lại MinIO hoặc nạp vào Data Warehouse.</figcaption>
+</figure>
+
 <h2 id="3-mo-hinh-luu-tru-object-storage">3. Mô hình lưu trữ Object Storage</h2>
 <p>Trong các hệ thống máy tính truyền thống, hệ điều hành thường lưu trữ dữ liệu bằng <strong>Block Storage</strong>, nơi dữ liệu được quản lý dưới dạng các khối lưu trữ. Khi làm việc với khối lượng dữ liệu phi cấu trúc hoặc bán cấu trúc rất lớn, đặc biệt trong môi trường Cloud Computing và Data Engineering, <strong>Object Storage</strong> trở thành một mô hình lưu trữ quan trọng.</p>
 <h3 id="thanh-phan-cua-mot-object">Thành phần của một object</h3>
@@ -2107,7 +2267,7 @@ DATA
 {"customer_id": 101, "name": "An"}
 </code></pre></div>
 <h3 id="cau-truc-logic-qua-prefix">Cấu trúc logic qua Prefix</h3>
-<p>Object Storage không tổ chức object thành các thư mục vật lý theo mô hình cây như trên máy tính cá nhân. Ví dụ, với object key <code>raw/2026/customers.csv</code>, các thư mục <code>raw</code> và <code>2026</code> chỉ là cấu trúc logic được mô phỏng thông qua <strong>Prefix (tiền tố)</strong> và dấu phân cách <code>/</code>.</p>
+<p>Object Storage sử dụng không gian tên phẳng (<strong>Flat Namespace</strong>) để quản lý các object, thay vì tổ chức chúng theo cấu trúc thư mục phân cấp như hệ thống tệp truyền thống. Ví dụ, với Object Key <code>raw/2026/customers.csv</code>, các thành phần <code>raw</code> và <code>2026</code> chỉ đóng vai trò mô phỏng thư mục thông qua <strong>Prefix (tiền tố)</strong> và ký tự phân cách <code>/</code>. Về mặt logic, đây là một Object Key hoàn chỉnh, không tồn tại mối quan hệ thư mục cha–con thực sự.</p>
 <h2 id="4-cac-khai-niem-co-ban-trong-minio">4. Các khái niệm cơ bản trong MinIO</h2>
 <table>
 <thead>
@@ -2184,18 +2344,25 @@ DATA
 <p>Khác với các hệ thống lưu trữ phân tán khác, MinIO không sử dụng cơ sở dữ liệu bên ngoài để lưu trữ metadata. Metadata của từng object được ghi vào tệp nhị phân <code>xl.meta</code> và lưu trên các ổ đĩa bên cạnh dữ liệu.</p>
 <h2 id="6-co-che-luu-tru-cua-minio">6. Cơ chế lưu trữ của MinIO</h2>
 <h3 id="cau-truc-thu-muc-tren-o-ia">Cấu trúc thư mục trên ổ đĩa</h3>
-<p>Dưới tầng hệ điều hành, MinIO lưu trữ dữ liệu dưới dạng cấu trúc thư mục phẳng. Mỗi bucket tương ứng với một thư mục cùng tên ở thư mục gốc của ổ đĩa. Ví dụ, với tệp <code>raw_data/metrics.parquet</code>, cấu trúc bên dưới ổ đĩa như sau:</p>
+<p>Dưới tầng hệ điều hành, MinIO lưu trữ dữ liệu dưới dạng cấu trúc thư mục. Mỗi bucket tương ứng với một thư mục cùng tên ở thư mục gốc của ổ đĩa. Ví dụ, với tệp <code>raw-data/metrics.parquet</code>, cấu trúc bên dưới ổ đĩa như sau:</p>
 <div class="highlight"><pre><span></span><code>/mnt/disk-1/
-├── my-bucket/                         # Tương đương Bucket "my-bucket"
-│   └── raw-data/                      # Prefix (thư mục ảo trong S3)
-│       └── metrics.parquet/           # Object name được biểu diễn thành thư mục
-│           ├── xl.meta                # Metadata, thông tin versioning, checksum
-│           └── part.1
+└── my-bucket/                         # Tương đương Bucket "my-bucket"
+    └── raw-data/                      # Prefix (thư mục ảo trong S3)
+        └── metrics.parquet/           # Object name được biểu diễn thành thư mục
+            ├── xl.meta                # Metadata, thông tin versioning, checksum
+            └── part.1
 </code></pre></div>
 <h3 id="phan-bo-du-lieu-trong-erasure-set">Phân bố dữ liệu trong Erasure Set</h3>
 <p>Với mỗi object key, ví dụ <code>lake/orders.parquet</code>, MinIO tạo một thư mục con tương ứng trên tất cả các đĩa thuộc Erasure Set. Tệp <code>xl.meta</code> được lưu trong thư mục này.</p>
 <p>Khi tải một tệp lên <code>lake/orders.parquet</code>, MinIO băm object key để xác định Erasure Set lưu trữ object đó. Sau đó, hệ thống sử dụng kỹ thuật <strong>Reed–Solomon Erasure Coding</strong> để chia object thành <code>K</code> mảnh dữ liệu (<strong>Data Shards</strong>) và <code>M</code> mảnh mã sửa lỗi.</p>
-<p>Mỗi drive trong Erasure Set chứa một hoặc nhiều mảnh này tùy cấu hình. Các mảnh không được lưu chung trong một drive vì nếu drive đó bị hỏng, toàn bộ các mảnh dữ liệu sẽ bị mất. Mỗi mảnh được lưu trên drive đi kèm một tệp <code>xl.meta</code>. Kỹ thuật Reed–Solomon Erasure Coding được trình bày kỹ hơn ở phần bên dưới.</p>
+<p>Đối với một object thông thường, mỗi drive giữ một shard. Tất cả các mảnh này không được lưu chung trong một drive vì nếu drive đó bị hỏng, toàn bộ các mảnh dữ liệu sẽ bị mất. Mỗi drive lưu metadata của object trong tệp <code>xl.meta</code> riêng. Kỹ thuật Reed–Solomon Erasure Coding được trình bày kỹ hơn ở phần bên dưới.</p>
+<figure class="minio-article-figure">
+  <a href="../../assets/images/minio/MinIO%20Erasure%20Coding%20Drive%20Map.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/minio/MinIO%20Erasure%20Coding%20Drive%20Map.png" alt="Một object được chia thành 4 mảnh dữ liệu và 4 mảnh parity, phân bố trên 8 ổ đĩa trong Erasure Set; mỗi ổ lưu metadata trong tệp xl.meta" loading="lazy" width="1536" height="1024">
+  </a>
+  <figcaption>Hình 3. Ví dụ Erasure Set gồm 8 ổ đĩa với K = 4 và M = 4: mỗi ổ giữ một mảnh của object cùng metadata trong tệp <code>xl.meta</code>. Prefix là cấu trúc logic trong S3, còn phần dưới minh họa cách tổ chức trên ổ đĩa vật lý.</figcaption>
+</figure>
+
 <h3 id="luu-tru-tep-nho">Lưu trữ tệp nhỏ</h3>
 <p>Với các tệp nhỏ, dưới <strong>128 KB – 256 KB</strong>, MinIO không tạo tệp dữ liệu thô <code>part.1</code> riêng biệt mà nhúng trực tiếp dữ liệu vào tệp <code>xl.meta</code>.</p>
 <h2 id="7-co-che-du-phong-erasure-coding-reedsolomon">7. Cơ chế dự phòng: Erasure Coding (Reed–Solomon)</h2>
@@ -2229,6 +2396,13 @@ DATA
 <p>Trong môi trường production, các hệ thống xử lý dữ liệu như Apache Spark hoặc Trino có thể tạo ra lượng lớn yêu cầu đọc/ghi dữ liệu đến MinIO thông qua S3 API. Nếu tất cả các yêu cầu đều được gửi trực tiếp đến một MinIO Node, node đó có nguy cơ trở thành điểm nghẽn về tài nguyên mạng và khả năng xử lý, dù các node khác vẫn tham gia vào quá trình đọc/ghi dữ liệu nội bộ.</p>
 <p>Để giải quyết vấn đề này, <strong>Load Balancer</strong> được đặt phía trước MinIO Cluster, cung cấp một S3 Endpoint thống nhất và phân phối các yêu cầu đến những node đang hoạt động. Load Balancer có thể sử dụng các thuật toán như <strong>Round Robin</strong> hoặc <strong>Least Connections</strong> để phân phối lưu lượng, hạn chế tình trạng quá tải tại một node.</p>
 <p>Nhờ kiến trúc phân tán không có Master Node (<strong>Masterless</strong>), mọi MinIO Node đều có khả năng tiếp nhận và xử lý yêu cầu từ client. Node nhận yêu cầu sẽ tự phối hợp với các node khác trong cluster khi cần thiết. Điều này giúp hệ thống tận dụng tài nguyên hiệu quả hơn, đồng thời cải thiện khả năng chịu lỗi và tính sẵn sàng của dịch vụ.</p>
+<figure class="minio-article-figure">
+  <a href="../../assets/images/minio/Distributed%20MinIO%20Cluster%20Architecture.png" title="Xem ảnh kích thước gốc">
+    <img src="../../assets/images/minio/Distributed%20MinIO%20Cluster%20Architecture.png" alt="Spark, Trino và các client gửi yêu cầu qua Load Balancer tới các node trong cụm MinIO; các node phối hợp với nhau để đọc và ghi dữ liệu" loading="lazy" width="1774" height="887">
+  </a>
+  <figcaption>Hình 4. Load Balancer phân phối yêu cầu từ Spark, Trino và các client đến các MinIO Node; mỗi node đều có thể tiếp nhận yêu cầu và phối hợp với các node khác trong cụm.</figcaption>
+</figure>
+
 <h2 id="9-anh-huong-cua-nhieu-tep-nho-en-hieu-nang">9. Ảnh hưởng của nhiều tệp nhỏ đến hiệu năng</h2>
 <p>MinIO có thể gặp khó khăn khi xử lý quá nhiều tệp nhỏ. Mỗi tệp nhỏ được chia thành <code>N = K + M</code> mảnh lưu trên các ổ đĩa. Mỗi ổ đĩa tham gia lưu trữ object phải tạo thêm một tệp <code>xl.meta</code>. Số lượng tệp metadata quá lớn có thể làm giảm hiệu năng xử lý của hệ thống.</p>
 <p>Trong môi trường Linux, MinIO sử dụng filesystem bên dưới, thường là <strong>XFS</strong>, để lưu trữ dữ liệu. Mỗi thư mục hoặc tệp được tạo mới đều sử dụng một inode. Nếu job Spark xuất ra 1 triệu tệp nhỏ, MinIO sẽ tạo ra ít nhất 2–3 triệu inode trên ổ đĩa.</p>
@@ -2238,7 +2412,7 @@ DATA
 <p>RAM của Linux có vùng đệm <strong>Inode Cache / Dentry Cache (VFS Cache)</strong> để ghi nhớ vị trí các inode, giúp tra cứu tức thì. Khi số lượng inode tăng lên hàng triệu, RAM không thể chứa hết. Hệ điều hành liên tục phải đẩy inode cũ ra ngoài (<strong>cache eviction</strong>) và đọc inode từ ổ đĩa lên, gây áp lực lên RAM và tăng tải đọc đĩa ngẫu nhiên (<strong>Random Read I/O</strong>).</p>
 <h2 id="10-quy-trinh-tim-kiem-va-oc-mot-tep">10. Quy trình tìm kiếm và đọc một tệp</h2>
 <h3 id="tiep-nhan-yeu-cau">Tiếp nhận yêu cầu</h3>
-<p>Yêu cầu <code>GET Object</code> đi qua Load Balancer và được chuyển đến một MinIO Node bất kỳ. Node này kiểm tra tính hợp lệ và đối chiếu quyền theo IAM Policy, sau đó gửi lệnh nội bộ qua Grid Protocol tới các Server Pool và các node chứa dữ liệu để quét.</p>
+<p>Yêu cầu <code>GET Object</code> đi qua Load Balancer và được chuyển đến một MinIO Node bất kỳ. Node này kiểm tra tính hợp lệ của yêu cầu và quyền truy cập theo IAM Policy, sau đó xác định Server Pool và Erasure Set chứa object. Node tiếp nhận yêu cầu phối hợp với các node liên quan thông qua giao thức nội bộ để truy xuất dữ liệu.</p>
 <p>Tiếp theo, MinIO tương tác với nhân Linux. Tại từng ổ đĩa vật lý, MinIO gọi xuống nhân Linux để đọc cấu trúc thư mục đại diện cho prefix đó. Hệ điều hành trước tiên kiểm tra cache trên RAM.</p>
 <h3 id="dentry-cache-va-inode-cache">Dentry Cache và Inode Cache</h3>
 <p>Linux duy trì hai vùng đệm quan trọng trên RAM:</p>
