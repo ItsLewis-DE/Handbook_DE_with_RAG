@@ -1,0 +1,2265 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Table Format, cây Metadata, Delete File, schema evolution, Warehouse, Namespace, FileIO và vai trò của Hive Metastore trong Apache Iceberg.">
+      
+      
+      
+        <link rel="canonical" href="https://itslewis-de.github.io/Handbook_DE_with_RAG/iceberg/iceberg/">
+      
+      
+        <link rel="prev" href="../../minio/docs/">
+      
+      
+        <link rel="next" href="../../postgres/postgres/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/brand/behind-the-pipeline-favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Apache Iceberg — Table Format và cây Metadata - Behind the Pipeline</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/reading-language.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/brand.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/landing.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/article.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/technology-background.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/marquee.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/library.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/chat.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-table-format-va-vai-tro-cua-apache-iceberg" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+<header class="md-header custom-theme-header" data-md-component="header">
+  <!-- 1. Infinite Running Marquee Ticker Strip (CatalystPack Style) -->
+  <div class="top-marquee" aria-label="Ticker tin tức và chuyên đề kiến trúc">
+    <div class="top-marquee__track">
+      <div class="top-marquee__group">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+      <div class="top-marquee__group" aria-hidden="true">
+        <span>PRESS • POP • READY <b>♦</b></span>
+        <span>BEHIND THE PIPELINE <b>♦</b></span>
+        <span>DATA ARCHITECTURE <b>♦</b></span>
+        <span>DATABASE INTERNALS <b>♦</b></span>
+        <span>POSTGRESQL STORAGE &amp; HIERARCHY <b>♦</b></span>
+        <span>INDEXING &amp; B-TREE <b>♦</b></span>
+        <span>APACHE AIRFLOW ARCHITECTURE <b>♦</b></span>
+        <span>DISTRIBUTED SYSTEMS <b>♦</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand and navigation -->
+  <div class="custom-header">
+    <div class="custom-header__inner">
+      <a href="../.." class="custom-header__brand" title="Behind the Pipeline" aria-label="Behind the Pipeline — Data Engineering Handbook">
+        <span class="custom-header__logo-wrap" aria-hidden="true">
+          
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+        </span>
+        <span class="custom-header__lockup">
+          <span class="custom-header__wordmark">Behind the Pipeline</span>
+          <span class="custom-header__descriptor">DATA ENGINEERING HANDBOOK</span>
+        </span>
+      </a>
+
+      <nav class="custom-header__nav" aria-label="Điều hướng chính">
+        <a href="../.." class="custom-header__home " >
+          Trang chủ
+        </a>
+        <button class="custom-header__library-toggle is-active" type="button" aria-expanded="false" aria-controls="library-panel" aria-label="Mở thư viện bài viết">
+          <span class="custom-header__library-text">Thư viện</span>
+          <svg class="custom-header__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+          <svg class="custom-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </nav>
+
+    </div>
+
+    <div class="library-panel" id="library-panel" hidden>
+      <div class="library-panel__heading">
+        <div>
+          <span class="library-panel__eyebrow">KHÁM PHÁ THƯ VIỆN</span>
+          <strong>Thư viện bài viết</strong>
+        </div>
+        <button class="library-panel__close" type="button" aria-label="Đóng thư viện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg>
+        </button>
+      </div>
+
+      <a class="library-panel__mobile-home" href="../..">Trang chủ <span aria-hidden="true">↗</span></a>
+
+      <div class="library-panel__grid">
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></svg>
+              
+              <span class="library-panel__group-title">Data Architecture</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../ware_lake_lw/doc/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Data Lake, Data Warehouse và Data Mart</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../minio/docs/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>MinIO và Object Storage</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="./" aria-current="page">
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Iceberg — Table Format và cây Metadata</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+              
+              <span class="library-panel__group-title">Database Internals</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/postgres/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../postgres/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../index/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Index trong cơ sở dữ liệu</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v6M5 17v-4h14v4"/></svg>
+              
+              <span class="library-panel__group-title">Orchestration</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../airflow/architecture/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Airflow</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="12" cy="13" r="2"/><path d="M12 6v5m-2 4-5 2m9-2 5 2"/></svg>
+              
+              <span class="library-panel__group-title">Distributed Computing</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/archi/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Apache Spark (phần 1)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../spark/p2/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Kiến trúc Apache Spark (phần 2)</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+              
+                
+              
+            </ul>
+            
+          </details>
+        
+          
+          
+          <details class="library-panel__group" open>
+            <summary>
+              
+                <svg class="library-panel__group-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M6 8v8m12-8v2a5 5 0 0 1-5 5H6"/></svg>
+              
+              <span class="library-panel__group-title">Developer Tools</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>
+            </summary>
+            <ul>
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../git/git/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Cơ chế hoạt động của Git</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+                
+                  
+                  
+                    <li>
+                      <a href="../../docker/docker/" >
+                        <svg class="library-panel__link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span>Docker — Từ Image đến ứng dụng nhiều Container</span><span aria-hidden="true">→</span>
+                      </a>
+                    </li>
+                  
+                
+              
+            </ul>
+            
+          </details>
+        
+      </div>
+      <a class="library-panel__all" href="../../library/">Xem tất cả bài viết <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Behind the Pipeline" class="md-nav__button md-logo" aria-label="Behind the Pipeline" data-md-component="logo">
+      
+  <img src="../../assets/images/brand/behind-the-pipeline-logo-inverse.svg" alt="logo">
+
+    </a>
+    Behind the Pipeline
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ItsLewis-DE/Handbook_DE_with_RAG" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ItsLewis-DE/Handbook_DE_with_RAG
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Thư viện
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse và Data Mart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ware_lake_lw/doc.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Lake, Data Warehouse, and Data Mart (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../minio/docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MinIO và Object Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Iceberg — Table Format và cây Metadata
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Iceberg — Table Format và cây Metadata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-table-format-va-vai-tro-cua-apache-iceberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Table Format và vai trò của Apache Iceberg
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cay-metadata-cua-apache-iceberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Cây Metadata của Apache Iceberg
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Cây Metadata của Apache Iceberg">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Catalog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tep-metadatajson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tệp metadata.json
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manifest-list-snap-idavro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manifest List (snap-ID.avro)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manifest List (snap-ID.avro)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-can-manifest-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao cần Manifest List?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#noi-dung-cua-manifest-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nội dung của Manifest List
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manifest-file-manifest-idavro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manifest File (manifest-ID.avro)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-co-che-delete-file-trong-iceberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cơ chế Delete File trong Iceberg
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Cơ chế Delete File trong Iceberg">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Position Delete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#equality-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Equality Delete
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-schema-evolution-va-field-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Schema evolution và Field ID
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-warehouse-va-namespace-trong-iceberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Warehouse và Namespace trong Iceberg
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-fileio-va-quy-trinh-oc-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. FileIO và quy trình đọc dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-quy-trinh-khoi-chay-cac-cong-cu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Quy trình khởi chạy các công cụ
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-hive-metastore-va-co-che-cap-nhat-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Hive Metastore và cơ chế cập nhật metadata
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Hive Metastore và cơ chế cập nhật metadata">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ba-thanh-phan-chinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ba thành phần chính
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phoi-hop-cac-tien-trinh-ghi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phối hợp các tiến trình ghi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phối hợp các tiến trình ghi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buoc-1-yeu-cau-khoa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 1: Yêu cầu khóa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buoc-2-kiem-tra-thay-oi-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 2: Kiểm tra thay đổi dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buoc-3-cap-nhat-con-tro-va-giai-phong-khoa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 3: Cập nhật con trỏ và giải phóng khóa
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-ket-luan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Kết luận
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Internals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Internals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 1): Phân cấp, tiến trình và bộ nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (phần 2): Truy vấn, lưu trữ và phục hồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/postgres.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 1): Hierarchy, Processes, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../postgres/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PostgreSQL (Part 2): Query Processing, Storage, and Recovery (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index trong cơ sở dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/index.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexes in Databases (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Orchestration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../airflow/architecture.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Airflow (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Computing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Distributed Computing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (phần 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc Apache Spark (phần 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/archi.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 1): Architecture and Execution (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/p2.en/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apache Spark (Part 2): Joins, RDD, and Memory (English)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cơ chế hoạt động của Git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker — Từ Image đến ứng dụng nhiều Container
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-table-format-va-vai-tro-cua-apache-iceberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Table Format và vai trò của Apache Iceberg
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cay-metadata-cua-apache-iceberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Cây Metadata của Apache Iceberg
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Cây Metadata của Apache Iceberg">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Catalog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tep-metadatajson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tệp metadata.json
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manifest-list-snap-idavro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manifest List (snap-ID.avro)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manifest List (snap-ID.avro)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vi-sao-can-manifest-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vì sao cần Manifest List?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#noi-dung-cua-manifest-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nội dung của Manifest List
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manifest-file-manifest-idavro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manifest File (manifest-ID.avro)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-co-che-delete-file-trong-iceberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cơ chế Delete File trong Iceberg
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Cơ chế Delete File trong Iceberg">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Position Delete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#equality-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Equality Delete
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-schema-evolution-va-field-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Schema evolution và Field ID
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-warehouse-va-namespace-trong-iceberg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Warehouse và Namespace trong Iceberg
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-fileio-va-quy-trinh-oc-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. FileIO và quy trình đọc dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-quy-trinh-khoi-chay-cac-cong-cu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Quy trình khởi chạy các công cụ
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-hive-metastore-va-co-che-cap-nhat-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Hive Metastore và cơ chế cập nhật metadata
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Hive Metastore và cơ chế cập nhật metadata">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ba-thanh-phan-chinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ba thành phần chính
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phoi-hop-cac-tien-trinh-ghi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phối hợp các tiến trình ghi
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phối hợp các tiến trình ghi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buoc-1-yeu-cau-khoa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 1: Yêu cầu khóa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buoc-2-kiem-tra-thay-oi-du-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 2: Kiểm tra thay đổi dữ liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buoc-3-cap-nhat-con-tro-va-giai-phong-khoa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 3: Cập nhật con trỏ và giải phóng khóa
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-ket-luan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Kết luận
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+<nav class="reading-language" aria-label="Ngôn ngữ đọc">
+  <div class="reading-language__options">
+  
+    <span class="reading-language__unavailable" lang="vi">Tiếng Việt · Chưa có bản tiếng Anh</span>
+  
+  </div>
+</nav>
+
+  
+                  
+  
+
+
+
+  
+  
+
+
+<header class="airflow-article-hero storage-article-hero">
+  <div class="airflow-article-hero__eyebrow">
+    <a href="../../">BEHIND THE PIPELINE</a>
+    <span>ARTICLE / 010</span>
+  </div>
+  <h1>Apache Iceberg<br><em>Table Format &amp; cây Metadata</em></h1>
+  <p class="airflow-article-hero__dek">
+    Từ Table Format và cây Metadata đến Delete File, schema evolution,
+    Warehouse, Namespace, FileIO và vai trò của Hive Metastore.
+  </p>
+  <div class="airflow-article-hero__meta" aria-label="Thông tin bài viết">
+    <span>DATA ARCHITECTURE</span>
+    <span>EDITION 10 · 2026</span>
+  </div>
+</header>
+
+<p>Lưu trữ các tệp dữ liệu trên MinIO/S3 là nền tảng của một Data Lake. Tuy nhiên, để quản lý những tệp riêng lẻ như một bảng dữ liệu hoàn chỉnh, hệ thống còn phải xác định được trạng thái của bảng, xử lý các thay đổi dữ liệu và duy trì khả năng đọc khi schema thay đổi. Những yêu cầu này dẫn đến vai trò của <strong>Table Format</strong> và <strong>Apache Iceberg</strong>.</p>
+<p>Bài viết lần lượt đi qua cây metadata của Iceberg, cơ chế Delete File, cách Field ID hỗ trợ thay đổi schema và vai trò của Warehouse, Namespace, FileIO. Từ đó, bài viết trình bày quy trình cấu hình Spark kết nối với MinIO và cách Hive Metastore phối hợp các tiến trình khi cập nhật metadata của bảng.</p>
+<h2 id="1-table-format-va-vai-tro-cua-apache-iceberg">1. Table Format và vai trò của Apache Iceberg</h2>
+<p><strong>Table Format</strong> là lớp trừu tượng nằm ngay trên <strong>File Format</strong>, có nhiệm vụ tổ chức, liên kết và quản lý tập hợp các tệp dữ liệu riêng lẻ thành một <strong>bảng dữ liệu logic (Logical Table)</strong> hoàn chỉnh.</p>
+<p>Nếu không có Table Format, một bảng trong Data Lake truyền thống, như Apache Hive cũ, chỉ được định nghĩa là một thư mục chứa các tệp. Cách tổ chức này dẫn đến những hạn chế:</p>
+<ul>
+<li>Không hỗ trợ giao dịch <strong>ACID</strong>.</li>
+<li>Các thao tác <code>DELETE</code> và <code>UPDATE</code> tốn kém.</li>
+<li>Tiến hóa schema dễ làm hỏng dữ liệu.</li>
+<li>Quá trình lập kế hoạch truy vấn (<strong>Scan Planning</strong>) bị nghẽn do phải liệt kê (<strong>listing</strong>) hàng triệu tệp trong thư mục.</li>
+</ul>
+<p><strong>Apache Iceberg</strong> giải quyết các vấn đề này bằng cách quản lý bảng ở cấp độ từng tệp dữ liệu riêng lẻ thông qua một <strong>cây metadata phân cấp (Metadata Tree)</strong>. Thay vì định nghĩa mỗi thư mục là một bảng, Iceberg xác định trạng thái logic của bảng qua chuỗi tham chiếu phân cấp gồm <strong>5 tầng</strong>.</p>
+<h2 id="2-cay-metadata-cua-apache-iceberg">2. Cây Metadata của Apache Iceberg</h2>
+<h3 id="catalog">Catalog</h3>
+<p><strong>Catalog</strong>, chẳng hạn Hive Metastore, là thành phần trung tâm đóng vai trò như một danh bạ. Catalog quản lý định danh bảng (<strong>Namespace / Table Name</strong>) và lưu trữ con trỏ gốc <code>metadata_location</code>, trỏ đến tệp Metadata JSON hiện tại của bảng.</p>
+<p>Khi compute engine cần đọc hoặc ghi bảng, engine truy vấn Catalog trước tiên để xác định vị trí tệp <code>.metadata.json</code> mới nhất trên MinIO/S3.</p>
+<h3 id="tep-metadatajson">Tệp <code>metadata.json</code></h3>
+<p>Đây là tệp cấp cao nhất của bảng Iceberg. Mọi thay đổi về cấu trúc bảng (<strong>DDL</strong>) hoặc dữ liệu (<strong>DML</strong>) đều không sửa trực tiếp tệp này mà luôn tạo ra một tệp mới, lần lượt như <code>v1.metadata.json</code>, <code>v2.metadata.json</code>, <code>v3.metadata.json</code>.</p>
+<p>Tệp mới là bản sao của tệp cũ, bổ sung các thay đổi. Sau đó, Catalog chuyển con trỏ <code>metadata_location</code> sang tệp mới bằng thao tác <strong>hoán đổi nguyên tử (Atomic Swap)</strong>.</p>
+<p>Cơ chế này cho phép người dùng tiếp tục thực hiện <code>SELECT</code> qua tệp <code>v1</code> trong khi tiến trình ghi đang chuẩn bị dữ liệu và tạo tệp <code>v2</code>.</p>
+<p>Các thông tin cấp bảng được lưu trong tệp bao gồm:</p>
+<ul>
+<li>Toàn bộ schema của bảng từ khi khởi tạo.</li>
+<li>Danh sách các cách chia phân vùng.</li>
+<li>Danh sách quy tắc sắp xếp dữ liệu.</li>
+<li>Lịch sử các snapshot của dữ liệu.</li>
+<li>Con trỏ đến snapshot hiện tại.</li>
+</ul>
+<p>Ví dụ về một tệp <code>metadata.json</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"format-version"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"table-uuid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9c12d441-03fe-4693-9a96-a0705ddf69c1"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"s3a://warehouse/sales/orders"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"last-sequence-number"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"last-updated-ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">1730800000000</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"last-column-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+
+<span class="w">  </span><span class="nt">"current-schema-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"schemas"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"struct"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"schema-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"order_id"</span><span class="p">,</span><span class="w"> </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"long"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amount"</span><span class="p">,</span><span class="w"> </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"double"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"created_at"</span><span class="p">,</span><span class="w"> </span><span class="nt">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"timestamptz"</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+
+<span class="w">  </span><span class="nt">"default-spec-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"partition-specs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"spec-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">"source-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"field-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"created_at_day"</span><span class="p">,</span><span class="w"> </span><span class="nt">"transform"</span><span class="p">:</span><span class="w"> </span><span class="s2">"day"</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+
+<span class="w">  </span><span class="nt">"default-sort-order-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"sort-orders"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"order-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">"transform"</span><span class="p">:</span><span class="w"> </span><span class="s2">"identity"</span><span class="p">,</span><span class="w"> </span><span class="nt">"source-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"direction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"asc"</span><span class="p">,</span><span class="w"> </span><span class="nt">"null-order"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nulls-first"</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+
+<span class="w">  </span><span class="nt">"current-snapshot-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">84930219982</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"snapshots"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"snapshot-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">84930219982</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"parent-snapshot-id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"sequence-number"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"timestamp-ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">1730800000000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"manifest-list"</span><span class="p">:</span><span class="w"> </span><span class="s2">"s3a://warehouse/sales/orders/metadata/snap-84930219982-1-a8f3.avro"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"summary"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"operation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"append"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"added-data-files"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"added-records"</span><span class="p">:</span><span class="w"> </span><span class="s2">"150000"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"total-records"</span><span class="p">:</span><span class="w"> </span><span class="s2">"150000"</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">"schema-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+
+<span class="w">  </span><span class="nt">"snapshot-log"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"timestamp-ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">1730800000000</span><span class="p">,</span><span class="w"> </span><span class="nt">"snapshot-id"</span><span class="p">:</span><span class="w"> </span><span class="mi">84930219982</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"metadata-log"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"timestamp-ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">1730800000000</span><span class="p">,</span><span class="w"> </span><span class="nt">"metadata-file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"s3a://warehouse/sales/orders/metadata/v1.metadata.json"</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Mỗi mục snapshot trong tệp JSON chỉ lưu:</p>
+<ul>
+<li>Mã số snapshot.</li>
+<li>Thời gian tạo.</li>
+<li>Thống kê tóm tắt về số dòng và số tệp.</li>
+<li>Đường dẫn trỏ đến tệp <code>snap-ID.avro</code> (<strong>Manifest List</strong>).</li>
+</ul>
+<h3 id="manifest-list-snap-idavro">Manifest List (<code>snap-ID.avro</code>)</h3>
+<p>Tệp Avro này chứa danh sách tất cả các <strong>Manifest File</strong> cấu thành một snapshot. Mỗi snapshot trong bảng có duy nhất một tệp <code>snap-ID.avro</code> đi kèm.</p>
+<p>Khi engine cần đọc dữ liệu của một snapshot, engine đi từ <code>metadata.json</code> đến tệp <code>snap-ID.avro</code> tương ứng.</p>
+<h4 id="vi-sao-can-manifest-list">Vì sao cần Manifest List?</h4>
+<p>Nếu mục snapshot trong JSON trỏ trực tiếp đến các tệp dữ liệu, khi bảng có <strong>1.000 tệp</strong> và cần <code>INSERT</code> thêm <strong>2 tệp Parquet</strong>, hệ thống sẽ phải sao chép 1.000 tệp cũ cùng 2 tệp mới sang một mục snapshot riêng. Cách làm này chậm và tốn I/O trên MinIO/S3.</p>
+<p>Để khắc phục, hệ thống tổ chức các tệp thông qua Manifest File và Manifest List:</p>
+<ol>
+<li>Đưa 1.000 tệp hiện có vào Manifest File <code>manifest-1.avro</code>.</li>
+<li>Snapshot ban đầu có Manifest List <code>snap-1.avro</code>, tham chiếu đến 1.000 tệp cũ thông qua Manifest File.</li>
+<li>Khi <code>INSERT</code> thêm 2 tệp mới, đưa chúng vào Manifest File mới <code>manifest-3.avro</code>.</li>
+<li>Tạo Manifest List mới <code>snap-2.avro</code>, trỏ đến cả <code>manifest-1.avro</code> và <code>manifest-3.avro</code>.</li>
+</ol>
+<p>Nhờ đó, hệ thống tái sử dụng nguyên vẹn các Manifest File cũ mà không cần sao chép lại các tệp này.</p>
+<h4 id="noi-dung-cua-manifest-list">Nội dung của Manifest List</h4>
+<p>Có thể hình dung Manifest List như một bảng nhỏ, trong đó mỗi dòng đại diện cho một Manifest File và lưu bốn nhóm thông tin:</p>
+<table>
+<thead>
+<tr>
+<th>Thông tin</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Đường dẫn</strong></td>
+<td>Đường dẫn đến Manifest File.</td>
+</tr>
+<tr>
+<td><strong>Loại manifest</strong></td>
+<td>Đánh dấu Manifest File đang quản lý Data File chứa dữ liệu (<code>0</code>) hay Delete File chứa danh sách các dòng bị xóa (<code>1</code>).</td>
+</tr>
+<tr>
+<td><strong>Thống kê số tệp và số dòng</strong></td>
+<td>Cho biết số lượng tệp mới được thêm, giữ nguyên hoặc bị xóa trong Manifest File.</td>
+</tr>
+<tr>
+<td><strong>Khoảng giá trị phân vùng</strong></td>
+<td>Lưu giới hạn <code>lower_bound</code> và <code>upper_bound</code> của phân vùng.</td>
+</tr>
+</tbody>
+</table>
+<p>Ví dụ, nếu bảng chia phân vùng theo cột <code>month</code>, dòng tương ứng với <code>manifest-A.avro</code> có thể ghi <code>lower_bound = '2026-01'</code> và <code>upper_bound = '2026-03'</code>. Dựa vào đó, engine biết Manifest File này chỉ chứa dữ liệu <strong>quý I/2026</strong>.</p>
+<h3 id="manifest-file-manifest-idavro">Manifest File (<code>manifest-ID.avro</code>)</h3>
+<p>Đây là tầng cuối cùng của cây metadata, trực tiếp quản lý từng tệp dữ liệu vật lý <code>.parquet</code> trên MinIO/S3. Mỗi dòng trong Manifest File đại diện cho đúng một tệp vật lý và ghi lại bốn nhóm thông tin:</p>
+<ul>
+<li>Đường dẫn tuyệt đối trên MinIO/S3 và trạng thái tệp.</li>
+<li>Giá trị phân vùng cụ thể, giúp xác định tệp thuộc phân vùng nào.</li>
+<li>Thống kê chi tiết cho từng cột.</li>
+<li>Lần commit của bảng đã sinh ra tệp Parquet hoặc Delete File đó.</li>
+</ul>
+<h2 id="3-co-che-delete-file-trong-iceberg">3. Cơ chế Delete File trong Iceberg</h2>
+<p>Các tệp Parquet trên MinIO/S3 là <strong>bất biến (immutable)</strong>. Chẳng hạn, không thể mở một tệp Parquet dung lượng 500 MB, xóa một dòng ở giữa rồi lưu đè lên tệp cũ.</p>
+<p>Vì vậy, khi cần xóa hoặc sửa dữ liệu nhanh theo cơ chế <strong>Merge-on-Read (MoR)</strong>, Iceberg giữ nguyên tệp Parquet gốc và tạo thêm một tệp nhỏ gọi là <strong>Delete File</strong>, đóng vai trò như danh sách các dòng cần loại bỏ.</p>
+<p>Khi thực hiện <code>SELECT</code>, engine đọc tệp Parquet gốc kết hợp với Delete File, sau đó lọc bỏ các dòng nằm trong danh sách trước khi trả kết quả.</p>
+<p>Iceberg cung cấp hai cách để ghi một dòng vào Delete File:</p>
+<h3 id="position-delete">Position Delete</h3>
+<p>Khi chạy <code>DELETE</code> hoặc <code>UPDATE</code> thông thường trên Spark/Trino, engine đọc dữ liệu để xác định chính xác dòng cần xóa nằm trong tệp nào và ở vị trí nào. Iceberg dựa vào thông tin này để tạo Delete File.</p>
+<h3 id="equality-delete">Equality Delete</h3>
+<p><strong>Equality Delete</strong> đánh dấu dòng cần xóa theo điều kiện giá trị. Ví dụ, với điều kiện <code>user_id = 105</code>, hệ thống ghi một tệp <code>delete_eq.parquet</code> chứa điều kiện giá trị của cột cần xóa.</p>
+<h2 id="4-schema-evolution-va-field-id">4. Schema evolution và Field ID</h2>
+<p>Như trong ví dụ <code>metadata.json</code>, Iceberg gán cho mỗi cột một <strong>Field ID</strong> là số nguyên cố định, hoàn toàn độc lập với tên cột.</p>
+<p>Field ID đồng thời được ghi vào tầng metadata của tệp Parquet. Khi đổi tên một cột, Field ID của cột đó vẫn giữ nguyên; chỉ tên gắn với mã định danh này thay đổi.</p>
+<p>Khi đọc cột có tên mới, engine phân giải tên cột thành Field ID tương ứng, sau đó dùng mã này để đọc dữ liệu trong Parquet. Nhờ vậy, engine vẫn đọc được các tệp cũ được tạo trước khi đổi tên cột mà không gặp lỗi do thay đổi tên.</p>
+<h2 id="5-warehouse-va-namespace-trong-iceberg">5. Warehouse và Namespace trong Iceberg</h2>
+<p><strong>Warehouse</strong>, hay <strong>Warehouse Location</strong>, là đường dẫn URI gốc (<strong>Storage Root URI</strong>) được cấu hình ở cấp Catalog. Đây là không gian lưu trữ mặc định trên MinIO mà Iceberg dùng để chứa toàn bộ metadata và tệp dữ liệu của các namespace và bảng thuộc Catalog đó.</p>
+<p><strong>Namespace</strong> là đơn vị tổ chức logic bên trong Catalog, tương đương với khái niệm Database hoặc Schema trong các hệ quản trị cơ sở dữ liệu quan hệ (<strong>RDBMS</strong>).</p>
+<p>Khi tạo bảng theo cấu hình mặc định, Iceberg sử dụng đường dẫn Warehouse làm tiền tố để tự động xác định đường dẫn lưu trữ của bảng mới. Cách tổ chức này giúp cô lập dữ liệu giữa các môi trường, chẳng hạn sử dụng một Warehouse tại <code>s3://dev-lakehouse/</code> cho môi trường phát triển và một Warehouse tại <code>s3://prod-lakehouse/</code> cho môi trường sản xuất.</p>
+<h2 id="6-fileio-va-quy-trinh-oc-du-lieu">6. FileIO và quy trình đọc dữ liệu</h2>
+<p><strong>FileIO</strong> là tầng trừu tượng API bên trong thư viện client của Apache Iceberg, chịu trách nhiệm trực tiếp thực thi các thao tác I/O — đọc, ghi và xóa tệp — với hạ tầng lưu trữ vật lý.</p>
+<p>Khi đọc dữ liệu, compute engine trước tiên xác định tệp <code>.json</code> thông qua Catalog, sau đó thực hiện <strong>Scan Planning</strong> và <strong>Pruning</strong> qua bốn cấp độ trước khi tải tệp vật lý:</p>
+<ol>
+<li><strong>Manifest Pruning</strong>.</li>
+<li><strong>File Pruning</strong>.</li>
+<li><strong>Row Group Pruning</strong>.</li>
+<li><strong>Vectorized Page Pruning</strong>.</li>
+</ol>
+<h2 id="7-quy-trinh-khoi-chay-cac-cong-cu">7. Quy trình khởi chạy các công cụ</h2>
+<ol>
+<li>Tải các thư viện cần thiết.</li>
+<li>Tạo Docker Image cho MinIO.</li>
+<li>Cấu hình Spark kết nối đến MinIO thay vì S3 bằng tệp <code>core-site.xml</code>.</li>
+<li>Tạo tệp <code>spark-default</code> để cấu hình Spark cơ bản, tích hợp Iceberg vào Spark, cấu hình Catalog cho Spark và cấu hình đọc trực tiếp MinIO thông qua Iceberg S3FileIO.</li>
+</ol>
+<h2 id="8-hive-metastore-va-co-che-cap-nhat-metadata">8. Hive Metastore và cơ chế cập nhật metadata</h2>
+<p>Sau các thành phần của Iceberg, cần xem xét vai trò của <strong>Catalog</strong>, cụ thể trong bài viết này là <strong>Hive Metastore</strong>. Đây là thành phần tiếp nhận các yêu cầu quản lý metadata và phối hợp việc cập nhật con trỏ của bảng.</p>
+<h3 id="ba-thanh-phan-chinh">Ba thành phần chính</h3>
+<table>
+<thead>
+<tr>
+<th>Thành phần</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HMS Service (Hive Metastore Service)</strong></td>
+<td>Dịch vụ chạy bằng Java, đảm nhận vai trò quản lý metadata trung tâm. HMS Service tiếp nhận yêu cầu từ các client như Spark, Flink và tương tác với Database Backend thông qua JDBC.</td>
+</tr>
+<tr>
+<td><strong>Apache Thrift</strong></td>
+<td>Giao thức truyền thông nhị phân (<strong>Binary RPC Protocol</strong>) hiệu năng cao, giúp các ứng dụng client giao tiếp với HMS Service.</td>
+</tr>
+<tr>
+<td><strong>Database Backend</strong></td>
+<td>Cơ sở dữ liệu quan hệ nằm phía sau HMS Service, chẳng hạn PostgreSQL, MySQL, MariaDB hoặc Derby.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phoi-hop-cac-tien-trinh-ghi">Phối hợp các tiến trình ghi</h3>
+<p>Khi Spark ghi dữ liệu vào bảng Iceberg, dữ liệu được ghi lên MinIO/S3 trước. Sau đó, hệ thống cập nhật con trỏ <code>metadata_location</code> trong cơ sở dữ liệu rồi mới báo thành công.</p>
+<p>Nếu hai tiến trình cùng thực hiện thao tác này mà không có cơ chế điều phối, một tiến trình có thể ghi đè và làm mất thay đổi của tiến trình còn lại. Để xử lý tình huống đó, Hive Metastore kết hợp việc cấp khóa, kiểm tra thay đổi và cập nhật metadata.</p>
+<h4 id="buoc-1-yeu-cau-khoa">Bước 1: Yêu cầu khóa</h4>
+<p>Cơ chế khóa bảo đảm tại một thời điểm chỉ có một tiến trình được phép thao tác với metadata của bảng trong Database Backend. Khi nhận yêu cầu, HMS Service ghi một bản ghi vào bảng <code>HIVE_LOCKS</code> trong cơ sở dữ liệu phía sau.</p>
+<p>Bản ghi này xác định tiến trình đang giữ khóa, bảng được khóa và loại khóa, thường là khóa độc quyền (<strong>EXCLUSIVE</strong>).</p>
+<p>Nếu một tiến trình khác đang ghi, yêu cầu khóa mới sẽ ở trạng thái chờ (<strong>WAITING</strong>). Khi đó, Spark Driver đi vào vòng lặp thăm dò (<strong>Polling</strong>) để chờ được cấp khóa.</p>
+<p>Đồng thời, Driver khởi chạy một luồng nền gửi tín hiệu <strong>Heartbeat</strong> liên tục đến HMS để thông báo tiến trình vẫn đang hoạt động. Nếu Driver dừng đột ngột, chẳng hạn do <code>kill -9</code> hoặc mất điện, HMS phát hiện việc mất Heartbeat và tự xóa bản ghi khóa để tránh tình trạng khóa tồn tại vô thời hạn.</p>
+<h4 id="buoc-2-kiem-tra-thay-oi-du-lieu">Bước 2: Kiểm tra thay đổi dữ liệu</h4>
+<p>Sau khi có khóa, tiến trình kiểm tra dữ liệu mà mình đang đọc. Nếu dữ liệu đã thay đổi trong thời gian xử lý, tiến trình kiểm tra xem thay đổi vừa được ghi nhận có tác động đến cùng dữ liệu mà mình đang sửa hay không. Nếu có xung đột trên cùng dữ liệu, tiến trình hiện tại sẽ báo lỗi.</p>
+<h4 id="buoc-3-cap-nhat-con-tro-va-giai-phong-khoa">Bước 3: Cập nhật con trỏ và giải phóng khóa</h4>
+<p>Sau khi thay đổi dữ liệu bên dưới, Spark Driver gửi yêu cầu cập nhật lên HMS Service. HMS Service chuyển yêu cầu thành câu lệnh SQL để cập nhật trong RDBMS. Cuối cùng, hệ thống giải phóng khóa.</p>
+<h2 id="9-ket-luan">9. Kết luận</h2>
+<p>Apache Iceberg tổ chức các tệp dữ liệu riêng lẻ thành một bảng logic thông qua cây metadata, từ Catalog và <code>metadata.json</code> đến Manifest List, Manifest File và các tệp dữ liệu vật lý. Cấu trúc này quản lý trạng thái của bảng, tái sử dụng các Manifest File và cung cấp thông tin phục vụ quá trình lập kế hoạch truy vấn.</p>
+<p>Trên nền tảng đó, Delete File hỗ trợ xóa hoặc sửa dữ liệu theo cơ chế Merge-on-Read, còn Field ID giúp duy trì khả năng đọc các tệp cũ khi đổi tên cột. Warehouse và Namespace tổ chức không gian lưu trữ, FileIO thực hiện các thao tác với MinIO/S3, trong khi Hive Metastore quản lý con trỏ metadata và phối hợp các tiến trình ghi. Các thành phần này kết nối với nhau trong quy trình Spark làm việc với bảng Iceberg trên MinIO.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/reading-language.js"></script>
+      
+        <script src="../../javascripts/mobile-navigation.js"></script>
+      
+        <script src="../../javascripts/lottie.min.js"></script>
+      
+        <script src="../../javascripts/article-deck.js"></script>
+      
+        <script src="../../javascripts/author-dialog.js"></script>
+      
+        <script src="../../javascripts/chat.js"></script>
+      
+    
+  </body>
+</html>
